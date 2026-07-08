@@ -1,0 +1,799 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantramour 2026 — Planning Festival</title>
+<style>
+/* ===== VARIABLES ===== */
+:root {
+  --bg: #ffffff; --surface: #f7f8fa; --surface2: #eef0f3;
+  --border: #e2e5ea; --text: #1a1d23; --muted: #5a6272;
+  --accent: #6b4fa0; --accent2: #9b6dc5; --accent-light: #ede7f6;
+  --green: #2e7d32; --green-light: #e8f5e9;
+  --orange: #e65100; --orange-light: #fff3e0;
+  --blue: #1565c0; --blue-light: #e3f2fd;
+  --purple: #6b4fa0; --purple-light: #ede7f6;
+  --red: #c62828; --red-light: #ffebee;
+  --shadow: 0 1px 4px rgba(0,0,0,.08);
+  --radius: 8px; --radius-sm: 4px;
+  --font: -apple-system,"Segoe UI",system-ui,sans-serif;
+}
+[data-theme="dark"] {
+  --bg: #12141a; --surface: #1e2130; --surface2: #262b3d;
+  --border: #353b52; --text: #e8eaf0; --muted: #8b95b0;
+  --accent: #9b6dc5; --accent2: #c4a0e8; --accent-light: #2d2040;
+  --green: #66bb6a; --green-light: #1b2e1c;
+  --orange: #ffa726; --orange-light: #2e1f00;
+  --blue: #64b5f6; --blue-light: #0d1f35;
+  --purple: #ce93d8; --purple-light: #2d1b3e;
+  --red: #ef5350; --red-light: #2b0f0f;
+  --shadow: 0 1px 6px rgba(0,0,0,.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); font-size: 14px; background: var(--bg); color: var(--text); transition: background .2s, color .2s; }
+
+/* ===== HEADER ===== */
+.app-header {
+  background: var(--accent); color: #fff; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.app-header h1 { font-size: 18px; font-weight: 600; letter-spacing: .3px; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
+
+/* ===== BOUTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius-sm); border: none;
+  font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s;
+  font-family: var(--font);
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4); }
+.btn-ghost:hover { background: rgba(255,255,255,.15); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-outline { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { opacity: .88; }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-blue:hover { opacity: .88; }
+
+/* ===== TABS ===== */
+.tabs-bar {
+  display: flex; gap: 0; border-bottom: 2px solid var(--border);
+  background: var(--surface); padding: 0 24px;
+}
+.tab-btn {
+  padding: 14px 24px; font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none; background: transparent; color: var(--muted);
+  border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .15s;
+  font-family: var(--font);
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+.tab-panel { display: none; padding: 24px; }
+.tab-panel.active { display: block; }
+
+/* ===== CONTROLS ===== */
+.controls-bar {
+  display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px;
+}
+.control-group { display: flex; flex-direction: column; gap: 5px; }
+.control-group label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+select, input[type="text"] {
+  padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--font);
+  min-width: 220px; transition: border-color .15s;
+}
+select:focus, input[type="text"]:focus { outline: none; border-color: var(--accent); }
+.action-btns { display: flex; gap: 8px; align-items: flex-end; margin-left: auto; }
+
+/* ===== SEARCH & FILTERS ===== */
+.filter-row {
+  display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;
+}
+.search-box {
+  flex: 1; min-width: 200px; padding: 8px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--font);
+}
+.search-box:focus { outline: none; border-color: var(--accent); }
+.filter-select {
+  padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text); font-size: 12px; font-family: var(--font);
+}
+.results-count {
+  font-size: 12px; color: var(--muted); padding: 8px 4px; white-space: nowrap;
+}
+
+/* ===== TABLE ===== */
+.table-container {
+  overflow-x: auto; border-radius: var(--radius);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { position: sticky; top: 0; z-index: 10; }
+th {
+  background: var(--accent); color: #fff; padding: 10px 12px;
+  text-align: left; font-weight: 600; font-size: 12px; white-space: nowrap;
+  cursor: pointer; user-select: none; transition: background .15s;
+}
+th:hover { background: var(--accent2); }
+th .sort-icon { margin-left: 4px; opacity: .6; font-size: 10px; }
+th.sorted { background: var(--accent2); }
+th.sorted .sort-icon { opacity: 1; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--accent-light) !important; }
+td { padding: 9px 12px; vertical-align: top; line-height: 1.5; }
+tbody tr:nth-child(even) { background: var(--surface); }
+tbody tr:nth-child(odd)  { background: var(--bg); }
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; white-space: nowrap; margin: 1px;
+}
+.badge-helper   { background: var(--blue-light);   color: var(--blue); }
+.badge-angel    { background: var(--orange-light);  color: var(--orange); }
+.badge-fac      { background: var(--purple-light);  color: var(--purple); }
+.badge-type     { background: var(--green-light);   color: var(--green); }
+.badge-trad     { background: var(--red-light);     color: var(--red); }
+.badge-colibri  { background: #fff3e0; color: #e65100; border: 1px dashed #e65100; }
+.name-list { display: flex; flex-wrap: wrap; gap: 3px; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center; padding: 48px 24px; color: var(--muted);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 15px; }
+
+/* ===== PERSONA CARD ===== */
+.persona-header {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px;
+  display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+}
+.persona-stat { text-align: center; }
+.persona-stat .num { font-size: 28px; font-weight: 700; color: var(--accent); }
+.persona-stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+.persona-divider { width: 1px; background: var(--border); align-self: stretch; }
+.persona-name { font-size: 20px; font-weight: 700; flex: 1; }
+.persona-roles { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--accent); color: #fff; padding: 12px 20px;
+  border-radius: var(--radius); box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0;
+  transition: all .3s ease;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .app-header h1 { font-size: 15px; }
+  .tab-btn { padding: 12px 14px; font-size: 13px; }
+  .controls-bar { flex-direction: column; }
+  select, input[type="text"] { min-width: 160px; }
+}
+
+/* ===== PRINT ===== */
+@media print {
+  .app-header, .tabs-bar, .controls-bar, .filter-row, .action-btns, .header-actions { display: none !important; }
+  .tab-panel { display: block !important; padding: 0; }
+  .table-container { box-shadow: none; border: 1px solid #ccc; }
+  th { background: #6b4fa0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <h1>🌸 Tantramour 2026 — Planning Festival</h1>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" id="btnRefresh" title="Recharger les données">⟳ Refresh</button>
+    <button class="btn btn-ghost btn-sm" id="btnTheme">🌙 Mode Nuit</button>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs-bar">
+  <button class="tab-btn active" data-tab="tab1">📅 Agenda par Jour</button>
+  <button class="tab-btn" data-tab="tab2">👤 Agenda par Personne</button>
+</nav>
+
+<!-- TAB 1 : Agenda par jour -->
+<div class="tab-panel active" id="tab1">
+  <div class="controls-bar">
+    <div class="control-group">
+      <label>Choisir la journée</label>
+      <select id="daySelect">
+        <option value="">— Sélectionner un jour —</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Filtrer par type</label>
+      <select id="typeFilterDay">
+        <option value="">Tous les types</option>
+      </select>
+    </div>
+    <div class="action-btns">
+      <button class="btn btn-green btn-sm" id="exportDayPDF">⬇ PDF</button>
+      <button class="btn btn-blue btn-sm" id="exportDayXLS">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <input type="text" class="search-box" id="searchDay" placeholder="Rechercher dans le tableau…">
+    <span class="results-count" id="countDay">—</span>
+  </div>
+  <div id="dayEmptyState" class="empty-state">
+    <div class="icon">📅</div>
+    <p>Sélectionnez une journée pour afficher le programme</p>
+  </div>
+  <div id="dayTableContainer" class="table-container" style="display:none">
+    <table id="dayTable">
+      <thead>
+        <tr>
+          <th data-col="heure">Heure <span class="sort-icon">⇅</span></th>
+          <th data-col="type">Type d'atelier <span class="sort-icon">⇅</span></th>
+          <th data-col="atelier">Atelier <span class="sort-icon">⇅</span></th>
+          <th data-col="lieu">Lieu <span class="sort-icon">⇅</span></th>
+          <th data-col="fac">Facilitateur(s) <span class="sort-icon">⇅</span></th>
+          <th data-col="trad">Traduction <span class="sort-icon">⇅</span></th>
+          <th data-col="helpers">Helper(s) <span class="sort-icon">⇅</span></th>
+          <th data-col="angel">Angel <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody id="dayTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2 : Agenda par personne -->
+<div class="tab-panel" id="tab2">
+  <div class="controls-bar">
+    <div class="control-group">
+      <label>Choisir une personne</label>
+      <select id="personSelect">
+        <option value="">— Sélectionner une personne —</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Filtrer par rôle</label>
+      <select id="roleFilter">
+        <option value="">Tous les rôles</option>
+        <option value="Facilitateur">Facilitateur</option>
+        <option value="Helper">Helper</option>
+        <option value="Angel">Angel</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Filtrer par jour</label>
+      <select id="dayFilterPerson">
+        <option value="">Tous les jours</option>
+      </select>
+    </div>
+    <div class="action-btns">
+      <button class="btn btn-green btn-sm" id="exportPersonPDF">⬇ PDF</button>
+      <button class="btn btn-blue btn-sm" id="exportPersonXLS">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <input type="text" class="search-box" id="searchPerson" placeholder="Rechercher dans le tableau…">
+    <span class="results-count" id="countPerson">—</span>
+  </div>
+  <div id="personEmptyState" class="empty-state">
+    <div class="icon">👤</div>
+    <p>Sélectionnez une personne pour afficher son planning</p>
+  </div>
+  <div id="personStats" style="display:none"></div>
+  <div id="personTableContainer" class="table-container" style="display:none">
+    <table id="personTable">
+      <thead>
+        <tr>
+          <th data-col="jour">Jour <span class="sort-icon">⇅</span></th>
+          <th data-col="date">Date <span class="sort-icon">⇅</span></th>
+          <th data-col="heure">Heure <span class="sort-icon">⇅</span></th>
+          <th data-col="type">Type d'atelier <span class="sort-icon">⇅</span></th>
+          <th data-col="atelier">Atelier <span class="sort-icon">⇅</span></th>
+          <th data-col="lieu">Lieu <span class="sort-icon">⇅</span></th>
+          <th data-col="role">Rôle <span class="sort-icon">⇅</span></th>
+          <th data-col="fac">Facilitateur(s) <span class="sort-icon">⇅</span></th>
+          <th data-col="trad">Traduction <span class="sort-icon">⇅</span></th>
+          <th data-col="helpers">Helper(s) <span class="sort-icon">⇅</span></th>
+          <th data-col="angel">Angel <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody id="personTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================================================================
+// DATA — embedded from tantramour_data.json (cleaned)
+// ===================================================================
+const RAW_DATA_URL = "tantramour_data.json";
+
+// Nettoyage des caractères corrompus dans le source Excel
+function cleanStr(s) {
+  if (!s) return "";
+  return s
+    .replace(/ao\xC3\xBBt/g, "août").replace(/ao\u00C3\u00BBt/g, "août")
+    .replace(/ao.t(?=["',\s])/g, "août")
+    .replace(/\u00EF\u00BF\u00BD/g, "")
+    .replace(/\uFFFD/g, "")
+    .replace(/a\u00EF\u00BF\u00BD/g, "à")
+    .replace(/C\u00C3\u00A9dric/g, "Cédric")
+    .replace(/\u00C3\u00A9/g, "é").replace(/\u00C3\u00A8/g, "è")
+    .replace(/\u00C3\u00AA/g, "ê").replace(/\u00C3\u00A0/g, "à")
+    .replace(/\u00C3\u00B4/g, "ô").replace(/\u00C3\u00BB/g, "û")
+    .replace(/\u00C3\u00AF/g, "ï").replace(/\u00C3\u00B9/g, "ù")
+    .replace(/\u00C3\u00A2/g, "â").replace(/\u00C3\u00AE/g, "î")
+    .replace(/\u00C2\u00AB/g, "«").replace(/\u00C2\u00BB/g, "»")
+    .replace(/\u00E2\u0080\u0099/g, "'").replace(/\u00E2\u0080\x98/g, "'")
+    .replace(/ao\xEBt/g, "août").replace(/aoǯt/g, "août")
+    .replace(/a\uFFFD/g, "à").replace(/M\uFFFDditatif/g, "Méditatif")
+    .replace(/\uFFFDme/g, "âme").replace(/m\uFFFDditatif/g, "méditatif")
+    .replace(/Tan.*?Caf\uFFFD/g, s => s.replace(/\uFFFD/g,"é"))
+    .trim();
+}
+
+function cleanRow(r) {
+  return {
+    ...r,
+    dateFull: cleanStr(r.dateFull),
+    jourLabel: cleanStr(r.jourLabel),
+    heure: cleanStr(r.heure),
+    type: cleanStr(r.type),
+    atelier: cleanStr(r.atelier),
+    lieu: cleanStr(r.lieu),
+    fac1: cleanStr(r.fac1),
+    fac2: cleanStr(r.fac2),
+    traduction: cleanStr(r.traduction),
+    helpers: (r.helpers || []).map(cleanStr).filter(Boolean),
+    angel: cleanStr(r.angel),
+  };
+}
+
+// Correction manuelle des dates (hardcoded car les accents sont corrompus dans la source)
+const DATE_LABELS = {
+  "J1": "Samedi 29 août",
+  "J2": "Dimanche 30 août",
+  "J3": "Lundi 31 août",
+  "J4": "Mardi 1 septembre",
+  "J5": "Mercredi 2 septembre",
+  "J6": "Jeudi 3 septembre",
+  "J7": "Vendredi 4 septembre",
+};
+
+let DATA = [];
+let filteredDayData = [];
+let filteredPersonData = [];
+let sortState = { col: null, dir: 1 };
+
+// ===================================================================
+// LOAD DATA
+// ===================================================================
+async function loadData() {
+  try {
+    const resp = await fetch(RAW_DATA_URL + "?t=" + Date.now());
+    if (!resp.ok) throw new Error("Fichier non trouvé");
+    const raw = await resp.json();
+    DATA = raw.map(r => {
+      const cleaned = cleanRow(r);
+      cleaned.dateFull = DATE_LABELS[cleaned.jourCode] || cleaned.dateFull;
+      cleaned.jourLabel = DATE_LABELS[cleaned.jourCode] || cleaned.jourLabel;
+      return cleaned;
+    });
+    buildSelectors();
+    showToast(`✓ ${DATA.length} ateliers chargés`);
+  } catch(e) {
+    // Fallback: données embarquées
+    loadEmbeddedData();
+  }
+}
+
+function loadEmbeddedData() {
+  // Données extraites directement - si le fichier JSON n'est pas accessible
+  showToast("⚠ Données embarquées (mode hors ligne)");
+  DATA = EMBEDDED_DATA.map(r => {
+    const cleaned = cleanRow(r);
+    cleaned.dateFull = DATE_LABELS[cleaned.jourCode] || cleaned.dateFull;
+    cleaned.jourLabel = DATE_LABELS[cleaned.jourCode] || cleaned.jourLabel;
+    return cleaned;
+  });
+  buildSelectors();
+}
+
+// ===================================================================
+// BUILD SELECTORS
+// ===================================================================
+function buildSelectors() {
+  // Jours
+  const daySelect = document.getElementById("daySelect");
+  daySelect.innerHTML = '<option value="">— Sélectionner un jour —</option>';
+  const dayFilterPerson = document.getElementById("dayFilterPerson");
+  dayFilterPerson.innerHTML = '<option value="">Tous les jours</option>';
+
+  Object.entries(DATE_LABELS).forEach(([code, label]) => {
+    if (DATA.some(r => r.jourCode === code)) {
+      daySelect.innerHTML += `<option value="${code}">${label}</option>`;
+      dayFilterPerson.innerHTML += `<option value="${code}">${label}</option>`;
+    }
+  });
+
+  // Types
+  const types = [...new Set(DATA.map(r => r.type).filter(Boolean))].sort();
+  const typeFilter = document.getElementById("typeFilterDay");
+  typeFilter.innerHTML = '<option value="">Tous les types</option>';
+  types.forEach(t => typeFilter.innerHTML += `<option value="${t}">${t}</option>`);
+
+  // Personnes (fac + helpers + angel, dédupliqué et trié)
+  const personSet = new Set();
+  DATA.forEach(r => {
+    if (r.fac1 && !r.fac1.includes("COLIBRI")) personSet.add(r.fac1);
+    if (r.fac2 && !r.fac2.includes("COLIBRI")) personSet.add(r.fac2);
+    r.helpers.forEach(h => { if (h && !h.includes("COLIBRI") && h !== "TOUS LES HELPERS") personSet.add(h); });
+    if (r.angel && !r.angel.includes("COLIBRI")) personSet.add(r.angel);
+  });
+  const persons = [...personSet].sort((a, b) => a.localeCompare(b, "fr"));
+  const personSelect = document.getElementById("personSelect");
+  personSelect.innerHTML = '<option value="">— Sélectionner une personne —</option>';
+  persons.forEach(p => personSelect.innerHTML += `<option value="${p}">${p}</option>`);
+}
+
+// ===================================================================
+// RENDER DAY TABLE
+// ===================================================================
+function renderDayTable() {
+  const day = document.getElementById("daySelect").value;
+  const typeF = document.getElementById("typeFilterDay").value;
+  const search = document.getElementById("searchDay").value.toLowerCase();
+
+  if (!day) {
+    document.getElementById("dayEmptyState").style.display = "";
+    document.getElementById("dayTableContainer").style.display = "none";
+    document.getElementById("countDay").textContent = "—";
+    return;
+  }
+
+  let rows = DATA.filter(r => r.jourCode === day);
+  if (typeF) rows = rows.filter(r => r.type === typeF);
+  if (search) rows = rows.filter(r =>
+    [r.heure, r.type, r.atelier, r.lieu, r.fac1, r.fac2, r.traduction, r.angel, ...r.helpers]
+      .join(" ").toLowerCase().includes(search)
+  );
+
+  // Sort
+  if (sortState.col) rows = sortRows(rows, sortState.col, sortState.dir, "day");
+
+  filteredDayData = rows;
+  document.getElementById("countDay").textContent = `${rows.length} atelier${rows.length > 1 ? "s" : ""}`;
+
+  const tbody = document.getElementById("dayTableBody");
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:32px">Aucun résultat</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><strong>${r.heure || "—"}</strong></td>
+        <td><span class="badge badge-type">${r.type || "—"}</span></td>
+        <td>${r.atelier}</td>
+        <td style="color:var(--muted)">${r.lieu || "—"}</td>
+        <td>${buildFacBadges(r.fac1, r.fac2)}</td>
+        <td>${r.traduction ? `<span class="badge badge-trad">${r.traduction}</span>` : "—"}</td>
+        <td>${buildHelperBadges(r.helpers)}</td>
+        <td>${r.angel ? `<span class="badge badge-angel">${r.angel}</span>` : "—"}</td>
+      </tr>`).join("");
+  }
+
+  document.getElementById("dayEmptyState").style.display = "none";
+  document.getElementById("dayTableContainer").style.display = "";
+  updateSortIcons("dayTable");
+}
+
+// ===================================================================
+// RENDER PERSON TABLE
+// ===================================================================
+function renderPersonTable() {
+  const person = document.getElementById("personSelect").value;
+  const roleF  = document.getElementById("roleFilter").value;
+  const dayF   = document.getElementById("dayFilterPerson").value;
+  const search = document.getElementById("searchPerson").value.toLowerCase();
+
+  if (!person) {
+    document.getElementById("personEmptyState").style.display = "";
+    document.getElementById("personTableContainer").style.display = "none";
+    document.getElementById("personStats").style.display = "none";
+    document.getElementById("countPerson").textContent = "—";
+    return;
+  }
+
+  // Construire les lignes avec rôle
+  let rows = [];
+  DATA.forEach(r => {
+    const roles = [];
+    if (r.fac1 === person || r.fac2 === person) roles.push("Facilitateur");
+    if (r.helpers.includes(person)) roles.push("Helper");
+    if (r.angel === person) roles.push("Angel");
+    if (roles.length === 0) return;
+    roles.forEach(role => {
+      rows.push({ ...r, role });
+    });
+  });
+
+  if (roleF) rows = rows.filter(r => r.role === roleF);
+  if (dayF)  rows = rows.filter(r => r.jourCode === dayF);
+  if (search) rows = rows.filter(r =>
+    [r.jour, r.dateFull, r.heure, r.type, r.atelier, r.lieu, r.role, r.fac1, r.fac2, r.traduction, r.angel, ...r.helpers]
+      .join(" ").toLowerCase().includes(search)
+  );
+
+  if (sortState.col) rows = sortRows(rows, sortState.col, sortState.dir, "person");
+  filteredPersonData = rows;
+
+  document.getElementById("countPerson").textContent = `${rows.length} assignation${rows.length > 1 ? "s" : ""}`;
+
+  // Stats
+  const allPersonRows = DATA.reduce((acc, r) => {
+    if (r.fac1 === person || r.fac2 === person) acc.push({...r, role:"Facilitateur"});
+    if (r.helpers.includes(person)) acc.push({...r, role:"Helper"});
+    if (r.angel === person) acc.push({...r, role:"Angel"});
+    return acc;
+  }, []);
+  const roleSet = [...new Set(allPersonRows.map(r => r.role))];
+  const nbFac = allPersonRows.filter(r => r.role === "Facilitateur").length;
+  const nbH   = allPersonRows.filter(r => r.role === "Helper").length;
+  const nbA   = allPersonRows.filter(r => r.role === "Angel").length;
+
+  const statsEl = document.getElementById("personStats");
+  statsEl.style.display = "";
+  statsEl.innerHTML = `
+    <div class="persona-header">
+      <div class="persona-name">👤 ${person}</div>
+      <div class="persona-divider"></div>
+      ${nbFac > 0 ? `<div class="persona-stat"><div class="num">${nbFac}</div><div class="lbl">Facilitateur</div></div>` : ""}
+      ${nbH > 0 ? `<div class="persona-stat"><div class="num">${nbH}</div><div class="lbl">Helper</div></div>` : ""}
+      ${nbA > 0 ? `<div class="persona-stat"><div class="num">${nbA}</div><div class="lbl">Angel</div></div>` : ""}
+      <div class="persona-divider"></div>
+      <div class="persona-roles">
+        ${roleSet.map(r => `<span class="badge badge-${r.toLowerCase()}">${r}</span>`).join("")}
+      </div>
+    </div>`;
+
+  const tbody = document.getElementById("personTableBody");
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:32px">Aucun résultat</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><strong>${r.jourCode}</strong></td>
+        <td style="white-space:nowrap">${r.dateFull}</td>
+        <td><strong>${r.heure || "—"}</strong></td>
+        <td><span class="badge badge-type">${r.type || "—"}</span></td>
+        <td>${r.atelier}</td>
+        <td style="color:var(--muted)">${r.lieu || "—"}</td>
+        <td><span class="badge badge-${r.role.toLowerCase()}">${r.role}</span></td>
+        <td>${buildFacBadges(r.fac1, r.fac2)}</td>
+        <td>${r.traduction ? `<span class="badge badge-trad">${r.traduction}</span>` : "—"}</td>
+        <td>${buildHelperBadges(r.helpers)}</td>
+        <td>${r.angel ? `<span class="badge badge-angel">${r.angel}</span>` : "—"}</td>
+      </tr>`).join("");
+  }
+
+  document.getElementById("personEmptyState").style.display = "none";
+  document.getElementById("personTableContainer").style.display = "";
+  updateSortIcons("personTable");
+}
+
+// ===================================================================
+// HELPERS
+// ===================================================================
+function buildFacBadges(f1, f2) {
+  const parts = [];
+  if (f1 && !["Sabryna","ShivaChris"].includes(f1)) parts.push(`<span class="badge badge-fac">${f1}</span>`);
+  if (f2 && !["Sabryna","ShivaChris"].includes(f2)) parts.push(`<span class="badge badge-fac">${f2}</span>`);
+  return parts.length ? `<div class="name-list">${parts.join("")}</div>` : "—";
+}
+
+function buildHelperBadges(helpers) {
+  if (!helpers || helpers.length === 0) return "—";
+  const parts = helpers
+    .filter(h => h && h !== "TOUS LES HELPERS")
+    .map(h => h.includes("SHIFT COLIBRI")
+      ? `<span class="badge badge-colibri">${h}</span>`
+      : `<span class="badge badge-helper">${h}</span>`);
+  return parts.length ? `<div class="name-list">${parts.join("")}</div>` : "—";
+}
+
+function getColValue(row, col, mode) {
+  const map = {
+    "heure": row.heure || "", "type": row.type || "", "atelier": row.atelier || "",
+    "lieu": row.lieu || "", "fac": (row.fac1 || "") + (row.fac2 || ""),
+    "trad": row.traduction || "", "helpers": row.helpers.join(","),
+    "angel": row.angel || "", "jour": row.jourCode || "", "date": row.jourNum || 0,
+    "role": row.role || ""
+  };
+  return map[col] !== undefined ? map[col] : "";
+}
+
+function sortRows(rows, col, dir, mode) {
+  return [...rows].sort((a, b) => {
+    let va = getColValue(a, col, mode), vb = getColValue(b, col, mode);
+    if (col === "date") return (va - vb) * dir;
+    return va.localeCompare(vb, "fr", {sensitivity:"base"}) * dir;
+  });
+}
+
+function updateSortIcons(tableId) {
+  document.querySelectorAll(`#${tableId} th`).forEach(th => {
+    th.classList.remove("sorted");
+    const ico = th.querySelector(".sort-icon");
+    if (ico) ico.textContent = "⇅";
+    if (th.dataset.col === sortState.col) {
+      th.classList.add("sorted");
+      if (ico) ico.textContent = sortState.dir === 1 ? "↑" : "↓";
+    }
+  });
+}
+
+// ===================================================================
+// EXPORT
+// ===================================================================
+function exportPDF(title) {
+  const printTitle = document.createElement("div");
+  printTitle.id = "printTitle";
+  printTitle.style.cssText = "font-size:18px;font-weight:700;margin:0 0 12px;color:#6b4fa0;font-family:sans-serif";
+  printTitle.textContent = `Tantramour 2026 — ${title}`;
+  document.body.prepend(printTitle);
+  window.print();
+  document.body.removeChild(printTitle);
+}
+
+function exportXLS(data, cols, title) {
+  if (!data || data.length === 0) { showToast("⚠ Aucune donnée à exporter"); return; }
+  let csv = cols.headers.join("\t") + "\n";
+  data.forEach(r => {
+    csv += cols.getRow(r).map(v => `"${(v||"").replace(/"/g,'""')}"`).join("\t") + "\n";
+  });
+  const blob = new Blob(["\uFEFF" + csv], {type: "text/tab-separated-values;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `Tantramour_${title}_${new Date().toISOString().slice(0,10)}.xls`;
+  a.click();
+  showToast("✓ Export Excel téléchargé");
+}
+
+// ===================================================================
+// TOAST
+// ===================================================================
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// ===================================================================
+// EVENTS
+// ===================================================================
+// Tabs
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+    sortState = { col: null, dir: 1 };
+  });
+});
+
+// Theme
+let isDark = false;
+document.getElementById("btnTheme").addEventListener("click", () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute("data-theme", isDark ? "dark" : "");
+  document.getElementById("btnTheme").textContent = isDark ? "☀ Mode Jour" : "🌙 Mode Nuit";
+});
+
+// Refresh
+document.getElementById("btnRefresh").addEventListener("click", async () => {
+  showToast("⟳ Rechargement des données…");
+  await loadData();
+  renderDayTable();
+  renderPersonTable();
+});
+
+// Day selects + search
+["daySelect","typeFilterDay"].forEach(id =>
+  document.getElementById(id).addEventListener("change", () => { sortState = {col:null,dir:1}; renderDayTable(); })
+);
+document.getElementById("searchDay").addEventListener("input", renderDayTable);
+
+// Person selects + search
+["personSelect","roleFilter","dayFilterPerson"].forEach(id =>
+  document.getElementById(id).addEventListener("change", () => { sortState = {col:null,dir:1}; renderPersonTable(); })
+);
+document.getElementById("searchPerson").addEventListener("input", renderPersonTable);
+
+// Sort — Day table
+document.getElementById("dayTable").querySelector("thead").addEventListener("click", e => {
+  const th = e.target.closest("th");
+  if (!th || !th.dataset.col) return;
+  const col = th.dataset.col;
+  if (sortState.col === col) sortState.dir *= -1;
+  else { sortState.col = col; sortState.dir = 1; }
+  renderDayTable();
+});
+
+// Sort — Person table
+document.getElementById("personTable").querySelector("thead").addEventListener("click", e => {
+  const th = e.target.closest("th");
+  if (!th || !th.dataset.col) return;
+  const col = th.dataset.col;
+  if (sortState.col === col) sortState.dir *= -1;
+  else { sortState.col = col; sortState.dir = 1; }
+  renderPersonTable();
+});
+
+// Exports
+document.getElementById("exportDayPDF").addEventListener("click", () => {
+  const day = document.getElementById("daySelect").value;
+  exportPDF(DATE_LABELS[day] || "Agenda par jour");
+});
+document.getElementById("exportDayXLS").addEventListener("click", () => {
+  const day = document.getElementById("daySelect").value;
+  exportXLS(filteredDayData,
+    {
+      headers: ["Heure","Type d'atelier","Atelier","Lieu","Facilitateur(s)","Traduction","Helper(s)","Angel"],
+      getRow: r => [r.heure, r.type, r.atelier, r.lieu,
+        [r.fac1, r.fac2].filter(Boolean).join(", "),
+        r.traduction, r.helpers.join(", "), r.angel]
+    },
+    DATE_LABELS[day] || "Jour"
+  );
+});
+document.getElementById("exportPersonPDF").addEventListener("click", () => {
+  const p = document.getElementById("personSelect").value;
+  exportPDF(`Planning de ${p}`);
+});
+document.getElementById("exportPersonXLS").addEventListener("click", () => {
+  const p = document.getElementById("personSelect").value;
+  exportXLS(filteredPersonData,
+    {
+      headers: ["Jour","Date","Heure","Type d'atelier","Atelier","Lieu","Rôle","Facilitateur(s)","Traduction","Helper(s)","Angel"],
+      getRow: r => [r.jourCode, r.dateFull, r.heure, r.type, r.atelier, r.lieu, r.role,
+        [r.fac1, r.fac2].filter(Boolean).join(", "),
+        r.traduction, r.helpers.join(", "), r.angel]
+    },
+    p.replace(/\s/g,"_")
+  );
+});
+
+// ===================================================================
+// DONNÉES EMBARQUÉES (fallback si JSON non accessible)
+// ===================================================================
+const EMBEDDED_DATA = [{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"","hDebut":0,"type":"PREPA & LOGITICS","atelier":"DECO temples, Acceuil, exterieur","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"","hDebut":0,"type":"Tests son & sono","atelier":"Tests son & sono a  SHIVA","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"14:30 - 15:30","hDebut":870,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"16:00 - 17:00","hDebut":960,"type":"REUNION D'EQUIPE","atelier":"DREAM TEAM (tous)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"17:00 - 18:00","hDebut":1020,"type":"PREPA & LOGITICS","atelier":"PREPA OPENING CEREMONY","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Daniel Latapie","Frederic Chalard","Philippe Hanrion"],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"18:00 – 19:30","hDebut":1080,"type":"CEREMONIE","atelier":"OPENING CEREMONY","lieu":"SHIVA","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":["Yannick Bohrer","Mukti - Cecile Yvorel"],"angel":"Linda Stachetti"},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Sattler","Virginie Bertrand"],"angel":""},{"jourCode":"J1","jourNum":1,"dateFull":"Samedi 29 août","jourLabel":"Samedi 29 août","jour":"J1","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"SOIREE ECSTATIC DANSE","lieu":"SHIVA","fac1":"Pascal de Lacaze","fac2":"","traduction":"","helpers":["Emma Roussel","Cedric Vesper"],"angel":"Aurelie Lechardeur"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Yoga2","lieu":"CHENREZIG","fac1":"Paul Raj Amar","fac2":"","traduction":"","helpers":["Delphine Del Dupre"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Meditation active","lieu":"SHAKTI","fac1":"Dorian Vallet","fac2":"","traduction":"","helpers":["Linda Stachetti"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":[],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"9:00 - 9:30","hDebut":540,"type":"PREPARATION Rassembl.","atelier":"PREPARATION Rassemblement","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Yannick Bohrer"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"9:45 - 11:00","hDebut":585,"type":"RASSEMBLEMENT","atelier":"Rassemblement","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Alexandre Fourcault","Yannick Bohrer"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Opening Connections","lieu":"SHIVA","fac1":"Scott McClure","fac2":"","traduction":"","helpers":["Maeva Mantione","Delphine Del Dupre"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Massage meditatif tantrique (1/3)","lieu":"CHENREZIG","fac1":"Joe Jam","fac2":"Alice","traduction":"","helpers":["Daniel Latapie","Cedric Vesper"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Yabyum - let love happen","lieu":"SHAKTI","fac1":"Selma (Celine Laroche)","fac2":"","traduction":"","helpers":["Philippe Hanrion","Alexandre Sattler"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Shakti puja : Le mystere des Mahavidya","lieu":"TARA","fac1":"Ishvari","fac2":"","traduction":"","helpers":["Arnaud","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"12:00 - 13:30","hDebut":720,"type":"ATELIER ARTISTIQUE (AM)","atelier":"Meeting Your Deity - Hypnosis & Sacred Arts Workshop","lieu":"GANESH","fac1":"Samantha Marvels","fac2":"","traduction":"","helpers":["Carine Janez","Boris Desvignes"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Virginie Bertrand"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"15:00 - 15:45","hDebut":900,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Matthieu Chapeleau","fac2":"Dorian Vallet","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"14:30 - 16:00","hDebut":870,"type":"SUPPORT EMOTIONNEL","atelier":"SUPPORT EMOTIONNEL","lieu":"GANESH","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Linda Stachetti"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"La Danse de la Polarite","lieu":"SHIVA","fac1":"Mahadevi (Tina Defoy)","fac2":"","traduction":"","helpers":["Frederic Chalard","Damien Eissen"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Vibration a  l'unisson :Tete - Coeur - Sexe","lieu":"CHENREZIG","fac1":"Sophie O'Heix","fac2":"","traduction":"","helpers":["Veronique Santini Bottemer","Mukti - Cecile Yvorel"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Roue de Terre : Consentir et Communiquer","lieu":"SHAKTI","fac1":"Clement Victor (Jivan Mutti)","fac2":"","traduction":"","helpers":["Emma Roussel","Vera De Sousa"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Cesser de Faire, Laisser Etre","lieu":"TARA","fac1":"Audrey Barthelemy","fac2":"","traduction":"","helpers":["Boris Desvignes","Yannick Bohrer"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Angel - ATELIERS TANTRA (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Linda Stachetti"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"17.30 - 18.15","hDebut":1050,"type":"REPAS & PAUSE","atelier":"GOUTER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Danse Ecstatic Contact #1","lieu":"SHIVA","fac1":"Cedric Vesper","fac2":"Emmanuelle Cueff (Suman)","traduction":"","helpers":["Alexandre Fourcault","Maeva Mantione"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Move & Connect with the 5 Elements","lieu":"CHENREZIG","fac1":"Dorian Vallet","fac2":"Sevda Duroy","traduction":"","helpers":["Damien Eissen","Daniel Latapie"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Ecstatic Dance niveau 1","lieu":"SHAKTI","fac1":"Yannick Bohrer","fac2":"","traduction":"","helpers":["Vera De Sousa","Delphine Del Dupre"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"L'Union sacre d'Hathor et Horus","lieu":"TARA","fac1":"Philippe Hanrion","fac2":"","traduction":"","helpers":["Veronique Santini Bottemer","Alexandre Sattler"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Angel - ATELIER ARTISTIQUE (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Frederic Chalard","Mukti - Cecile Yvorel"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"CEROMONIE CACAO","lieu":"SHIVA","fac1":"Amana (William Duplain)","fac2":"Ishvari","traduction":"","helpers":["Alexandre Roque - Bhaskar","Emma Roussel","Arnaud"],"angel":"Virginie Bertrand"},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"21:00 - 22:00","hDebut":1260,"type":"PREPA LOVE TEMPLE","atelier":"PREPA TEMPLE (CHENREZIG)","lieu":"CHENREZIG","fac1":"","fac2":"","traduction":"","helpers":["Boris Desvignes","Linda Stachetti"],"angel":""},{"jourCode":"J2","jourNum":2,"dateFull":"Dimanche 30 août","jourLabel":"Dimanche 30 août","jour":"J2","heure":"23:30 - 01:00","hDebut":1410,"type":"LOVE TEMPLE","atelier":"Shibari Performance & Interactive Jam","lieu":"CHENREZIG","fac1":"Amana (William Duplain)","fac2":"Ishvari","traduction":"","helpers":["Carine Janez","Vera De Sousa"],"angel":"Daniel Latapie"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Yoga","lieu":"CHENREZIG","fac1":"Sevda Duroy","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Meditation active d'Osho : Laughing Drums Meditation","lieu":"SHAKTI","fac1":"Selma (Celine Laroche)","fac2":"","traduction":"","helpers":["Philippe Hanrion"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"9:00 - 9:30","hDebut":540,"type":"PREPARATION Rassembl.","atelier":"PREPARATION Rassemblement","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Maeva Mantione","Damien Eissen"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"9:45 - 11:00","hDebut":585,"type":"RASSEMBLEMENT","atelier":"Rassemblement","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Maeva Mantione","Damien Eissen"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Entre dans la caresse comme dans la vie Eternelle","lieu":"SHIVA","fac1":"Sandrine Bettinelli","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Cedric Vesper"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Ode a KALI","lieu":"CHENREZIG","fac1":"Emmanuelle Cueff (Suman)","fac2":"","traduction":"","helpers":["Yannick Bohrer","Alexandre Sattler"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"La Merkaba tantrique","lieu":"SHAKTI","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":["Frederic Chalard","Emma Roussel"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Plongez dans l'experience « Du plaisir » (pour femmes ou personnes identifiees)","lieu":"TARA","fac1":"Audrey Barthelemy","fac2":"","traduction":"","helpers":["Carine Janez","Delphine Del Dupre"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"12:00 - 13:30","hDebut":720,"type":"ATELIER ARTISTIQUE (AM)","atelier":"Danse des portes multidimensionnelles de l'Etre","lieu":"GANESH","fac1":"Mahadevi (Tina Defoy)","fac2":"","traduction":"","helpers":["Veronique Santini Bottemer","SHIFT COLIBRI (Paul)"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Linda Stachetti"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"15:00 - 15:45","hDebut":900,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Matthieu Chapeleau","fac2":"Dorian Vallet","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"15:00 - 16:00","hDebut":900,"type":"POOL PARTY","atelier":"POOL PARTY   - DJ Pascal de Lacaze","lieu":"PISCINE","fac1":"Pascal de Lacaze","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"14:30 - 16:00","hDebut":870,"type":"SUPPORT EMOTIONNEL","atelier":"SUPPORT EMOTIONNEL","lieu":"GANESH","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Voyage avec la Rose (femmes)","lieu":"SHIVA","fac1":"Emma Roussel","fac2":"","traduction":"","helpers":["Maeva Mantione","Alexandre Fourcault"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 19:30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"The Space Between Us (3hrs)","lieu":"CHENREZIG","fac1":"Our Echo","fac2":"Guy El Hadad - Israel","traduction":"","helpers":["Vera De Sousa","SHIFT COLIBRI (Amana)"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Yoni & Lingam Puja","lieu":"SHAKTI","fac1":"Ishvari","fac2":"","traduction":"","helpers":["Yannick Bohrer","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"La Saveur du Desir","lieu":"TARA","fac1":"Daniel Latapie","fac2":"","traduction":"","helpers":["Arnaud","Alexandre Fourcault"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Angel - ATELIERS TANTRA (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"17.30 - 18.15","hDebut":1050,"type":"REPAS & PAUSE","atelier":"GOUTER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Heart Medicine Dance","lieu":"SHIVA","fac1":"David Llorca","fac2":"","traduction":"","helpers":["Carine Janez","Veronique Santini Bottemer"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"16.00 - 19:30","hDebut":960,"type":"ATELIER ARTISTIQUE (PM)","atelier":"SUITE - The Space Between Us","lieu":"CHENREZIG","fac1":"Our Echo","fac2":"Guy El Hadad - Israel","traduction":"","helpers":["Vera De Sousa","SHIFT COLIBRI (Amana)"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Danse Orgasmique “ Danser la jouissance d'Etre vivant","lieu":"SHAKTI","fac1":"Virginie Bertrand","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Alexandre Sattler"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Initiation a  la danse Fusion","lieu":"TARA","fac1":"Stephane Ahmed","fac2":"","traduction":"","helpers":["Cedric Vesper","Delphine Del Dupre"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Traverser : souffle, froid et confiance (Méthode Wim Hof - bain froid)","lieu":"EXTERIEUR","fac1":"Damien Eissen","fac2":"Dorian Vallet","traduction":"","helpers":["Philippe Hanrion","Frederic Chalard"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Angel - ATELIER ARTISTIQUE (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Boris Desvignes"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Daniel Latapie","Yannick Bohrer"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"DJ Set avec Juan Felix","lieu":"SHIVA","fac1":"Felix Ardevol","fac2":"","traduction":"","helpers":["Cedric Vesper"],"angel":"Daniel Latapie"},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA LOVE TEMPLE","atelier":"PREPA TEMPLE (CHENREZIG)","lieu":"CHENREZIG","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Carine Janez","Linda Stachetti"],"angel":""},{"jourCode":"J3","jourNum":3,"dateFull":"Lundi 31 août","jourLabel":"Lundi 31 août","jour":"J3","heure":"21:00 – 1:00","hDebut":1260,"type":"LOVE TEMPLE","atelier":"Love Temple des Erotypes @R","lieu":"CHENREZIG","fac1":"Paul Raj Amar","fac2":"Audrey Barthelemy","traduction":"","helpers":["Arnaud","Maeva Mantione"],"angel":"Virginie Bertrand"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Yoga","lieu":"CHENREZIG","fac1":"Sevda Duroy","fac2":"","traduction":"","helpers":["Cedric Vesper"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Meditation","lieu":"SHAKTI","fac1":"ShivaChris","fac2":"","traduction":"","helpers":["Carine Janez"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":[],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"9:00 - 9:30","hDebut":540,"type":"PREPARATION Rassembl.","atelier":"PREPARATION Rassemblement","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Veronique Santini Bottemer","Damien Eissen"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"9:45 - 11:00","hDebut":585,"type":"RASSEMBLEMENT","atelier":"Rassemblement","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Veronique Santini Bottemer","Damien Eissen"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Releasing Sexual Shame & Conditioning","lieu":"SHIVA","fac1":"Samantha Marvels","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Carine Janez"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Alice : Dissolution (2/3) massage meditatif tantrique","lieu":"CHENREZIG","fac1":"Bruno Deck","fac2":"","traduction":"","helpers":["Philippe Hanrion","Alexandre Fourcault"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"L'Alchimie de l'Extase","lieu":"SHAKTI","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":["Arnaud","Delphine Del Dupre"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Ode a  la liberte","lieu":"TARA","fac1":"Selma (Celine Laroche)","fac2":"","traduction":"","helpers":["Emma Roussel","Vera De Sousa"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"12:00 - 13:30","hDebut":720,"type":"ATELIER ARTISTIQUE (AM)","atelier":"Baladi Tao-Tantrique","lieu":"GANESH","fac1":"Mahadevi (Tina Defoy)","fac2":"","traduction":"","helpers":["Cedric Vesper","Boris Desvignes"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIER ARTISTIQUE (AM)","atelier":"SUITE - Ode à la liberte (SUITE)","lieu":"TARA","fac1":"Selma (Celine Laroche)","fac2":"","traduction":"","helpers":["Alexandre Roque - Bhaskar","Virginie Bertrand"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"15:00 - 15:45","hDebut":900,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Matthieu Chapeleau","fac2":"Dorian Vallet","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"14:30 - 16:00","hDebut":870,"type":"SUPPORT EMOTIONNEL","atelier":"SUPPORT EMOTIONNEL","lieu":"GANESH","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Linda Stachetti"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"The Art of Kissing","lieu":"SHIVA","fac1":"Paul Raj Amar","fac2":"","traduction":"","helpers":["Emma Roussel","Delphine Del Dupre"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 19.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Sacred Mirrors: Grief Ceremony/ Celebration of Life (3hrs)","lieu":"CHENREZIG","fac1":"Our Echo","fac2":"Guy El Hadad - Israel","traduction":"","helpers":["Alexandre Sattler","Frederic Chalard"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Roue de l'Eau : Roue du consentement & free flow massage","lieu":"SHAKTI","fac1":"Clement Victor (Jivan Mutti)","fac2":"","traduction":"","helpers":["Arnaud","Vera De Sousa"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"L Ouroboros tantrique : cercle, souffle et alchimie","lieu":"TARA","fac1":"Daniel Latapie","fac2":"","traduction":"","helpers":["Damien Eissen","SHIFT COLIBRI (David)"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Angel - ATELIERS TANTRA (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Linda Stachetti"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"17.30 - 18.15","hDebut":1050,"type":"REPAS & PAUSE","atelier":"GOUTER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Danse Fusion : guider / se laisser guider","lieu":"SHIVA","fac1":"Stephane Ahmed","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Carine Janez"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"16.00 - 19.30","hDebut":960,"type":"ATELIER ARTISTIQUE (PM)","atelier":"SUITE  - Sacred Mirrors: Grief Ceremony/ Celebration of Life","lieu":"CHENREZIG","fac1":"Our Echo","fac2":"Guy El Hadad - Israel","traduction":"","helpers":["Alexandre Sattler","Frederic Chalard"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Danse Ecstatic Contact #2","lieu":"SHAKTI","fac1":"Cédric Vesper","fac2":"Emmanuelle Cueff (Suman)","traduction":"","helpers":["Alexandre Fourcault","SHIFT COLIBRI (Sophie)"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Animal Embodiment","lieu":"TARA","fac1":"Dorian Vallet","fac2":"","traduction":"","helpers":["Virginie Bertrand","Veronique Santini Bottemer"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Angel - ATELIER ARTISTIQUE (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Boris Desvignes"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Philippe Hanrion","Frederic Chalard"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"CONCERT chants & mantra avec Kelly Aura & Claude Brame","lieu":"SHIVA","fac1":"Kelly Aura","fac2":"Claude Brame","traduction":"","helpers":["Emma Roussel","Arnaud"],"angel":"Mukti - Cecile Yvorel"},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"21:00 - 22:00","hDebut":1260,"type":"PREPA LOVE TEMPLE","atelier":"PREPA TEMPLE (CHENREZIG)","lieu":"CHENREZIG","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Delphine Del Dupre"],"angel":""},{"jourCode":"J4","jourNum":4,"dateFull":"Mardi 1 septembre","jourLabel":"Mardi 1 sept","jour":"J4","heure":"23:30 - 01:00","hDebut":1410,"type":"LOVE TEMPLE","atelier":"Love temple devotionnel","lieu":"CHENREZIG","fac1":"Ishvari","fac2":"","traduction":"","helpers":["Alexandre Roque - Bhaskar","Maeva Mantione"],"angel":"Daniel Latapie"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Yoga Nidra","lieu":"CHENREZIG","fac1":"Simone Bikene","fac2":"","traduction":"","helpers":["Delphine Del Dupre"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Grounding / Integrative Movement Class","lieu":"SHAKTI","fac1":"Our Echo","fac2":"","traduction":"","helpers":["Yannick Bohrer"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":[],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"9:00 - 9:30","hDebut":540,"type":"Rassemblement","atelier":"PREPARATION Rassemblement","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Damien Eissen"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"9:45 - 11:00","hDebut":585,"type":"Rassemblement","atelier":"Rassemblement","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Alexandre Fourcault","Damien Eissen"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Roue du Feu : Liberation emotionnelle et Kali","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Cedric Vesper"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Ode a  SHIVA","lieu":"CHENREZIG","fac1":"Emmanuelle Cueff (Suman)","fac2":"","traduction":"","helpers":["Philippe Hanrion","Alexandre Sattler"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Mystic Shibari “ L'Art de la Transgression","lieu":"SHAKTI","fac1":"Amana (William Duplain)","fac2":"","traduction":"","helpers":["Frederic Chalard","Arnaud"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Au commencement etait le corps","lieu":"TARA","fac1":"Sandrine Bettinelli","fac2":"","traduction":"","helpers":["Carine Janez","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"12:00 - 13:30","hDebut":720,"type":"ATELIER ARTISTIQUE (AM)","atelier":"Danse de sublimation et Yi king","lieu":"GANESH","fac1":"Boris Desvignes","fac2":"","traduction":"","helpers":["Daniel Latapie","Veronique Santini Bottemer"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"12:00 - 13:30","hDebut":720,"type":"ATELIER ARTISTIQUE (AM)","atelier":"Water Dance","lieu":"PISCINE","fac1":"David Llorca","fac2":"","traduction":"","helpers":["Emma Roussel","Linda Stachetti"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"15:00 - 15:45","hDebut":900,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Matthieu Chapeleau","fac2":"Dorian Vallet","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"14.00 - 16.00","hDebut":840,"type":"TANTRA CAFÉ","atelier":"Tantra Cafe - Tout ce que vous avez toujours voulu savoir sur la sexualite tantrique","lieu":"?","fac1":"Sandrine Bettinelli","fac2":"","traduction":"","helpers":["Boris Desvignes","Carine Janez"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"16.00 - 17.30","hDebut":960,"type":"POOL PARTY","atelier":"POOL PARTY - DJ Juan Felix","lieu":"PISCINE","fac1":"Felix Ardevol","fac2":"","traduction":"","helpers":["Alexandre Fourcault"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"14:30 - 16:00","hDebut":870,"type":"SUPPORT EMOTIONNEL","atelier":"SUPPORT EMOTIONNEL","lieu":"GANESH","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Virginie Bertrand"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Angel - ATELIERS TANTRA (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Virginie Bertrand"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"17.30 - 18.15","hDebut":1050,"type":"REPAS & PAUSE","atelier":"GOUTER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Et si tu tissais le fil de ta liberte ?","lieu":"CHENREZIG","fac1":"Laurence Heitzmann","fac2":"Laurent Lacoste","traduction":"","helpers":["Veronique Santini Bottemer","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Roue de l'Air : Roue de l'Air : Poemes Medecine","lieu":"SHAKTI","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Mukti - Cecile Yvorel","Maeva Mantione"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Live Electro Accoustique & Voix","lieu":"TARA","fac1":"Emmanuelle Cueff (Suman)","fac2":"Stephane Ahmed","traduction":"","helpers":["Cedric Vesper","Delphine Del Dupre"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Glorious Bodies / Corps de gloire (bodypainting)","lieu":"GANESH","fac1":"Paul Raj Amar","fac2":"Helene","traduction":"","helpers":["Damien Eissen","Alexandre Sattler"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Angel - ATELIER ARTISTIQUE (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Daniel Latapie"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Frederic Chalard","Philippe Hanrion"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"Concert: Mitsch Kohn (& artists a  definir)","lieu":"SHIVA","fac1":"Mitsch Kohn","fac2":"","traduction":"","helpers":["Frederic Chalard","Philippe Hanrion"],"angel":"Boris Desvignes"},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"21:00 - 22:00","hDebut":1260,"type":"PREPA LOVE TEMPLE","atelier":"PREPA TEMPLE (CHENREZIG)","lieu":"CHENREZIG","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Yannick Bohrer","Cedric Vesper"],"angel":""},{"jourCode":"J5","jourNum":5,"dateFull":"Mercredi 2 septembre","jourLabel":"Mercredi 2 sept","jour":"J5","heure":"23:30 - 01:00","hDebut":1410,"type":"LOVE TEMPLE","atelier":"Embrasser le Mystere","lieu":"CHENREZIG","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Vera De Sousa","Boris Desvignes","Maeva Mantione"],"angel":"Linda Stachetti"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"AcroYoga","lieu":"CHENREZIG","fac1":"Sevda Duroy","fac2":"ShivaChris","traduction":"","helpers":["Frederic Chalard"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Mindfulness & Mouvements Somatiques","lieu":"SHAKTI","fac1":"Linda Stachetti","fac2":"","traduction":"","helpers":["Virginie Bertrand"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":[],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"9:00 - 9:30","hDebut":540,"type":"Rassemblement","atelier":"PREPARATION Rassemblement","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Alexandre Fourcault","Damien Eissen"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"9:45 - 11:00","hDebut":585,"type":"Rassemblement","atelier":"Rassemblement","lieu":"SHIVA","fac1":"Clement Victor (Jivan Mutti)","fac2":"Matthieu Chapeleau","traduction":"","helpers":["Alexandre Fourcault","Damien Eissen"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Alice : Incarnation (3/3) massage méditatif tantrique","lieu":"CHENREZIG","fac1":"Simone Bikene","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Cedric Vesper"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Loving Leadership","lieu":"SHAKTI","fac1":"Scott McClure","fac2":"","traduction":"","helpers":["Philippe Hanrion","Alexandre Sattler"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"11:15 - 13:00","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"La Grande Spirale du COEUR","lieu":"TARA","fac1":"Emmanuelle Cueff (Suman)","fac2":"","traduction":"","helpers":["Alexandre Roque - Bhaskar","Yannick Bohrer"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"12:00 - 13:30","hDebut":720,"type":"CONFERENCE","atelier":"Conference : Pour un tantra d'aujourd'hui","lieu":"Ganesh","fac1":"Laurent Lacoste","fac2":"","traduction":"","helpers":["Emma Roussel","Carine Janez"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"11:15 - 13:30","hDebut":675,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Boris Desvignes"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"15:00 - 15:45","hDebut":900,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE (Helpers)","lieu":"","fac1":"Matthieu Chapeleau","fac2":"Dorian Vallet","traduction":"","helpers":["TOUS LES HELPERS"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"14:30 - 16:00","hDebut":870,"type":"SUPPORT EMOTIONNEL","atelier":"SUPPORT EMOTIONNEL","lieu":"Ganesh","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Virginie Bertrand"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Contact meets Tantra","lieu":"SHIVA","fac1":"David Llorca","fac2":"","traduction":"","helpers":["Veronique Santini Bottemer","Aurelie Lechardeur"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Voyage au pays de mon sexe","lieu":"CHENREZIG","fac1":"Laurence Heitzmann","fac2":"Laurent Lacoste","traduction":"","helpers":["Daniel Latapie","Alexandre Fourcault"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Mystic Shibari -The Art of Surrender","lieu":"SHAKTI","fac1":"Amana (William Duplain)","fac2":"","traduction":"","helpers":["Emma Roussel","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Un bain de guerison Corps et Ã‚me","lieu":"TARA","fac1":"Sophie O'Heix","fac2":"","traduction":"","helpers":["Yannick Bohrer","Boris Desvignes"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"16.00 - 17.30","hDebut":960,"type":"ATELIERS TANTRA (PM)","atelier":"Angel - ATELIERS TANTRA (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Virginie Bertrand"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"17.30 - 18.15","hDebut":1050,"type":"REPAS & PAUSE","atelier":"GOUTER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Atelier artistique « free your voice and movement playshop»","lieu":"SHIVA","fac1":"Mitsch Kohn","fac2":"","traduction":"","helpers":["Vera De Sousa","Maeva Mantione"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"L'Art d'Etre en Mouvement","lieu":"CHENREZIG","fac1":"Linda Stachetti","fac2":"","traduction":"","helpers":["Frederic Chalard","SHIFT COLIBRI (Sevda)"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Pranam : Danse Devotionnelle","lieu":"SHAKTI","fac1":"Ishvari","fac2":"","traduction":"","helpers":["Cedric Vesper","Philippe Hanrion"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Bain Mantrique - Soin Sonore Collectif","lieu":"TARA","fac1":"Emmanuelle Cueff (Suman)","fac2":"","traduction":"","helpers":["Alexandre Sattler","Veronique Santini Bottemer"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"18:00 - 19:30","hDebut":1080,"type":"ATELIER ARTISTIQUE (PM)","atelier":"Angel - ATELIER ARTISTIQUE (PM)","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"19:00 – 20:30","hDebut":1140,"type":"REPAS & PAUSE","atelier":"DINNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"20:30 - 21:00","hDebut":1230,"type":"PREPA CONCERT","atelier":"PREPA CONCERT (SHIVA)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Mukti - Cecile Yvorel","Alexandre Roque - Bhaskar"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"21:00 – 23:00","hDebut":1260,"type":"CONCERT","atelier":"SOIREE SURPRISE pour enflammer le Chapiteau !","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Carine Janez","Veronique Santini Bottemer"],"angel":"Linda Stachetti"},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"21:00 - 22:00","hDebut":1260,"type":"PREPA LOVE TEMPLE","atelier":"PREPA TEMPLE (CHENREZIG)","lieu":"CHENREZIG","fac1":"","fac2":"","traduction":"","helpers":["Maeva Mantione","Yannick Bohrer"],"angel":""},{"jourCode":"J6","jourNum":6,"dateFull":"Jeudi 3 septembre","jourLabel":"Jeudi 3 sept","jour":"J6","heure":"23:30 - 01:00","hDebut":1410,"type":"LOVE TEMPLE","atelier":"The temple of erotic innocence - An Oracular Night Ceremony","lieu":"CHENREZIG","fac1":"Our Echo","fac2":"Guy El Hadad - Israel","traduction":"","helpers":["Vera De Sousa","Carine Janez"],"angel":"Daniel Latapie"},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"Yoga & automassages","lieu":"CHENREZIG","fac1":"Sevda Duroy","fac2":"","traduction":"","helpers":["Philippe Hanrion"],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"7:30 - 9:00","hDebut":450,"type":"MEDITATION / YOGA","atelier":"A definir (yoga / meditation)","lieu":"SHAKTI","fac1":"","fac2":"","traduction":"","helpers":["Damien Eissen"],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"9:00 - 9:30","hDebut":540,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"","fac2":"","traduction":"","helpers":["Sabryna","ShivaChris"],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"7:30 - 10:00","hDebut":450,"type":"REPAS & PAUSE","atelier":"PETIT DEJ","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"10:00 - 11:00","hDebut":600,"type":"CEREMONIE","atelier":"PREPARATION CEREMONIE DE CLOTURE","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":["Cedric Vesper","Philippe Hanrion","Carine Janez"],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"11:00 - 13:30","hDebut":660,"type":"CEREMONIE","atelier":"CEREMONIE DE CLOTURE","lieu":"SHIVA","fac1":"Sabryna","fac2":"ShivaChris","traduction":"","helpers":["Veronique Santini Bottemer","Yannick Bohrer"],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J6","heure":"11:00 - 13:30","hDebut":660,"type":"ATELIERS TANTRA (AM)","atelier":"Angel - ATELIERS TANTRA (AM)","lieu":"SHIVA","fac1":"","fac2":"","traduction":"","helpers":[],"angel":"Aurelie Lechardeur"},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"12:30 - 14:30","hDebut":750,"type":"REPAS & PAUSE","atelier":"DEJEUNER","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"","hDebut":0,"type":"REUNION D'EQUIPE","atelier":"REUNION D'EQUIPE","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""},{"jourCode":"J7","jourNum":7,"dateFull":"Vendredi 4 septembre","jourLabel":"Vendredi 4 sept","jour":"J7","heure":"","hDebut":0,"type":"PREPA & LOGITICS","atelier":"RANGEMENT","lieu":"","fac1":"","fac2":"","traduction":"","helpers":[],"angel":""}];
+
+// ===================================================================
+// INIT
+// ===================================================================
+loadData();
+</script>
+</body>
+</html>
