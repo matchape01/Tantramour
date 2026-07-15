@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantramour 2026 — Conflits de planning</title>
+<style>
+  :root {
+    --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
+    --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
+    --header-bg:#f0f4fb;
+    --green:#16a34a; --green-bg:#dcfce7; --green-border:#86efac;
+    --orange:#d97706; --orange-bg:#fef3c7; --orange-border:#fcd34d;
+    --red:#dc2626; --red-bg:#fee2e2; --red-border:#fca5a5;
+    --badge-f:#dcfce7; --badge-ft:#166534;
+    --badge-h:#e0f2fe; --badge-ht:#0369a1;
+    --badge-a:#fce7f3; --badge-at:#9d174d;
+    --badge-t:#eef2ff; --badge-tt:#3b5bdb;
+  }
+  .dark {
+    --bg:#0d1117; --surface:#161b22; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
+    --header-bg:#1c2333;
+    --green-bg:#052e16; --green-border:#166534;
+    --orange-bg:#2d1a00; --orange-border:#92400e;
+    --red-bg:#2d0a0a; --red-border:#991b1b;
+    --badge-f:#0a2e1a; --badge-ft:#4ade80;
+    --badge-h:#0c2d48; --badge-ht:#58a6ff;
+    --badge-a:#3b1030; --badge-at:#f0abca;
+    --badge-t:#1c2a4a; --badge-tt:#79a8ff;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
+  .wrap { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+  .logo h1 { font-size:20px; font-weight:700; }
+  .logo p  { font-size:28px; font-weight:800; color:var(--accent); line-height:1.2; margin-top:2px; }
+  .header-actions { display:flex; gap:8px; align-items:center; }
+  .btn-ghost { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:13px; color:var(--text); font-family:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .btn-ghost:hover { background:var(--border); }
+
+  /* ── STATS ── */
+  .stats-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
+  .stat-pill { flex:1; min-width:130px; border-radius:8px; padding:12px 16px; border:1px solid var(--border); background:var(--surface); text-align:center; }
+  .stat-pill .num { font-size:28px; font-weight:800; line-height:1; color:var(--accent); }
+  .stat-pill .lbl { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:600; margin-top:3px; }
+  .stat-pill.ok  { border-color:var(--green-border); background:var(--green-bg); }
+  .stat-pill.ok  .num { color:var(--green); }
+  .stat-pill.err { border-color:var(--red-border); background:var(--red-bg); }
+  .stat-pill.err .num { color:var(--red); }
+  .stat-pill.warn { border-color:var(--orange-border); background:var(--orange-bg); }
+  .stat-pill.warn .num { color:var(--orange); }
+
+  /* ── FILTRES ── */
+  .filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; align-items:flex-end; }
+  .fg { display:flex; flex-direction:column; gap:4px; }
+  .fg label { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:600; }
+  .fg select { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 10px; font-size:13px; color:var(--text); font-family:inherit; min-width:180px; cursor:pointer; }
+
+  /* ── SÉPARATEUR JOUR ── */
+  .day-sep { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); padding-bottom:8px; border-bottom:2px solid var(--border); margin:24px 0 14px; display:flex; align-items:center; gap:8px; }
+  .day-count { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; background:var(--red); color:#fff; border-radius:99px; font-size:11px; font-weight:700; padding:0 6px; }
+
+  /* ── CARTES CONFLIT ── */
+  .conflict-list { display:flex; flex-direction:column; gap:10px; }
+  .conflict-card { border-radius:10px; overflow:hidden; border:1px solid var(--red-border); }
+  .conflict-card.type-multi { border-color:var(--orange-border); }
+
+  .cc-header { display:flex; align-items:center; gap:10px; padding:12px 16px; flex-wrap:wrap; background:var(--red-bg); }
+  .conflict-card.type-multi .cc-header { background:var(--orange-bg); }
+  .cc-nom   { font-size:15px; font-weight:800; flex:1; }
+  .cc-badge { font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; white-space:nowrap; }
+  .badge-overlap { background:var(--red-bg);    color:var(--red);    border:1px solid var(--red-border); }
+  .badge-multi   { background:var(--orange-bg); color:var(--orange); border:1px solid var(--orange-border); }
+
+  .cc-body { display:flex; flex-direction:column; gap:0; background:var(--bg); }
+  .cc-row { display:flex; align-items:flex-start; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .cc-row:last-child { border-bottom:none; }
+  .cc-heure { font-size:12px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap; min-width:120px; padding-top:2px; flex-shrink:0; }
+  .cc-atelier { font-size:13px; font-weight:600; flex:1; min-width:0; }
+  .cc-lieu { font-size:11px; color:var(--muted); white-space:nowrap; }
+  .cc-roles { display:flex; gap:5px; flex-wrap:wrap; margin-top:3px; }
+
+  .pill { display:inline-block; border-radius:999px; padding:2px 8px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .pill-f { background:var(--badge-f); color:var(--badge-ft); }
+  .pill-h { background:var(--badge-h); color:var(--badge-ht); }
+  .pill-a { background:var(--badge-a); color:var(--badge-at); }
+  .pill-t { background:var(--badge-t); color:var(--badge-tt); }
+
+  .empty { text-align:center; padding:48px; color:var(--muted); border:2px dashed var(--border); border-radius:10px; }
+  .empty-ok { border-color:var(--green-border); background:var(--green-bg); color:var(--green); font-weight:700; font-size:15px; }
+
+  footer { margin-top:48px; padding-top:16px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <h1>Tantramour 2026</h1>
+      <p>Conflits de planning</p>
+    </div>
+    <div class="header-actions">
+      <a class="btn-ghost" href="index.html">🏠 Home</a>
+      <button class="btn-ghost" onclick="hardReload()">🔄 Refresh</button>
+      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+    </div>
+  </header>
+
+  <div class="stats-bar" id="statsBar"></div>
+
+  <div class="filters">
+    <div class="fg">
+      <label>Jour</label>
+      <select id="filterJour" onchange="render()">
+        <option value="">Tous les jours</option>
+        <option value="Jour 1">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7">Jour 7 — Ven. 4 sept.</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Type de conflit</label>
+      <select id="filterType" onchange="render()">
+        <option value="">Tous les types</option>
+        <option value="overlap">🔴 Ateliers simultanés</option>
+        <option value="multi">🟠 Multi-rôles même atelier</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Personne</label>
+      <select id="filterPersonne" onchange="render()">
+        <option value="">Toutes les personnes</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="results"></div>
+
+</div>
+<footer><p>Made with IBM Bob</p></footer>
+
+<script src="loader.js"></script>
+<script>
+loadData(['data.js'], function() {
+
+const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
+
+// ════════════════════════════════════════════════
+// PARSE HEURE
+// Gère : "11:15 - 13:00", "16.00 - 17.30", tirets larges, espaces
+// Retourne [debut, fin] en minutes, ou null
+// ════════════════════════════════════════════════
+function parseHeure(h) {
+  if (!h) return null;
+  // Normaliser : points → deux-points, tout tiret → tiret simple
+  const norm = h.trim()
+    .replace(/\./g, ':')
+    .replace(/[\u2013\u2014\u2015]/g, '-')  // en-dash, em-dash, etc.
+    .replace(/â€"/g, '-');                   // encodage cassé
+  const m = norm.match(/(\d{1,2}):(\d{2})\s*-+\s*(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  const debut = parseInt(m[1]) * 60 + parseInt(m[2]);
+  let   fin   = parseInt(m[3]) * 60 + parseInt(m[4]);
+  if (fin <= debut) fin += 1440; // passage minuit
+  return [debut, fin];
+}
+
+// Chevauchement strict (exclut simple adjacence)
+function chevauche(a, b) {
+  return a && b && a[0] < b[1] && b[0] < a[1];
+}
+
+// ════════════════════════════════════════════════
+// EXTRACTION DES AFFECTATIONS
+// Retourne toutes les affectations (personne → rôle → atelier)
+// ════════════════════════════════════════════════
+const ROLE_LABEL = {
+  fac1:'Facilitateur', fac2:'Facilitateur',
+  traduction:'Traducteur',
+  helper1:'Helper', helper2:'Helper', helper3:'Helper',
+  angel:'Angel'
+};
+const ROLE_PILL = {
+  fac1:'pill-f', fac2:'pill-f',
+  traduction:'pill-t',
+  helper1:'pill-h', helper2:'pill-h', helper3:'pill-h',
+  angel:'pill-a'
+};
+const CHAMPS = ['fac1','fac2','traduction','helper1','helper2','helper3','angel'];
+
+// ════════════════════════════════════════════════
+// DÉTECTION DES CONFLITS
+// Type A — overlap  : même personne, même jour, 2 ateliers DIFFÉRENTS qui se chevauchent
+// Type B — multi    : même personne, même atelier, plusieurs rôles
+// ════════════════════════════════════════════════
+function detecter() {
+  // Index : nom → liste d'assignations { atelierIdx, atelier, jour, date, heure, iv, champ, role, pill }
+  const index = new Map();
+
+  AGENDA.forEach((e, atelierIdx) => {
+    const iv = parseHeure(e.heure);
+    CHAMPS.forEach(champ => {
+      const nom = e[champ];
+      if (!nom || !nom.trim()) return;
+      if (!index.has(nom)) index.set(nom, []);
+      index.get(nom).push({
+        atelierIdx, atelier: e.atelier, jour: e.jour,
+        date: e.date, heure: e.heure, lieu: e.lieu || '',
+        iv, champ, role: ROLE_LABEL[champ], pill: ROLE_PILL[champ]
+      });
+    });
+  });
+
+  const conflits = []; // { id, nom, jour, date, type, slots }
+
+  index.forEach((slots, nom) => {
+    // ── Type B : même atelier, plusieurs rôles ──
+    const parAtelier = new Map();
+    slots.forEach(s => {
+      if (!parAtelier.has(s.atelierIdx)) parAtelier.set(s.atelierIdx, []);
+      parAtelier.get(s.atelierIdx).push(s);
+    });
+    parAtelier.forEach((group, atelierIdx) => {
+      if (group.length < 2) return;
+      // Plusieurs rôles sur le même atelier → conflit multi
+      const id = `multi|${nom}|${atelierIdx}`;
+      conflits.push({ id, nom, jour: group[0].jour, date: group[0].date, type: 'multi', slots: group });
+    });
+
+    // ── Type A : ateliers différents qui se chevauchent ──
+    // Grouper par jour
+    const parJour = new Map();
+    slots.forEach(s => {
+      if (!s.iv) return; // heure non parsable → ignorer
+      if (!parJour.has(s.jour)) parJour.set(s.jour, []);
+      parJour.get(s.jour).push(s);
+    });
+
+    parJour.forEach((daySlots, jour) => {
+      // Comparer toutes les paires d'ateliers DIFFÉRENTS
+      for (let i = 0; i < daySlots.length; i++) {
+        for (let j = i + 1; j < daySlots.length; j++) {
+          const a = daySlots[i], b = daySlots[j];
+          if (a.atelierIdx === b.atelierIdx) continue; // même atelier → déjà traité en Type B
+          // Les Angels multi-ateliers simultanés sont intentionnels → ignorer Angel vs Angel
+          if (a.role === 'Angel' && b.role === 'Angel') continue;
+          if (!chevauche(a.iv, b.iv)) continue;
+
+          // Regrouper : même personne + même jour → un bloc unique avec tous les ateliers impliqués
+          const id = `overlap|${nom}|${jour}`;
+          let existing = conflits.find(c => c.id === id);
+          if (!existing) {
+            existing = { id, nom, jour, date: a.date, type: 'overlap', slots: [] };
+            conflits.push(existing);
+          }
+          // Ajouter les deux ateliers s'ils ne sont pas déjà présents
+          if (!existing.slots.find(s => s.atelierIdx === a.atelierIdx)) existing.slots.push(a);
+          if (!existing.slots.find(s => s.atelierIdx === b.atelierIdx)) existing.slots.push(b);
+        }
+      }
+    });
+  });
+
+  return { conflits, index };
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+const { conflits, index } = detecter();
+
+// Stats
+const nTotal    = AGENDA.filter(e => parseHeure(e.heure)).length;
+const nPersonnes= index.size;
+const nOverlap  = conflits.filter(c => c.type === 'overlap').length;
+const nMulti    = conflits.filter(c => c.type === 'multi').length;
+const personnesEnConflit = new Set(conflits.map(c => c.nom));
+
+// Peupler filtre Personne
+const selP = document.getElementById('filterPersonne');
+[...personnesEnConflit].sort((a,b) => a.localeCompare(b,'fr')).forEach(nom => {
+  const o = document.createElement('option'); o.value = nom; o.text = nom; selP.appendChild(o);
+});
+
+// Afficher stats
+const total = conflits.length;
+document.getElementById('statsBar').innerHTML =
+  `<div class="stat-pill"><div class="num">${nTotal}</div><div class="lbl">Ateliers analysés</div></div>` +
+  `<div class="stat-pill"><div class="num">${nPersonnes}</div><div class="lbl">Personnes impliquées</div></div>` +
+  `<div class="stat-pill ${nOverlap>0?'err':'ok'}"><div class="num">${nOverlap}</div><div class="lbl">🔴 Ateliers simultanés</div></div>` +
+  `<div class="stat-pill ${nMulti>0?'warn':'ok'}"><div class="num">${nMulti}</div><div class="lbl">🟠 Multi-rôles</div></div>` +
+  `<div class="stat-pill ${personnesEnConflit.size>0?'err':'ok'}"><div class="num">${personnesEnConflit.size}</div><div class="lbl">Personnes en conflit</div></div>`;
+
+// ════════════════════════════════════════════════
+// RENDU
+// ════════════════════════════════════════════════
+function render() {
+  const fJour = document.getElementById('filterJour').value;
+  const fType = document.getElementById('filterType').value;
+  const fPers = document.getElementById('filterPersonne').value;
+
+  let items = conflits.filter(c => {
+    if (fJour && c.jour !== fJour) return false;
+    if (fType && c.type !== fType) return false;
+    if (fPers && c.nom  !== fPers) return false;
+    return true;
+  });
+
+  if (!items.length) {
+    document.getElementById('results').innerHTML =
+      `<div class="empty empty-ok">✅ Aucun conflit${fJour||fType||fPers?' pour cette sélection':''}.</div>`;
+    return;
+  }
+
+  // Trier : jour → nom
+  items.sort((a,b) => {
+    const dj = JOUR_ORDER.indexOf(a.jour) - JOUR_ORDER.indexOf(b.jour);
+    return dj !== 0 ? dj : a.nom.localeCompare(b.nom, 'fr');
+  });
+
+  // Grouper par jour
+  const byDay = new Map();
+  items.forEach(c => {
+    if (!byDay.has(c.jour)) byDay.set(c.jour, []);
+    byDay.get(c.jour).push(c);
+  });
+
+  let html = '';
+  JOUR_ORDER.forEach(jour => {
+    if (!byDay.has(jour)) return;
+    const list = byDay.get(jour);
+    html += `<div class="day-sep">${jour} — ${list[0].date} <span class="day-count">${list.length}</span></div>`;
+    html += `<div class="conflict-list">`;
+    list.forEach(c => { html += renderCard(c); });
+    html += `</div>`;
+  });
+
+  document.getElementById('results').innerHTML = html;
+}
+
+function renderCard(c) {
+  const isOverlap = c.type === 'overlap';
+  const typeCls  = isOverlap ? '' : 'type-multi';
+  const badgeCls = isOverlap ? 'badge-overlap' : 'badge-multi';
+  const badgeTxt = isOverlap
+    ? `🔴 ${c.slots.length} ateliers simultanés`
+    : `🟠 ${c.slots.length} rôles sur le même atelier`;
+
+  // Trier slots par heure de début
+  const slots = [...c.slots].sort((a,b) => {
+    const ai = a.iv ? a.iv[0] : 0;
+    const bi = b.iv ? b.iv[0] : 0;
+    return ai - bi;
+  });
+
+  const rows = slots.map(s => {
+    return `<div class="cc-row">
+      <div class="cc-heure">${esc(s.heure)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="cc-atelier">${esc(s.atelier)}</div>
+        <div class="cc-roles">
+          <span class="pill ${s.pill}">${s.role}</span>
+          ${s.lieu ? `<span class="cc-lieu">📍 ${esc(s.lieu)}</span>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<div class="conflict-card ${typeCls}">
+    <div class="cc-header">
+      <span class="cc-nom">${esc(c.nom)}</span>
+      <span class="cc-badge ${badgeCls}">${badgeTxt}</span>
+    </div>
+    <div class="cc-body">${rows}</div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════
+// UTILITAIRES
+// ════════════════════════════════════════════════
+function esc(v) {
+  return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function toggleMode() {
+  const dark = document.body.classList.toggle('dark');
+  document.getElementById('modeBtn').textContent = dark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+}
+function hardReload() {
+  if ('caches' in window) {
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).finally(() => location.reload(true));
+  } else { location.reload(true); }
+}
+window.toggleMode = toggleMode;
+window.hardReload = hardReload;
+window.render = render;
+
+render();
+
+}); // end loadData
+</script>
+</body>
+</html>

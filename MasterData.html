@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantramour 2026 — Master Data</title>
+<style>
+  :root {
+    --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
+    --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
+    --th-bg:#f0f4fb;
+    --warn:#b45309; --warn-bg:#fffbeb; --warn-border:#fcd34d;
+    --ok:#166534;   --ok-bg:#dcfce7;   --ok-border:#86efac;
+    --err:#dc2626;  --err-bg:#fef2f2;  --err-border:#fca5a5;
+  }
+  .dark {
+    --bg:#0d1117; --surface:#161b22; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --th-bg:#1c2333;
+    --warn-bg:#1c1500; --warn-border:#92400e;
+    --ok-bg:#052e16;  --ok-border:#166534;
+    --err-bg:#2d0a0a; --err-border:#991b1b;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
+  .wrap { max-width:900px; margin:0 auto; padding:24px 20px 60px; }
+
+  /* HEADER */
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+  .logo h1 { font-size:20px; font-weight:700; }
+  .logo p  { font-size:26px; font-weight:800; color:var(--accent); line-height:1.2; margin-top:2px; }
+  .hdr-btns { display:flex; gap:8px; align-items:center; }
+  .btn-ghost { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:13px; color:var(--text); font-family:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .btn-ghost:hover { background:var(--border); }
+
+  /* BANNIÈRE RESSOURCES */
+  .res-banner { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 18px; margin-bottom:22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .dark .res-banner { background:#0c2d48; border-color:#1d4ed8; }
+  .res-banner strong { font-size:13px; font-weight:700; color:#1e40af; }
+  .dark .res-banner strong { color:#93c5fd; }
+  .res-banner span { font-size:12px; color:#3b82d4; display:block; margin-top:1px; }
+  .res-banner a { background:#3b82d4; color:#fff; border-radius:6px; padding:7px 16px; font-size:13px; font-weight:700; text-decoration:none; white-space:nowrap; }
+
+  /* ONGLETS */
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; }
+  .tab { cursor:pointer; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:2px solid var(--border); background:var(--surface); color:var(--muted); font-family:inherit; transition:all .15s; }
+  .tab:hover { border-color:var(--accent); color:var(--accent); }
+  .tab.active { border-color:var(--accent); background:var(--accent); color:#fff; }
+
+  /* SECTIONS */
+  .section { display:none; }
+  .section.visible { display:block; }
+  .sec-title { font-size:16px; font-weight:700; margin-bottom:4px; }
+  .sec-meta  { font-size:11px; color:var(--muted); font-family:monospace; margin-bottom:16px; }
+
+  /* TABLE */
+  .tbl-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:16px; }
+  table { width:100%; border-collapse:collapse; }
+  thead th { background:var(--th-bg); padding:9px 14px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1px solid var(--border); }
+  tbody tr { border-bottom:1px solid var(--border); }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:var(--surface); }
+  td { padding:8px 14px; font-size:13px; vertical-align:middle; }
+  .td-id { font-family:monospace; font-size:11px; color:var(--muted); width:150px; white-space:nowrap; }
+  .td-val { }
+  .td-lbl { font-size:12px; color:var(--muted); font-style:italic; }
+  .td-act { width:90px; text-align:right; white-space:nowrap; }
+  .empty { padding:28px; text-align:center; color:var(--muted); font-style:italic; }
+
+  /* BOUTONS */
+  .btn { cursor:pointer; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; font-family:inherit; border:1px solid var(--border); background:var(--surface); color:var(--text); transition:filter .15s; }
+  .btn:hover { filter:brightness(.92); }
+  .btn-ok  { background:var(--ok-bg);  color:var(--ok);  border-color:var(--ok-border); }
+  .btn-del { background:var(--err-bg); color:var(--err); border-color:var(--err-border); }
+  .btn-add { cursor:pointer; width:100%; padding:9px; background:var(--surface); border:2px dashed var(--border); border-radius:8px; font-size:13px; font-weight:600; color:var(--muted); font-family:inherit; transition:all .15s; }
+  .btn-add:hover { border-color:var(--accent); color:var(--accent); background:var(--bg); }
+  .btn-save { background:var(--accent); color:#fff; border:none; cursor:pointer; border-radius:6px; padding:9px 20px; font-size:13px; font-weight:700; font-family:inherit; display:inline-flex; align-items:center; gap:6px; }
+  .btn-save:hover { filter:brightness(.92); }
+  .btn-save2 { background:#7c3aed; color:#fff; border:none; cursor:pointer; border-radius:6px; padding:9px 20px; font-size:13px; font-weight:700; font-family:inherit; display:inline-flex; align-items:center; gap:6px; }
+  .btn-save2:hover { filter:brightness(.92); }
+
+  /* INLINE INPUT */
+  .inp { background:var(--bg); border:1px solid var(--accent); border-radius:5px; padding:5px 8px; font-size:13px; color:var(--text); font-family:inherit; width:100%; outline:none; box-shadow:0 0 0 3px rgba(59,130,212,.1); }
+
+  /* BARRE DE SAUVEGARDE */
+  .save-bar { background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:8px; padding:14px 18px; margin-top:20px; display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .save-bar.on { display:flex; }
+  .save-bar-msg { font-size:13px; font-weight:600; color:var(--warn); }
+
+  /* CONFIRM */
+  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; align-items:center; justify-content:center; }
+  .overlay.open { display:flex; }
+  .dlg { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:28px 32px; max-width:380px; width:90%; }
+  .dlg h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
+  .dlg p  { font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .dlg-btns { display:flex; gap:10px; justify-content:flex-end; }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:24px; right:24px; border-radius:8px; padding:12px 18px; font-size:13px; font-weight:600; z-index:200; display:none; max-width:420px; }
+  .toast.on { display:block; animation:slideIn .25s ease; }
+  @keyframes slideIn { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<script>
+(function(){
+  var pw = sessionStorage.getItem('tm_admin_auth');
+  if (pw !== '007') {
+    var entered = prompt('🔒 Accès restreint — Mot de passe :');
+    if (entered !== '007') {
+      document.write('<div style="font-family:system-ui;padding:60px;text-align:center"><h2>Accès refusé</h2><p style="margin-top:12px;color:#57606a">Mot de passe incorrect.</p><br><a href="index.html">← Retour</a></div>');
+      document.close(); throw 'access denied';
+    }
+    sessionStorage.setItem('tm_admin_auth', '007');
+  }
+})();
+</script>
+
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <h1>Tantramour 2026</h1>
+      <p>Master Data</p>
+    </div>
+    <div class="hdr-btns">
+      <a class="btn-ghost" href="index.html">🏠 Home</a>
+      <button class="btn-ghost" onclick="toggleMode()" id="modeBtn">🌙 Mode Nuit</button>
+    </div>
+  </header>
+
+  <!-- BANNIÈRE RESSOURCES -->
+  <div class="res-banner">
+    <div>
+      <strong>👥 Facilitateurs · Helpers · Traducteurs · Angels</strong>
+      <span>Gérées dans le référentiel unifié — Rapport 12</span>
+    </div>
+    <a href="Rapport_Gerer_Ressources.html" target="_blank">Gérer les Ressources →</a>
+  </div>
+
+  <!-- ONGLETS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('lieux')">📍 Lieux</button>
+    <button class="tab"        onclick="showTab('types')">🏷️ Types</button>
+    <button class="tab"        onclick="showTab('notes')">📝 Notes</button>
+    <button class="tab"        onclick="showTab('jours')">📆 Jours</button>
+    <button class="tab"        onclick="showTab('piment')">🌶️ Piment</button>
+    <button class="tab"        onclick="showTab('resource_types')">🎭 Types de ressource</button>
+    <button class="tab"        onclick="showTab('heures')">🕐 Heures</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : LIEUX
+       Fichier : ref_lieux.js  |  { id, value, label }
+  ════════════════════════════════════════════════ -->
+  <div class="section visible" id="sec-lieux">
+    <div class="sec-title">📍 Lieux / Salles</div>
+    <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th></th></tr></thead>
+        <tbody id="tbody-lieux"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('lieux')">+ Ajouter un lieu</button>
+    <div class="save-bar" id="bar-lieux">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save"  onclick="save('lieux')">💾 Sauvegarder ref_lieux.js</button>
+        <button class="btn-save2" onclick="save('lieux', true)">💾 + data.js mis à jour</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : TYPES
+       Fichier : ref_types.js  |  { id, value, label }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-types">
+    <div class="sec-title">🏷️ Types d'ateliers</div>
+    <div class="sec-meta">ref_types.js — REF_TYPES — colonnes : id, value, label</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th></th></tr></thead>
+        <tbody id="tbody-types"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('types')">+ Ajouter un type</button>
+    <div class="save-bar" id="bar-types">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save"  onclick="save('types')">💾 Sauvegarder ref_types.js</button>
+        <button class="btn-save2" onclick="save('types', true)">💾 + data.js mis à jour</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : NOTES
+       Fichier : ref_notes.js  |  { id, value }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-notes">
+    <div class="sec-title">📝 Notes</div>
+    <div class="sec-meta">ref_notes.js — REF_NOTES — colonnes : id, value</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value</th><th></th></tr></thead>
+        <tbody id="tbody-notes"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('notes')">+ Ajouter une note</button>
+    <div class="save-bar" id="bar-notes">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save"  onclick="save('notes')">💾 Sauvegarder ref_notes.js</button>
+        <button class="btn-save2" onclick="save('notes', true)">💾 + data.js mis à jour</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : JOURS
+       Fichier : ref_jours.js  |  { id, value, label, date }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-jours">
+    <div class="sec-title">📆 Jours</div>
+    <div class="sec-meta">ref_jours.js — REF_JOURS — colonnes : id, value, label, date</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th>Date (agenda)</th><th></th></tr></thead>
+        <tbody id="tbody-jours"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('jours')">+ Ajouter un jour</button>
+    <div class="save-bar" id="bar-jours">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save"  onclick="save('jours')">💾 Sauvegarder ref_jours.js</button>
+        <button class="btn-save2" onclick="save('jours', true)">💾 + data.js mis à jour</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : PIMENT
+       Fichier : ref_piment.js  |  { id, value (number), label }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-piment">
+    <div class="sec-title">🌶️ Niveaux Piment</div>
+    <div class="sec-meta">ref_piment.js — REF_PIMENT — colonnes : id, value (numérique), label</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value (0–9)</th><th>Label affiché</th><th></th></tr></thead>
+        <tbody id="tbody-piment"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('piment')">+ Ajouter un niveau</button>
+    <div class="save-bar" id="bar-piment">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('piment')">💾 Sauvegarder ref_piment.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : TYPES DE RESSOURCE
+       Fichier : ref_resource_types.js  |  { id, value, label, icon }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-resource_types">
+    <div class="sec-title">🎭 Types de ressource</div>
+    <div class="sec-meta">ref_resource_types.js — REF_RESOURCE_TYPES — colonnes : id, value, label, icon</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Value</th><th>Label</th><th>Icon</th><th></th></tr></thead>
+        <tbody id="tbody-resource_types"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('resource_types')">+ Ajouter un type de ressource</button>
+    <div class="save-bar" id="bar-resource_types">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('resource_types')">💾 Sauvegarder ref_resource_types.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : HEURES
+       Fichier : ref_heures.js  |  { id, value }
+       Note : liste de créneaux — ajout/suppression rarement nécessaire
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-heures">
+    <div class="sec-title">🕐 Heures</div>
+    <div class="sec-meta">ref_heures.js — REF_HEURES — colonnes : id, value (HH:MM)</div>
+    <div class="tbl-wrap" style="max-height:420px;overflow-y:auto">
+      <table>
+        <thead><tr><th>ID</th><th>Value (HH:MM)</th><th></th></tr></thead>
+        <tbody id="tbody-heures"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('heures')">+ Ajouter un créneau</button>
+    <div class="save-bar" id="bar-heures">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('heures')">💾 Sauvegarder ref_heures.js</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- CONFIRM -->
+<div class="overlay" id="overlay">
+  <div class="dlg">
+    <h3>Confirmer la suppression</h3>
+    <p id="dlg-msg"></p>
+    <div class="dlg-btns">
+      <button class="btn" onclick="closeConfirm()">Annuler</button>
+      <button class="btn btn-del" id="dlg-ok">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>Made with IBM Bob</p></footer>
+
+<!-- ── RÉFÉRENTIELS ── -->
+<script src="ref_jours.js"></script>
+<script src="ref_lieux.js"></script>
+<script src="ref_types.js"></script>
+<script src="ref_heures.js"></script>
+<script src="ref_piment.js"></script>
+<script src="ref_notes.js"></script>
+<script src="ref_resource_types.js"></script>
+<script src="ref_ressources.js"></script>
+<script src="github-api.js"></script>
+<script src="loader.js"></script>
+<script>
+loadData(['data.js'], function() {
+
+// ════════════════════════════════════════════════════════════
+// CONFIGURATION DES RÉFÉRENTIELS
+// Chaque entrée décrit un fichier ref_*.js de façon explicite.
+// ════════════════════════════════════════════════════════════
+var CFG = {
+  lieux: {
+    varName:  'REF_LIEUX',
+    fileName: 'ref_lieux.js',
+    prefix:   'L_',
+    cols:     ['id','value','label'],
+    dataField: ['lieu'],
+  },
+  types: {
+    varName:  'REF_TYPES',
+    fileName: 'ref_types.js',
+    prefix:   'T_',
+    cols:     ['id','value','label'],
+    dataField: ['type'],
+  },
+  notes: {
+    varName:  'REF_NOTES',
+    fileName: 'ref_notes.js',
+    prefix:   'N_',
+    cols:     ['id','value'],
+    dataField: ['note'],
+  },
+  jours: {
+    varName:  'REF_JOURS',
+    fileName: 'ref_jours.js',
+    prefix:   'J_NEW_',
+    cols:     ['id','value','label','date'],
+    dataField: ['jour'],
+  },
+  piment: {
+    varName:  'REF_PIMENT',
+    fileName: 'ref_piment.js',
+    prefix:   'P_',
+    cols:     ['id','value','label'],
+    dataField: [],
+    numericValue: true,
+  },
+  resource_types: {
+    varName:  'REF_RESOURCE_TYPES',
+    fileName: 'ref_resource_types.js',
+    prefix:   'RT_',
+    cols:     ['id','value','label','icon'],
+    dataField: [],
+  },
+  heures: {
+    varName:  'REF_HEURES',
+    fileName: 'ref_heures.js',
+    prefix:   'H_NEW_',
+    cols:     ['id','value'],
+    dataField: [],
+  },
+};
+
+// ── Copies de travail
+var STORE = {};
+Object.keys(CFG).forEach(function(k) {
+  STORE[k] = window[CFG[k].varName].map(function(x) { return Object.assign({}, x); });
+});
+
+// ── Renommages (pour propagation dans data.js)
+var RENAMES = {};
+Object.keys(CFG).forEach(function(k) { RENAMES[k] = {}; });
+
+// ── Dirty flags
+var DIRTY = {};
+Object.keys(CFG).forEach(function(k) { DIRTY[k] = false; });
+
+// ── Agenda de travail
+var SESSION_AGENDA = AGENDA.map(function(e) { return Object.assign({}, e); });
+
+// ════════════════════════════════════════════════════════════
+// ONGLETS
+// ════════════════════════════════════════════════════════════
+function showTab(key) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('visible'); });
+  event.currentTarget.classList.add('active');
+  document.getElementById('sec-' + key).classList.add('visible');
+}
+window.showTab = showTab;
+
+// ════════════════════════════════════════════════════════════
+// RENDU DES TABLEAUX
+// ════════════════════════════════════════════════════════════
+function esc(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderTable(key) {
+  var cfg   = CFG[key];
+  var items = STORE[key];
+  var tbody = document.getElementById('tbody-' + key);
+
+  if (!items.length) {
+    var colspan = cfg.cols.length + 1;
+    tbody.innerHTML = '<tr><td colspan="' + colspan + '" class="empty">Aucune entrée.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = items.map(function(item, i) {
+    // Cellules de données (toutes les colonnes sauf 'id' qui est en première)
+    var cells = cfg.cols.map(function(col) {
+      if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
+      return '<td class="td-val">' + esc(item[col] !== undefined ? item[col] : '') + '</td>';
+    }).join('');
+
+    return '<tr id="row-' + key + '-' + i + '">' +
+      cells +
+      '<td class="td-act">' +
+        '<button class="btn" onclick="editRow(\'' + key + '\',' + i + ')">✏️</button> ' +
+        '<button class="btn btn-del" onclick="askDelete(\'' + key + '\',' + i + ')">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+// Rendu initial de tous les tableaux
+Object.keys(CFG).forEach(function(k) { renderTable(k); });
+
+// ════════════════════════════════════════════════════════════
+// ÉDITION INLINE
+// ════════════════════════════════════════════════════════════
+var editKey = null, editIdx = null;
+
+function editRow(key, i) {
+  // Annule édition précédente si besoin
+  if (editKey !== null) cancelEdit(editKey, editIdx);
+
+  editKey = key; editIdx = i;
+  var cfg  = CFG[key];
+  var item = STORE[key][i];
+  var row  = document.getElementById('row-' + key + '-' + i);
+
+  // Remplace chaque cellule par un input (sauf id)
+  var cells = cfg.cols.map(function(col) {
+    if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
+    var v = item[col] !== undefined ? item[col] : '';
+    return '<td><input class="inp" id="inp-' + key + '-' + i + '-' + col + '" value="' + esc(v) + '" ' +
+      'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"></td>';
+  }).join('');
+
+  row.innerHTML = cells +
+    '<td class="td-act">' +
+      '<button class="btn btn-ok"  onclick="saveEdit(\'' + key + '\',' + i + ')">✔</button> ' +
+      '<button class="btn"         onclick="cancelEdit(\'' + key + '\',' + i + ')">✖</button>' +
+    '</td>';
+
+  // Focus sur le premier input éditable
+  var firstCol = cfg.cols.find(function(c) { return c !== 'id'; });
+  if (firstCol) {
+    var el = document.getElementById('inp-' + key + '-' + i + '-' + firstCol);
+    if (el) el.focus();
+  }
+}
+window.editRow = editRow;
+
+function keyEdit(e, key, i) {
+  if (e.key === 'Enter')  saveEdit(key, i);
+  if (e.key === 'Escape') cancelEdit(key, i);
+}
+window.keyEdit = keyEdit;
+
+function saveEdit(key, i) {
+  var cfg  = CFG[key];
+  var item = STORE[key][i];
+
+  cfg.cols.forEach(function(col) {
+    if (col === 'id') return;
+    var el = document.getElementById('inp-' + key + '-' + i + '-' + col);
+    if (!el) return;
+    var newVal = el.value.trim();
+
+    // Pour la colonne value, enregistre le renommage
+    if (col === 'value' && newVal !== String(item.value)) {
+      if (!RENAMES[key][i]) RENAMES[key][i] = item.value;
+    }
+
+    // Conversion numérique si nécessaire
+    item[col] = (col === 'value' && cfg.numericValue) ? Number(newVal) : newVal;
+  });
+
+  markDirty(key);
+  editKey = null; editIdx = null;
+  renderTable(key);
+}
+window.saveEdit = saveEdit;
+
+function cancelEdit(key, i) {
+  editKey = null; editIdx = null;
+  renderTable(key);
+}
+window.cancelEdit = cancelEdit;
+
+// ════════════════════════════════════════════════════════════
+// AJOUT D'UNE LIGNE
+// ════════════════════════════════════════════════════════════
+function addRow(key) {
+  var cfg = CFG[key];
+  var ids = STORE[key].map(function(x) { return x.id; });
+  var n = 1, newId;
+  do { newId = cfg.prefix + 'NEW' + n; n++; } while (ids.indexOf(newId) !== -1);
+
+  var newItem = { id: newId };
+  cfg.cols.forEach(function(col) {
+    if (col === 'id') return;
+    newItem[col] = (col === 'value' && cfg.numericValue) ? 0 : '';
+  });
+
+  STORE[key].push(newItem);
+  renderTable(key);
+  editRow(key, STORE[key].length - 1);
+  markDirty(key);
+}
+window.addRow = addRow;
+
+// ════════════════════════════════════════════════════════════
+// SUPPRESSION
+// ════════════════════════════════════════════════════════════
+var pendingDel = null;
+
+function askDelete(key, i) {
+  pendingDel = { key: key, i: i };
+  document.getElementById('dlg-msg').textContent =
+    'Supprimer "' + STORE[key][i].value + '" (' + STORE[key][i].id + ') ?';
+  document.getElementById('dlg-ok').onclick = doDelete;
+  document.getElementById('overlay').classList.add('open');
+}
+window.askDelete = askDelete;
+
+function doDelete() {
+  closeConfirm();
+  if (!pendingDel) return;
+  var key = pendingDel.key, i = pendingDel.i;
+  STORE[key].splice(i, 1);
+  pendingDel = null;
+  markDirty(key);
+  renderTable(key);
+  showToast('🗑 Entrée supprimée.');
+}
+
+function closeConfirm() {
+  document.getElementById('overlay').classList.remove('open');
+  pendingDel = null;
+}
+window.closeConfirm = closeConfirm;
+
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeConfirm();
+});
+
+// ════════════════════════════════════════════════════════════
+// DIRTY + BARRE DE SAUVEGARDE
+// ════════════════════════════════════════════════════════════
+function markDirty(key) {
+  DIRTY[key] = true;
+  var bar = document.getElementById('bar-' + key);
+  if (bar) bar.classList.add('on');
+}
+
+// ════════════════════════════════════════════════════════════
+// GÉNÉRATION DES FICHIERS REF
+// ════════════════════════════════════════════════════════════
+function escJs(v) { return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"'); }
+
+var FILE_COMMENTS = {
+  lieux:          'Référentiel : Lieux / Salles\n * Chaque entrée : { id, value, label }',
+  types:          'Référentiel : Types d\'ateliers\n * Chaque entrée : { id, value, label }',
+  notes:          'Référentiel : Notes\n * Chaque entrée : { id, value }',
+  jours:          'Référentiel : Jours\n * Chaque entrée : { id, value, label, date }',
+  piment:         'Référentiel : Piment\n * Chaque entrée : { id, value (number), label }',
+  resource_types: 'Référentiel : Types de ressource\n * Chaque entrée : { id, value, label, icon }',
+  heures:         'Référentiel : Heures\n * Chaque entrée : { id, value } — format HH:MM',
+};
+
+function genRefFile(key) {
+  var cfg   = CFG[key];
+  var items = STORE[key];
+  var lines = items.map(function(item) {
+    var parts = cfg.cols.map(function(col) {
+      var v = item[col] !== undefined ? item[col] : '';
+      if (col === 'value' && cfg.numericValue) return 'value: ' + Number(v);
+      return col + ': "' + escJs(v) + '"';
+    });
+    return '  { ' + parts.join(', ') + ' },';
+  }).join('\n');
+
+  return '/**\n * TANTRAMOUR 2026 — ' + FILE_COMMENTS[key] + '\n */\nvar ' + cfg.varName + ' = [\n' + lines + '\n];\n';
+}
+
+// ════════════════════════════════════════════════════════════
+// PROPAGATION DES RENOMMAGES DANS AGENDA
+// ════════════════════════════════════════════════════════════
+function applyRenames(key) {
+  var cfg = CFG[key];
+  if (!cfg.dataField.length) return;
+
+  var map = {};
+  Object.keys(RENAMES[key]).forEach(function(i) {
+    var oldVal = RENAMES[key][i];
+    var newVal = STORE[key][parseInt(i)] ? STORE[key][parseInt(i)].value : null;
+    if (newVal && String(newVal) !== String(oldVal)) map[oldVal] = newVal;
+  });
+  if (!Object.keys(map).length) return;
+
+  SESSION_AGENDA = SESSION_AGENDA.map(function(e) {
+    var u = Object.assign({}, e);
+    cfg.dataField.forEach(function(f) {
+      if (u[f] && map[u[f]]) u[f] = map[u[f]];
+    });
+    return u;
+  });
+}
+
+function genDataJs() {
+  var lines = SESSION_AGENDA.map(function(e, i) {
+    var prev = SESSION_AGENDA[i - 1];
+    var section = '';
+    if (!prev || prev.jour !== e.jour) {
+      var ref = REF_JOURS.find(function(j) { return j.value === e.jour; });
+      var dl  = ref ? ref.date : e.date;
+      section = '\n  // ─── ' + e.jour + ' — ' + dl + ' ' + '─'.repeat(Math.max(0, 56 - e.jour.length - dl.length)) + '\n';
+    }
+    var v = escJs;
+    return section + '  {jour:"' + v(e.jour) + '",date:"' + v(e.date) + '",heure:"' + v(e.heure) + '",type:"' + v(e.type) + '",atelier:"' + v(e.atelier) + '",lieu:"' + v(e.lieu) + '",fac1:"' + v(e.fac1) + '",fac2:"' + v(e.fac2) + '",traduction:"' + v(e.traduction) + '",helper1:"' + v(e.helper1) + '",helper2:"' + v(e.helper2) + '",helper3:"' + v(e.helper3) + '",angel:"' + v(e.angel) + '",note:"' + v(e.note) + '",piment:' + (e.piment||0) + ',logisticId:"' + v(e.logisticId||'') + '"},';
+  }).join('\n');
+
+  return '/**\n * TANTRAMOUR 2026 — Données AGENDA\n */\nvar AGENDA = [\n' + lines + '\n];\n\nfunction agendaToRaw(entries) {\n  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.angel,e.note,e.logisticId||"",e.piment||0]; });\n}';
+}
+
+// ════════════════════════════════════════════════════════════
+// SAUVEGARDE
+// ════════════════════════════════════════════════════════════
+async function saveToServer(filename, content) {
+  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat).');
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    var res = await fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: filename, content: content })
+    });
+    if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e.error || 'Erreur ' + res.status); }
+    return;
+  }
+  await githubSaveFile(filename, content);
+}
+
+async function save(key, withData) {
+  var cfg = CFG[key];
+  try {
+    if (withData) applyRenames(key);
+    await saveToServer(cfg.fileName, genRefFile(key));
+    if (withData && cfg.dataField.length) await saveToServer('data.js', genDataJs());
+    DIRTY[key] = false;
+    RENAMES[key] = {};
+    var bar = document.getElementById('bar-' + key);
+    if (bar) bar.classList.remove('on');
+    showToast('✅ ' + cfg.fileName + ' sauvegardé' + (withData ? ' + data.js' : '') + '.', false);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.save = save;
+
+// ════════════════════════════════════════════════════════════
+// TOAST + MODE NUIT
+// ════════════════════════════════════════════════════════════
+function showToast(msg, isErr) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  if (isErr === true) {
+    t.style.cssText = 'background:var(--err-bg);color:var(--err);border:1px solid var(--err-border)';
+  } else {
+    t.style.cssText = 'background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)';
+  }
+  t.classList.add('on');
+  setTimeout(function() { t.classList.remove('on'); }, isErr === true ? 6000 : 3500);
+}
+
+function toggleMode() {
+  var dark = document.body.classList.toggle('dark');
+  document.getElementById('modeBtn').textContent = dark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+}
+window.toggleMode = toggleMode;
+
+}); // fin loadData
+</script>
+</body>
+</html>

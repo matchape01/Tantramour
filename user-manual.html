@@ -1,0 +1,1453 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manuel Utilisateur — Tantramour 2026</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f7f8fa; --border: #e5e7eb;
+    --text: #1f2328; --muted: #57606a; --accent: #3b82d4;
+    --header-bg: #f0f4fb; --tag-bg: #eef2ff; --tag-text: #3b5bdb;
+    --green: #16a34a; --green-bg: #dcfce7;
+    --purple: #7c3aed; --purple-bg: #ede9fe;
+    --orange: #d97706; --orange-bg: #fef3c7;
+    --pink: #be185d; --pink-bg: #fce7f3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; font-size: 14px; line-height: 1.7; background: var(--bg); color: var(--text); }
+  .page { max-width: 760px; margin: 0 auto; padding: 40px 24px 60px; }
+
+  /* ── COVER ── */
+  .cover { text-align: center; padding: 48px 0 40px; border-bottom: 2px solid var(--border); margin-bottom: 40px; }
+  .cover-tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); border-radius: 4px; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover h1 { font-size: 32px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+  .cover h2 { font-size: 17px; font-weight: 400; color: var(--muted); margin-bottom: 24px; }
+  .cover-meta { font-size: 12px; color: var(--muted); }
+
+  /* ── TOC ── */
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 40px; }
+  .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 12px; }
+  .toc ol { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .toc li { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .toc-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--accent); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .toc-num.green  { background: var(--green); }
+  .toc-num.purple { background: var(--purple); }
+  .toc-num.orange { background: var(--orange); }
+  .toc-num.pink   { background: var(--pink); }
+  .toc a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .toc a:hover { color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; padding-bottom: 12px; border-bottom: 2px solid var(--border); margin-bottom: 24px; }
+  .section-icon { font-size: 24px; flex-shrink: 0; }
+  .section-title { font-size: 20px; font-weight: 800; color: var(--text); }
+  .section-subtitle { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .section-badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; margin-left: 8px; }
+  .badge-read  { background: var(--green-bg);  color: var(--green); }
+  .badge-edit  { background: var(--orange-bg); color: var(--orange); }
+  .badge-admin { background: var(--purple-bg); color: var(--purple); }
+  .badge-fac   { background: var(--green-bg);  color: var(--green); }
+
+  /* ── CONTENT BLOCKS ── */
+  h3 { font-size: 14px; font-weight: 700; color: var(--text); margin: 20px 0 8px; padding-left: 10px; border-left: 3px solid var(--accent); }
+  h3.green  { border-left-color: var(--green); }
+  h3.purple { border-left-color: var(--purple); }
+  h3.orange { border-left-color: var(--orange); }
+  h3.pink   { border-left-color: var(--pink); }
+  p { margin-bottom: 10px; color: var(--text); }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+  li { font-size: 13px; }
+
+  /* ── TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  .data-table thead th { background: var(--header-bg); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .data-table tbody td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:nth-child(even) { background: var(--surface); }
+
+  /* ── CALLOUTS ── */
+  .callout { border-radius: 8px; padding: 12px 16px; margin: 14px 0; font-size: 13px; line-height: 1.6; display: flex; gap: 10px; }
+  .callout-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warn { background: var(--orange-bg); border: 1px solid #fcd34d; color: #92400e; }
+  .callout.tip  { background: var(--green-bg);  border: 1px solid #86efac; color: #14532d; }
+
+  /* ── BUTTONS DEMO ── */
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .demo-btn { display: inline-block; border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  .demo-btn.primary { background: var(--green);  color: #fff; border-color: var(--green); }
+  .demo-btn.accent  { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .demo-btn.purple  { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .demo-btn.danger  { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+  .demo-btn.orange  { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  /* ── PILL / TAG ── */
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 600; margin: 1px; }
+  .pill-f { background: #dcfce7; color: #166534; }
+  .pill-h { background: #e0f2fe; color: #0369a1; }
+  .pill-a { background: #fce7f3; color: #9d174d; }
+  .pill-t { background: var(--tag-bg); color: var(--tag-text); }
+  .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); border-radius: 4px; padding: 1px 6px; font-size: 11px; font-weight: 600; }
+
+  /* ── STEP ── */
+  .steps-block { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-n { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .step-n.green  { background: var(--green); }
+  .step-n.orange { background: var(--orange); }
+  .step-n.purple { background: var(--purple); }
+  .step-n.pink   { background: var(--pink); }
+  .step-body { font-size: 13px; }
+  .step-body strong { color: var(--text); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* ── CODE ── */
+  code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 12px; font-family: 'Courier New', monospace; color: var(--text); }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div style="margin-bottom:24px;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;color:#1f2328;text-decoration:none;">🏠 Home</a>
+  </div>
+
+  <div class="cover">
+    <div class="cover-tag">Documentation</div>
+    <h1>Tantramour 2026</h1>
+    <h2>Manuel utilisateur — Suite de gestion du festival</h2>
+    <div class="cover-meta">19 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TABLE DES MATIÈRES
+  ══════════════════════════════════ -->
+  <div class="toc">
+    <div class="toc-title">Table des matières</div>
+    <ol>
+      <li><span class="toc-num">1</span><a href="#home">Page d'accueil (Home)</a></li>
+      <li><span class="toc-num">2</span><a href="#rapport1">Agenda par Jour</a></li>
+      <li><span class="toc-num">3</span><a href="#rapport2">Agenda par Personne</a></li>
+      <li><span class="toc-num">4</span><a href="#rapport-planning">Mon Planning (My Planning)</a></li>
+      <li><span class="toc-num pink">5</span><a href="#rapport-angels">Planning Angels</a></li>
+      <li><span class="toc-num">6</span><a href="#rapport-helpers">Planning Helpers</a></li>
+      <li><span class="toc-num purple">7</span><a href="#rapport-traducteurs">Planning Traducteurs</a></li>
+      <li><span class="toc-num">8</span><a href="#rapport3">Logistique par Atelier</a></li>
+      <li><span class="toc-num">9</span><a href="#rapport-loghelpers">Logistique Helpers</a></li>
+      <li><span class="toc-num green">10</span><a href="#rapport-loginput">Saisie des besoins logistiques</a></li>
+      <li><span class="toc-num">11</span><a href="#rapport-conflits">Conflits de planning</a></li>
+      <li><span class="toc-num">12</span><a href="#rapport-charge">Charge de travail (Workload)</a></li>
+      <li><span class="toc-num orange">13</span><a href="#rapport-editer">Éditer un atelier</a></li>
+      <li><span class="toc-num purple">14</span><a href="#masterdata">Master Data — Gestion des référentiels</a></li>
+      <li><span class="toc-num purple">15</span><a href="#rapport-ressources">Gérer les Ressources</a></li>
+      <li><span class="toc-num" style="background:#dc2626">16</span><a href="#rapport-remplacement">Remplacement de Ressource</a></li>
+      <li><span class="toc-num" style="background:#6d28d9">17</span><a href="#rapport-trad-affect">Affectation Traducteur</a></li>
+      <li><span class="toc-num" style="background:#dc2626">18</span><a href="#rapport-problemes">Problèmes de planning</a></li>
+      <li><span class="toc-num green">19</span><a href="#rapport-regles">Règles des Rapports</a></li>
+      <li><span class="toc-num">20</span><a href="#architecture">Architecture des fichiers</a></li>
+    </ol>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       1 — HOME
+  ══════════════════════════════════ -->
+  <div class="section" id="home">
+    <div class="section-header">
+      <div class="section-icon">🏠</div>
+      <div>
+        <div class="section-title">Page d'accueil <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Point d'entrée central vers toutes les pages</div>
+      </div>
+    </div>
+
+    <p>La page d'accueil (<code>index.html</code>) est le hub de navigation. Elle donne accès en un clic à l'ensemble des outils du festival, organisés en deux groupes.</p>
+
+    <h3>Groupe Général</h3>
+    <table class="data-table">
+      <thead><tr><th>Carte</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>📅 Agenda par Jour</td><td>Voir tous les ateliers filtrés par jour, lieu ou rôle</td></tr>
+        <tr><td>👤 Agenda par Personne</td><td>Planning d'une personne (Fac, Helper, Angel, Traducteur)</td></tr>
+        <tr><td>🗓️ Mon Planning</td><td>Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</td></tr>
+        <tr><td>📋 Logistique par Atelier</td><td>Fiche logistique complète d'un atelier</td></tr>
+        <tr><td>🤝 Logistique Helpers</td><td>Vue logistique par helper — ateliers et besoins</td></tr>
+        <tr><td>✏️ Saisie des besoins logistiques</td><td>Interface dédiée facilitateurs pour saisir leurs besoins</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Groupe Gestion planning</h3>
+    <table class="data-table">
+      <thead><tr><th>Carte</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>⚠️ Conflits de planning</td><td>Détection ateliers simultanés &amp; multi-rôles même atelier</td></tr>
+        <tr><td>⚖️ Charge de travail</td><td>Helpers, Angels, Traducteurs — nombre d'ateliers, durée, harmonisation</td></tr>
+        <tr><td>✏️ Éditer un atelier</td><td>Modifier les champs d'un atelier — sauvegarde via serveur local</td></tr>
+        <tr><td>👥 Gérer les Ressources</td><td>Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié</td></tr>
+        <tr><td>🔄 Remplacement de Ressource</td><td>Gestion des absences — remplaçants automatiques sans conflit</td></tr>
+        <tr><td>🚨 Problèmes de planning</td><td>Ateliers anglophones sans traducteur · ressources insuffisantes — correction inline</td></tr>
+        <tr><td>👼 Planning Angels</td><td>Vue par Angel — shifts regroupés, filtres Jour/Angel, bascule tableau</td></tr>
+        <tr><td>🤝 Planning Helpers</td><td>Vue par Helper — shifts regroupés, filtres Jour/Helper, bascule tableau</td></tr>
+        <tr><td>🌐 Planning Traducteurs</td><td>Vue par Traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</td></tr>
+        <tr><td>🌐✅ Affectation Traducteur</td><td>Vérifie et complète les affectations traducteur pour ateliers anglophones</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Boutons du pied de page</h3>
+    <div class="btn-row">
+      <span class="demo-btn">📖 Manuel</span>
+      <span class="demo-btn">📐 Règles</span>
+      <span class="demo-btn">⚙️ Admin</span>
+      <span class="demo-btn">🗂 Master Data</span>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">Les boutons <strong>Admin</strong> et <strong>Master Data</strong> sont protégés par mot de passe (<code>007</code>). <strong>Manuel</strong> et <strong>Règles</strong> sont accessibles sans mot de passe.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Toutes les pages doivent être ouvertes via <strong>http://localhost:3000</strong> (serveur local Python). Lancez d'abord <code>start.bat</code> avant d'ouvrir le navigateur.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       2 — AGENDA PAR JOUR
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport1">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-title">Agenda par Jour <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue chronologique de tous les ateliers</div>
+      </div>
+    </div>
+
+    <p>Ce rapport affiche l'ensemble des ateliers du festival dans un tableau triable avec filtres. Idéal pour avoir une vue d'ensemble d'une journée ou d'une catégorie.</p>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Options</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour / Date</strong></td><td>Tous les jours, Jour 1 … Jour 7</td><td>Affiche uniquement les ateliers de ce jour</td></tr>
+        <tr><td><strong>Lieu</strong></td><td>Liste des lieux du festival</td><td>Filtre par salle ou espace</td></tr>
+        <tr><td><strong>Rôle</strong></td><td>Facilitateur, Helper, Angel, Traducteur</td><td>Filtre par rôle</td></tr>
+        <tr><td><strong>Type d'atelier</strong></td><td>Liste des types présents dans les données</td><td>Filtre par catégorie</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Colonnes du tableau</h3>
+    <p>Toutes les colonnes sont <strong>triables</strong> par clic sur l'en-tête (↑ croissant, ↓ décroissant) :</p>
+    <table class="data-table">
+      <thead><tr><th>Colonne</th><th>Contenu</th></tr></thead>
+      <tbody>
+        <tr><td>Jour</td><td>Ex : Jour 2</td></tr>
+        <tr><td>Date</td><td>Ex : Dimanche 30 août</td></tr>
+        <tr><td>Heure</td><td>Plage horaire (ex : 11:15 - 13:00)</td></tr>
+        <tr><td>Type d'atelier</td><td>Catégorie avec badge coloré</td></tr>
+        <tr><td>Atelier</td><td>Nom de l'atelier (★ rouge si note renseignée)</td></tr>
+        <tr><td>Lieu</td><td>Salle ou espace</td></tr>
+        <tr><td>Facilitateur(s)</td><td><span class="pill pill-f">Prénom Nom</span> badges verts</td></tr>
+        <tr><td>Traducteur</td><td><span class="pill pill-t">Prénom Nom</span> badge indigo</td></tr>
+        <tr><td>Helper(s)</td><td><span class="pill pill-h">Prénom Nom</span> badges bleus</td></tr>
+        <tr><td>Angel</td><td><span class="pill pill-a">Prénom Nom</span> badge rose</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Boutons d'action</h3>
+    <div class="btn-row">
+      <span class="demo-btn">🏠 Home</span>
+      <span class="demo-btn">🔄 Refresh</span>
+      <span class="demo-btn">📱 Vue Mobile</span>
+      <span class="demo-btn">🌙 Mode Nuit</span>
+    </div>
+    <ul>
+      <li><strong>🔄 Refresh</strong> — recharge la page pour prendre en compte les dernières modifications de <code>data.js</code></li>
+      <li><strong>📱 Vue Mobile / 🖥 Vue Tableau</strong> — bascule entre tableau et cartes groupées par jour</li>
+      <li><strong>🌙 / ☀️ Mode Nuit</strong> — thème sombre ou clair</li>
+    </ul>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Un astérisque <strong style="color:#e53e3e">★</strong> rouge à côté du nom de l'atelier indique qu'une note logistique est renseignée — consultez <strong>Logistique par Atelier</strong> pour le détail.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       3 — AGENDA PAR PERSONNE
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport2">
+    <div class="section-header">
+      <div class="section-icon">👤</div>
+      <div>
+        <div class="section-title">Agenda par Personne <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Planning individuel de chaque membre de l'équipe</div>
+      </div>
+    </div>
+
+    <p>Ce rapport retrouve rapidement tous les ateliers auxquels une personne est affectée, quel que soit son rôle.</p>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Options</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Personne</strong></td><td>Liste de toutes les personnes</td><td>Affiche uniquement les ateliers de cette personne</td></tr>
+        <tr><td><strong>Jour / Date</strong></td><td>Tous les jours, Jour 1 … Jour 7</td><td>Restreint à une journée</td></tr>
+        <tr><td><strong>Rôle</strong></td><td>Facilitateur, Helper, Angel, Traducteur</td><td>Filtre par type de responsabilité</td></tr>
+        <tr><td><strong>Type d'atelier</strong></td><td>Catégories des ateliers</td><td>Filtre par catégorie</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Codes couleur des rôles</h3>
+    <div class="btn-row" style="align-items:center">
+      <span class="pill pill-f">Facilitateur</span>
+      <span class="pill pill-h">Helper</span>
+      <span class="pill pill-a">Angel</span>
+      <span class="pill pill-t">Traducteur</span>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Le filtre <strong>Personne</strong> liste automatiquement toutes les personnes présentes dans <code>data.js</code> — facilitateurs, helpers, angels <em>et</em> traducteurs inclus.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       4 — MON PLANNING
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-planning">
+    <div class="section-header">
+      <div class="section-icon">🗓️</div>
+      <div>
+        <div class="section-title">Mon Planning (My Planning) <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue complète de toute l'équipe, par rôle ou combinée</div>
+      </div>
+    </div>
+
+    <p>Ce rapport donne une vue agrégée de toutes les personnes et de leurs interventions. Il est idéal pour un chef d'équipe souhaitant visualiser la charge de l'ensemble du planning.</p>
+
+    <h3>Onglets de rôle</h3>
+    <div class="btn-row">
+      <span class="demo-btn">🌐 Combiné (tous rôles)</span>
+      <span class="demo-btn">🎓 Facilitateurs</span>
+      <span class="demo-btn">🤝 Helpers</span>
+      <span class="demo-btn">🌐 Traducteurs</span>
+      <span class="demo-btn">👼 Angels</span>
+    </div>
+    <p>Chaque onglet filtre l'affichage sur le rôle sélectionné et colore dynamiquement l'interface (vert = Facilitateurs, bleu = Helpers, jaune = Traducteurs, rose = Angels). L'onglet <strong>Combiné</strong> affiche toutes les interventions de toutes les personnes.</p>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>🔍 Recherche texte</strong></td><td>Filtre instantané sur le nom de la personne</td></tr>
+        <tr><td><strong>Personne</strong></td><td>Sélecteur déroulant — n'affiche que le bloc de cette personne</td></tr>
+        <tr><td><strong>Jour</strong></td><td>Restreint l'affichage aux interventions du jour sélectionné</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Bascule de vue</h3>
+    <div class="btn-row">
+      <span class="demo-btn">👤 Vue par Personne</span>
+      <span class="demo-btn">📋 Vue Tableau</span>
+    </div>
+    <ul>
+      <li><strong>Vue par Personne</strong> — blocs individuels avec en-tête coloré (avatar initiales, nom, compteur d'interventions). Chaque ligne affiche : Jour, Date, Heure, Rôle, Atelier, Lieu</li>
+      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions</li>
+    </ul>
+
+    <h3>Statistiques affichées</h3>
+    <p>Des cartes de statistiques en haut de page affichent en temps réel : Personnes, Interventions totales, Facilitateurs, Helpers, Traducteurs, Angels.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Chaque ligne affiche un lien 🔗 vers la fiche logistique complète de l'atelier correspondant (Logistique par Atelier).</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       5 — PLANNING ANGELS
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-angels">
+    <div class="section-header">
+      <div class="section-icon">👼</div>
+      <div>
+        <div class="section-title">Planning Angels <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue par Angel — shifts regroupés, filtres Jour/Angel, bascule tableau</div>
+      </div>
+    </div>
+
+    <p>Ce rapport présente le planning de tous les <strong>Angels</strong> sous forme de cartes individuelles. Les ateliers consécutifs ou simultanés (gap ≤ 5 min) sont regroupés automatiquement en <strong>shifts</strong> pour une lecture plus fluide.</p>
+
+    <h3 class="pink">Statistiques en en-tête</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Angels</span>
+      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Shifts au total</span>
+      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Ateliers couverts</span>
+    </div>
+    <p>Ces compteurs reflètent l'ensemble du planning, indépendamment des filtres actifs.</p>
+
+    <h3 class="pink">Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Angel</strong></td><td>Affiche uniquement la carte de cet Angel</td></tr>
+        <tr><td><strong>Jour</strong></td><td>Restreint les shifts au jour sélectionné (Jour 1 à Jour 7)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="pink">Vues disponibles</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">👤 Vue par Angel</span>
+      <span class="demo-btn">📋 Vue Tableau</span>
+    </div>
+    <ul>
+      <li><strong>Vue par Angel</strong> — blocs individuels avec avatar, nom, badge rôle et compteurs. Chaque shift affiche l'heure globale (début → fin) et le détail atelier par atelier (heure, nom, lieu, type).</li>
+      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions (Jour, Date, Heure, Atelier, Lieu, Type).</li>
+    </ul>
+
+    <h3 class="pink">Logique de regroupement en shifts</h3>
+    <p>Un <em>shift</em> regroupe tous les ateliers d'un même Angel dans la même journée dont les plages horaires se touchent ou se chevauchent (tolérance 5 minutes). L'heure affichée en en-tête de shift couvre la plage globale <code>début_premier → fin_dernier</code>.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Les ateliers sans plage horaire précise (ex : "Matin") sont exclus du regroupement en shifts car leur durée ne peut pas être déterminée.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       6 — PLANNING HELPERS
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-helpers">
+    <div class="section-header">
+      <div class="section-icon">🤝</div>
+      <div>
+        <div class="section-title">Planning Helpers <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue par Helper — shifts regroupés, filtres Jour/Helper, bascule tableau</div>
+      </div>
+    </div>
+
+    <p>Ce rapport présente le planning de tous les <strong>Helpers</strong> sous forme de cartes individuelles. Un Helper peut apparaître dans les champs <code>helper1</code>, <code>helper2</code> ou <code>helper3</code> d'un atelier — tous sont consolidés dans sa carte.</p>
+
+    <h3>Statistiques en en-tête</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Helpers</span>
+      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Shifts au total</span>
+      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Ateliers couverts</span>
+    </div>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Helper</strong></td><td>Affiche uniquement la carte de ce Helper</td></tr>
+        <tr><td><strong>Jour</strong></td><td>Restreint les shifts au jour sélectionné (Jour 1 à Jour 7)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Vues disponibles</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">👤 Vue par Helper</span>
+      <span class="demo-btn">📋 Vue Tableau</span>
+    </div>
+    <ul>
+      <li><strong>Vue par Helper</strong> — blocs individuels avec avatar, nom, badge rôle et compteurs. Les ateliers sont affichés ligne par ligne avec Jour, Date, Heure, Atelier, Lieu.</li>
+      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions.</li>
+    </ul>
+
+    <h3>Logique de regroupement en shifts</h3>
+    <p>Identique à Planning Angels : les ateliers consécutifs ou simultanés (gap ≤ 5 min) d'un même Helper dans la même journée sont fusionnés en un shift unique affichant la plage horaire globale.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Pour une vue logistique détaillée par Helper (matériel, notes), utilisez <strong>Logistique Helpers</strong> qui affiche les informations saisies dans <code>logistics.js</code>.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       7 — PLANNING TRADUCTEURS
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-traducteurs">
+    <div class="section-header">
+      <div class="section-icon">🌐</div>
+      <div>
+        <div class="section-title">Planning Traducteurs <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue par Traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</div>
+      </div>
+    </div>
+
+    <p>Ce rapport présente le planning de tous les <strong>Traducteurs</strong> sous forme de cartes individuelles. Les ateliers consécutifs ou simultanés (gap ≤ 5 min) sont regroupés en shifts.</p>
+
+    <h3 class="purple">Statistiques en en-tête</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:#f3e8ff;color:#7c3aed;border-color:#d8b4fe">Traducteurs</span>
+      <span class="demo-btn" style="background:#f3e8ff;color:#7c3aed;border-color:#d8b4fe">Shifts au total</span>
+      <span class="demo-btn" style="background:#f3e8ff;color:#7c3aed;border-color:#d8b4fe">Ateliers couverts</span>
+    </div>
+
+    <h3 class="purple">Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Traducteur</strong></td><td>Affiche uniquement la carte de ce Traducteur</td></tr>
+        <tr><td><strong>Jour</strong></td><td>Restreint les shifts au jour sélectionné (Jour 1 à Jour 7)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="purple">Vues disponibles</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:#f3e8ff;color:#7c3aed;border-color:#d8b4fe">👤 Vue par Traducteur</span>
+      <span class="demo-btn">📋 Vue Tableau</span>
+    </div>
+    <ul>
+      <li><strong>Vue par Traducteur</strong> — blocs individuels avec avatar, nom, badge rôle et compteurs. Chaque shift affiche la plage horaire globale et le détail des ateliers couverts.</li>
+      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions (Jour, Date, Heure, Atelier, Lieu, Type).</li>
+    </ul>
+
+    <h3 class="purple">Données sources</h3>
+    <p>Le rapport lit le champ <code>traduction</code> de chaque entrée dans <code>data.js</code>. Seuls les ateliers avec un traducteur assigné apparaissent.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Pour vérifier les ateliers animés par des <strong>facilitateurs anglophones</strong> qui n'auraient pas encore de traducteur assigné, utilisez le rapport <strong>Affectation Traducteur</strong>.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+
+  <!-- ══════════════════════════════════
+       5 — LOGISTIQUE PAR ATELIER
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport3">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">Logistique par Atelier <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Fiche logistique complète d'un atelier</div>
+      </div>
+    </div>
+
+    <p>Ce rapport affiche la fiche complète d'un atelier : équipe, salle, note et informations logistiques détaillées. C'est la page de référence pour la préparation terrain.</p>
+
+    <h3>Navigation en 2 étapes</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body"><strong>Choisir le jour</strong> — le sélecteur d'ateliers s'active automatiquement.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body"><strong>Choisir l'atelier</strong> — la liste affiche les ateliers au format <code>[HH:MM] Nom de l'atelier</code>. Sélectionnez-en un pour afficher la fiche.</div>
+      </div>
+    </div>
+
+    <h3>Contenu de la fiche</h3>
+    <table class="data-table">
+      <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
+      <tbody>
+        <tr><td><strong>En-tête</strong></td><td>Nom, heure, jour, date, type et lieu</td></tr>
+        <tr><td><strong>Facilitateur(s)</strong></td><td>Badges verts</td></tr>
+        <tr><td><strong>Helper(s)</strong></td><td>Badges bleus</td></tr>
+        <tr><td><strong>Angel</strong></td><td>Badge rose</td></tr>
+        <tr><td><strong>Traducteur</strong></td><td>Badge indigo</td></tr>
+        <tr><td><strong>Note</strong></td><td>Note courte normalisée (ex : "Shift Colibri")</td></tr>
+        <tr><td><strong>Informations Logistiques</strong></td><td>Texte libre détaillé pour la préparation terrain</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Si les champs Note ou Informations Logistiques affichent un texte en italique grisé, aucune information n'a encore été saisie. Utilisez <strong>Éditer un atelier</strong> ou <strong>Saisie des besoins logistiques</strong> pour les compléter.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       6 — LOGISTIQUE HELPERS
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-loghelpers">
+    <div class="section-header">
+      <div class="section-icon">🤝</div>
+      <div>
+        <div class="section-title">Logistique Helpers <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Vue logistique par helper — ateliers assignés et besoins</div>
+      </div>
+    </div>
+
+    <p>Ce rapport est spécifiquement orienté <strong>Helpers</strong>. Il affiche, pour chaque helper, la liste de ses ateliers avec les informations logistiques associées (besoins matériels, notes, facilitateurs en charge).</p>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Helper</strong></td><td>Filtre sur un helper spécifique</td></tr>
+        <tr><td><strong>Jour</strong></td><td>Restreint aux ateliers d'une journée</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Structure de l'affichage</h3>
+    <p>Chaque helper dispose d'un bloc avec en-tête bleu (avatar, nom, compteur d'ateliers). Les ateliers sont groupés <strong>par jour</strong> et affichent pour chaque atelier :</p>
+    <ul>
+      <li>Heure et nom de l'atelier</li>
+      <li>Lieu et type</li>
+      <li>Facilitateur(s) en charge</li>
+      <li>Note logistique (si renseignée)</li>
+      <li>Informations logistiques détaillées (si renseignées)</li>
+    </ul>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       7 — SAISIE BESOINS LOGISTIQUES
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-loginput">
+    <div class="section-header">
+      <div class="section-icon">✏️</div>
+      <div>
+        <div class="section-title">Saisie des besoins logistiques <span class="section-badge badge-fac">Facilitateurs</span></div>
+        <div class="section-subtitle">Interface dédiée aux facilitateurs pour décrire leurs besoins</div>
+      </div>
+    </div>
+
+    <p>Cette page est conçue pour que les <strong>facilitateurs</strong> saisissent eux-mêmes leurs besoins logistiques atelier par atelier, sans avoir accès aux autres données du festival. L'interface fonctionne en <strong>3 étapes guidées</strong>.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Cette page est accessible directement depuis la page d'accueil sans mot de passe — elle est conçue pour être partagée aux facilitateurs.</div>
+    </div>
+
+    <h3 class="green">Étape 1 — Identification</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n green">1</div>
+        <div class="step-body">Sélectionnez votre nom dans la liste déroulante (seuls les facilitateurs ayant des ateliers dans le planning apparaissent).</div>
+      </div>
+      <div class="step">
+        <div class="step-n green">2</div>
+        <div class="step-body">Cliquez sur <strong>Suivant →</strong> pour accéder à la liste de vos ateliers.</div>
+      </div>
+    </div>
+
+    <h3 class="green">Étape 2 — Choisir un atelier</h3>
+    <p>Vos ateliers sont listés sous forme de cartes, triés par jour puis par heure. Chaque carte indique :</p>
+    <ul>
+      <li>Jour, nom, heure et lieu de l'atelier</li>
+      <li>Un badge <span class="demo-btn" style="background:#dcfce7;color:#166534;border-color:#86efac">✔ Renseigné</span> si des informations logistiques ont déjà été saisies, ou <span class="demo-btn" style="background:#fff7ed;color:#c2410c;border-color:#fdba74">⏳ À compléter</span> sinon</li>
+    </ul>
+    <p>Cliquez sur un atelier pour accéder à sa fiche d'édition.</p>
+
+    <h3 class="green">Étape 3 — Fiche atelier</h3>
+    <p>La fiche affiche en <strong>lecture seule</strong> les informations gérées par l'administrateur (jour, heure, lieu, équipe), et propose les <strong>champs modifiables</strong> :</p>
+    <table class="data-table">
+      <thead><tr><th>Champ</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nom de l'atelier</strong></td><td>Titre de l'atelier (modifiable par le facilitateur)</td></tr>
+        <tr><td><strong>Niveau Piment</strong></td><td>Niveau d'intensité sensorielle de l'atelier (boutons de sélection)</td></tr>
+        <tr><td><strong>Informations logistiques</strong></td><td>Zone de texte riche avec formatage (Gras, Italique, Souligné, Listes)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="green">Sauvegarde</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n green">1</div>
+        <div class="step-body">Saisissez vos informations dans les champs modifiables.</div>
+      </div>
+      <div class="step">
+        <div class="step-n green">2</div>
+        <div class="step-body">Cliquez sur <strong class="demo-btn primary" style="font-size:11px">💾 Enregistrer</strong> — une modale de confirmation s'affiche.</div>
+      </div>
+      <div class="step">
+        <div class="step-n green">3</div>
+        <div class="step-body">Confirmez — les données sont sauvegardées directement dans <code>logistics.js</code> sur le serveur. Un toast de confirmation apparaît.</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>Le serveur local (<code>start.bat</code>) doit être actif pour que la sauvegarde fonctionne. Cette page utilise <code>logistics.js</code> comme fichier de stockage séparé de <code>data.js</code>.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       8 — CONFLITS DE PLANNING
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-conflits">
+    <div class="section-header">
+      <div class="section-icon">⚠️</div>
+      <div>
+        <div class="section-title">Conflits de planning <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Détection automatique — ateliers simultanés &amp; multi-rôles</div>
+      </div>
+    </div>
+
+    <p>Ce rapport analyse automatiquement l'ensemble du planning et détecte deux types de conflits pour chaque personne (tous rôles confondus : Facilitateur, Helper, Angel, Traducteur).</p>
+
+    <h3>Types de conflits détectés</h3>
+    <table class="data-table">
+      <thead><tr><th>Type</th><th>Couleur</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>🔴 Ateliers simultanés</strong></td>
+          <td><span style="background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">Overlap</span></td>
+          <td>Même personne assignée à 2 ateliers <strong>différents</strong> dont les plages horaires se chevauchent (strictement)</td>
+        </tr>
+        <tr>
+          <td><strong>🟠 Multi-rôles même atelier</strong></td>
+          <td><span style="background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">Multi</span></td>
+          <td>Même personne affectée à un seul et même atelier dans <strong>plusieurs rôles différents</strong> (ex : Facilitateur ET Helper)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Statistiques en en-tête</h3>
+    <div class="btn-row">
+      <span class="demo-btn">Ateliers analysés</span>
+      <span class="demo-btn">Personnes impliquées</span>
+      <span class="demo-btn danger">Conflits détectés</span>
+      <span class="demo-btn" style="background:#fffbeb;color:#92400e;border-color:#fcd34d">Personnes en conflit</span>
+    </div>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour</strong></td><td>Affiche les conflits d'une journée spécifique</td></tr>
+        <tr><td><strong>Type de conflit</strong></td><td>🔴 Ateliers simultanés uniquement / 🟠 Multi-rôles uniquement / Tous</td></tr>
+        <tr><td><strong>Personne</strong></td><td>Filtre sur une personne en particulier</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Lecture des conflits</h3>
+    <p>Chaque conflit est affiché sous forme de carte colorée :</p>
+    <ul>
+      <li><strong>Carte rouge</strong> — ateliers qui se chevauchent sur la même plage horaire (conflit strict)</li>
+      <li><strong>Carte orange</strong> — personne avec plusieurs rôles sur un même atelier (moins critique)</li>
+      <li>Chaque ligne affiche : l'heure, le nom de l'atelier, le lieu et le rôle(s) concerné(s)</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>La détection de chevauchement est <strong>stricte</strong> : deux ateliers dont la fin de l'un coïncide exactement avec le début de l'autre ne sont <em>pas</em> en conflit. La tolérance Angel (un Angel peut couvrir plusieurs ateliers simultanément) n'est pas appliquée ici — tous les rôles sont traités de façon symétrique.</div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Les ateliers sans plage horaire précise parsable sont exclus de la détection Type A (ateliers simultanés), mais restent inclus dans la détection Type B (multi-rôles même atelier).</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       9 — CHARGE DE TRAVAIL
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-charge">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <div>
+        <div class="section-title">Charge de travail (Workload) <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Helpers, Angels &amp; Traducteurs — harmonisation de la charge</div>
+      </div>
+    </div>
+
+    <p>Ce rapport analyse la répartition de la charge de travail pour les <strong>Helpers, Angels et Traducteurs</strong>, avec calcul de la durée totale par personne et identification des déséquilibres.</p>
+
+    <h3>Onglets disponibles</h3>
+    <div class="btn-row">
+      <span class="demo-btn">🤝 Helpers</span>
+      <span class="demo-btn">👼 Angels</span>
+      <span class="demo-btn">🌐 Traducteurs</span>
+      <span class="demo-btn">📊 Vue combinée</span>
+      <span class="demo-btn">⚖️ Harmonisation</span>
+    </div>
+
+    <h3>Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour</strong></td><td>Restreint l'analyse à une journée spécifique</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Lecture des cartes personne</h3>
+    <p>Chaque personne dispose d'une carte cliquable affichant :</p>
+    <ul>
+      <li>Son rang (classé par charge décroissante)</li>
+      <li>Nombre d'ateliers et durée totale en heures</li>
+      <li>Une <strong>barre de charge</strong> colorée (vert = légère, orange = moyenne, rouge = élevée)</li>
+    </ul>
+    <p>En cliquant sur la carte, le détail des ateliers s'affiche (groupé par jour, avec durée de chaque atelier).</p>
+
+    <h3 class="orange">Onglet Harmonisation</h3>
+    <p>Cet onglet spécial analyse les déséquilibres de charge et propose des suggestions de redistribution :</p>
+    <ul>
+      <li><strong>Surchargés</strong> — personnes au-dessus de la moyenne + écart-type</li>
+      <li><strong>Sous-chargés</strong> — personnes disponibles pour plus d'ateliers</li>
+      <li><strong>Suggestions</strong> — ateliers potentiellement transférables avec les remplaçants candidats</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Les ateliers de type Repas, Préparation et Réunions internes sont exclus du calcul de charge pour ne refléter que la charge réelle de prestation.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       10 — ÉDITER UN ATELIER
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-editer">
+    <div class="section-header">
+      <div class="section-icon">✏️</div>
+      <div>
+        <div class="section-title">Éditer un atelier <span class="section-badge badge-edit">Édition</span></div>
+        <div class="section-subtitle">Modifier tous les champs d'un atelier — sauvegarde directe dans data.js</div>
+      </div>
+    </div>
+
+    <p>Cette page permet de sélectionner un atelier dans une liste filtrée et de modifier l'ensemble de ses champs. La sauvegarde écrit directement dans <code>data.js</code> via le serveur local.</p>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>Le serveur local (<code>start.bat</code>) doit être actif pour que la sauvegarde fonctionne.</div>
+    </div>
+
+    <h3 class="orange">Filtres de la liste</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour</strong></td><td>Filtre la liste sur un jour spécifique</td></tr>
+        <tr><td><strong>Type</strong></td><td>Filtre par type d'atelier</td></tr>
+        <tr><td><strong>Recherche</strong></td><td>Filtre textuel sur le nom de l'atelier</td></tr>
+      </tbody>
+    </table>
+    <p>Chaque ligne de la liste affiche : Jour, Heure, Nom, Niveau Piment, Type, Lieu. Cliquez sur un atelier pour ouvrir son formulaire d'édition.</p>
+
+    <h3 class="orange">Champs du formulaire</h3>
+    <table class="data-table">
+      <thead><tr><th>Champ</th><th>Type</th><th>Source des options</th></tr></thead>
+      <tbody>
+        <tr><td>Jour</td><td>Liste déroulante</td><td><code>ref_jours.js</code></td></tr>
+        <tr><td>Heure début / fin</td><td>Widget double sélecteur</td><td><code>ref_heures.js</code></td></tr>
+        <tr><td>Lieu / Salle</td><td>Liste déroulante</td><td><code>ref_lieux.js</code></td></tr>
+        <tr><td>Type d'atelier</td><td>Liste déroulante</td><td><code>ref_types.js</code></td></tr>
+        <tr><td>Nom de l'atelier</td><td>Texte libre</td><td>Saisie manuelle</td></tr>
+        <tr><td>Niveau Piment</td><td>Boutons de sélection</td><td><code>ref_piment.js</code></td></tr>
+        <tr><td>Facilitateur 1 &amp; 2</td><td>Listes déroulantes</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Traducteur</td><td>Liste déroulante</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Helper 1, 2 &amp; 3</td><td>Listes déroulantes</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Angel</td><td>Liste déroulante</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Note</td><td>Liste déroulante</td><td><code>ref_notes.js</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="orange">Panneau Logistique intégré</h3>
+    <p>En bas du formulaire, un panneau <strong>Informations Logistiques</strong> permet de visualiser et éditer les informations logistiques saisies via <code>logistics.js</code>. Chaque entrée logistique peut être :</p>
+    <ul>
+      <li>Consultée en mode prévisualisation</li>
+      <li>Éditée via un éditeur de texte riche (Gras, Italique, Listes)</li>
+      <li>Sauvegardée directement dans <code>logistics.js</code></li>
+    </ul>
+
+    <h3 class="orange">Sauvegarde data.js</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n orange">1</div>
+        <div class="step-body">Modifiez les champs souhaités.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">2</div>
+        <div class="step-body">Cliquez sur <strong class="demo-btn primary" style="font-size:11px">💾 Sauvegarder</strong> — un indicateur de chargement s'affiche.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">3</div>
+        <div class="step-body"><code>data.js</code> est écrit sur le disque via le serveur local. Un toast de succès apparaît en bas de l'écran.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">4</div>
+        <div class="step-body">Cliquez <strong>🔄 Refresh</strong> dans les autres rapports pour voir les nouvelles données.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       11 — MASTER DATA
+  ══════════════════════════════════ -->
+  <div class="section" id="masterdata">
+    <div class="section-header">
+      <div class="section-icon">🗂</div>
+      <div>
+        <div class="section-title">Master Data — Gestion des référentiels <span class="section-badge badge-admin">Admin</span></div>
+        <div class="section-subtitle">Ajouter, renommer ou supprimer des entrées dans les listes de référence</div>
+      </div>
+    </div>
+
+    <p>Master Data est la page de gestion des <strong>listes de référence</strong> utilisées dans les formulaires d'édition. Protégée par mot de passe (<code>007</code>).</p>
+
+    <h3 class="purple">Les 3 référentiels gérés dans Master Data</h3>
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Les ressources (Facilitateurs, Helpers, Angels, Traducteurs) sont gérées dans le rapport <strong>Gérer les Ressources</strong>, pas dans Master Data.</div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Onglet</th><th>Fichier</th><th>Utilisé dans</th></tr></thead>
+      <tbody>
+        <tr><td>📍 Lieux</td><td><code>ref_lieux.js</code></td><td>Champ Lieu / Salle dans Éditer un atelier</td></tr>
+        <tr><td>🏷️ Types d'atelier</td><td><code>ref_types.js</code></td><td>Champ Type d'atelier dans Éditer un atelier</td></tr>
+        <tr><td>📝 Notes</td><td><code>ref_notes.js</code></td><td>Champ Note dans Éditer un atelier &amp; Logistique par Atelier</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="purple">Actions disponibles par entrée</h3>
+
+    <p><strong>✏️ Éditer une valeur</strong></p>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur <strong>✏️</strong> à droite de la ligne.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Modifiez le texte (<kbd>Entrée</kbd> pour valider, <kbd>Échap</kbd> pour annuler).</div></div>
+      <div class="step"><div class="step-n purple">3</div><div class="step-body">Cliquez <strong>✔</strong> pour confirmer. La barre de sauvegarde apparaît en bas.</div></div>
+    </div>
+
+    <p><strong>+ Ajouter une entrée</strong></p>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur <strong>+ Ajouter un [type]</strong> en bas du tableau.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Saisissez la valeur dans la nouvelle ligne et validez avec <strong>✔</strong>.</div></div>
+    </div>
+
+    <p><strong>🗑 Supprimer une entrée</strong></p>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur <strong>🗑</strong> — une boîte de confirmation s'affiche.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Confirmez. La ligne disparaît et la barre de sauvegarde s'affiche.</div></div>
+    </div>
+
+    <h3 class="purple">Sauvegarder les modifications</h3>
+    <div class="btn-row">
+      <span class="demo-btn accent">💾 Télécharger ref_[type].js</span>
+      <span class="demo-btn purple">💾 + data.js mis à jour</span>
+    </div>
+    <table class="data-table" style="margin-top:10px">
+      <thead><tr><th>Bouton</th><th>Effet</th><th>Quand l'utiliser</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>💾 Télécharger ref_[type].js</strong></td>
+          <td>Sauvegarde uniquement le fichier référentiel</td>
+          <td>Ajout ou suppression sans impact sur les ateliers existants</td>
+        </tr>
+        <tr>
+          <td><strong>💾 + data.js mis à jour</strong></td>
+          <td>Sauvegarde le référentiel <em>et</em> met à jour <code>data.js</code> en renommant les occurrences</td>
+          <td>Renommage d'une entrée — les ateliers qui la référencent sont mis à jour automatiquement</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>En cas de <strong>renommage</strong>, utilisez toujours <strong>+ data.js mis à jour</strong> pour que les ateliers existants reflètent le nouveau nom.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>L'ID technique de chaque entrée (ex : <code>F_SABRYNA</code>) ne change jamais — seule la <em>valeur</em> affichée peut être modifiée. Cela garantit la stabilité des références internes.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       12 — GÉRER LES RESSOURCES
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-ressources">
+    <div class="section-header">
+      <div class="section-icon">👥</div>
+      <div>
+        <div class="section-title">Gérer les Ressources <span class="section-badge badge-admin">Admin</span></div>
+        <div class="section-subtitle">Référentiel unifié — Facilitateurs, Helpers, Traducteurs, Angels</div>
+      </div>
+    </div>
+
+    <p>Ce rapport est le gestionnaire central de toutes les <strong>personnes</strong> du festival. Il remplace et unifie la gestion des ressources qui était auparavant dispersée dans Master Data.</p>
+
+    <h3 class="purple">Structure du tableau</h3>
+    <table class="data-table">
+      <thead><tr><th>Colonne</th><th>Contenu</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nom</strong></td><td>Nom complet de la personne (triable)</td></tr>
+        <tr><td><strong>Rôles</strong></td><td>Badges colorés des rôles attribués — une personne peut avoir plusieurs rôles</td></tr>
+        <tr><td><strong>ID</strong></td><td>Identifiant technique unique (ex : <code>F_SABRYNA</code>) — triable</td></tr>
+        <tr><td><strong>Actions</strong></td><td>✏️ Éditer — 🗑️ Supprimer</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="purple">Filtres et recherche</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rôle</strong></td><td>Filtre la liste sur un rôle spécifique (Facilitateur, Helper, Traducteur, Angel)</td></tr>
+        <tr><td><strong>Recherche</strong></td><td>Filtre instantané sur le nom ou l'ID</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="purple">Ajouter une ressource</h3>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur <strong>＋ Ajouter une ressource</strong> en haut à droite.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Dans le formulaire : saisissez le <strong>Nom complet</strong> et sélectionnez un ou plusieurs <strong>Rôles</strong> (cases à cocher colorées).</div></div>
+      <div class="step"><div class="step-n purple">3</div><div class="step-body">L'<strong>ID technique</strong> est généré automatiquement depuis le nom (ex : "Sabryna Laurent" → <code>F_SABRYNA_LAURENT</code>). Vous pouvez le modifier.</div></div>
+      <div class="step"><div class="step-n purple">4</div><div class="step-body">Cliquez <strong>Sauvegarder</strong> — la ressource est ajoutée à <code>ref_ressources.js</code> via le serveur local.</div></div>
+    </div>
+
+    <h3 class="purple">Modifier une ressource</h3>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur ✏️ à droite de la ligne — le formulaire se pré-remplit.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Modifiez le nom et/ou les rôles, puis cliquez <strong>Sauvegarder</strong>.</div></div>
+    </div>
+
+    <h3 class="purple">Supprimer une ressource</h3>
+    <div class="steps-block">
+      <div class="step"><div class="step-n purple">1</div><div class="step-body">Cliquez sur 🗑️ — une modale de confirmation s'affiche avec le nom de la personne.</div></div>
+      <div class="step"><div class="step-n purple">2</div><div class="step-body">Confirmez — la ressource est retirée de <code>ref_ressources.js</code>.</div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>Supprimer une ressource ne met pas automatiquement à jour <code>data.js</code>. Les ateliers qui référencent cette personne conserveront son ancien nom. Vérifiez manuellement dans <strong>Éditer un atelier</strong>.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       13 — ARCHITECTURE
+  ══════════════════════════════════ -->
+
+  <!-- ══════════════════════════════════
+       13 — REMPLACEMENT DE RESSOURCE
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-remplacement">
+    <div class="section-header">
+      <div class="section-icon">🔄</div>
+      <div>
+        <div class="section-title">Remplacement de Ressource <span class="section-badge badge-edit">Édition</span></div>
+        <div class="section-subtitle">Personne indisponible — proposition automatique de remplaçants</div>
+      </div>
+    </div>
+
+    <p>Ce module permet de gérer rapidement l'absence d'une ressource (helper, angel, traducteur ou facilitateur) en proposant automatiquement des remplaçants qualifiés, en respectant deux règles strictes :</p>
+    <ul>
+      <li><strong>Règle 1 — Pas de conflit horaire :</strong> un candidat n'est proposé que s'il n'est assigné à aucun autre atelier (quel que soit son rôle) sur le même créneau.</li>
+      <li><strong>Règle 2 — Charge de travail équilibrée :</strong> les candidats sont classés par score de recommandation qui favorise les personnes avec le moins d'heures déjà planifiées.</li>
+    </ul>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>La sauvegarde écrit dans <code>data.js</code> via GitHub API. Le token GitHub doit être configuré (bandeau de configuration automatique à la première sauvegarde).</div>
+    </div>
+
+    <h3>Étape 1 — Identifier la personne absente</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n orange">1</div>
+        <div class="step-body"><strong>Sélectionnez le rôle concerné</strong> (optionnel) pour filtrer la liste.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">2</div>
+        <div class="step-body"><strong>Choisissez la personne absente</strong> dans la liste déroulante — seules les personnes présentes dans le planning apparaissent.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">3</div>
+        <div class="step-body">Cliquez <strong>🔍 Analyser et proposer des remplaçants</strong> pour lancer l'algorithme.</div>
+      </div>
+    </div>
+
+    <h3>Étape 2 — Valider les propositions créneau par créneau</h3>
+    <p>Pour chaque créneau où la personne est assignée, une carte affiche :</p>
+    <table class="data-table">
+      <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
+      <tbody>
+        <tr><td><strong>En-tête</strong></td><td>Jour, heure, nom de l'atelier, lieu et rôle à remplacer</td></tr>
+        <tr><td><strong>Personne actuelle</strong></td><td>Nom barré en rouge — la personne absente</td></tr>
+        <tr><td><strong>Sélecteur de remplaçant</strong></td><td>Liste ordonnée par score de recommandation (🌟 Idéal → ⛔ Faible)</td></tr>
+        <tr><td><strong>Barre de score</strong></td><td>Score visuel 0-100 — vert si idéal, rouge si faible</td></tr>
+        <tr><td><strong>Charge actuelle</strong></td><td>Temps total déjà planifié pour le candidat choisi</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Calcul du score de recommandation</h3>
+    <table class="data-table">
+      <thead><tr><th>Critère</th><th>Impact sur le score</th></tr></thead>
+      <tbody>
+        <tr><td>Conflit horaire (autre atelier au même créneau)</td><td>❌ Candidat exclu — ne figure pas dans la liste</td></tr>
+        <tr><td>Charge de travail faible</td><td>✅ Score élevé — priorité aux moins chargés</td></tr>
+        <tr><td>Déjà mobilisé le même jour</td><td>+10 pts — optimise la présence terrain</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Actions disponibles par créneau</h3>
+    <div class="btn-row">
+      <span class="demo-btn primary">✅ Valider ce remplacement</span>
+      <span class="demo-btn">⏭ Ignorer ce créneau</span>
+    </div>
+    <ul>
+      <li><strong>Valider</strong> — confirme le remplaçant sélectionné pour ce créneau (modifiable avant sauvegarde globale)</li>
+      <li><strong>Ignorer</strong> — marque le créneau comme non traité (utile si aucun remplaçant convenable n'est disponible)</li>
+      <li>Un filtre par jour en haut de la liste permet de se concentrer sur une journée à la fois</li>
+    </ul>
+
+    <h3>Étape 3 — Sauvegarde globale</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n orange">1</div>
+        <div class="step-body">La barre en bas de la page indique : <strong>X validés · Y ignorés · Z en attente</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">2</div>
+        <div class="step-body">Cliquez <strong class="demo-btn primary" style="font-size:11px">💾 Sauvegarder les remplacements validés</strong> — seuls les créneaux validés sont écrits dans <code>data.js</code>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">3</div>
+        <div class="step-body">Un récapitulatif vert s'affiche listant tous les remplacements effectués (ancienne personne → nouvelle).</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Vous pouvez modifier le remplaçant choisi autant de fois que nécessaire avant de cliquer Valider. Les créneaux Ignorés ne sont jamais écrits dans <code>data.js</code> — l'entrée conserve l'ancienne valeur.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+
+  <!-- ══════════════════════════════════
+       17 — AFFECTATION TRADUCTEUR
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-trad-affect">
+    <div class="section-header">
+      <div class="section-icon">🌐✅</div>
+      <div>
+        <div class="section-title">Affectation Traducteur <span class="section-badge badge-edit">Édition</span></div>
+        <div class="section-subtitle">Vérifie et complète les affectations traducteur pour les ateliers animés par des facilitateurs anglophones</div>
+      </div>
+    </div>
+
+    <p>Ce module se concentre sur les <strong>ateliers animés par des facilitateurs anglophones</strong>. Il vérifie si un traducteur est déjà assigné — et, si ce n'est pas le cas, propose des candidats disponibles sans conflit horaire pour compléter l'affectation.</p>
+
+    <h3 style="border-left-color:#6d28d9">Règle métier appliquée</h3>
+    <ul>
+      <li>Un atelier est marqué <strong style="color:#dc2626">TBC (à confirmer)</strong> si son facilitateur est anglophone <em>et</em> qu'aucun traducteur n'est encore assigné dans le champ <code>traduction</code>.</li>
+      <li>Si un Helper assigné à l'atelier est aussi identifié comme Traducteur dans <code>ref_ressources.js</code>, il est proposé en priorité (il connaît déjà l'atelier).</li>
+      <li>Les autres traducteurs disponibles (pas de conflit horaire) sont listés en candidats alternatifs.</li>
+    </ul>
+
+    <h3 style="border-left-color:#6d28d9">Facilitateurs anglophones reconnus</h3>
+    <p>Les facilitateurs considérés comme anglophones sont ceux dont le profil dans <code>ref_ressources.js</code> inclut le rôle <code>anglophone</code>. Exemples actuels :</p>
+    <table class="data-table">
+      <thead><tr><th>Facilitateur anglophone</th></tr></thead>
+      <tbody>
+        <tr><td>Guy El Hadad</td></tr>
+        <tr><td>Mahadevi (Tina Defoy)</td></tr>
+        <tr><td>Our Echo</td></tr>
+        <tr><td>Samantha Marvels</td></tr>
+        <tr><td>Scott McClure</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#6d28d9">Statuts d'affichage</h3>
+    <table class="data-table">
+      <thead><tr><th>Statut</th><th>Signification</th></tr></thead>
+      <tbody>
+        <tr><td><span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">✅ Assigné</span></td><td>Un traducteur est déjà renseigné dans le planning</td></tr>
+        <tr><td><span style="background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">🔴 TBC</span></td><td>Aucun traducteur assigné — action requise</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#6d28d9">Processus d'affectation</h3>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n" style="background:#6d28d9">1</div>
+        <div class="step-body">La page liste tous les ateliers anglophones. Les entrées <strong>TBC</strong> sont mises en évidence en rouge.</div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#6d28d9">2</div>
+        <div class="step-body">Pour chaque atelier TBC, une liste de candidats traducteurs disponibles est proposée (sans conflit horaire).</div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#6d28d9">3</div>
+        <div class="step-body">Sélectionnez le traducteur souhaité dans le sélecteur et cliquez <strong>✅ Valider</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#6d28d9">4</div>
+        <div class="step-body">Cliquez <strong class="demo-btn primary" style="font-size:11px">💾 Sauvegarder</strong> — les affectations validées sont écrites dans <code>data.js</code>.</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>La sauvegarde écrit dans <code>data.js</code> via le serveur local (<code>start.bat</code>). Le serveur doit être actif avant de confirmer les affectations.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>La liste des facilitateurs anglophones est pilotée par le rôle <code>anglophone</code> dans <code>ref_ressources.js</code>. Pour ajouter ou retirer un facilitateur de cette liste, modifiez ses rôles dans <strong>Gérer les Ressources</strong>.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+
+  <!-- ══════════════════════════════════
+       18 — PROBLÈMES DE PLANNING
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-problemes">
+    <div class="section-header">
+      <div class="section-icon">🚨</div>
+      <div>
+        <div class="section-title">Problèmes de planning <span class="section-badge badge-edit">Édition</span></div>
+        <div class="section-subtitle">Détection et correction inline des ateliers incomplets</div>
+      </div>
+    </div>
+
+    <p>Ce rapport analyse l'ensemble du planning et identifie les ateliers qui ne respectent pas les règles de dotation minimale en ressources. Il permet de corriger les problèmes directement depuis chaque carte, sans quitter la page.</p>
+
+    <h3 style="border-left-color:#dc2626">Cas 1 — Atelier anglophone sans traducteur</h3>
+    <p>Un atelier est signalé en <strong style="color:#d97706">orange</strong> si :</p>
+    <ul>
+      <li>Au moins un facilitateur (fac1 ou fac2) a le rôle <code>anglophone</code> dans <code>ref_ressources.js</code></li>
+      <li><strong>ET</strong> le champ <code>traduction</code> est vide</li>
+    </ul>
+
+    <h3 style="border-left-color:#dc2626">Cas 2 — Ressources insuffisantes</h3>
+    <p>Un atelier est signalé en <strong style="color:#dc2626">rouge</strong> si le nombre total de ressources d'accompagnement (helpers + traducteur) est inférieur au minimum requis :</p>
+    <table class="data-table">
+      <thead><tr><th>Type d'atelier</th><th>Minimum requis</th></tr></thead>
+      <tbody>
+        <tr><td>MEDITATION / YOGA</td><td>1 ressource (helper ou traducteur)</td></tr>
+        <tr><td>Tous les autres types</td><td>2 ressources (helpers + traducteur cumulés)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#dc2626">Types d'ateliers exclus</h3>
+    <p>Les types suivants sont ignorés par le rapport (logistique interne, repas) :</p>
+    <div class="btn-row">
+      <span class="demo-btn">REPAS &amp; PAUSE</span>
+      <span class="demo-btn">PREPA &amp; LOGITICS</span>
+      <span class="demo-btn">REUNION D'EQUIPE</span>
+      <span class="demo-btn">TEST</span>
+      <span class="demo-btn">LOVE TEMPLE</span>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">Les ateliers sans facilitateur (fac1 et fac2 vides) sont également exclus.</p>
+
+    <h3 style="border-left-color:#dc2626">Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour</strong></td><td>Restreint aux problèmes d'une journée</td></tr>
+        <tr><td><strong>Type de problème</strong></td><td>Cas 1 uniquement / Cas 2 uniquement / Tous</td></tr>
+        <tr><td><strong>Type d'atelier</strong></td><td>Filtrer par catégorie (ATELIERS TANTRA, MEDITATION, etc.)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#dc2626">Correction inline</h3>
+    <p>Chaque carte problème affiche un bouton <strong>✏️ Corriger cet atelier</strong> qui ouvre un formulaire d'édition rapide directement sous la carte :</p>
+    <table class="data-table">
+      <thead><tr><th>Champ modifiable</th><th>Source des options</th></tr></thead>
+      <tbody>
+        <tr><td>Traducteur</td><td><code>ref_ressources.js</code> — rôle traducteur</td></tr>
+        <tr><td>Helper 1</td><td><code>ref_ressources.js</code> — rôle helper</td></tr>
+        <tr><td>Helper 2</td><td><code>ref_ressources.js</code> — rôle helper</td></tr>
+        <tr><td>Helper 3</td><td><code>ref_ressources.js</code> — rôle helper</td></tr>
+      </tbody>
+    </table>
+
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n" style="background:#dc2626">1</div>
+        <div class="step-body">Cliquez <strong>✏️ Corriger cet atelier</strong> — le formulaire s'ouvre sous la carte.</div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#dc2626">2</div>
+        <div class="step-body">Sélectionnez le traducteur et/ou les helpers manquants dans les listes déroulantes.</div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#dc2626">3</div>
+        <div class="step-body">Cliquez <strong class="demo-btn primary" style="font-size:11px">💾 Sauvegarder</strong> — <code>data.js</code> est mis à jour et la carte disparaît si le problème est résolu.</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>Le serveur local (<code>start.bat</code>) doit être actif pour la sauvegarde. La liste se recharge automatiquement après chaque correction réussie.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Pour modifier d'autres champs de l'atelier (heure, lieu, type, angel…), utilisez <strong>Éditer un atelier</strong> qui expose le formulaire complet.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════
+       19 — RÈGLES DES RAPPORTS
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-regles">
+    <div class="section-header">
+      <div class="section-icon">📐</div>
+      <div>
+        <div class="section-title">Règles des Rapports <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Documentation des règles métier appliquées par chaque rapport</div>
+      </div>
+    </div>
+
+    <p>Ce rapport liste, par rapport, l'ensemble des <strong>règles métier</strong> qui pilotent son comportement — critères d'inclusion/exclusion, seuils, algorithmes, comportements de sauvegarde. Il sert de référence documentaire pour l'équipe.</p>
+
+    <h3 class="green">Contenu par rapport</h3>
+    <p>Chaque entrée présente :</p>
+    <ul>
+      <li>L'icône, le nom et le type du rapport (<span class="demo-btn" style="background:var(--green-bg);color:var(--green);border-color:#86efac">Lecture</span> <span class="demo-btn" style="background:var(--orange-bg);color:var(--orange);border-color:#fcd34d">Édition</span> <span class="demo-btn" style="background:#ede9fe;color:#7c3aed;border-color:#c4b5fd">Admin</span> <span class="demo-btn" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe">Algorithme</span>)</li>
+      <li>Une description courte</li>
+      <li>Les règles individuelles, chacune typée par une icône :</li>
+    </ul>
+    <table class="data-table" style="margin-top:8px">
+      <thead><tr><th>Icône</th><th>Type de règle</th><th>Signification</th></tr></thead>
+      <tbody>
+        <tr><td>🚫</td><td>Blocage</td><td>Condition qui exclut une entrée du traitement</td></tr>
+        <tr><td>✅</td><td>Validation</td><td>Critère requis pour qu'une entrée soit considérée valide</td></tr>
+        <tr><td>ℹ️</td><td>Information</td><td>Comportement descriptif, pas d'impact sur les données</td></tr>
+        <tr><td>⚠️</td><td>Avertissement</td><td>Condition à risque nécessitant attention</td></tr>
+        <tr><td>🤖</td><td>Algorithme</td><td>Logique de calcul ou de scoring automatique</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="green">Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Type de rapport</strong></td><td>Lecture / Édition / Admin / Algorithme</td></tr>
+        <tr><td><strong>Recherche texte</strong></td><td>Filtre sur le nom du rapport ou le texte d'une règle</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="green">Édition des règles</h3>
+    <p>Chaque règle est <strong>modifiable inline</strong> directement depuis cette page :</p>
+    <div class="steps-block">
+      <div class="step"><div class="step-n green">1</div><div class="step-body">Cliquez sur le texte d'une règle pour l'éditer.</div></div>
+      <div class="step"><div class="step-n green">2</div><div class="step-body">Modifiez le texte, puis cliquez <strong>Enregistrer</strong>.</div></div>
+      <div class="step"><div class="step-n green">3</div><div class="step-body">Cliquez <strong>+ Ajouter une règle</strong> en bas d'une section pour créer une nouvelle entrée.</div></div>
+      <div class="step"><div class="step-n green">4</div><div class="step-body">Cliquez 🗑️ pour supprimer une règle après confirmation.</div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>Les modifications des règles sont sauvegardées dans le fichier <code>Rapport_Regles.html</code> lui-même (auto-réécriture via le serveur local). Le serveur doit être actif.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Ce rapport est accessible directement depuis le footer de la page d'accueil (bouton <strong>📐 Règles</strong>) — sans mot de passe.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <div class="section" id="architecture">
+    <div class="section-header">
+      <div class="section-icon">🗄️</div>
+      <div>
+        <div class="section-title">Architecture des fichiers</div>
+        <div class="section-subtitle">Source de vérité et flux de données</div>
+      </div>
+    </div>
+
+    <p>Tous les rapports lisent leurs données depuis des fichiers JavaScript chargés dynamiquement via <code>loader.js</code>.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Fichier</th><th>Rôle</th><th>Modifié par</th></tr></thead>
+      <tbody>
+        <tr><td><code>data.js</code></td><td>Source de vérité — tous les ateliers (AGENDA)</td><td>Éditer un atelier, Master Data (bouton + data.js)</td></tr>
+        <tr><td><code>logistics.js</code></td><td>Informations logistiques saisies par les facilitateurs</td><td>Saisie des besoins logistiques, Éditer un atelier</td></tr>
+        <tr><td><code>ref_ressources.js</code></td><td>Référentiel unifié de toutes les ressources</td><td>Gérer les Ressources</td></tr>
+        <tr><td><code>ref_resource_types.js</code></td><td>Types de ressources valides (Facilitateur, Helper…)</td><td>Chargé avant ref_ressources.js</td></tr>
+        <tr><td><code>ref_lieux.js</code></td><td>Liste des lieux / salles</td><td>Master Data → onglet Lieux</td></tr>
+        <tr><td><code>ref_types.js</code></td><td>Liste des types d'atelier</td><td>Master Data → onglet Types</td></tr>
+        <tr><td><code>ref_notes.js</code></td><td>Liste des notes normalisées</td><td>Master Data → onglet Notes</td></tr>
+        <tr><td><code>ref_heures.js</code></td><td>Liste des créneaux horaires (début / fin)</td><td>Lecture seule — utilisé dans Éditer un atelier</td></tr>
+        <tr><td><code>ref_piment.js</code></td><td>Niveaux de piment</td><td>Lecture seule</td></tr>
+        <tr><td><code>ref_jours.js</code></td><td>Définitions des 7 jours du festival</td><td>Lecture seule</td></tr>
+        <tr><td><code>server.py</code></td><td>Serveur local Python (port 3000)</td><td>Lancé via <code>start.bat</code></td></tr>
+        <tr><td><code>loader.js</code></td><td>Utilitaire de chargement asynchrone des fichiers JS</td><td>Ne pas modifier</td></tr>
+        <tr><td><code>Rapport_Regles.html</code></td><td>Documentation des règles métier par rapport (éditables inline)</td><td>Auto-modifié via Règles des Rapports</td></tr>
+        <tr><td><code>github-api.js</code></td><td>API de sauvegarde vers le serveur local</td><td>Ne pas modifier</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Flux de données — Schéma simplifié</h3>
+    <table class="data-table">
+      <thead><tr><th>Action</th><th>Fichiers impactés</th></tr></thead>
+      <tbody>
+        <tr><td>Modifier un atelier (équipe, horaire, lieu…)</td><td><code>data.js</code></td></tr>
+        <tr><td>Saisir des besoins logistiques (facilitateur)</td><td><code>logistics.js</code></td></tr>
+        <tr><td>Ajouter / modifier / supprimer une ressource</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Ajouter / renommer un lieu, type ou note</td><td><code>ref_lieux.js</code> / <code>ref_types.js</code> / <code>ref_notes.js</code></td></tr>
+        <tr><td>Renommer un lieu/type/note avec propagation</td><td><code>ref_*.js</code> + <code>data.js</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>Après toute modification, cliquez sur <strong>🔄 Refresh</strong> dans les rapports pour recharger les données et voir les changements.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Tous les fichiers <code>ref_*.js</code> sont chargés <strong>de manière synchrone</strong> avant les données, grâce à l'ordre des balises <code>&lt;script&gt;</code> dans chaque rapport. Respectez cet ordre si vous modifiez les fichiers HTML.</div>
+    </div>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>
