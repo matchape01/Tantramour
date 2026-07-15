@@ -216,6 +216,7 @@ var REPORTS = [
       { type: 'info',  text: 'Toutes les colonnes sont triables par clic sur l\'en-tête (↑ ascendant, ↓ descendant).' },
       { type: 'check', text: 'Un ★ rouge à côté du nom d\'atelier signale une note logistique renseignée.' },
       { type: 'info',  text: 'Le bouton 🔄 Refresh force un rechargement sans cache pour voir les dernières données.' },
+      { type: 'info',  text: 'Bouton ✏️ en dernière colonne : une modale demande le mot de passe admin (007), puis ouvre Éditer un atelier dans un nouvel onglet avec l\'atelier pré-sélectionné via ?idx=N.' },
     ]
   },
   {
@@ -229,6 +230,8 @@ var REPORTS = [
       { type: 'info',  text: 'Affiche tous les rôles d\'une personne : Facilitateur, Helper, Angel, Traducteur.' },
       { type: 'info',  text: 'Filtres disponibles : Personne, Jour, Rôle, Type d\'atelier.' },
       { type: 'check', text: 'La liste des personnes est construite dynamiquement depuis data.js — pas de saisie manuelle.' },
+      { type: 'info',  text: 'Vue mobile : chaque carte atelier affiche un bouton 📋 sous l\'heure. Ouvre une modale bottom-sheet avec les détails complets de l\'atelier et les informations logistiques de logistics.js.' },
+      { type: 'check', text: 'Logistics.js est chargé au démarrage — la modale affiche un message si aucune info logistique n\'est disponible pour cet atelier.' },
     ]
   },
   {
@@ -242,7 +245,37 @@ var REPORTS = [
       { type: 'info',  text: 'Onglets : Combiné (tous rôles), Facilitateurs, Helpers, Traducteurs, Angels.' },
       { type: 'info',  text: 'Filtres disponibles : Recherche texte (nom), Personne, Jour.' },
       { type: 'info',  text: 'Deux vues disponibles : Vue par Personne (blocs colorés) et Vue Tableau (triable).' },
-      { type: 'check', text: 'Chaque ligne affiche un lien 🔗 vers la fiche logistique de l\'atelier.' },
+      { type: 'info',  text: 'Bouton 📋 sur chaque ligne : ouvre une modale bottom-sheet avec les détails de l\'atelier (date, heure, lieu, équipe, note) et les informations logistiques de logistics.js.' },
+      { type: 'check', text: 'La modale se ferme en cliquant sur ✕ CLOSE ou en cliquant sur l\'overlay. Scroll body bloqué pendant l\'ouverture.' },
+    ]
+  },
+  {
+    id: 'planning_traducteurs',
+    icon: '🌐',
+    title: 'Planning Traducteurs',
+    file: 'Rapport_Traducteurs.html',
+    type: 'lecture',
+    description: 'Vue par traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau.',
+    rules: [
+      { type: 'info',  text: 'Filtres disponibles : Traducteur, Jour.' },
+      { type: 'info',  text: 'Deux vues : Vue par Traducteur (blocs avec shifts) et Vue Tableau (triable).' },
+      { type: 'info',  text: 'Les ateliers consécutifs ou simultanés (gap ≤ 5 min) sont regroupés en shifts.' },
+      { type: 'info',  text: 'Seuls les ateliers avec un champ traduction renseigné apparaissent.' },
+    ]
+  },
+  {
+    id: 'ateliers_colibri',
+    icon: '🐦',
+    title: 'Ateliers Colibri',
+    file: 'Rapport_Colibri.html',
+    type: 'lecture',
+    description: 'Liste des ateliers avec une ressource (helper ou traducteur) ayant le rôle "colibri".',
+    rules: [
+      { type: 'algo',  text: 'Un atelier est inclus si au moins un helper ou traducteur assigné possède le rôle "colibri" dans ref_ressources.js.' },
+      { type: 'info',  text: 'Filtres disponibles : Jour, Colibri (personne spécifique).' },
+      { type: 'info',  text: 'Les Colibris sont mis en évidence avec un badge violet distinctif dans chaque carte.' },
+      { type: 'check', text: 'ref_ressources.js est chargé via loadData() pour garantir la fraîcheur du cache.' },
+      { type: 'info',  text: 'Pour ajouter ou retirer le rôle colibri à une personne : utiliser Gérer les Ressources.' },
     ]
   },
   {
@@ -256,19 +289,6 @@ var REPORTS = [
       { type: 'info',  text: 'Navigation en 2 étapes : sélection du jour, puis de l\'atelier.' },
       { type: 'check', text: 'Les informations logistiques proviennent de logistics.js (saisi par les facilitateurs).' },
       { type: 'warn',  text: 'Si Note ou Informations Logistiques sont vides, la fiche affiche un texte grisé en italique.' },
-    ]
-  },
-  {
-    id: 'logistique_helpers',
-    icon: '🤝',
-    title: 'Logistique Helpers',
-    file: 'Rapport_Logistique_Helpers.html',
-    type: 'lecture',
-    description: 'Vue logistique par helper — ateliers assignés et besoins détaillés.',
-    rules: [
-      { type: 'info',  text: 'Filtres disponibles : Helper, Jour.' },
-      { type: 'info',  text: 'Les ateliers sont groupés par jour dans le bloc de chaque helper.' },
-      { type: 'check', text: 'Affiche les informations logistiques de logistics.js si elles existent.' },
     ]
   },
   {
@@ -311,8 +331,9 @@ var REPORTS = [
     type: 'algo',
     description: 'Analyse de la répartition de charge pour Helpers, Angels et Traducteurs.',
     rules: [
-      { type: 'block', text: 'Types d\'ateliers exclus du calcul : REPAS & PAUSE uniquement. Tous les autres types sont inclus.' },
-      { type: 'algo',  text: 'La durée de chaque atelier est calculée depuis le champ heure (format HH:MM - HH:MM).' },
+      { type: 'block', text: 'Types exclus du calcul de charge : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST. Tous les autres types (ATELIERS TANTRA, MEDITATION, CEREMONIE, LOVE TEMPLE, POOL PARTY & DJ Set, etc.) sont inclus.' },
+      { type: 'algo',  text: 'La durée de chaque atelier est calculée depuis le champ heure (format HH:MM - HH:MM ou HH.MM - HH.MM).' },
+      { type: 'algo',  text: 'Pour les Angels : fusion des intervalles qui se chevauchent sur le même jour (interval merging) — on ne compte que la durée nette couverte.' },
       { type: 'info',  text: 'Barre de charge par journée : vert < 2h · orange 2–4h · rouge > 4h.' },
       { type: 'info',  text: 'Filtre disponible : Jour (restreint le calcul à une journée).' },
     ]
@@ -323,16 +344,17 @@ var REPORTS = [
     title: 'Harmonisation (onglet dans Charge de travail)',
     file: 'Rapport_Charge_Travail.html',
     type: 'algo',
-    description: 'Propositions automatiques de rééquilibrage de charge entre Helpers et Angels.',
+    description: 'Propositions automatiques de rééquilibrage de charge entre Helpers, Angels et Traducteurs.',
     rules: [
-      { type: 'algo',  text: 'Seuil SURCHARGÉ : charge > 120 % de la moyenne du groupe (helpers ou angels). Carte orange.' },
+      { type: 'algo',  text: 'Seuil SURCHARGÉ : charge > 120 % de la moyenne du groupe (helpers, angels ou traducteurs). Carte orange.' },
       { type: 'algo',  text: 'Seuil TRÈS SURCHARGÉ (alerte) : charge > 140 % de la moyenne. Carte rouge.' },
       { type: 'algo',  text: 'Zone cible acceptable : entre 80 % et 120 % de la moyenne du groupe.' },
       { type: 'algo',  text: 'Seuil SOUS-CHARGÉ (disponible) : charge < 85 % de la moyenne du groupe ET charge globale (tous rôles) ≤ 130 % de la moyenne globale.' },
       { type: 'warn',  text: 'Si un helper a une charge légère en tant que helper mais une charge globale > 130 % de la moyenne globale, il est signalé "déjà chargé sur d\'autres rôles" et non proposé comme disponible.' },
       { type: 'block', text: 'Certaines personnes sont exclues des suggestions de redistribution (non substituables) — liste EXCLUDED_FROM_SUGGESTIONS codée dans le rapport.' },
       { type: 'algo',  text: 'Maximum 3 suggestions de transfert proposées par personne surchargée.' },
-      { type: 'algo',  text: 'Les candidats remplaçants sont classés en deux groupes : sous la moyenne d\'abord, puis égaux ou au-dessus.' },
+      { type: 'algo',  text: 'Les candidats remplaçants sont classés en deux groupes : sous la moyenne d\'abord (en vert), puis égaux ou au-dessus.' },
+      { type: 'info',  text: 'Les données sont transmises à la popup via encodage base64 pour éviter les problèmes d\'encodage HTML dans le script inline.' },
       { type: 'info',  text: 'Les moyennes affichées (Moy. helpers / angels / traducteurs / globale) sont calculées en excluant les personnes non substituables.' },
     ]
   },
@@ -346,10 +368,14 @@ var REPORTS = [
     rules: [
       { type: 'warn',  text: 'Le serveur local (start.bat) doit être actif pour toute sauvegarde.' },
       { type: 'info',  text: 'Filtres de liste : Jour, Type, Recherche texte. La sélection ouvre le formulaire d\'édition.' },
+      { type: 'info',  text: 'Pré-sélection via URL : le paramètre ?idx=N ouvre directement l\'atelier d\'index N dans AGENDA. Utilisé par Agenda par Jour (bouton ✏️) et Affectation Traducteur (bouton ✏️ Assigner).' },
       { type: 'check', text: 'L\'heure est saisie via un double sélecteur (début / fin) alimenté par ref_heures.js.' },
       { type: 'info',  text: 'Les listes Lieu, Type, Note proviennent des fichiers ref_*.js correspondants.' },
       { type: 'info',  text: 'Les ressources (Fac, Helper, Angel, Traducteur) proviennent de ref_ressources.js.' },
       { type: 'check', text: 'Le panneau logistique en bas permet d\'éditer logistics.js directement depuis la même page.' },
+      { type: 'info',  text: 'Bouton ＋ Nouvel atelier : formulaire vierge — sauvegarde insère à la fin de AGENDA.' },
+      { type: 'info',  text: 'Bouton 📋 Dupliquer : crée une copie avec le nom suffixé "(COPIE)" et le logisticId réinitialisé. Disponible uniquement sur un atelier existant.' },
+      { type: 'warn',  text: 'Bouton 🗑 Supprimer : suppression irréversible après confirmation. Rollback automatique en cas d\'erreur serveur.' },
     ]
   },
   {
@@ -376,7 +402,7 @@ var REPORTS = [
     description: 'Référentiel unifié de toutes les personnes du festival.',
     rules: [
       { type: 'check', text: 'Les rôles disponibles (cases à cocher) sont lus dynamiquement depuis ref_resource_types.js.' },
-      { type: 'info',  text: 'Une personne peut avoir plusieurs rôles simultanément (ex : Facilitateur + Helper).' },
+      { type: 'info',  text: 'Une personne peut avoir plusieurs rôles simultanément (ex : Facilitateur + Helper + Colibri).' },
       { type: 'check', text: 'L\'ID est généré automatiquement depuis le nom (ex : "R_ARNAUD"). Toujours préfixé "R_".' },
       { type: 'block', text: 'L\'ID doit être unique, commencer par "R_" et ne contenir que lettres majuscules, chiffres et "_".' },
       { type: 'warn',  text: 'Supprimer une ressource ne met pas à jour data.js — vérifier manuellement dans Éditer un atelier.' },
@@ -404,15 +430,14 @@ var REPORTS = [
     icon: '🌐✅',
     title: 'Affectation Traducteur',
     file: 'Rapport_Traducteur_Affectation.html',
-    type: 'algo',
-    description: 'Vérifie les ateliers anglophones et propose des traducteurs disponibles.',
+    type: 'lecture',
+    description: 'Liste les ateliers anglophones et leur statut de traduction (OK / TBC).',
     rules: [
-      { type: 'block', text: 'Règle : tout atelier dont fac1 ou fac2 a le rôle "anglophone" dans ref_ressources.js doit avoir un traducteur assigné.' },
-      { type: 'check', text: 'Statut OK : un helper de l\'atelier est aussi traducteur OU le champ traduction est renseigné.' },
-      { type: 'warn',  text: 'Statut TBC : aucun helper-traducteur désigné — candidats disponibles proposés (sans conflit horaire).' },
-      { type: 'block', text: 'Statut MANQUANT : aucun helper-traducteur disponible sur ce créneau — traitement manuel requis.' },
-      { type: 'algo',  text: 'Détection de conflit : même logique que Conflits de planning (chevauchement strict).' },
-      { type: 'warn',  text: 'La sauvegarde écrit data.js via serveur local (localhost) ou GitHub API selon l\'environnement.' },
+      { type: 'block', text: 'Règle d\'inclusion : tout atelier dont fac1 ou fac2 a le rôle "anglophone" dans ref_ressources.js.' },
+      { type: 'algo',  text: 'Statut ✅ OK : le champ traduction est non vide. Statut ⏳ TBC : le champ traduction est vide.' },
+      { type: 'info',  text: 'Pour un atelier TBC : bouton ✏️ Assigner un traducteur ouvre Éditer un atelier dans un nouvel onglet avec l\'atelier pré-sélectionné via ?idx=N.' },
+      { type: 'info',  text: 'Filtres disponibles : Statut (✅ OK / ⏳ TBC / Tous), Jour.' },
+      { type: 'check', text: 'ref_ressources.js est chargé via loadData() pour garantir la fraîcheur du cache.' },
     ]
   },
   {
@@ -424,10 +449,11 @@ var REPORTS = [
     description: 'Détection des ateliers avec ressources insuffisantes ou traducteur manquant.',
     rules: [
       { type: 'block', text: 'Cas 1 — Atelier anglophone sans traducteur : fac1 ou fac2 a le rôle "anglophone" ET le champ traduction est vide.' },
+      { type: 'block', text: 'Exception Cas 1 : le type POOL PARTY & DJ Set est exclu du contrôle traducteur, même si le facilitateur est anglophone.' },
       { type: 'block', text: 'Cas 2 — Ressources insuffisantes : nombre de helpers + traducteur < minimum requis.' },
       { type: 'algo',  text: 'Règle générale : chaque atelier doit avoir au moins 2 ressources (helpers + traducteur cumulés).' },
       { type: 'info',  text: 'Exception MEDITATION / YOGA : 1 seule ressource suffit (helper ou traducteur).' },
-      { type: 'block', text: 'Types exclus de la vérification : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST, LOVE TEMPLE.' },
+      { type: 'block', text: 'Types exclus de la vérification : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST, LOVE TEMPLE, POOL PARTY & DJ Set.' },
       { type: 'block', text: 'Ateliers sans facilitateur (fac1 et fac2 vides) sont également exclus.' },
       { type: 'check', text: 'Édition inline : Traducteur, Helper 1/2/3 modifiables directement depuis la carte problème.' },
       { type: 'warn',  text: 'La sauvegarde écrit data.js via serveur local (localhost) ou GitHub API selon l\'environnement.' },

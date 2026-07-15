@@ -11,7 +11,7 @@ var REF_TYPES = [
   { id: "T_LOVE_TEMPLE", value: "LOVE TEMPLE", label: "LOVE TEMPLE" },
   { id: "T_YOGA", value: "MEDITATION / YOGA", label: "MEDITATION / YOGA" },
   { id: "T_POOL", value: "POOL PARTY & DJ Set", label: "POOL PARTY & DJ Set" },
-  { id: "T_PREPA", value: "PREPA & LOGITICS", label: "PREPA & LOGITICS" },
+  { id: "T_PREPA", value: "PREPA & LOGISTICS", label: "PREPA & LOGISTICS" },
   { id: "T_RASSEMBLEMENT", value: "RASSEMBLEMENT", label: "RASSEMBLEMENT" },
   { id: "T_REPAS", value: "REPAS & PAUSE", label: "REPAS & PAUSE" },
   { id: "T_REUNION", value: "REUNION D'EQUIPE", label: "REUNION D'EQUIPE" },

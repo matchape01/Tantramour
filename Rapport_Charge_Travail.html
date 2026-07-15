@@ -192,7 +192,7 @@
 <script src="ref_jours.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['data.js'], function() {
+loadData(['ref_ressources.js', 'data.js'], function() {
 
 // ════════════════════════════════════════════════
 // CONFIGURATION
@@ -202,13 +202,13 @@ const TYPES_ACTIFS = new Set([
   'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
   'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
   'MEDITATION / YOGA', 'RASSEMBLEMENT',
-  'CEREMONIE & CONCERT', "REUNION D'EQUIPE",
+  'CEREMONIE & CONCERT',
   'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
-  'POOL PARTY', 'PREPA & LOGITICS',
+  'POOL PARTY & DJ Set',
   'TANTRA CAFÉ & CONFERENCE',
   'TANTRA CAFE & CONFERENCE',       // variante sans accent
   'TANTRA CAF\u00C9 & CONFERENCE',  // É en unicode
-  'TEST',                            // entrées de test visibles dans data.js
+  'PREPA & LOGISTICS',
 ]);
 
 // Fonction utilitaire : normalise un type avant comparaison
@@ -272,6 +272,15 @@ function buildStats(jourFilter) {
     (jourFilter === '' || e.jour === jourFilter)
   );
 
+  // Helpers exclus des moyennes (mais toujours affichés) :
+  // ceux qui ont aussi un rôle colibri, manager ou admin dans REF_RESSOURCES
+  const EXCLUDED_ROLES = new Set(['colibri', 'manager', 'admin']);
+  const HELPERS_EXCLUS = new Set(
+    (typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES : [])
+      .filter(r => r.roles.includes('helper') && r.roles.some(role => EXCLUDED_ROLES.has(role)))
+      .map(r => r.value)
+  );
+
   // Map nom → { assignments: [{atelier, jour, heure, type, role}], ... }
   const helpers = {};
   const angels  = {};
@@ -285,9 +294,10 @@ function buildStats(jourFilter) {
 
   filtered.forEach(e => {
     const base = { atelier: e.atelier, jour: e.jour, heure: e.heure, type: e.type, date: e.date };
-    addTo(helpers, e.helper1,    { ...base, role: 'Helper' });
-    addTo(helpers, e.helper2,    { ...base, role: 'Helper' });
-    addTo(helpers, e.helper3,    { ...base, role: 'Helper' });
+    // Tous les helpers sont affichés — les exclus sont juste marqués pour les moyennes
+    addTo(helpers, e.helper1, { ...base, role: 'Helper' });
+    addTo(helpers, e.helper2, { ...base, role: 'Helper' });
+    addTo(helpers, e.helper3, { ...base, role: 'Helper' });
     addTo(angels,  e.angel,      { ...base, role: 'Angel'  });
     addTo(trads,   e.traduction, { ...base, role: 'Traducteur' });
   });
@@ -400,7 +410,7 @@ function buildStats(jourFilter) {
     nom, role: 'Traducteur', ...computeAngelStats(list)
   })).sort((a, b) => b.minutes - a.minutes || b.count - a.count);
 
-  return { helperStats, angelStats, tradStats };
+  return { helperStats, angelStats, tradStats, helpersExclus: HELPERS_EXCLUS };
 }
 
 // ════════════════════════════════════════════════
@@ -1217,27 +1227,35 @@ function buildHarmony(helperStats, angelStats, tradStats) {
 // ════════════════════════════════════════════════
 function render() {
   const jourFilter = document.getElementById('filterJour').value;
-  const { helperStats, angelStats, tradStats } = buildStats(jourFilter);
+  const { helperStats, angelStats, tradStats, helpersExclus } = buildStats(jourFilter);
 
   // Summary bar
-  const totalH = helperStats.reduce((s, p) => s + p.count, 0);
-  const totalA = angelStats.reduce((s, p) => s + p.count, 0);
-  const totalT = tradStats.reduce((s, p) => s + p.count, 0);
-  const avgH   = helperStats.length ? (totalH / helperStats.length).toFixed(1) : 0;
-  const avgA   = angelStats.length  ? (totalA / angelStats.length).toFixed(1)  : 0;
-  const avgT   = tradStats.length   ? (totalT / tradStats.length).toFixed(1)   : 0;
+  // Pour les moyennes helpers : exclure les colibri/manager/admin
+  const helpersPourMoy = helperStats.filter(p => !helpersExclus.has(p.nom));
+  const totalH    = helperStats.reduce((s, p) => s + p.count, 0);
+  const totalA    = angelStats.reduce((s, p) => s + p.count, 0);
+  const totalT    = tradStats.reduce((s, p) => s + p.count, 0);
+  const avgH      = helpersPourMoy.length ? (helpersPourMoy.reduce((s, p) => s + p.count, 0) / helpersPourMoy.length).toFixed(1) : 0;
+  const avgA      = angelStats.length  ? (totalA / angelStats.length).toFixed(1)  : 0;
+  const avgT      = tradStats.length   ? (totalT / tradStats.length).toFixed(1)   : 0;
+  const avgHmin   = helpersPourMoy.length ? Math.round(helpersPourMoy.reduce((s, p) => s + p.minutes, 0) / helpersPourMoy.length) : 0;
+  const avgAmin   = angelStats.length  ? Math.round(angelStats.reduce((s, p) => s + p.minutes, 0)  / angelStats.length)  : 0;
+  const avgTmin   = tradStats.length   ? Math.round(tradStats.reduce((s, p) => s + p.minutes, 0)   / tradStats.length)   : 0;
 
   document.getElementById('summaryBar').innerHTML = `
     <div class="sum-pill"><div class="num" style="color:var(--helper-text)">${helperStats.length}</div><div class="lbl">Helpers actifs</div></div>
     <div class="sum-pill"><div class="num" style="color:var(--helper-text)">${totalH}</div><div class="lbl">Missions helpers</div></div>
-    <div class="sum-pill"><div class="num" style="color:var(--helper-text)">${avgH}</div><div class="lbl">Moy. / helper</div></div>
+    <div class="sum-pill"><div class="num" style="color:var(--helper-text)">${avgH}</div><div class="lbl">Moy. ateliers / helper*</div></div>
+    <div class="sum-pill"><div class="num" style="color:var(--helper-text)">${fmtMin(avgHmin)}</div><div class="lbl">Moy. heures / helper*</div></div>
     <div class="sum-pill"><div class="num" style="color:var(--angel-text)">${angelStats.length}</div><div class="lbl">Angels actifs</div></div>
     <div class="sum-pill"><div class="num" style="color:var(--angel-text)">${totalA}</div><div class="lbl">Missions angels</div></div>
-    <div class="sum-pill"><div class="num" style="color:var(--angel-text)">${avgA}</div><div class="lbl">Moy. / angel</div></div>
+    <div class="sum-pill"><div class="num" style="color:var(--angel-text)">${avgA}</div><div class="lbl">Moy. ateliers / angel</div></div>
+    <div class="sum-pill"><div class="num" style="color:var(--angel-text)">${fmtMin(avgAmin)}</div><div class="lbl">Moy. heures / angel</div></div>
     <div class="sum-pill"><div class="num" style="color:var(--trad-text)">${tradStats.length}</div><div class="lbl">Traducteurs actifs</div></div>
     <div class="sum-pill"><div class="num" style="color:var(--trad-text)">${totalT}</div><div class="lbl">Missions trad.</div></div>
-    <div class="sum-pill"><div class="num" style="color:var(--trad-text)">${avgT}</div><div class="lbl">Moy. / trad.</div></div>
-  `;
+    <div class="sum-pill"><div class="num" style="color:var(--trad-text)">${avgT}</div><div class="lbl">Moy. ateliers / trad.</div></div>
+    <div class="sum-pill"><div class="num" style="color:var(--trad-text)">${fmtMin(avgTmin)}</div><div class="lbl">Moy. heures / trad.</div></div>
+  ` + (helpersExclus.size > 0 ? `<p style="font-size:11px;color:var(--muted);margin-top:6px;">* Moyenne calculée sur ${helpersPourMoy.length} helpers (hors colibri, manager & admin : ${[...helpersExclus].join(', ')})</p>` : '');
 
   // Person grid
   const grid = document.getElementById('personGrid');
@@ -1304,7 +1322,7 @@ function openHarmony() {
   const cards = window._lastHarmonyCards || [];
   const isDark = document.body.classList.contains('dark');
 
-  // Sérialiser les cards en JSON pour les passer à la popup
+  // Sérialiser les cards via un textarea caché (évite les problèmes d'encodage dans <script>)
   const cardsJson = JSON.stringify(cards.map(c => ({
     cat:   c.cat || 'global',
     cls:   c.cls || '',
@@ -1312,6 +1330,8 @@ function openHarmony() {
     title: c.title || '',
     body:  c.body || ''
   })));
+  // Encode en base64 pour passer en toute sécurité à la popup
+  const cardsB64 = btoa(unescape(encodeURIComponent(cardsJson)));
 
   const html = `<!DOCTYPE html>
 <html lang="fr">
@@ -1401,8 +1421,9 @@ function openHarmony() {
   <div class="harmony-grid" id="harmonyGrid"></div>
 </div>
 
+<textarea id="_cardsData" style="display:none">${cardsB64}</textarea>
 <script>
-var CARDS = ${cardsJson};
+var CARDS = JSON.parse(decodeURIComponent(escape(atob(document.getElementById('_cardsData').value))));
 var currentView = 'global';
 
 var INTROS = {
