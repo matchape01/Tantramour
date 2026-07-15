@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -206,8 +206,70 @@
   .pill-sm-en { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
 
   @media (max-width: 600px) {
+    /* ── Général ── */
+    .wrap { padding: 12px 12px 60px; }
     select { min-width: 100%; }
+    .filters { gap: 8px; }
+
+    /* ── Header ── */
+    .logo p { font-size: 20px; }
+    .header-actions { gap: 6px; }
+    .btn-ghost { padding: 5px 10px; font-size: 12px; }
+
+    /* ── Stats cards : 3 par ligne ── */
+    .summary { gap: 8px; }
+    .sum-card { min-width: calc(33% - 6px); padding: 10px 12px; }
+    .sum-num  { font-size: 22px; }
+
+    /* ── Onglets rôle : défilables horizontalement ── */
+    .role-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+    .role-tab  { flex-shrink: 0; padding: 6px 12px; font-size: 12px; }
+
+    /* ── Vue bascule ── */
+    .view-toggle { gap: 6px; }
+    .vbtn { font-size: 12px; padding: 5px 10px; }
+
+    /* ── Ligne atelier : layout vertical ── */
+    .shift-row {
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 10px 14px;
+      position: relative;
+    }
+    /* Masquer les éléments non essentiels */
+    .shift-jour { display: none; }
     .shift-date { display: none; }
+
+    /* Ligne 1 : heure + badge rôle (toute la largeur) */
+    .shift-heure {
+      font-size: 12px; min-width: 0;
+      order: 1; flex-shrink: 0;
+    }
+    .shift-role  { order: 2; flex-shrink: 0; margin-left: 6px; }
+
+    /* Espace flexible pour pousser 📋 à droite sur ligne 1 */
+    .shift-row > span:last-child { /* bouton 📋 */
+      order: 3; margin-left: auto;
+    }
+
+    /* Ligne 2 : nom de l'atelier (pleine largeur) */
+    .shift-atelier {
+      order: 4; width: 100%; font-size: 13px; font-weight: 600;
+      margin-top: 3px;
+    }
+
+    /* Ligne 3 : lieu + type */
+    .shift-lieu  { order: 5; margin-top: 4px; }
+    .shift-row > span:nth-last-child(2) { /* tag type */
+      order: 6; margin-top: 4px; margin-left: 6px;
+    }
+
+    /* ── En-tête bloc personne ── */
+    .role-header { padding: 12px 14px; }
+    .role-name   { font-size: 15px; }
+    .role-avatar { width: 36px; height: 36px; font-size: 13px; }
+    .role-stats  { font-size: 11px; }
+    .role-stats strong { font-size: 13px; }
   }
 </style>
 </head>
@@ -286,7 +348,6 @@
   <div id="results"></div>
 
 </div>
-<footer><p>Made with IBM Bob</p></footer>
 
 <!-- ── MODALE LOGISTIQUE ── -->
 <div class="log-modal-overlay" id="logModalOverlay" onclick="closeLogModal(event)">
