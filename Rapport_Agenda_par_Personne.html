@@ -111,6 +111,40 @@
   }
   .empty { text-align: center; padding: 48px; color: var(--muted); }
   footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+
+  /* ── BOUTON LOGISTIQUE ── */
+  .log-link { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; flex-shrink: 0; transition: background .15s, border-color .15s; }
+  .log-link:hover { background: #eff6ff; border-color: var(--accent); }
+
+  /* ── MODALE LOGISTIQUE ── */
+  .log-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 9999; align-items: flex-end; justify-content: center; }
+  .log-modal-overlay.open { display: flex; }
+  .log-modal { background: var(--bg); border-radius: 16px 16px 0 0; width: 100%; max-width: 600px; max-height: 85vh; display: flex; flex-direction: column; animation: slideUp .22s ease; }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .log-modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 0; flex-shrink: 0; }
+  .log-modal-head { padding: 12px 16px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .log-modal-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+  .log-modal-meta { display: flex; flex-direction: column; gap: 5px; }
+  .log-meta-row { display: flex; gap: 6px; align-items: flex-start; flex-wrap: wrap; font-size: 12px; }
+  .log-meta-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); min-width: 64px; flex-shrink: 0; padding-top: 2px; }
+  .log-meta-val { color: var(--text); flex: 1; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .log-modal-body { padding: 14px 16px; overflow-y: auto; flex: 1; }
+  .log-modal-content { font-size: 13px; line-height: 1.7; color: var(--text); }
+  .log-modal-content p  { margin-bottom: 6px; }
+  .log-modal-content ul { padding-left: 18px; margin-bottom: 6px; }
+  .log-modal-content ol { padding-left: 18px; margin-bottom: 6px; }
+  .log-modal-content li { margin-bottom: 2px; }
+  .log-modal-empty { font-size: 13px; color: var(--muted); font-style: italic; text-align: center; padding: 20px 0; }
+  .log-modal-foot { padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0; display: flex; justify-content: center; }
+  .btn-close-modal { cursor: pointer; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 28px; font-size: 13px; font-weight: 600; color: var(--text); font-family: inherit; }
+  .btn-close-modal:hover { background: var(--border); }
+  /* Pills mini pour la modale */
+  .pill-sm { display: inline-flex; align-items: center; border-radius: 99px; padding: 1px 7px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .pill-sm-f  { background: var(--badge-f); color: var(--badge-ft); }
+  .pill-sm-h  { background: var(--badge-h); color: var(--badge-ht); }
+  .pill-sm-t  { background: var(--tag-bg);  color: var(--tag-text); }
+  .pill-sm-a  { background: var(--badge-a); color: var(--badge-at); }
+  .tag-lieu-modal { background: var(--surface); color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 1px 7px; font-size: 11px; font-weight: 600; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -189,10 +223,31 @@
   <div class="card-list" id="cardView"></div>
 </div>
 <script src="loader.js"></script>
+
+<!-- ── MODALE LOGISTIQUE ── -->
+<div class="log-modal-overlay" id="logModalOverlay" onclick="closeLogModal(event)">
+  <div class="log-modal" id="logModal">
+    <div class="log-modal-handle"></div>
+    <div class="log-modal-head">
+      <div class="log-modal-title" id="logModalTitle"></div>
+      <div class="log-modal-meta" id="logModalMeta"></div>
+    </div>
+    <div class="log-modal-body">
+      <div id="logModalContent"></div>
+    </div>
+    <div class="log-modal-foot">
+      <button class="btn-close-modal" onclick="closeLogModal()">✕ CLOSE</button>
+    </div>
+  </div>
+</div>
+
 <script>
-loadData(['data.js'], function() {
+loadData(['data.js', 'logistics.js'], function() {
 const RAW = agendaToRaw(AGENDA);
-const DATA = RAW.map(r => { while(r.length<14) r.push(""); return r; });
+const DATA = RAW.map((r, i) => { while(r.length<16) r.push(""); r._agendaIdx = i; return r; });
+
+// Index global pour la modale : DATA[i] → entrée AGENDA correspondante
+// Chaque entrée r porte r._agendaIdx = index dans AGENDA
 
 function heureEnMinutes(h) {
   if (!h) return 9999;
@@ -332,9 +387,13 @@ function cardHtml({r, roles}) {
   const trad = r[8] ? `<span class="pill pill-t">${r[8]}</span>` : '';
   const lieu = r[5] ? `<span class="tag">${r[5]}</span>` : '';
   const piment = (r[15]||0) > 0 ? `<span style="letter-spacing:-1px;font-size:13px">${'🌶️'.repeat(r[15])}</span>` : '';
+  const agendaIdx = r._agendaIdx !== undefined ? r._agendaIdx : -1;
+  const logBtn = agendaIdx >= 0
+    ? `<button class="log-link" onclick="openLogModal(${agendaIdx})" title="Voir la fiche logistique">📋</button>`
+    : '';
   return `<div class="card">
     <div class="card-header">
-      <div class="card-heure">${r[2]||''}</div>
+      <div class="card-heure">${r[2]||''}${logBtn ? '<br>' + logBtn : ''}</div>
       <div class="card-title">${r[4]||'—'}${piment ? ' '+piment : ''}</div>
     </div>
     <div class="card-meta">
@@ -525,6 +584,65 @@ window.toggleView    = toggleView;
 window.setView       = setView;
 window.sortBy        = sortBy;
 window.render        = render;
+
+// ════════════════════════════════════════════════════════
+// MODALE LOGISTIQUE
+// ════════════════════════════════════════════════════════
+function esc(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function openLogModal(agendaIdx) {
+  var e = AGENDA[agendaIdx];
+  if (!e) return;
+
+  // ── TITRE ──
+  var pimentHtml = e.piment > 0
+    ? '<span style="letter-spacing:-1px;font-size:12px">' + '🌶️'.repeat(e.piment) + '</span>' : '';
+  document.getElementById('logModalTitle').innerHTML =
+    esc(e.atelier||'—') + (pimentHtml ? ' ' + pimentHtml : '');
+
+  // ── META ──
+  function metaRow(lbl, html) {
+    return '<div class="log-meta-row"><span class="log-meta-lbl">' + lbl + '</span>' +
+           '<span class="log-meta-val">' + html + '</span></div>';
+  }
+  function pill(txt, cls) {
+    return txt ? '<span class="pill-sm ' + cls + '">' + esc(txt) + '</span>' : '';
+  }
+
+  var facs    = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f')].filter(Boolean).join(' ');
+  var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h')].filter(Boolean).join(' ');
+  var trad    = pill(e.traduction, 'pill-sm-t');
+  var angel   = pill(e.angel, 'pill-sm-a');
+
+  var meta = '';
+  meta += metaRow('📅 Date',   esc(e.jour) + ' — ' + esc(e.date));
+  meta += metaRow('🕐 Heure',  esc(e.heure||'—'));
+  if (e.lieu)  meta += metaRow('📍 Lieu',    '<span class="tag-lieu-modal">' + esc(e.lieu) + '</span>');
+  if (facs)    meta += metaRow('🎓 Anim.',   facs);
+  if (helpers) meta += metaRow('🤝 Helpers', helpers);
+  if (trad)    meta += metaRow('🌐 Trad.',   trad);
+  if (angel)   meta += metaRow('👼 Angel',   angel);
+  if (e.note)  meta += metaRow('📝 Note',    '<span style="color:var(--muted);font-size:12px">' + esc(e.note) + '</span>');
+  document.getElementById('logModalMeta').innerHTML = meta;
+
+  // ── CONTENU LOGISTIQUE ──
+  var logId = e.logisticId;
+  var logHtml = (logId && typeof LOGISTICS !== 'undefined' && LOGISTICS[logId] && LOGISTICS[logId].html)
+    ? '<div class="log-modal-content">' + LOGISTICS[logId].html + '</div>'
+    : '<div class="log-modal-empty">Aucune information logistique pour cet atelier.</div>';
+  document.getElementById('logModalContent').innerHTML = logHtml;
+
+  document.getElementById('logModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openLogModal = openLogModal;
+
+function closeLogModal(evt) {
+  if (evt && evt.target !== document.getElementById('logModalOverlay')) return;
+  document.getElementById('logModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.closeLogModal = closeLogModal;
 
 }); // fin loadData
 </script>

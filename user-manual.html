@@ -123,7 +123,7 @@
     <div class="cover-tag">Documentation</div>
     <h1>Tantramour 2026</h1>
     <h2>Manuel utilisateur — Suite de gestion du festival</h2>
-    <div class="cover-meta">19 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
+    <div class="cover-meta">17 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
   </div>
 
   <!-- ══════════════════════════════════
@@ -136,22 +136,20 @@
       <li><span class="toc-num">2</span><a href="#rapport1">Agenda par Jour</a></li>
       <li><span class="toc-num">3</span><a href="#rapport2">Agenda par Personne</a></li>
       <li><span class="toc-num">4</span><a href="#rapport-planning">Mon Planning (My Planning)</a></li>
-      <li><span class="toc-num pink">5</span><a href="#rapport-angels">Planning Angels</a></li>
-      <li><span class="toc-num">6</span><a href="#rapport-helpers">Planning Helpers</a></li>
-      <li><span class="toc-num purple">7</span><a href="#rapport-traducteurs">Planning Traducteurs</a></li>
-      <li><span class="toc-num">8</span><a href="#rapport3">Logistique par Atelier</a></li>
-      <li><span class="toc-num">9</span><a href="#rapport-loghelpers">Logistique Helpers</a></li>
-      <li><span class="toc-num green">10</span><a href="#rapport-loginput">Saisie des besoins logistiques</a></li>
-      <li><span class="toc-num">11</span><a href="#rapport-conflits">Conflits de planning</a></li>
-      <li><span class="toc-num">12</span><a href="#rapport-charge">Charge de travail (Workload)</a></li>
-      <li><span class="toc-num orange">13</span><a href="#rapport-editer">Éditer un atelier</a></li>
-      <li><span class="toc-num purple">14</span><a href="#masterdata">Master Data — Gestion des référentiels</a></li>
-      <li><span class="toc-num purple">15</span><a href="#rapport-ressources">Gérer les Ressources</a></li>
-      <li><span class="toc-num" style="background:#dc2626">16</span><a href="#rapport-remplacement">Remplacement de Ressource</a></li>
-      <li><span class="toc-num" style="background:#6d28d9">17</span><a href="#rapport-trad-affect">Affectation Traducteur</a></li>
-      <li><span class="toc-num" style="background:#dc2626">18</span><a href="#rapport-problemes">Problèmes de planning</a></li>
-      <li><span class="toc-num green">19</span><a href="#rapport-regles">Règles des Rapports</a></li>
-      <li><span class="toc-num">20</span><a href="#architecture">Architecture des fichiers</a></li>
+      <li><span class="toc-num purple">5</span><a href="#rapport-traducteurs">Planning Traducteurs</a></li>
+      <li><span class="toc-num purple">6</span><a href="#rapport-colibri">Ateliers Colibri 🐦</a></li>
+      <li><span class="toc-num">7</span><a href="#rapport3">Logistique par Atelier</a></li>
+      <li><span class="toc-num green">8</span><a href="#rapport-loginput">Saisie des besoins logistiques</a></li>
+      <li><span class="toc-num">9</span><a href="#rapport-conflits">Conflits de planning</a></li>
+      <li><span class="toc-num">10</span><a href="#rapport-charge">Charge de travail (Workload)</a></li>
+      <li><span class="toc-num orange">11</span><a href="#rapport-editer">Éditer un atelier</a></li>
+      <li><span class="toc-num purple">12</span><a href="#masterdata">Master Data — Gestion des référentiels</a></li>
+      <li><span class="toc-num purple">13</span><a href="#rapport-ressources">Gérer les Ressources</a></li>
+      <li><span class="toc-num" style="background:#dc2626">14</span><a href="#rapport-remplacement">Remplacement de Ressource</a></li>
+      <li><span class="toc-num" style="background:#6d28d9">15</span><a href="#rapport-trad-affect">Affectation Traducteur</a></li>
+      <li><span class="toc-num" style="background:#dc2626">16</span><a href="#rapport-problemes">Problèmes de planning</a></li>
+      <li><span class="toc-num green">17</span><a href="#rapport-regles">Règles des Rapports</a></li>
+      <li><span class="toc-num">18</span><a href="#architecture">Architecture des fichiers</a></li>
     </ol>
   </div>
 
@@ -178,7 +176,6 @@
         <tr><td>👤 Agenda par Personne</td><td>Planning d'une personne (Fac, Helper, Angel, Traducteur)</td></tr>
         <tr><td>🗓️ Mon Planning</td><td>Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</td></tr>
         <tr><td>📋 Logistique par Atelier</td><td>Fiche logistique complète d'un atelier</td></tr>
-        <tr><td>🤝 Logistique Helpers</td><td>Vue logistique par helper — ateliers et besoins</td></tr>
         <tr><td>✏️ Saisie des besoins logistiques</td><td>Interface dédiée facilitateurs pour saisir leurs besoins</td></tr>
       </tbody>
     </table>
@@ -193,10 +190,9 @@
         <tr><td>👥 Gérer les Ressources</td><td>Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié</td></tr>
         <tr><td>🔄 Remplacement de Ressource</td><td>Gestion des absences — remplaçants automatiques sans conflit</td></tr>
         <tr><td>🚨 Problèmes de planning</td><td>Ateliers anglophones sans traducteur · ressources insuffisantes — correction inline</td></tr>
-        <tr><td>👼 Planning Angels</td><td>Vue par Angel — shifts regroupés, filtres Jour/Angel, bascule tableau</td></tr>
-        <tr><td>🤝 Planning Helpers</td><td>Vue par Helper — shifts regroupés, filtres Jour/Helper, bascule tableau</td></tr>
         <tr><td>🌐 Planning Traducteurs</td><td>Vue par Traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</td></tr>
         <tr><td>🌐✅ Affectation Traducteur</td><td>Vérifie et complète les affectations traducteur pour ateliers anglophones</td></tr>
+        <tr><td>🐦 Ateliers Colibri</td><td>Liste les ateliers avec un helper ou traducteur ayant le rôle "colibri" — filtres Jour/Colibri</td></tr>
       </tbody>
     </table>
 
@@ -273,6 +269,23 @@
       <li><strong>📱 Vue Mobile / 🖥 Vue Tableau</strong> — bascule entre tableau et cartes groupées par jour</li>
       <li><strong>🌙 / ☀️ Mode Nuit</strong> — thème sombre ou clair</li>
     </ul>
+
+    <h3 class="orange">Bouton ✏️ — Édition rapide d'un atelier</h3>
+    <p>Chaque ligne du tableau dispose d'un bouton <strong>✏️</strong> en dernière colonne. Un clic ouvre une modale de confirmation par mot de passe :</p>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n orange">1</div>
+        <div class="step-body">Cliquez sur <strong>✏️</strong> dans la ligne de l'atelier souhaité.</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">2</div>
+        <div class="step-body">La modale affiche le nom de l'atelier et demande le <strong>mot de passe admin</strong> (<code>007</code>).</div>
+      </div>
+      <div class="step">
+        <div class="step-n orange">3</div>
+        <div class="step-body">Après validation, la page <strong>Éditer un atelier</strong> s'ouvre dans un nouvel onglet, avec l'atelier pré-sélectionné.</div>
+      </div>
+    </div>
 
     <div class="callout tip">
       <div class="callout-icon">💡</div>
@@ -372,114 +385,21 @@
     <h3>Statistiques affichées</h3>
     <p>Des cartes de statistiques en haut de page affichent en temps réel : Personnes, Interventions totales, Facilitateurs, Helpers, Traducteurs, Angels.</p>
 
-    <div class="callout tip">
-      <div class="callout-icon">💡</div>
-      <div>Chaque ligne affiche un lien 🔗 vers la fiche logistique complète de l'atelier correspondant (Logistique par Atelier).</div>
-    </div>
-  </div>
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════
-       5 — PLANNING ANGELS
-  ══════════════════════════════════ -->
-  <div class="section" id="rapport-angels">
-    <div class="section-header">
-      <div class="section-icon">👼</div>
-      <div>
-        <div class="section-title">Planning Angels <span class="section-badge badge-read">Lecture</span></div>
-        <div class="section-subtitle">Vue par Angel — shifts regroupés, filtres Jour/Angel, bascule tableau</div>
-      </div>
-    </div>
-
-    <p>Ce rapport présente le planning de tous les <strong>Angels</strong> sous forme de cartes individuelles. Les ateliers consécutifs ou simultanés (gap ≤ 5 min) sont regroupés automatiquement en <strong>shifts</strong> pour une lecture plus fluide.</p>
-
-    <h3 class="pink">Statistiques en en-tête</h3>
-    <div class="btn-row">
-      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Angels</span>
-      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Shifts au total</span>
-      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">Ateliers couverts</span>
-    </div>
-    <p>Ces compteurs reflètent l'ensemble du planning, indépendamment des filtres actifs.</p>
-
-    <h3 class="pink">Filtres disponibles</h3>
+    <h3>Fiche logistique 📋 — modale bottom-sheet</h3>
+    <p>Chaque atelier affiché dans la vue <strong>par Personne</strong> dispose d'un bouton <strong>📋</strong> sur la droite de la ligne. Un clic ouvre une <strong>modale bottom-sheet</strong> affichant les informations complètes sans quitter la page :</p>
     <table class="data-table">
-      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
       <tbody>
-        <tr><td><strong>Angel</strong></td><td>Affiche uniquement la carte de cet Angel</td></tr>
-        <tr><td><strong>Jour</strong></td><td>Restreint les shifts au jour sélectionné (Jour 1 à Jour 7)</td></tr>
+        <tr><td><strong>En-tête de la modale</strong></td><td>Nom de l'atelier, jour, date, heure, lieu, type, facilitateur(s), helpers, angel, traducteur</td></tr>
+        <tr><td><strong>Informations logistiques</strong></td><td>Contenu HTML saisi dans <code>logistics.js</code> pour cet atelier (formatage riche — listes, gras, etc.)</td></tr>
+        <tr><td><strong>Message vide</strong></td><td>Si aucune info logistique n'est saisie, un message <em>« Aucune information logistique pour cet atelier »</em> s'affiche</td></tr>
       </tbody>
     </table>
-
-    <h3 class="pink">Vues disponibles</h3>
-    <div class="btn-row">
-      <span class="demo-btn" style="background:var(--pink-bg);color:var(--pink);border-color:#f9a8d4">👤 Vue par Angel</span>
-      <span class="demo-btn">📋 Vue Tableau</span>
-    </div>
-    <ul>
-      <li><strong>Vue par Angel</strong> — blocs individuels avec avatar, nom, badge rôle et compteurs. Chaque shift affiche l'heure globale (début → fin) et le détail atelier par atelier (heure, nom, lieu, type).</li>
-      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions (Jour, Date, Heure, Atelier, Lieu, Type).</li>
-    </ul>
-
-    <h3 class="pink">Logique de regroupement en shifts</h3>
-    <p>Un <em>shift</em> regroupe tous les ateliers d'un même Angel dans la même journée dont les plages horaires se touchent ou se chevauchent (tolérance 5 minutes). L'heure affichée en en-tête de shift couvre la plage globale <code>début_premier → fin_dernier</code>.</p>
-
-    <div class="callout info">
-      <div class="callout-icon">ℹ️</div>
-      <div>Les ateliers sans plage horaire précise (ex : "Matin") sont exclus du regroupement en shifts car leur durée ne peut pas être déterminée.</div>
-    </div>
-  </div>
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════
-       6 — PLANNING HELPERS
-  ══════════════════════════════════ -->
-  <div class="section" id="rapport-helpers">
-    <div class="section-header">
-      <div class="section-icon">🤝</div>
-      <div>
-        <div class="section-title">Planning Helpers <span class="section-badge badge-read">Lecture</span></div>
-        <div class="section-subtitle">Vue par Helper — shifts regroupés, filtres Jour/Helper, bascule tableau</div>
-      </div>
-    </div>
-
-    <p>Ce rapport présente le planning de tous les <strong>Helpers</strong> sous forme de cartes individuelles. Un Helper peut apparaître dans les champs <code>helper1</code>, <code>helper2</code> ou <code>helper3</code> d'un atelier — tous sont consolidés dans sa carte.</p>
-
-    <h3>Statistiques en en-tête</h3>
-    <div class="btn-row">
-      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Helpers</span>
-      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Shifts au total</span>
-      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">Ateliers couverts</span>
-    </div>
-
-    <h3>Filtres disponibles</h3>
-    <table class="data-table">
-      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Helper</strong></td><td>Affiche uniquement la carte de ce Helper</td></tr>
-        <tr><td><strong>Jour</strong></td><td>Restreint les shifts au jour sélectionné (Jour 1 à Jour 7)</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Vues disponibles</h3>
-    <div class="btn-row">
-      <span class="demo-btn" style="background:#eff6ff;color:#2563eb;border-color:#93c5fd">👤 Vue par Helper</span>
-      <span class="demo-btn">📋 Vue Tableau</span>
-    </div>
-    <ul>
-      <li><strong>Vue par Helper</strong> — blocs individuels avec avatar, nom, badge rôle et compteurs. Les ateliers sont affichés ligne par ligne avec Jour, Date, Heure, Atelier, Lieu.</li>
-      <li><strong>Vue Tableau</strong> — tableau global triable avec toutes les interventions.</li>
-    </ul>
-
-    <h3>Logique de regroupement en shifts</h3>
-    <p>Identique à Planning Angels : les ateliers consécutifs ou simultanés (gap ≤ 5 min) d'un même Helper dans la même journée sont fusionnés en un shift unique affichant la plage horaire globale.</p>
+    <p>La modale se ferme en cliquant sur <strong>✕ CLOSE</strong> ou en cliquant en dehors de la modale (sur l'overlay). Elle est aussi accessible depuis la vue <strong>Tableau</strong>.</p>
 
     <div class="callout tip">
       <div class="callout-icon">💡</div>
-      <div>Pour une vue logistique détaillée par Helper (matériel, notes), utilisez <strong>Logistique Helpers</strong> qui affiche les informations saisies dans <code>logistics.js</code>.</div>
+      <div>La modale est optimisée pour mobile — elle remonte depuis le bas de l'écran (bottom-sheet) et défile indépendamment si le contenu logistique est long.</div>
     </div>
   </div>
 
@@ -487,7 +407,7 @@
 
 
   <!-- ══════════════════════════════════
-       7 — PLANNING TRADUCTEURS
+       5 — PLANNING TRADUCTEURS
   ══════════════════════════════════ -->
   <div class="section" id="rapport-traducteurs">
     <div class="section-header">
@@ -538,9 +458,58 @@
   <hr class="divider" />
 
 
+  <!-- ══════════════════════════════════
+       6 — ATELIERS COLIBRI
+  ══════════════════════════════════ -->
+  <div class="section" id="rapport-colibri">
+    <div class="section-header">
+      <div class="section-icon">🐦</div>
+      <div>
+        <div class="section-title">Ateliers Colibri <span class="section-badge badge-read">Lecture</span></div>
+        <div class="section-subtitle">Liste des ateliers avec une ressource ayant le rôle "colibri"</div>
+      </div>
+    </div>
+
+    <p>Ce rapport identifie tous les ateliers dans lesquels au moins une ressource (Helper ou Traducteur) a le rôle <strong>colibri</strong> dans <code>ref_ressources.js</code>. Il est conçu pour faciliter la coordination des Colibris sur le terrain.</p>
+
+    <h3 class="purple">Statistiques en en-tête</h3>
+    <div class="btn-row">
+      <span class="demo-btn" style="background:#f5f3ff;color:#7c3aed;border-color:#c4b5fd">Ateliers Colibri</span>
+      <span class="demo-btn" style="background:#f5f3ff;color:#7c3aed;border-color:#c4b5fd">Colibris distincts</span>
+      <span class="demo-btn">Total ateliers</span>
+    </div>
+
+    <h3 class="purple">Filtres disponibles</h3>
+    <table class="data-table">
+      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Jour</strong></td><td>Restreint l'affichage aux ateliers d'une journée spécifique (Jour 1 à Jour 7)</td></tr>
+        <tr><td><strong>Colibri</strong></td><td>Affiche uniquement les ateliers où la personne sélectionnée est impliquée en tant que Colibri</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="purple">Structure de l'affichage</h3>
+    <p>Les ateliers sont affichés sous forme de cartes regroupées par jour. Chaque carte affiche :</p>
+    <ul>
+      <li>Jour, heure, nom, lieu et type de l'atelier</li>
+      <li>Les <strong>Facilitateurs</strong>, <strong>Helpers</strong>, <strong>Traducteur</strong> et <strong>Angel</strong> avec leurs badges colorés</li>
+      <li>Les Colibris impliqués sont mis en évidence avec un badge violet distinctif</li>
+    </ul>
+
+    <h3 class="purple">Définition du rôle Colibri</h3>
+    <p>Une personne est identifiée comme Colibri si son entrée dans <code>ref_ressources.js</code> inclut le rôle <code>colibri</code>. Une même personne peut avoir plusieurs rôles (ex : Helper <em>et</em> Colibri). Pour ajouter ou retirer le rôle Colibri à une personne, utilisez <strong>Gérer les Ressources</strong>.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Un atelier peut avoir plusieurs Colibris. Dans ce cas, il apparaît dans la liste de chaque Colibri concerné lorsque le filtre par Colibri est actif.</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
 
   <!-- ══════════════════════════════════
-       5 — LOGISTIQUE PAR ATELIER
+       7 — LOGISTIQUE PAR ATELIER
   ══════════════════════════════════ -->
   <div class="section" id="rapport3">
     <div class="section-header">
@@ -583,43 +552,6 @@
       <div class="callout-icon">💡</div>
       <div>Si les champs Note ou Informations Logistiques affichent un texte en italique grisé, aucune information n'a encore été saisie. Utilisez <strong>Éditer un atelier</strong> ou <strong>Saisie des besoins logistiques</strong> pour les compléter.</div>
     </div>
-  </div>
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════
-       6 — LOGISTIQUE HELPERS
-  ══════════════════════════════════ -->
-  <div class="section" id="rapport-loghelpers">
-    <div class="section-header">
-      <div class="section-icon">🤝</div>
-      <div>
-        <div class="section-title">Logistique Helpers <span class="section-badge badge-read">Lecture</span></div>
-        <div class="section-subtitle">Vue logistique par helper — ateliers assignés et besoins</div>
-      </div>
-    </div>
-
-    <p>Ce rapport est spécifiquement orienté <strong>Helpers</strong>. Il affiche, pour chaque helper, la liste de ses ateliers avec les informations logistiques associées (besoins matériels, notes, facilitateurs en charge).</p>
-
-    <h3>Filtres disponibles</h3>
-    <table class="data-table">
-      <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Helper</strong></td><td>Filtre sur un helper spécifique</td></tr>
-        <tr><td><strong>Jour</strong></td><td>Restreint aux ateliers d'une journée</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Structure de l'affichage</h3>
-    <p>Chaque helper dispose d'un bloc avec en-tête bleu (avatar, nom, compteur d'ateliers). Les ateliers sont groupés <strong>par jour</strong> et affichent pour chaque atelier :</p>
-    <ul>
-      <li>Heure et nom de l'atelier</li>
-      <li>Lieu et type</li>
-      <li>Facilitateur(s) en charge</li>
-      <li>Note logistique (si renseignée)</li>
-      <li>Informations logistiques détaillées (si renseignées)</li>
-    </ul>
   </div>
 
   <hr class="divider" />
@@ -902,6 +834,43 @@
         <div class="step-n orange">4</div>
         <div class="step-body">Cliquez <strong>🔄 Refresh</strong> dans les autres rapports pour voir les nouvelles données.</div>
       </div>
+    </div>
+
+    <h3 class="orange">Actions supplémentaires sur un atelier</h3>
+    <p>En bas du formulaire d'édition, trois boutons complémentaires sont disponibles :</p>
+    <div class="btn-row">
+      <span class="demo-btn">＋ Nouvel atelier</span>
+      <span class="demo-btn">📋 Dupliquer</span>
+      <span class="demo-btn danger">🗑 Supprimer cet atelier</span>
+    </div>
+    <table class="data-table" style="margin-top:10px">
+      <thead><tr><th>Bouton</th><th>Comportement</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>＋ Nouvel atelier</strong></td>
+          <td>Ouvre un formulaire vierge pour créer un nouvel atelier. Le titre de l'éditeur affiche le badge <span style="background:var(--green);color:#fff;padding:1px 7px;border-radius:4px;font-size:11px">NOUVEAU</span>. Sauvegarder l'insère à la fin de <code>AGENDA</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>📋 Dupliquer</strong></td>
+          <td>Crée une copie de l'atelier sélectionné avec le nom suffixé <em>(COPIE)</em> et son <code>logisticId</code> réinitialisé. La copie est traitée comme un nouvel atelier — confirmez la sauvegarde pour l'insérer.</td>
+        </tr>
+        <tr>
+          <td><strong>🗑 Supprimer cet atelier</strong></td>
+          <td>Affiche une boîte de confirmation avec le nom de l'atelier. En cas de confirmation, l'atelier est retiré de <code>data.js</code> et la liste se recharge. En cas d'échec serveur, le rollback est automatique.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="orange">Pré-sélection via URL</h3>
+    <p>La page accepte le paramètre URL <code>?idx=N</code> pour pré-sélectionner automatiquement l'atelier d'index <code>N</code> dans <code>AGENDA</code>. Ce mécanisme est utilisé par :</p>
+    <ul>
+      <li><strong>Agenda par Jour</strong> — le bouton ✏️ ouvre <code>Rapport_Editer_Atelier.html?idx=N</code></li>
+      <li><strong>Affectation Traducteur</strong> — le bouton <em>✏️ Assigner un traducteur</em> redirige vers l'éditeur avec l'atelier pré-sélectionné</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Le bouton <strong>Dupliquer</strong> n'est pas disponible en mode <em>Nouvel atelier</em> — il n'apparaît que lorsqu'un atelier existant est sélectionné.</div>
     </div>
   </div>
 
@@ -1193,11 +1162,20 @@
     </table>
 
     <h3 style="border-left-color:#6d28d9">Statuts d'affichage</h3>
+    <p>La logique de statut est volontairement simple :</p>
     <table class="data-table">
-      <thead><tr><th>Statut</th><th>Signification</th></tr></thead>
+      <thead><tr><th>Statut</th><th>Condition</th><th>Signification</th></tr></thead>
       <tbody>
-        <tr><td><span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">✅ Assigné</span></td><td>Un traducteur est déjà renseigné dans le planning</td></tr>
-        <tr><td><span style="background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">🔴 TBC</span></td><td>Aucun traducteur assigné — action requise</td></tr>
+        <tr>
+          <td><span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">✅ OK</span></td>
+          <td>Champ <code>traduction</code> non vide</td>
+          <td>Un traducteur est renseigné dans le planning</td>
+        </tr>
+        <tr>
+          <td><span style="background:#fff7ed;color:#c2410c;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">⏳ TBC</span></td>
+          <td>Champ <code>traduction</code> vide</td>
+          <td>Aucun traducteur assigné — action requise</td>
+        </tr>
       </tbody>
     </table>
 
@@ -1205,25 +1183,20 @@
     <div class="steps-block">
       <div class="step">
         <div class="step-n" style="background:#6d28d9">1</div>
-        <div class="step-body">La page liste tous les ateliers anglophones. Les entrées <strong>TBC</strong> sont mises en évidence en rouge.</div>
+        <div class="step-body">La page liste tous les ateliers anglophones avec leur statut ✅ OK ou ⏳ TBC. Les entrées <strong>TBC</strong> sont mises en évidence.</div>
       </div>
       <div class="step">
         <div class="step-n" style="background:#6d28d9">2</div>
-        <div class="step-body">Pour chaque atelier TBC, une liste de candidats traducteurs disponibles est proposée (sans conflit horaire).</div>
+        <div class="step-body">Pour chaque atelier <strong>TBC</strong>, cliquez sur <strong>✏️ Assigner un traducteur</strong> — cela ouvre <strong>Éditer un atelier</strong> dans un nouvel onglet avec l'atelier pré-sélectionné.</div>
       </div>
       <div class="step">
         <div class="step-n" style="background:#6d28d9">3</div>
-        <div class="step-body">Sélectionnez le traducteur souhaité dans le sélecteur et cliquez <strong>✅ Valider</strong>.</div>
+        <div class="step-body">Dans l'éditeur, sélectionnez le traducteur dans le champ <strong>Traducteur</strong> et sauvegardez.</div>
       </div>
       <div class="step">
         <div class="step-n" style="background:#6d28d9">4</div>
-        <div class="step-body">Cliquez <strong class="demo-btn primary" style="font-size:11px">💾 Sauvegarder</strong> — les affectations validées sont écrites dans <code>data.js</code>.</div>
+        <div class="step-body">Revenez à la page Affectation Traducteur et cliquez <strong>🔄 Refresh</strong> — l'atelier passe en statut ✅ OK.</div>
       </div>
-    </div>
-
-    <div class="callout warn">
-      <div class="callout-icon">⚠️</div>
-      <div>La sauvegarde écrit dans <code>data.js</code> via le serveur local (<code>start.bat</code>). Le serveur doit être actif avant de confirmer les affectations.</div>
     </div>
 
     <div class="callout info">
