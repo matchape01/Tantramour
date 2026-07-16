@@ -734,6 +734,21 @@
       </tbody>
     </table>
 
+    <h3>Barre de statistiques</h3>
+    <p>En haut de chaque onglet, une barre de pills affiche pour chaque catégorie :</p>
+    <table class="data-table">
+      <thead><tr><th>Pill</th><th>Contenu</th></tr></thead>
+      <tbody>
+        <tr><td><strong>X actifs</strong></td><td>Nombre de personnes ayant au moins un atelier</td></tr>
+        <tr><td><strong>Moy. ateliers / rôle</strong></td><td>Moyenne du nombre d'ateliers par personne</td></tr>
+        <tr><td><strong>Moy. heures / rôle</strong></td><td>Moyenne de la durée totale par personne</td></tr>
+      </tbody>
+    </table>
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Pour les <strong>Helpers</strong>, la moyenne est calculée en excluant les personnes ayant également le rôle <strong>colibri, manager ou admin</strong> dans <code>ref_ressources.js</code>. Un astérisque (*) et une note explicative apparaissent sous la barre si des helpers sont exclus.</div>
+    </div>
+
     <h3>Lecture des cartes personne</h3>
     <p>Chaque personne dispose d'une carte cliquable affichant :</p>
     <ul>
@@ -743,13 +758,25 @@
     </ul>
     <p>En cliquant sur la carte, le détail des ateliers s'affiche (groupé par jour, avec durée de chaque atelier).</p>
 
-    <h3 class="orange">Onglet Harmonisation</h3>
-    <p>Cet onglet spécial analyse les déséquilibres de charge et propose des suggestions de redistribution :</p>
+    <h3 class="orange">Onglet ⚖️ Harmonisation</h3>
+    <p>Cet onglet s'affiche <strong>directement dans la page</strong> (sans popup). La barre de statistiques est remplacée par une sous-navigation permettant de filtrer les propositions :</p>
+    <div class="btn-row">
+      <span class="demo-btn">📊 Vue globale</span>
+      <span class="demo-btn">🤝 Helpers</span>
+      <span class="demo-btn">👼 Angels</span>
+      <span class="demo-btn">🌐 Traducteurs</span>
+    </div>
+    <p>La <strong>Vue globale</strong> affiche en premier le classement de toutes les personnes par heures totales (Helper + Angel + Traducteur), puis le tableau Objectif d'équilibre par catégorie. Les vues par rôle filtrent sur les propositions spécifiques à chaque groupe.</p>
+    <p>Les propositions de redistribution identifient :</p>
     <ul>
-      <li><strong>Surchargés</strong> — personnes au-dessus de la moyenne + écart-type</li>
-      <li><strong>Sous-chargés</strong> — personnes disponibles pour plus d'ateliers</li>
-      <li><strong>Suggestions</strong> — ateliers potentiellement transférables avec les remplaçants candidats</li>
+      <li><strong>Surchargés (&gt;120%)</strong> — personnes dépassant la moyenne de leur groupe, avec suggestion d'ateliers transférables et remplaçants candidats triés par charge croissante</li>
+      <li><strong>Très surchargés (&gt;140%)</strong> — alerte rouge, priorité absolue</li>
+      <li><strong>Disponibles (&lt;85%)</strong> — personnes pouvant absorber des ateliers supplémentaires (charge globale raisonnable)</li>
     </ul>
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>Les moyennes de l'onglet Harmonisation appliquent la même règle d'exclusion que la barre de statistiques : les helpers colibri, manager ou admin sont exclus du calcul de la moyenne helpers <em>et</em> de la moyenne globale.</div>
+    </div>
 
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>

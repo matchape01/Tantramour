@@ -346,16 +346,17 @@ var REPORTS = [
     type: 'algo',
     description: 'Propositions automatiques de rééquilibrage de charge entre Helpers, Angels et Traducteurs.',
     rules: [
+      { type: 'info',  text: 'L\'onglet ⚖️ Harmonisation s\'affiche directement dans la page (pas de popup). Une sous-navigation permet de filtrer les propositions : 📊 Vue globale, 🤝 Helpers, 👼 Angels, 🌐 Traducteurs.' },
       { type: 'algo',  text: 'Seuil SURCHARGÉ : charge > 120 % de la moyenne du groupe (helpers, angels ou traducteurs). Carte orange.' },
       { type: 'algo',  text: 'Seuil TRÈS SURCHARGÉ (alerte) : charge > 140 % de la moyenne. Carte rouge.' },
       { type: 'algo',  text: 'Zone cible acceptable : entre 80 % et 120 % de la moyenne du groupe.' },
       { type: 'algo',  text: 'Seuil SOUS-CHARGÉ (disponible) : charge < 85 % de la moyenne du groupe ET charge globale (tous rôles) ≤ 130 % de la moyenne globale.' },
       { type: 'warn',  text: 'Si un helper a une charge légère en tant que helper mais une charge globale > 130 % de la moyenne globale, il est signalé "déjà chargé sur d\'autres rôles" et non proposé comme disponible.' },
-      { type: 'block', text: 'Certaines personnes sont exclues des suggestions de redistribution (non substituables) — liste EXCLUDED_FROM_SUGGESTIONS codée dans le rapport.' },
+      { type: 'block', text: 'Certaines personnes sont exclues des suggestions de redistribution (non substituables) — liste EXCLUDED_FROM_SUGGESTIONS codée dans le rapport (facilitateurs principaux).' },
+      { type: 'block', text: 'Les helpers ayant également le rôle colibri, manager ou admin dans ref_ressources.js sont exclus du calcul des moyennes helpers et de la moyenne globale (même règle que la barre de statistiques de l\'onglet Helpers).' },
       { type: 'algo',  text: 'Maximum 3 suggestions de transfert proposées par personne surchargée.' },
       { type: 'algo',  text: 'Les candidats remplaçants sont classés en deux groupes : sous la moyenne d\'abord (en vert), puis égaux ou au-dessus.' },
-      { type: 'info',  text: 'Les données sont transmises à la popup via encodage base64 pour éviter les problèmes d\'encodage HTML dans le script inline.' },
-      { type: 'info',  text: 'Les moyennes affichées (Moy. helpers / angels / traducteurs / globale) sont calculées en excluant les personnes non substituables.' },
+      { type: 'info',  text: 'Le premier tableau affiché en Vue globale est le Classement global — Heures totales (Helper + Angel + Traducteur), suivi du tableau Objectif d\'équilibre par catégorie.' },
     ]
   },
   {

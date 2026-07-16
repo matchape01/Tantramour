@@ -1,9 +1,29 @@
 /**
- * TANTRAMOUR 2026 — Données AGENDA
+ * TANTRAMOUR 2026 — Référentiel de données commun
+ * ================================================
+ * Source unique pour les 3 rapports HTML.
+ * Pour mettre à jour : modifier uniquement ce fichier.
+ *
+ * Structure de chaque entrée :
+ *   jour       {string}  "Jour 1" … "Jour 7"
+ *   date       {string}  "Samedi 29 aout" …
+ *   heure      {string}  "9:45 - 11:00" | "Matin" | "APRES MIDI"
+ *   type       {string}  catégorie (ex: "ATELIERS TANTRA (AM)")
+ *   atelier    {string}  nom de l'atelier / activité
+ *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" …)
+ *   fac1       {string}  Facilitateur principal
+ *   fac2       {string}  Facilitateur secondaire
+ *   traduction {string}  Langue / traducteur
+ *   helper1    {string}  Helper 1
+ *   helper2    {string}  Helper 2
+ *   helper3    {string}  Helper 3
+ *   angel      {string}  Angel
+ *   note       {string}  Note logistique (ex: "Shift Colibri", "Atelier + long")
  */
+
 var AGENDA = [
 
-  // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────
+  // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"09:00 - 14:00",type:"PREPA & LOGISTICS",atelier:"DECO temples, Acceuil, exterieur",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"11:00 - 16:00",type:"PREPA & LOGISTICS",atelier:"Tests son & sono a  SHIVA",lieu:"SHIVA",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -14,9 +34,9 @@ var AGENDA = [
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"CEREMONIE & CONCERT",atelier:"OPENING CEREMONY",lieu:"SHIVA",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"Yannick Bohrer",helper2:"Damien Eissen",helper3:"",angel:"Mukti - Cecile Yvorel",note:"",piment:0,logisticId:""},
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 1",date:"Samedi 29 aout",heure:"20:30 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT (SHIVA)",lieu:"SHIVA",fac1:"",fac2:"",traduction:"",helper1:"Frederic Chalard",helper2:"Virginie Bertrand",helper3:"",angel:"",note:"",piment:0,logisticId:""},
-  {jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"POOL PARTY & DJ Set",atelier:"SOIREE ECSTATIC DANSE",lieu:"SHIVA",fac1:"Pascal de Lacaze",fac2:"",traduction:"",helper1:"Emma Roussel",helper2:"Vera De Sousa",helper3:"",angel:"Aurelie Lechardeur",note:"",piment:0,logisticId:""},
+  {jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"POOL PARTY & DJ Set",atelier:"SOIREE ECSTATIC DANSE",lieu:"SHIVA",fac1:"Pascal de Lacaze",fac2:"",traduction:"",helper1:"Emma Roussel",helper2:"Delphine Del Dupre",helper3:"",angel:"Aurelie Lechardeur",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────
+  // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {jour:"Jour 2",date:"Dimanche 30 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga2",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"",traduction:"",helper1:"Delphine Del Dupre",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 2",date:"Dimanche 30 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Meditation active",lieu:"SHAKTI",fac1:"Dorian Vallet",fac2:"",traduction:"",helper1:"Mukti - Cecile Yvorel",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 2",date:"Dimanche 30 aout",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -49,14 +69,14 @@ var AGENDA = [
   {jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG)",lieu:"CHENREZIG",fac1:"",fac2:"",traduction:"",helper1:"Boris Desvignes",helper2:"Alexandre Sattler",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 2",date:"Dimanche 30 aout",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Shibari Performance & Interactive Jam",lieu:"CHENREZIG",fac1:"Amana (William Duplain)",fac2:"Ishvari",traduction:"",helper1:"Damien Eissen",helper2:"Vera De Sousa",helper3:"",angel:"Daniel Latapie",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────
+  // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",traduction:"",helper1:"Damien Eissen",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Meditation active d'Osho : Laughing Drums Meditation",lieu:"SHAKTI",fac1:"Selma (Celine Laroche)",fac2:"",traduction:"",helper1:"Philippe Hanrion",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",traduction:"",helper1:"Aurelie Lechardeur",helper2:"Damien Eissen",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"9:45 - 11:00",type:"RASSEMBLEMENT",atelier:"Rassemblement",lieu:"SHIVA",fac1:"Clement Victor (Jivan Mutti)",fac2:"Matthieu Chapeleau (Atman)",traduction:"",helper1:"Aurelie Lechardeur",helper2:"Damien Eissen",helper3:"",angel:"",note:"",piment:0,logisticId:""},
-  {jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 13:00",type:"ATELIERS TANTRA (AM)",atelier:"Entre dans la caresse comme dans la vie Eternelle",lieu:"SHIVA",fac1:"Sandrine Bettinelli",fac2:"",traduction:"",helper1:"Emma Roussel",helper2:"Cedric Vesper",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
+  {jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 13:00",type:"ATELIERS TANTRA (AM)",atelier:"Entre dans la caresse comme dans la vie Eternelle",lieu:"SHIVA",fac1:"Sandrine Bettinelli",fac2:"",traduction:"",helper1:"Mukti - Cecile Yvorel",helper2:"Cedric Vesper",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 13:00",type:"ATELIERS TANTRA (AM)",atelier:"Ode a KALI",lieu:"CHENREZIG",fac1:"Emmanuelle Cueff (Suman)",fac2:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Alexandre Sattler",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 13:00",type:"ATELIERS TANTRA (AM)",atelier:"La Merkaba tantrique ",lieu:"SHAKTI",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"Maeva Mantione",helper2:"Aurelie Lechardeur",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 13:00",type:"ATELIERS TANTRA (AM)",atelier:"Plongez dans l'experience « Du plaisir » (pour femmes ou personnes identifiees)",lieu:"TARA",fac1:"Audrey Barthelemy",fac2:"",traduction:"",helper1:"Carine Janez",helper2:"Delphine Del Dupre",helper3:"",angel:"Linda Stachetti",note:"Atelier Femme",piment:0,logisticId:""},
@@ -84,7 +104,7 @@ var AGENDA = [
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"20:30 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG)",lieu:"CHENREZIG",fac1:"",fac2:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Frederic Chalard",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 1:00",type:"LOVE TEMPLE",atelier:"Love Temple des Erotypes @R",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"Audrey Barthelemy",traduction:"",helper1:"Maeva Mantione",helper2:"Alexandre Fourcault",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────
+  // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",traduction:"",helper1:"Cedric Vesper",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Meditation",lieu:"SHAKTI",fac1:"ShivaChris",fac2:"",traduction:"",helper1:"Carine Janez",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -102,7 +122,7 @@ var AGENDA = [
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:30 - 16:00",type:"SUPPORT EMOTIONNEL",atelier:"SUPPORT EMOTIONNEL",lieu:"GANESH",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"Daniel Latapie",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"The Art of Kissing ",lieu:"SHIVA",fac1:"Paul Raj Amar",fac2:"",traduction:"",helper1:"Emma Roussel",helper2:"Delphine Del Dupre",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 19.30",type:"ATELIERS TANTRA (PM)",atelier:"Sacred Mirrors: Grief Ceremony/ Celebration of Life (3hrs)",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"Guy El Hadad - Israel",traduction:"Alexandre Roque - Bhaskar",helper1:"Alexandre Sattler",helper2:"",helper3:"",angel:"Linda Stachetti",note:"Atelier + long",piment:0,logisticId:""},
-  {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"Roue de l'Eau : Roue du consentement & free flow massage ",lieu:"SHAKTI",fac1:"Clement Victor (Jivan Mutti)",fac2:"",traduction:"",helper1:"Vera De Sousa",helper2:"Yannick Bohrer",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
+  {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"Roue de l'Eau : Roue du consentement & free flow massage ",lieu:"SHAKTI",fac1:"Clement Victor (Jivan Mutti)",fac2:"",traduction:"",helper1:"Vera De Sousa",helper2:"Maeva Mantione",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"L Ouroboros tantrique : cercle, souffle et alchimie",lieu:"TARA",fac1:"Daniel Latapie",fac2:"",traduction:"",helper1:"Damien Eissen",helper2:"David Llorca",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"Angel - ATELIERS TANTRA (PM)",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"17.30 - 18.15",type:"REPAS & PAUSE",atelier:"GOUTER",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -116,7 +136,7 @@ var AGENDA = [
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG)",lieu:"CHENREZIG",fac1:"",fac2:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Delphine Del Dupre",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 4",date:"Mardi 1 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Love temple devotionnel ",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",traduction:"",helper1:"Alexandre Roque - Bhaskar",helper2:"Maeva Mantione",helper3:"",angel:"Daniel Latapie",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────
+  // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga Nidra",lieu:"CHENREZIG",fac1:"Simone Bikene",fac2:"",traduction:"",helper1:"Delphine Del Dupre",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Grounding / Integrative Movement Class",lieu:"SHAKTI",fac1:"Our Echo",fac2:"",traduction:"Alexandre Roque - Bhaskar",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -134,7 +154,7 @@ var AGENDA = [
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"15:00 - 15:45",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE (Helpers)",lieu:"",fac1:"Matthieu Chapeleau (Atman)",fac2:"Dorian Vallet",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"14.00 - 16.00",type:"TANTRA CAFÃ‰ & CONFERENCE",atelier:"Tantra Cafe - Tout ce que vous avez toujours voulu savoir sur la sexualite tantrique",lieu:"?",fac1:"Sandrine Bettinelli",fac2:"",traduction:"",helper1:"Boris Desvignes",helper2:"Carine Janez",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"15.30 - 16.00",type:"PREPA & LOGISTICS",atelier:"Prepa - POOL PARTY",lieu:"PISCINE",fac1:"",fac2:"",traduction:"",helper1:"Frederic Chalard",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
-  {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"16.00 - 17.30",type:"POOL PARTY & DJ Set",atelier:"POOL PARTY - DJ Juan Felix",lieu:"PISCINE",fac1:"Felix Ardevol",fac2:"",traduction:"",helper1:"Emma Roussel",helper2:"",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
+  {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"16.00 - 17.30",type:"POOL PARTY & DJ Set",atelier:"POOL PARTY - DJ Juan Felix",lieu:"PISCINE",fac1:"Felix Ardevol",fac2:"",traduction:"",helper1:"Alexandre Sattler",helper2:"",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"14:30 - 16:00",type:"SUPPORT EMOTIONNEL",atelier:"SUPPORT EMOTIONNEL",lieu:"GANESH",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (PM)",atelier:"Angel - ATELIERS TANTRA (PM)",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"Virginie Bertrand",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"17.30 - 18.15",type:"REPAS & PAUSE",atelier:"GOUTER",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -149,7 +169,7 @@ var AGENDA = [
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG)",lieu:"CHENREZIG",fac1:"",fac2:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Cedric Vesper",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Embrasser le Mystere",lieu:"CHENREZIG",fac1:"Clement Victor (Jivan Mutti)",fac2:"Matthieu Chapeleau (Atman)",traduction:"",helper1:"Vera De Sousa",helper2:"Boris Desvignes",helper3:"Maeva Mantione",angel:"Linda Stachetti",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 6 — Jeudi 3 septembre ─────────────────────────────────
+  // ─── Jour 6 — Jeudi 3 septembre ─────────────────────────────────────
   {jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"AcroYoga ",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"ShivaChris",traduction:"",helper1:"Alexandre Sattler",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Mindfulness & Mouvements Somatiques",lieu:"SHAKTI",fac1:"Linda Stachetti",fac2:"",traduction:"",helper1:"Virginie Bertrand",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 6",date:"Jeudi 3 septembre",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -181,7 +201,7 @@ var AGENDA = [
   {jour:"Jour 6",date:"Jeudi 3 septembre",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG)",lieu:"CHENREZIG",fac1:"",fac2:"",traduction:"",helper1:"Maeva Mantione",helper2:"Yannick Bohrer",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 6",date:"Jeudi 3 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"The temple of erotic innocence - An Oracular Night Ceremony",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"Guy El Hadad - Israel",traduction:"Carine Janez",helper1:"Vera De Sousa",helper2:"",helper3:"",angel:"Daniel Latapie",note:"",piment:0,logisticId:""},
 
-  // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────
+  // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
   {jour:"Jour 7",date:"Vendredi 4 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga & automassages",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",traduction:"",helper1:"Philippe Hanrion",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 7",date:"Vendredi 4 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"A definir (yoga / meditation)",lieu:"SHAKTI",fac1:"",fac2:"",traduction:"",helper1:"Damien Eissen",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
   {jour:"Jour 7",date:"Vendredi 4 septembre",heure:"9:00 - 9:30",type:"REUNION D'EQUIPE",atelier:"REUNION D'EQUIPE",lieu:"",fac1:"Sabryna",fac2:"ShivaChris",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
@@ -193,6 +213,18 @@ var AGENDA = [
   {jour:"Jour 7",date:"Vendredi 4 septembre",heure:"15:00 - 19:00",type:"PREPA & LOGISTICS",atelier:"RANGEMENT",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",angel:"",note:"",piment:0,logisticId:""},
 ];
 
+/**
+ * Convertit un objet AGENDA en tableau positionnel [16 colonnes]
+ * identique au format RAW utilisé par les rapports.
+ * Indice : [0]jour [1]date [2]heure [3]type [4]atelier [5]lieu
+ *          [6]fac1 [7]fac2 [8]traduction [9]helper1 [10]helper2
+ *          [11]helper3 [12]angel [13]note [14]logisticId [15]piment
+ */
 function agendaToRaw(entries) {
-  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.angel,e.note,e.logisticId||"",e.piment||0]; });
+  return entries.map(e => [
+    e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
+    e.fac1, e.fac2, e.traduction,
+    e.helper1, e.helper2, e.helper3,
+    e.angel, e.note, e.logisticId || '', e.piment || 0
+  ]);
 }
