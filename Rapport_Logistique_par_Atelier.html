@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -64,6 +64,10 @@
   .placeholder p { font-size: 15px; margin-bottom: 6px; }
   .placeholder small { font-size: 12px; }
   footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+</style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
+<style>
   /* ── RESPONSIVE MOBILE ── */
   @media (max-width: 767px) {
     .wrap { padding: 16px 12px; }
@@ -82,52 +86,53 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>Logistique par Atelier</p>
+      <p data-i18n="r4_title">Logistique par Atelier</p>
     </div>
     <div class="header-actions">
-      <a class="mode-btn" href="index.html">🏠 Home</a>
-      <button class="mode-btn" onclick="hardReload()">🔄 Refresh</button>
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="mode-btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="mode-btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
   <div class="steps">
     <div class="step-group">
-      <label>1. Choisir le jour</label>
+      <label data-i18n="r4_choisir_jour">1. Choisir le jour</label>
       <select id="selDate" onchange="onDateChange()">
-        <option value="">-- Sélectionner un jour --</option>
-        <option value="Jour 1">Jour 1 — Samedi 29 août</option>
-        <option value="Jour 2">Jour 2 — Dimanche 30 août</option>
-        <option value="Jour 3">Jour 3 — Lundi 31 août</option>
-        <option value="Jour 4">Jour 4 — Mardi 1 septembre</option>
-        <option value="Jour 5">Jour 5 — Mercredi 2 septembre</option>
-        <option value="Jour 6">Jour 6 — Jeudi 3 septembre</option>
-        <option value="Jour 7">Jour 7 — Vendredi 4 septembre</option>
+        <option value="" data-i18n="r4_select_jour">-- Sélectionner un jour --</option>
+        <option value="Jour 1" data-i18n="jour1_label">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2" data-i18n="jour2_label">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3" data-i18n="jour3_label">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4" data-i18n="jour4_label">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
       </select>
     </div>
     <div class="step-group">
-      <label>2. Choisir l'atelier</label>
+      <label data-i18n="r4_choisir_atelier">2. Choisir l'atelier</label>
       <select id="selAtelier" onchange="onAtelierChange()" disabled>
-        <option value="">-- Choisir d'abord un jour --</option>
+        <option value="" data-i18n="r4_choisir_dabord">-- Choisir d'abord un jour --</option>
       </select>
     </div>
   </div>
   <div id="placeholder" class="placeholder">
-    <p>Sélectionnez un jour et un atelier</p>
-    <small>La fiche logistique complète s'affichera ici</small>
+    <p data-i18n="r4_placeholder_p">Sélectionnez un jour et un atelier</p>
+    <small data-i18n="r4_placeholder_s">La fiche logistique complète s'affichera ici</small>
   </div>
   <div id="recapSection" class="recap-section">
     <div class="recap-card">
       <div class="atelier-name" id="rAtelier"></div>
       <div class="atelier-meta" id="rMeta"></div>
       <div class="recap-grid">
-        <div class="recap-item"><div class="ri-label">Facilitateur(s)</div><div class="ri-value" id="rFac"></div></div>
-        <div class="recap-item"><div class="ri-label">Helper(s)</div><div class="ri-value" id="rHelpers"></div></div>
-        <div class="recap-item"><div class="ri-label">Angel</div><div class="ri-value" id="rAngel"></div></div>
-        <div class="recap-item"><div class="ri-label">Traducteur</div><div class="ri-value" id="rTraduction"></div></div>
+        <div class="recap-item"><div class="ri-label" data-i18n="col_facilitateur">Facilitateur(s)</div><div class="ri-value" id="rFac"></div></div>
+        <div class="recap-item"><div class="ri-label" data-i18n="col_helpers">Helper(s)</div><div class="ri-value" id="rHelpers"></div></div>
+        <div class="recap-item"><div class="ri-label" data-i18n="col_angel">Angel</div><div class="ri-value" id="rAngel"></div></div>
+        <div class="recap-item"><div class="ri-label" data-i18n="col_traducteur_long">Traducteur</div><div class="ri-value" id="rTraduction"></div></div>
       </div>
     </div>
     <hr class="divider">
-    <div class="logistics-label">Informations Logistiques</div>
+    <div class="logistics-label" data-i18n="r4_info_logistique">Informations Logistiques</div>
     <div class="logistics-box logistic-box" id="rLogistics"></div>
   </div>
 </div>

@@ -91,7 +91,10 @@
 
   footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
+<!-- i18n -->
 <body>
 <div class="wrap">
 
@@ -102,9 +105,10 @@
       <small>Ateliers avec un helper ou traducteur ayant le rôle Colibri</small>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index.html">🏠 Home</a>
-      <button class="btn-ghost" onclick="hardReload()">🔄 Refresh</button>
-      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
@@ -112,16 +116,16 @@
 
   <div class="filters">
     <div class="fg">
-      <label>Jour</label>
+      <label data-i18n="col_jour">Jour</label>
       <select id="filterJour" onchange="render()">
-        <option value="">Tous les jours</option>
-        <option value="Jour 1">Jour 1 — Sam. 29 août</option>
-        <option value="Jour 2">Jour 2 — Dim. 30 août</option>
-        <option value="Jour 3">Jour 3 — Lun. 31 août</option>
-        <option value="Jour 4">Jour 4 — Mar. 1 sept.</option>
-        <option value="Jour 5">Jour 5 — Mer. 2 sept.</option>
-        <option value="Jour 6">Jour 6 — Jeu. 3 sept.</option>
-        <option value="Jour 7">Jour 7 — Ven. 4 sept.</option>
+        <option value="" data-i18n="filter_tous_jours">Tous les jours</option>
+        <option value="Jour 1" data-i18n="jour1_label">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2" data-i18n="jour2_label">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3" data-i18n="jour3_label">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4" data-i18n="jour4_label">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
       </select>
     </div>
     <div class="fg">
@@ -336,3 +340,6 @@ render();
 </script>
 </body>
 </html>
+
+
+

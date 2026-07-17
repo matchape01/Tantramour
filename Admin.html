@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -108,6 +108,8 @@
 
   footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <script>
@@ -125,12 +127,13 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>Admin — Édition des ateliers</p>
+      <p data-i18n="admin_title">Admin — Édition des ateliers</p>
     </div>
     <div class="header-actions">
-      <button class="btn btn-primary" onclick="ouvrirNouvelAtelier()" style="font-size:13px;padding:7px 14px;">➕ Nouvel atelier</button>
-      <a class="btn-ghost" href="index.html">🏠 Home</a>
-      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <button class="btn btn-primary" onclick="ouvrirNouvelAtelier()" style="font-size:13px;padding:7px 14px;">➕ <span data-i18n="msg_ajouter">Ajouter</span></button>
+      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
+      <button class="btn-ghost tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 

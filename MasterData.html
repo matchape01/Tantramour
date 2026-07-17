@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -100,7 +100,18 @@
   @keyframes slideIn { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
 
   footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+  /* ── TRANSLATIONS EDITOR ── */
+  .trans-search { width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; background:var(--bg); color:var(--text); font-family:inherit; outline:none; margin-bottom:14px; }
+  .trans-search:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(59,130,212,.1); }
+  .trans-count { font-size:11px; color:var(--muted); margin-bottom:8px; }
+  .trans-desc { font-size:12px; color:var(--muted); background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:10px 14px; margin-bottom:16px; line-height:1.6; }
+  .td-fr { color:var(--muted); font-style:italic; }
+  .td-en-inp { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:4px 8px; font-size:12px; color:var(--text); font-family:inherit; width:100%; outline:none; }
+  .td-en-inp:focus { border-color:var(--accent); box-shadow:0 0 0 2px rgba(59,130,212,.08); }
+  .td-key { font-family:monospace; font-size:10px; color:var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <script>
@@ -122,32 +133,34 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>Master Data</p>
+      <p data-i18n="md_title">Master Data</p>
     </div>
     <div class="hdr-btns">
-      <a class="btn-ghost" href="index.html">🏠 Home</a>
-      <button class="btn-ghost" onclick="toggleMode()" id="modeBtn">🌙 Mode Nuit</button>
+      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn-ghost" onclick="toggleMode()" id="modeBtn">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
+      <button class="btn-ghost tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
   <!-- BANNIÈRE RESSOURCES -->
   <div class="res-banner">
     <div>
-      <strong>👥 Facilitateurs · Helpers · Traducteurs · Angels</strong>
-      <span>Gérées dans le référentiel unifié — Rapport 12</span>
+      <strong>👥 <span data-i18n="md_banner_title">Facilitateurs · Helpers · Traducteurs · Angels</span></strong>
+      <span data-i18n="md_banner_sub">Gérées dans le référentiel unifié — Rapport 12</span>
     </div>
-    <a href="Rapport_Gerer_Ressources.html" target="_blank">Gérer les Ressources →</a>
+    <a href="Rapport_Gerer_Ressources.html" target="_blank" data-i18n="md_banner_btn">Gérer les Ressources →</a>
   </div>
 
   <!-- ONGLETS -->
   <div class="tabs">
-    <button class="tab active" onclick="showTab('lieux')">📍 Lieux</button>
-    <button class="tab"        onclick="showTab('types')">🏷️ Types</button>
-    <button class="tab"        onclick="showTab('notes')">📝 Notes</button>
-    <button class="tab"        onclick="showTab('jours')">📆 Jours</button>
-    <button class="tab"        onclick="showTab('piment')">🌶️ Piment</button>
-    <button class="tab"        onclick="showTab('resource_types')">🎭 Types de ressource</button>
-    <button class="tab"        onclick="showTab('heures')">🕐 Heures</button>
+    <button class="tab active" onclick="showTab('lieux')">📍 <span data-i18n="md_tab_lieux">Lieux</span></button>
+    <button class="tab"        onclick="showTab('types')">🏷️ <span data-i18n="md_tab_types">Types</span></button>
+    <button class="tab"        onclick="showTab('notes')">📝 <span data-i18n="md_tab_notes">Notes</span></button>
+    <button class="tab"        onclick="showTab('jours')">📆 <span data-i18n="md_tab_jours">Jours</span></button>
+    <button class="tab"        onclick="showTab('piment')">🌶️ <span data-i18n="md_tab_piment">Piment</span></button>
+    <button class="tab"        onclick="showTab('resource_types')">🎭 <span data-i18n="md_tab_res_types">Types de ressource</span></button>
+    <button class="tab"        onclick="showTab('heures')">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
+    <button class="tab"        onclick="showTab('translations')">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
   </div>
 
   <!-- ════════════════════════════════════════════════
@@ -155,17 +168,17 @@
        Fichier : ref_lieux.js  |  { id, value, label }
   ════════════════════════════════════════════════ -->
   <div class="section visible" id="sec-lieux">
-    <div class="sec-title">📍 Lieux / Salles</div>
+    <div class="sec-title">📍 <span data-i18n="md_sec_lieux">Lieux / Salles</span></div>
     <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th></th></tr></thead>
         <tbody id="tbody-lieux"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('lieux')">+ Ajouter un lieu</button>
+    <button class="btn-add" onclick="addRow('lieux')" data-i18n="md_add_lieu">+ Ajouter un lieu</button>
     <div class="save-bar" id="bar-lieux">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save"  onclick="save('lieux')">💾 Sauvegarder ref_lieux.js</button>
         <button class="btn-save2" onclick="save('lieux', true)">💾 + data.js mis à jour</button>
@@ -178,17 +191,17 @@
        Fichier : ref_types.js  |  { id, value, label }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-types">
-    <div class="sec-title">🏷️ Types d'ateliers</div>
+    <div class="sec-title">🏷️ <span data-i18n="md_sec_types">Types d'ateliers</span></div>
     <div class="sec-meta">ref_types.js — REF_TYPES — colonnes : id, value, label</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th></th></tr></thead>
         <tbody id="tbody-types"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('types')">+ Ajouter un type</button>
+    <button class="btn-add" onclick="addRow('types')" data-i18n="md_add_type">+ Ajouter un type</button>
     <div class="save-bar" id="bar-types">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save"  onclick="save('types')">💾 Sauvegarder ref_types.js</button>
         <button class="btn-save2" onclick="save('types', true)">💾 + data.js mis à jour</button>
@@ -201,17 +214,17 @@
        Fichier : ref_notes.js  |  { id, value }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-notes">
-    <div class="sec-title">📝 Notes</div>
+    <div class="sec-title">📝 <span data-i18n="md_sec_notes">Notes</span></div>
     <div class="sec-meta">ref_notes.js — REF_NOTES — colonnes : id, value</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th></th></tr></thead>
         <tbody id="tbody-notes"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('notes')">+ Ajouter une note</button>
+    <button class="btn-add" onclick="addRow('notes')" data-i18n="md_add_note">+ Ajouter une note</button>
     <div class="save-bar" id="bar-notes">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save"  onclick="save('notes')">💾 Sauvegarder ref_notes.js</button>
         <button class="btn-save2" onclick="save('notes', true)">💾 + data.js mis à jour</button>
@@ -224,17 +237,17 @@
        Fichier : ref_jours.js  |  { id, value, label, date }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-jours">
-    <div class="sec-title">📆 Jours</div>
+    <div class="sec-title">📆 <span data-i18n="md_sec_jours">Jours</span></div>
     <div class="sec-meta">ref_jours.js — REF_JOURS — colonnes : id, value, label, date</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value</th><th>Label affiché</th><th>Date (agenda)</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th data-i18n="md_col_date">Date (agenda)</th><th></th></tr></thead>
         <tbody id="tbody-jours"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('jours')">+ Ajouter un jour</button>
+    <button class="btn-add" onclick="addRow('jours')" data-i18n="md_add_jour">+ Ajouter un jour</button>
     <div class="save-bar" id="bar-jours">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save"  onclick="save('jours')">💾 Sauvegarder ref_jours.js</button>
         <button class="btn-save2" onclick="save('jours', true)">💾 + data.js mis à jour</button>
@@ -247,17 +260,17 @@
        Fichier : ref_piment.js  |  { id, value (number), label }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-piment">
-    <div class="sec-title">🌶️ Niveaux Piment</div>
+    <div class="sec-title">🌶️ <span data-i18n="md_sec_piment">Niveaux Piment</span></div>
     <div class="sec-meta">ref_piment.js — REF_PIMENT — colonnes : id, value (numérique), label</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value (0–9)</th><th>Label affiché</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th>Value (0–9)</th><th data-i18n="md_col_label">Label affiché</th><th></th></tr></thead>
         <tbody id="tbody-piment"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('piment')">+ Ajouter un niveau</button>
+    <button class="btn-add" onclick="addRow('piment')" data-i18n="md_add_niveau">+ Ajouter un niveau</button>
     <div class="save-bar" id="bar-piment">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save" onclick="save('piment')">💾 Sauvegarder ref_piment.js</button>
       </div>
@@ -269,17 +282,17 @@
        Fichier : ref_resource_types.js  |  { id, value, label, icon }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-resource_types">
-    <div class="sec-title">🎭 Types de ressource</div>
+    <div class="sec-title">🎭 <span data-i18n="md_sec_res_types">Types de ressource</span></div>
     <div class="sec-meta">ref_resource_types.js — REF_RESOURCE_TYPES — colonnes : id, value, label, icon</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>ID</th><th>Value</th><th>Label</th><th>Icon</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label</th><th data-i18n="md_col_icon">Icon</th><th></th></tr></thead>
         <tbody id="tbody-resource_types"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('resource_types')">+ Ajouter un type de ressource</button>
+    <button class="btn-add" onclick="addRow('resource_types')" data-i18n="md_add_res_type">+ Ajouter un type de ressource</button>
     <div class="save-bar" id="bar-resource_types">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save" onclick="save('resource_types')">💾 Sauvegarder ref_resource_types.js</button>
       </div>
@@ -292,19 +305,50 @@
        Note : liste de créneaux — ajout/suppression rarement nécessaire
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-heures">
-    <div class="sec-title">🕐 Heures</div>
+    <div class="sec-title">🕐 <span data-i18n="md_sec_heures">Heures</span></div>
     <div class="sec-meta">ref_heures.js — REF_HEURES — colonnes : id, value (HH:MM)</div>
     <div class="tbl-wrap" style="max-height:420px;overflow-y:auto">
       <table>
-        <thead><tr><th>ID</th><th>Value (HH:MM)</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th>Value (HH:MM)</th><th></th></tr></thead>
         <tbody id="tbody-heures"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addRow('heures')">+ Ajouter un créneau</button>
+    <button class="btn-add" onclick="addRow('heures')" data-i18n="md_add_creneau">+ Ajouter un créneau</button>
     <div class="save-bar" id="bar-heures">
-      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save" onclick="save('heures')">💾 Sauvegarder ref_heures.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : TRADUCTIONS
+       Fichier : ref_translations.js  |  { key, fr, en }
+       Édition de la colonne "en" uniquement
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-translations">
+    <div class="sec-title">🌐 <span data-i18n="md_sec_translations">Traductions FR → EN</span></div>
+    <div class="sec-meta">ref_translations.js — REF_TRANSLATIONS — colonnes : key, fr, en</div>
+    <div class="trans-desc" data-i18n="md_trans_desc">Traduisez ici les libellés d'interface. Les données (noms, horaires, lieux) restent inchangées.</div>
+    <input type="text" class="trans-search" id="transSearch" data-i18n-placeholder="md_trans_search" placeholder="Rechercher un terme…" oninput="filterTrans()">
+    <div class="trans-count" id="transCount"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:140px" data-i18n="md_col_id">Key</th>
+            <th data-i18n="md_col_fr">Français (référence)</th>
+            <th data-i18n="md_col_en">English</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-translations"></tbody>
+      </table>
+    </div>
+    <div class="save-bar" id="bar-translations">
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="saveTrans()">💾 Sauvegarder ref_translations.js</button>
       </div>
     </div>
   </div>
@@ -314,11 +358,11 @@
 <!-- CONFIRM -->
 <div class="overlay" id="overlay">
   <div class="dlg">
-    <h3>Confirmer la suppression</h3>
+    <h3 data-i18n="md_confirm_del">Confirmer la suppression</h3>
     <p id="dlg-msg"></p>
     <div class="dlg-btns">
-      <button class="btn" onclick="closeConfirm()">Annuler</button>
-      <button class="btn btn-del" id="dlg-ok">Supprimer</button>
+      <button class="btn" onclick="closeConfirm()" data-i18n="md_cancel">Annuler</button>
+      <button class="btn btn-del" id="dlg-ok" data-i18n="md_delete">Supprimer</button>
     </div>
   </div>
 </div>
@@ -721,11 +765,148 @@ function showToast(msg, isErr) {
 
 function toggleMode() {
   var dark = document.body.classList.toggle('dark');
-  document.getElementById('modeBtn').textContent = dark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+  var mt = document.getElementById('modeBtnText');
+  if (mt) {
+    mt.setAttribute('data-i18n', dark ? 'nav_mode_jour' : 'nav_mode_nuit');
+    mt.textContent = I18n.t(dark ? 'nav_mode_jour' : 'nav_mode_nuit');
+  }
 }
 window.toggleMode = toggleMode;
 
 }); // fin loadData
+</script>
+
+<!-- ── LOGIQUE ONGLET TRADUCTIONS ── -->
+<script>
+// ════════════════════════════════════════════════════════════
+// ÉDITEUR DE TRADUCTIONS
+// Copie de travail de REF_TRANSLATIONS (la colonne "fr" est en lecture seule)
+// ════════════════════════════════════════════════════════════
+var TRANS_STORE = [];
+var TRANS_DIRTY = false;
+
+function initTranslations() {
+  if (typeof REF_TRANSLATIONS === 'undefined') return;
+  // Ne réinitialiser que si le store est vide (premier appel)
+  // ou si aucune modification n'est en cours, pour ne pas écraser les saisies.
+  if (TRANS_STORE.length === 0) {
+    TRANS_STORE = REF_TRANSLATIONS.map(function(e) {
+      return { key: e.key, fr: e.fr, en: e.en || '' };
+    });
+  }
+  renderTransTable(TRANS_STORE);
+  // Réinitialiser la recherche à chaque ouverture de l'onglet
+  var searchEl = document.getElementById('transSearch');
+  if (searchEl) searchEl.value = '';
+}
+
+function esc2(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderTransTable(items) {
+  var tbody = document.getElementById('tbody-translations');
+  if (!tbody) return;
+  var count = document.getElementById('transCount');
+  if (count) count.textContent = items.length + ' entrée(s)';
+  tbody.innerHTML = items.map(function(item, i) {
+    var realIdx = TRANS_STORE.indexOf(item);
+    return '<tr>' +
+      '<td class="td-key">' + esc2(item.key) + '</td>' +
+      '<td class="td-fr">' + esc2(item.fr) + '</td>' +
+      '<td><input class="td-en-inp" value="' + esc2(item.en) + '" ' +
+        'data-idx="' + realIdx + '" ' +
+        'onchange="onTransChange(this)" ' +
+        'oninput="onTransChange(this)"></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function onTransChange(el) {
+  var idx = parseInt(el.getAttribute('data-idx'));
+  if (isNaN(idx) || idx < 0 || idx >= TRANS_STORE.length) return;
+  TRANS_STORE[idx].en = el.value;
+  if (!TRANS_DIRTY) {
+    TRANS_DIRTY = true;
+    var bar = document.getElementById('bar-translations');
+    if (bar) bar.classList.add('on');
+  }
+}
+window.onTransChange = onTransChange;
+
+function filterTrans() {
+  var q = (document.getElementById('transSearch').value || '').toLowerCase().trim();
+  if (!q) {
+    renderTransTable(TRANS_STORE);
+    return;
+  }
+  var filtered = TRANS_STORE.filter(function(e) {
+    return e.key.toLowerCase().includes(q) ||
+           e.fr.toLowerCase().includes(q) ||
+           e.en.toLowerCase().includes(q);
+  });
+  renderTransTable(filtered);
+}
+window.filterTrans = filterTrans;
+
+function genTransFile() {
+  var escJs = function(v) { return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"'); };
+  var lines = TRANS_STORE.map(function(e) {
+    return '  { key: "' + escJs(e.key) + '", fr: "' + escJs(e.fr) + '", en: "' + escJs(e.en) + '" },';
+  }).join('\n');
+  return '/**\n * TANTRAMOUR 2026 — Référentiel de traductions FR → EN\n' +
+    ' * Généré automatiquement via MasterData > Traductions\n */\n' +
+    'var REF_TRANSLATIONS = [\n' + lines + '\n];\n';
+}
+
+async function saveTrans() {
+  try {
+    var content = genTransFile();
+    if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat).');
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      var res = await fetch('http://localhost:3000/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: 'ref_translations.js', content: content })
+      });
+      if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e.error || 'Erreur ' + res.status); }
+    } else {
+      await githubSaveFile('ref_translations.js', content);
+    }
+    TRANS_DIRTY = false;
+    var bar = document.getElementById('bar-translations');
+    if (bar) bar.classList.remove('on');
+    // Mettre à jour le dictionnaire i18n en live
+    if (typeof I18n !== 'undefined') {
+      TRANS_STORE.forEach(function(e) {
+        REF_TRANSLATIONS.forEach(function(r) {
+          if (r.key === e.key) r.en = e.en;
+        });
+      });
+      I18n.apply();
+    }
+    showToast('✅ ref_translations.js sauvegardé.', false);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.saveTrans = saveTrans;
+
+// ── Accrochage sur l'onglet Traductions ──────────────────────────────────────
+// On intercepte les clics directement sur le bouton de l'onglet,
+// car showTab() est défini dans un bloc loadData() séparé et peut ne pas
+// encore être disponible au moment où ce script s'exécute.
+document.addEventListener('DOMContentLoaded', function() {
+  // Trouver le bouton onglet Traductions et écouter son clic
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      // Détecter si c'est l'onglet Traductions par son contenu ou par l'appel onclick
+      var onc = btn.getAttribute('onclick') || '';
+      if (onc.indexOf("'translations'") !== -1 || onc.indexOf('"translations"') !== -1) {
+        // Petit délai pour laisser showTab() masquer/afficher les sections d'abord
+        setTimeout(initTranslations, 0);
+      }
+    });
+  });
+});
 </script>
 </body>
 </html>

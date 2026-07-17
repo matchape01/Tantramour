@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -17,6 +17,29 @@
     min-height: 100vh;
   }
   .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 60px; }
+
+  /* ── BARRE LANGUE (fixée en haut à droite) ── */
+  .lang-bar {
+    position: fixed; top: 14px; right: 18px; z-index: 999;
+  }
+  .lang-bar .tm-lang-btn {
+    cursor: pointer;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: inherit;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    transition: background .15s, border-color .15s;
+  }
+  .lang-bar .tm-lang-btn:hover {
+    background: var(--surface);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 
   /* ── EN-TÊTE ── */
   .logo { margin-bottom: 40px; }
@@ -83,6 +106,8 @@
   }
   .footer-btn:hover { background: var(--border); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 
@@ -90,37 +115,42 @@
 <div id="pwOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:12px;padding:36px 32px;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.18);font-family:-apple-system,'Segoe UI',system-ui,sans-serif;">
     <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#57606a;margin-bottom:6px;" id="pwTarget"></p>
-    <p style="font-size:17px;font-weight:700;color:#1f2328;margin-bottom:20px;">🔒 Accès restreint</p>
-    <input id="pwInput" type="password" placeholder="Mot de passe" autocomplete="off"
+    <p style="font-size:17px;font-weight:700;color:#1f2328;margin-bottom:20px;" data-i18n="pw_acces_restreint">🔒 Accès restreint</p>
+    <input id="pwInput" type="password" data-i18n-placeholder="pw_placeholder" placeholder="Mot de passe" autocomplete="off"
       style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;outline:none;margin-bottom:8px;"
       onkeydown="if(event.key==='Enter')checkPw()" />
     <p id="pwError" style="font-size:12px;color:#dc2626;min-height:18px;margin-bottom:12px;"></p>
     <div style="display:flex;gap:10px;">
-      <button onclick="closePw()" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f7f8fa;font-size:14px;cursor:pointer;">Annuler</button>
-      <button onclick="checkPw()" style="flex:1;padding:10px;border:none;border-radius:8px;background:#3b82d4;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Ouvrir</button>
+      <button onclick="closePw()" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f7f8fa;font-size:14px;cursor:pointer;" data-i18n="pw_annuler">Annuler</button>
+      <button onclick="checkPw()" style="flex:1;padding:10px;border:none;border-radius:8px;background:#3b82d4;color:#fff;font-size:14px;font-weight:600;cursor:pointer;" data-i18n="pw_ouvrir">Ouvrir</button>
     </div>
   </div>
+</div>
+
+<!-- ── BOUTON LANGUE (haut droite) ── -->
+<div class="lang-bar">
+  <button class="tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
 </div>
 
 <div class="wrap">
 
   <div class="logo">
     <h1>Tantramour 2026</h1>
-    <p>Portail des rapports — 29 août › 4 septembre 2026</p>
+    <p data-i18n="home_subtitle">Portail des rapports — 29 août › 4 septembre 2026</p>
   </div>
 
   <!-- ══════════════════════════════════
        GROUPE 1 — GÉNÉRAL
   ══════════════════════════════════ -->
   <div class="group">
-    <div class="group-label"><span>📆</span>Général</div>
+    <div class="group-label"><span>📆</span><span data-i18n="home_group_general">Général</span></div>
     <div class="grid">
 
       <a class="card" href="Rapport_Agenda_par_Jour.html" target="_blank" rel="noopener">
         <div class="card-icon">📅</div>
         <div class="card-body">
-          <div class="card-title">Agenda par Jour (Per day)</div>
-          <div class="card-desc">Tous les ateliers — filtres jour, lieu, rôle</div>
+          <div class="card-title" data-i18n="card_agenda_jour_title">Agenda par Jour (Per day)</div>
+          <div class="card-desc" data-i18n="card_agenda_jour_desc">Tous les ateliers — filtres jour, lieu, rôle</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -128,8 +158,8 @@
       <a class="card" href="Rapport_Agenda_par_Personne.html" target="_blank" rel="noopener">
         <div class="card-icon">👤</div>
         <div class="card-body">
-          <div class="card-title">Agenda par Personne (Per Person)</div>
-          <div class="card-desc">Planning individuel par facilitateur, helper ou angel</div>
+          <div class="card-title" data-i18n="card_agenda_personne_title">Agenda par Personne (Per Person)</div>
+          <div class="card-desc" data-i18n="card_agenda_personne_desc">Planning individuel par facilitateur, helper ou angel</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -137,8 +167,8 @@
       <a class="card" href="Rapport_Mon_Planning.html" target="_blank" rel="noopener">
         <div class="card-icon">🗓️</div>
         <div class="card-body">
-          <div class="card-title">Mon Planning (My Planning)</div>
-          <div class="card-desc">Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</div>
+          <div class="card-title" data-i18n="card_mon_planning_title">Mon Planning (My Planning)</div>
+          <div class="card-desc" data-i18n="card_mon_planning_desc">Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -146,8 +176,8 @@
       <a class="card" href="Rapport_Logistique_par_Atelier.html" target="_blank" rel="noopener">
         <div class="card-icon">📋</div>
         <div class="card-body">
-          <div class="card-title">Logistique par Atelier</div>
-          <div class="card-desc">Vue détaillée atelier — lieux, équipes &amp; notes</div>
+          <div class="card-title" data-i18n="card_logistique_title">Logistique par Atelier</div>
+          <div class="card-desc" data-i18n="card_logistique_desc">Vue détaillée atelier — lieux, équipes &amp; notes</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -155,8 +185,8 @@
       <a class="card" href="Rapport_Logistics_Input.html" target="_blank" rel="noopener" style="border-color:#86efac;">
         <div class="card-icon">✏️</div>
         <div class="card-body">
-          <div class="card-title">Saisie des besoins logistiques (Logistic needs)</div>
-          <div class="card-desc">Facilitateurs : saisissez vos besoins atelier par atelier</div>
+          <div class="card-title" data-i18n="card_saisie_log_title">Saisie des besoins logistiques (Logistic needs)</div>
+          <div class="card-desc" data-i18n="card_saisie_log_desc">Facilitateurs : saisissez vos besoins atelier par atelier</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -164,8 +194,8 @@
       <a class="card" href="Rapport_Colibri.html" target="_blank" rel="noopener" style="border-color:#c4b5fd;">
         <div class="card-icon">🐦</div>
         <div class="card-body">
-          <div class="card-title">Ateliers Colibri</div>
-          <div class="card-desc">Ateliers avec facilitateur ayant le rôle helper "Shift Colibri"</div>
+          <div class="card-title" data-i18n="card_colibri_title">Ateliers Colibri</div>
+          <div class="card-desc" data-i18n="card_colibri_desc">Ateliers avec facilitateur ayant le rôle helper "Shift Colibri"</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -173,8 +203,8 @@
       <a class="card" href="Rapport_Traducteurs.html" target="_blank" rel="noopener">
         <div class="card-icon">🌐</div>
         <div class="card-body">
-          <div class="card-title">Planning Traducteurs</div>
-          <div class="card-desc">Vue par traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</div>
+          <div class="card-title" data-i18n="card_traducteurs_title">Planning Traducteurs</div>
+          <div class="card-desc" data-i18n="card_traducteurs_desc">Vue par traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -186,14 +216,14 @@
        GROUPE 4 — GESTION PLANNING
   ══════════════════════════════════ -->
   <div class="group">
-    <div class="group-label"><span>📊</span>Gestion planning</div>
+    <div class="group-label"><span>📊</span><span data-i18n="home_group_planning">Gestion planning</span></div>
     <div class="grid">
 
       <button class="card" onclick="openPw('Rapport_Conflits.html','⚠️ Conflits de planning')">
         <div class="card-icon">⚠️</div>
         <div class="card-body">
-          <div class="card-title">Conflits de planning</div>
-          <div class="card-desc">Personnes assignées à plusieurs rôles simultanément</div>
+          <div class="card-title" data-i18n="card_conflits_title">Conflits de planning</div>
+          <div class="card-desc" data-i18n="card_conflits_desc">Personnes assignées à plusieurs rôles simultanément</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -201,8 +231,8 @@
       <button class="card" onclick="openPw('Rapport_Charge_Travail.html','⚖️ Charge de travail')">
         <div class="card-icon">⚖️</div>
         <div class="card-body">
-          <div class="card-title">Charge de travail (Workload)</div>
-          <div class="card-desc">Helpers &amp; Angels — nombre d'ateliers, durée, harmonisation</div>
+          <div class="card-title" data-i18n="card_charge_title">Charge de travail (Workload)</div>
+          <div class="card-desc" data-i18n="card_charge_desc">Helpers &amp; Angels — nombre d'ateliers, durée, harmonisation</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -210,8 +240,8 @@
       <button class="card" onclick="openPw('Rapport_Editer_Atelier.html','✏️ Éditer un atelier')" style="border-color:#86efac;">
         <div class="card-icon">✏️</div>
         <div class="card-body">
-          <div class="card-title">Éditer un atelier</div>
-          <div class="card-desc">Sélectionnez un atelier et modifiez ses champs — génère le code à copier dans data.js</div>
+          <div class="card-title" data-i18n="card_editer_title">Éditer un atelier</div>
+          <div class="card-desc" data-i18n="card_editer_desc">Sélectionnez un atelier et modifiez ses champs — génère le code à copier dans data.js</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -219,8 +249,8 @@
       <button class="card" onclick="openPw('Rapport_Gerer_Ressources.html','👥 Gérer les Ressources')" style="border-color:#86efac;">
         <div class="card-icon">👥</div>
         <div class="card-body">
-          <div class="card-title">Gérer les Ressources</div>
-          <div class="card-desc">Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié éditable</div>
+          <div class="card-title" data-i18n="card_ressources_title">Gérer les Ressources</div>
+          <div class="card-desc" data-i18n="card_ressources_desc">Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié éditable</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -228,8 +258,8 @@
       <button class="card" onclick="openPw('Rapport_Remplacement_Ressource.html','🔄 Remplacement de Ressource')" style="border-color:#fca5a5;">
         <div class="card-icon">🔄</div>
         <div class="card-body">
-          <div class="card-title">Remplacement de Ressource</div>
-          <div class="card-desc">Personne indisponible — proposition automatique de remplaçants sans conflit, charge équilibrée</div>
+          <div class="card-title" data-i18n="card_remplacement_title">Remplacement de Ressource</div>
+          <div class="card-desc" data-i18n="card_remplacement_desc">Personne indisponible — proposition automatique de remplaçants sans conflit, charge équilibrée</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -237,8 +267,8 @@
       <button class="card" onclick="openPw('Rapport_Problemes.html','🚨 Problèmes de planning')" style="border-color:#fca5a5;">
         <div class="card-icon">🚨</div>
         <div class="card-body">
-          <div class="card-title">Problèmes de planning</div>
-          <div class="card-desc">Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline</div>
+          <div class="card-title" data-i18n="card_problemes_title">Problèmes de planning</div>
+          <div class="card-desc" data-i18n="card_problemes_desc">Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -246,8 +276,8 @@
       <button class="card" onclick="openPw('Rapport_Traducteur_Affectation.html','🌐✅ Affectation Traducteur')" style="border-color:#c4b5fd;">
         <div class="card-icon">🌐✅</div>
         <div class="card-body">
-          <div class="card-title">Affectation Traducteur</div>
-          <div class="card-desc">Ateliers anglophones sans traducteur — détection TBC et affectation guidée</div>
+          <div class="card-title" data-i18n="card_trad_affect_title">Affectation Traducteur</div>
+          <div class="card-desc" data-i18n="card_trad_affect_desc">Ateliers anglophones sans traducteur — détection TBC et affectation guidée</div>
         </div>
         <div class="card-arrow">🔒</div>
       </button>
@@ -256,11 +286,11 @@
   </div>
 
   <footer>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <a href="user-manual.html" target="_blank" rel="noopener" class="footer-btn">📖 Manuel</a>
-      <a href="Rapport_Regles.html" target="_blank" rel="noopener" class="footer-btn">📐 Règles</a>
-      <button onclick="openPw('Admin.html','⚙️ Admin')" class="footer-btn">⚙️ Admin</button>
-      <button onclick="openPw('MasterData.html','🗂 Master Data')" class="footer-btn">🗂 Master Data</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="user-manual.html" target="_blank" rel="noopener" class="footer-btn">📖 <span data-i18n="nav_manuel">Manuel</span></a>
+      <a href="Rapport_Regles.html" target="_blank" rel="noopener" class="footer-btn">📐 <span data-i18n="nav_regles">Règles</span></a>
+      <button onclick="openPw('Admin.html','⚙️ Admin')" class="footer-btn">⚙️ <span data-i18n="nav_admin">Admin</span></button>
+      <button onclick="openPw('MasterData.html','🗂 Master Data')" class="footer-btn">🗂 <span data-i18n="nav_masterdata">Master Data</span></button>
     </div>
   </footer>
 
@@ -303,7 +333,7 @@ function checkPw() {
     closePw();
     window.open(withTs(_dest), '_blank', 'noopener');
   } else {
-    document.getElementById('pwError').textContent = 'Mot de passe incorrect.';
+    document.getElementById('pwError').textContent = I18n.t('pw_incorrect');
     document.getElementById('pwInput').select();
   }
 }

@@ -204,7 +204,10 @@
 
   footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
+<!-- i18n -->
 <body>
 <div class="wrap">
 
@@ -214,9 +217,10 @@
       <p>Remplacement de Ressource</p>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index.html">🏠 Home</a>
-      <button class="btn-ghost" onclick="hardReload()">🔄 Refresh</button>
-      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
@@ -904,3 +908,6 @@ function showToast(msg, type) {
 </script>
 </body>
 </html>
+
+
+

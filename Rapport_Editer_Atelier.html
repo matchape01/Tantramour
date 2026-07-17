@@ -166,7 +166,10 @@
 
   footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
+<!-- i18n -->
 <body>
 
 <div class="wrap">
@@ -176,32 +179,33 @@
       <p>Éditer un atelier</p>
     </div>
     <div class="header-actions">
-      <a class="btn" href="index.html">🏠 Home</a>
-      <button class="btn" onclick="hardReload()">🔄 Refresh</button>
+      <a class="btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-new" onclick="newAtelier()">＋ Nouvel atelier</button>
-      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
   <!-- FILTRES -->
   <div class="filters">
     <div class="filter-group">
-      <label>Jour</label>
+      <label data-i18n="col_jour">Jour</label>
       <select id="filterJour" onchange="renderList()">
-        <option value="">Tous les jours</option>
-        <option value="Jour 1">Jour 1 — Sam. 29 août</option>
-        <option value="Jour 2">Jour 2 — Dim. 30 août</option>
-        <option value="Jour 3">Jour 3 — Lun. 31 août</option>
-        <option value="Jour 4">Jour 4 — Mar. 1 sept.</option>
-        <option value="Jour 5">Jour 5 — Mer. 2 sept.</option>
-        <option value="Jour 6">Jour 6 — Jeu. 3 sept.</option>
-        <option value="Jour 7">Jour 7 — Ven. 4 sept.</option>
+        <option value="" data-i18n="filter_tous_jours">Tous les jours</option>
+        <option value="Jour 1" data-i18n="jour1_label">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2" data-i18n="jour2_label">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3" data-i18n="jour3_label">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4" data-i18n="jour4_label">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
       </select>
     </div>
     <div class="filter-group">
       <label>Type</label>
       <select id="filterType" onchange="renderList()">
-        <option value="">Tous les types</option>
+        <option value="" data-i18n="filter_tous_types">Tous les types</option>
       </select>
     </div>
     <div class="filter-group">
@@ -441,7 +445,7 @@ function renderEditor() {
     <div class="form-grid">
 
       <div class="form-group">
-        <label>Jour</label>
+        <label data-i18n="col_jour">Jour</label>
         ${buildSelect('f-jour', REF_JOURS.map(j=>({value:j.value,label:j.label})), e.jour, false)}
       </div>
 
@@ -473,7 +477,7 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label>Lieu</label>
+        <label data-i18n="col_lieu">Lieu</label>
         ${buildSelect('f-lieu', REF_LIEUX, e.lieu, true)}
       </div>
 
@@ -488,7 +492,7 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label>Traducteur</label>
+        <label data-i18n="filter_traducteur">Traducteur</label>
         ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'')}
       </div>
 
@@ -508,7 +512,7 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label>Angel</label>
+        <label data-i18n="col_angel">Angel</label>
         ${buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')}
       </div>
 
@@ -1085,3 +1089,6 @@ async function logSauvegarder() {
 </script>
 </body>
 </html>
+
+
+

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -272,6 +272,8 @@
     .role-stats strong { font-size: 13px; }
   }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -279,69 +281,70 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p id="pageTitle">Mon Planning (My Planning)</p>
+      <p data-i18n="r3_title">Mon Planning (My Planning)</p>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index.html">🏠 Home</a>
-      <button class="btn-ghost" onclick="hardReload()">🔄 Refresh</button>
-      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
+      <button class="btn-ghost tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
   <!-- ── STATS ── -->
   <div class="summary">
-    <div class="sum-card"><div class="sum-num" id="sumPersonnes">—</div><div class="sum-label">Personnes</div></div>
-    <div class="sum-card"><div class="sum-num" id="sumAteliers">—</div><div class="sum-label">Interventions</div></div>
-    <div class="sum-card"><div class="sum-num" id="sumFacs">—</div><div class="sum-label">Facilitateurs</div></div>
-    <div class="sum-card"><div class="sum-num" id="sumHelpers">—</div><div class="sum-label">Helpers</div></div>
-    <div class="sum-card"><div class="sum-num" id="sumTrads">—</div><div class="sum-label">Traducteurs</div></div>
-    <div class="sum-card"><div class="sum-num" id="sumAngels">—</div><div class="sum-label">Angels</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumPersonnes">—</div><div class="sum-label" data-i18n="filter_personne">Personnes</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumAteliers">—</div><div class="sum-label" data-i18n="col_atelier">Ateliers</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumFacs">—</div><div class="sum-label" data-i18n="r3_tab_fac">Facilitateurs</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumHelpers">—</div><div class="sum-label" data-i18n="r3_tab_helpers">Helpers</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumTrads">—</div><div class="sum-label" data-i18n="r3_tab_traducteurs">Traducteurs</div></div>
+    <div class="sum-card"><div class="sum-num" id="sumAngels">—</div><div class="sum-label" data-i18n="r3_tab_angels">Angels</div></div>
   </div>
 
   <!-- ── ONGLETS RÔLE ── -->
   <div class="role-tabs" id="roleTabs">
-    <button class="role-tab active-all" id="tab-all"   onclick="setRole('')"             >🌐 Combiné (tous rôles)</button>
-    <button class="role-tab"            id="tab-f"     onclick="setRole('F')"            >🎓 Facilitateurs</button>
-    <button class="role-tab"            id="tab-h"     onclick="setRole('H')"            >🤝 Helpers</button>
-    <button class="role-tab"            id="tab-t"     onclick="setRole('T')"            >🌐 Traducteurs</button>
-    <button class="role-tab"            id="tab-a"     onclick="setRole('A')"            >👼 Angels</button>
+    <button class="role-tab active-all" id="tab-all"   onclick="setRole('')">🌐 <span data-i18n="r3_tab_tous">Combiné (tous rôles)</span></button>
+    <button class="role-tab"            id="tab-f"     onclick="setRole('F')">🎓 <span data-i18n="r3_tab_fac">Facilitateurs</span></button>
+    <button class="role-tab"            id="tab-h"     onclick="setRole('H')">🤝 <span data-i18n="r3_tab_helpers">Helpers</span></button>
+    <button class="role-tab"            id="tab-t"     onclick="setRole('T')">🌐 <span data-i18n="r3_tab_traducteurs">Traducteurs</span></button>
+    <button class="role-tab"            id="tab-a"     onclick="setRole('A')">👼 <span data-i18n="r3_tab_angels">Angels</span></button>
   </div>
 
   <!-- ── FILTRES ── -->
   <div class="filters">
     <div class="filter-group">
-      <label>Recherche</label>
+      <label data-i18n="msg_rechercher">Recherche</label>
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input type="text" id="filterSearch" placeholder="Nom de la personne…" oninput="onSearch()">
+        <input type="text" id="filterSearch" data-i18n-placeholder="filter_personne" placeholder="Nom de la personne…" oninput="onSearch()">
         <button class="search-clear" id="searchClear" onclick="clearSearch()" title="Effacer">✕</button>
       </div>
     </div>
     <div class="filter-group">
-      <label>Personne</label>
+      <label data-i18n="filter_personne">Personne</label>
       <select id="filterPerson" onchange="render()">
-        <option value="">Toutes les personnes</option>
+        <option value="" data-i18n="filter_toutes_pers">Toutes les personnes</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Jour</label>
+      <label data-i18n="col_jour">Jour</label>
       <select id="filterJour" onchange="render()">
-        <option value="">Tous les jours</option>
-        <option value="Jour 1">Jour 1 — Sam. 29 août</option>
-        <option value="Jour 2">Jour 2 — Dim. 30 août</option>
-        <option value="Jour 3">Jour 3 — Lun. 31 août</option>
-        <option value="Jour 4">Jour 4 — Mar. 1 sept.</option>
-        <option value="Jour 5">Jour 5 — Mer. 2 sept.</option>
-        <option value="Jour 6">Jour 6 — Jeu. 3 sept.</option>
-        <option value="Jour 7">Jour 7 — Ven. 4 sept.</option>
+        <option value="" data-i18n="filter_tous_jours">Tous les jours</option>
+        <option value="Jour 1" data-i18n="jour1_label">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2" data-i18n="jour2_label">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3" data-i18n="jour3_label">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4" data-i18n="jour4_label">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
       </select>
     </div>
   </div>
 
   <!-- ── BASCULE VUE ── -->
   <div class="view-toggle">
-    <button class="vbtn active" id="vbtnCards" onclick="setView('cards')">👤 Vue par Personne</button>
-    <button class="vbtn"        id="vbtnTable" onclick="setView('table')">📋 Vue Tableau</button>
+    <button class="vbtn active" id="vbtnCards" onclick="setView('cards')">👤 <span data-i18n="r3_vue_cartes">Vue par Personne</span></button>
+    <button class="vbtn"        id="vbtnTable" onclick="setView('table')">📋 <span data-i18n="r3_vue_tableau">Vue Tableau</span></button>
   </div>
 
   <div class="stats" id="stats"></div>

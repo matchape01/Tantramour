@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -109,21 +109,23 @@
     .filters { gap: 10px; }
   }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <!-- ── MODALE MOT DE PASSE ADMIN ── -->
 <div id="editPwOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:12px;padding:36px 32px;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.18);font-family:-apple-system,'Segoe UI',system-ui,sans-serif;">
     <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#57606a;margin-bottom:6px;">⚙️ Admin — Édition</p>
-    <p style="font-size:17px;font-weight:700;color:#1f2328;margin-bottom:6px;">🔒 Accès restreint</p>
+    <p style="font-size:17px;font-weight:700;color:#1f2328;margin-bottom:6px;" data-i18n="pw_acces_restreint">🔒 Accès restreint</p>
     <p style="font-size:13px;color:#57606a;margin-bottom:16px;" id="editPwAtelier"></p>
     <input id="editPwInput" type="password" placeholder="Mot de passe" autocomplete="off"
       style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;outline:none;margin-bottom:8px;"
       onkeydown="if(event.key==='Enter')checkEditPw()" />
     <p id="editPwError" style="font-size:12px;color:#dc2626;min-height:18px;margin-bottom:12px;"></p>
     <div style="display:flex;gap:10px;">
-      <button onclick="closeEditPw()" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f7f8fa;font-size:14px;cursor:pointer;">Annuler</button>
-      <button onclick="checkEditPw()" style="flex:1;padding:10px;border:none;border-radius:8px;background:#3b82d4;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Ouvrir</button>
+      <button onclick="closeEditPw()" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f7f8fa;font-size:14px;cursor:pointer;" data-i18n="pw_annuler">Annuler</button>
+      <button onclick="checkEditPw()" style="flex:1;padding:10px;border:none;border-radius:8px;background:#3b82d4;color:#fff;font-size:14px;font-weight:600;cursor:pointer;" data-i18n="pw_ouvrir">Ouvrir</button>
     </div>
   </div>
 </div>
@@ -132,65 +134,66 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>Agenda par Jour</p>
+      <p data-i18n="r1_title">Agenda par Jour</p>
     </div>
     <div class="header-actions">
-      <a class="mode-btn" href="index.html">🏠 Home</a>
-      <button class="mode-btn" onclick="hardReload()">🔄 Refresh</button>
-      <button class="mode-btn" id="viewBtn" onclick="toggleView()">📱 Vue Mobile</button>
-      <button class="mode-btn" onclick="exportXlsx()">📥 Export Excel</button>
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="mode-btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="mode-btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="mode-btn" id="viewBtn" onclick="toggleView()">📱 <span data-i18n="nav_vue_mobile" id="viewBtnText">Vue Mobile</span></button>
+      <button class="mode-btn" onclick="exportXlsx()">📥 <span data-i18n="nav_export_excel">Export Excel</span></button>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
   <div class="filters">
     <div class="filter-group">
-      <label>Jour / Date</label>
+      <label data-i18n="filter_jour_date">Jour / Date</label>
       <select id="filterJour" onchange="render()">
-        <option value="">Tous les jours</option>
-        <option value="Jour 1">Jour 1 — Sam. 29 août</option>
-        <option value="Jour 2">Jour 2 — Dim. 30 août</option>
-        <option value="Jour 3">Jour 3 — Lun. 31 août</option>
-        <option value="Jour 4">Jour 4 — Mar. 1 sept.</option>
-        <option value="Jour 5">Jour 5 — Mer. 2 sept.</option>
-        <option value="Jour 6">Jour 6 — Jeu. 3 sept.</option>
-        <option value="Jour 7">Jour 7 — Ven. 4 sept.</option>
+        <option value="" data-i18n="filter_tous_jours">Tous les jours</option>
+        <option value="Jour 1" data-i18n="jour1_label">Jour 1 — Sam. 29 août</option>
+        <option value="Jour 2" data-i18n="jour2_label">Jour 2 — Dim. 30 août</option>
+        <option value="Jour 3" data-i18n="jour3_label">Jour 3 — Lun. 31 août</option>
+        <option value="Jour 4" data-i18n="jour4_label">Jour 4 — Mar. 1 sept.</option>
+        <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
+        <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
+        <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Type d'atelier</label>
+      <label data-i18n="filter_type_atelier">Type d'atelier</label>
       <select id="filterType" onchange="render()">
-        <option value="">Tous les types</option>
+        <option value="" data-i18n="filter_tous_types">Tous les types</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Lieu</label>
+      <label data-i18n="col_lieu">Lieu</label>
       <select id="filterLieu" onchange="render()">
-        <option value="">Tous les lieux</option>
+        <option value="" data-i18n="filter_tous_lieux">Tous les lieux</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Facilitateur</label>
+      <label data-i18n="filter_facilitateur">Facilitateur</label>
       <select id="filterFac" onchange="render()">
-        <option value="">Tous les facilitateurs</option>
+        <option value="" data-i18n="filter_tous_fac">Tous les facilitateurs</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Traducteur</label>
+      <label data-i18n="filter_traducteur">Traducteur</label>
       <select id="filterTrad" onchange="render()">
-        <option value="">Tous les traducteurs</option>
+        <option value="" data-i18n="filter_tous_trad">Tous les traducteurs</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Helper</label>
+      <label data-i18n="filter_helper">Helper</label>
       <select id="filterHelper" onchange="render()">
-        <option value="">Tous les helpers</option>
+        <option value="" data-i18n="filter_tous_helpers">Tous les helpers</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Angel</label>
+      <label data-i18n="col_angel">Angel</label>
       <select id="filterAngel" onchange="render()">
-        <option value="">Tous les angels</option>
+        <option value="" data-i18n="filter_tous_angels">Tous les angels</option>
       </select>
     </div>
   </div>
@@ -207,17 +210,17 @@
       </colgroup>
       <thead>
         <tr>
-          <th onclick="sortBy(0)">Jour<span class="sort-icon" id="si0">⇅</span></th>
-          <th onclick="sortBy(1)">Date<span class="sort-icon" id="si1">⇅</span></th>
-          <th onclick="sortBy(2)">Heure<span class="sort-icon" id="si2">⇅</span></th>
-          <th onclick="sortBy(3)">Type<span class="sort-icon" id="si3">⇅</span></th>
-          <th onclick="sortBy(4)">Atelier<span class="sort-icon" id="si4">⇅</span></th>
-          <th class="th-piment" onclick="sortBy(10)" title="Niveau Piment">🌶️<span class="sort-icon" id="si10">⇅</span></th>
-          <th onclick="sortBy(5)">Lieu<span class="sort-icon" id="si5">⇅</span></th>
-          <th onclick="sortBy(6)">Facilitateur(s)<span class="sort-icon" id="si6">⇅</span></th>
-          <th onclick="sortBy(7)">Trad.<span class="sort-icon" id="si7">⇅</span></th>
-          <th onclick="sortBy(8)">Helper(s)<span class="sort-icon" id="si8">⇅</span></th>
-          <th onclick="sortBy(9)">Angel<span class="sort-icon" id="si9">⇅</span></th>
+          <th onclick="sortBy(0)"><span data-i18n="col_jour">Jour</span><span class="sort-icon" id="si0">⇅</span></th>
+          <th onclick="sortBy(1)"><span data-i18n="col_date">Date</span><span class="sort-icon" id="si1">⇅</span></th>
+          <th onclick="sortBy(2)"><span data-i18n="col_heure">Heure</span><span class="sort-icon" id="si2">⇅</span></th>
+          <th onclick="sortBy(3)"><span data-i18n="col_type">Type</span><span class="sort-icon" id="si3">⇅</span></th>
+          <th onclick="sortBy(4)"><span data-i18n="col_atelier">Atelier</span><span class="sort-icon" id="si4">⇅</span></th>
+          <th class="th-piment" onclick="sortBy(10)" data-i18n-title="col_piment">🌶️<span class="sort-icon" id="si10">⇅</span></th>
+          <th onclick="sortBy(5)"><span data-i18n="col_lieu">Lieu</span><span class="sort-icon" id="si5">⇅</span></th>
+          <th onclick="sortBy(6)"><span data-i18n="col_facilitateur">Facilitateur(s)</span><span class="sort-icon" id="si6">⇅</span></th>
+          <th onclick="sortBy(7)"><span data-i18n="col_traducteur">Trad.</span><span class="sort-icon" id="si7">⇅</span></th>
+          <th onclick="sortBy(8)"><span data-i18n="col_helpers">Helper(s)</span><span class="sort-icon" id="si8">⇅</span></th>
+          <th onclick="sortBy(9)"><span data-i18n="col_angel">Angel</span><span class="sort-icon" id="si9">⇅</span></th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -442,7 +445,7 @@ function render() {
       return dj !== 0 ? dj : heureEnMinutes(a[2]) - heureEnMinutes(b[2]);
     });
   }
-  document.getElementById('stats').innerHTML = `<span>${data.length}</span> atelier(s) affiché(s)`;
+  document.getElementById('stats').innerHTML = `<span>${data.length}</span> ${I18n.t('stats_ateliers')}`;
   if (isMobileView) {
     renderCards(data);
   } else {
@@ -555,10 +558,10 @@ function renderCards(data) {
           <span class="tag">${r[3]||''}</span>${lieu ? ' '+lieu : ''}
         </div>
         <div class="card-rows">
-          ${facs ? `<div class="card-row"><span class="card-label">Facilitateur</span><span class="card-value">${facs}</span></div>` : ''}
-          ${trad ? `<div class="card-row"><span class="card-label">Traducteur</span><span class="card-value">${trad}</span></div>` : ''}
-          ${helpers||r[13] ? `<div class="card-row"><span class="card-label">Helper(s)</span><span class="card-value">${helpers}${r[13]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:6px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[13]}</span>`:''}</span></div>` : ''}
-          ${angel ? `<div class="card-row"><span class="card-label">Angel</span><span class="card-value">${angel}</span></div>` : ''}
+          ${facs ? `<div class="card-row"><span class="card-label">${I18n.t('role_facilitateur')}</span><span class="card-value">${facs}</span></div>` : ''}
+          ${trad ? `<div class="card-row"><span class="card-label">${I18n.t('role_traducteur')}</span><span class="card-value">${trad}</span></div>` : ''}
+          ${helpers||r[13] ? `<div class="card-row"><span class="card-label">${I18n.t('col_helpers')}</span><span class="card-value">${helpers}${r[13]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:6px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[13]}</span>`:''}</span></div>` : ''}
+          ${angel ? `<div class="card-row"><span class="card-label">${I18n.t('col_angel')}</span><span class="card-value">${angel}</span></div>` : ''}
         </div>
       </div>`;
     }).join('');
@@ -592,7 +595,7 @@ function checkEditPw() {
     closeEditPw();
     window.open(_editTarget, '_blank', 'noopener');
   } else {
-    document.getElementById('editPwError').textContent = 'Mot de passe incorrect.';
+    document.getElementById('editPwError').textContent = I18n.t('pw_incorrect');
     document.getElementById('editPwInput').select();
   }
 }
@@ -605,7 +608,9 @@ function setView(mobile) {
   isMobileView = mobile;
   document.getElementById('tableView').style.display = mobile ? 'none' : '';
   document.getElementById('cardView').style.display = mobile ? 'flex' : 'none';
-  document.getElementById('viewBtn').textContent = mobile ? '🖥 Vue Tableau' : '📱 Vue Mobile';
+  var vt = document.getElementById('viewBtnText');
+  if (vt) vt.setAttribute('data-i18n', mobile ? 'nav_vue_bureau' : 'nav_vue_mobile');
+  I18n.apply();
   render();
 }
 
@@ -623,7 +628,11 @@ function hardReload() {
 
 function toggleMode() {
   const isDark = document.body.classList.toggle('dark');
-  document.getElementById('modeBtn').textContent = isDark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+  const mt = document.getElementById('modeBtnText');
+  if (mt) {
+    mt.setAttribute('data-i18n', isDark ? 'nav_mode_jour' : 'nav_mode_nuit');
+    mt.textContent = I18n.t(isDark ? 'nav_mode_jour' : 'nav_mode_nuit');
+  }
 }
 
 // Auto-detect mobile on load

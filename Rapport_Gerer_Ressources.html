@@ -152,7 +152,10 @@
   .legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); }
   .legend-dot { width:10px; height:10px; border-radius:3px; }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
+<!-- i18n -->
 <body>
 
 <!-- ── CONFIRM DELETE ── -->
@@ -175,9 +178,10 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-add" onclick="openAdd()">＋ Ajouter une ressource</button>
-      <a class="btn" href="index.html">🏠 Home</a>
-      <button class="btn" onclick="hardReload()">🔄 Refresh</button>
-      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <a class="btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
+      <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
 
@@ -194,7 +198,7 @@
   <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="filter-group">
-      <label>Rôle</label>
+      <label data-i18n="filter_role">Rôle</label>
       <select id="filterRole" onchange="renderTable()">
         <option value="">Tous les rôles</option>
         <!-- options peuplées dynamiquement par buildRoleMeta() -->
@@ -673,3 +677,6 @@ if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + lo
 </script>
 </body>
 </html>
+
+
+

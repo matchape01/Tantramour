@@ -1,4 +1,5 @@
 ﻿
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
@@ -111,26 +112,29 @@
   /* ── FOOTER ── */
   .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
 </style>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <div class="page">
 
-  <div style="margin-bottom:24px;">
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;color:#1f2328;text-decoration:none;">🏠 Home</a>
+  <div style="margin-bottom:24px;display:flex;align-items:center;gap:10px;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;color:#1f2328;text-decoration:none;">🏠 <span data-i18n="nav_home">Home</span></a>
+    <button class="tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')" style="cursor:pointer;background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;color:#1f2328;font-family:inherit;">🌐 EN</button>
   </div>
 
   <div class="cover">
-    <div class="cover-tag">Documentation</div>
-    <h1>Tantramour 2026</h1>
-    <h2>Manuel utilisateur — Suite de gestion du festival</h2>
-    <div class="cover-meta">17 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
+    <div class="cover-tag" data-i18n="manual_tag">Documentation</div>
+    <h1 data-i18n="manual_title">Tantramour 2026</h1>
+    <h2 data-i18n="manual_subtitle">Manuel utilisateur — Suite de gestion du festival</h2>
+    <div class="cover-meta" data-i18n="manual_meta">17 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
   </div>
 
   <!-- ══════════════════════════════════
        TABLE DES MATIÈRES
   ══════════════════════════════════ -->
   <div class="toc">
-    <div class="toc-title">Table des matières</div>
+    <div class="toc-title" data-i18n="manual_toc_title">Table des matières</div>
     <ol>
       <li><span class="toc-num">1</span><a href="#home">Page d'accueil (Home)</a></li>
       <li><span class="toc-num">2</span><a href="#rapport1">Agenda par Jour</a></li>
