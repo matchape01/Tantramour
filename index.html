@@ -3,343 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tantramour 2026 — Rapports</title>
+<title>Tantramour 2026</title>
 <style>
   :root {
-    --bg: #ffffff; --surface: #f7f8fa; --border: #e5e7eb;
-    --text: #1f2328; --muted: #57606a; --accent: #3b82d4;
+    --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
+    --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
   body {
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-size: 15px; line-height: 1.6;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh;
+    font-family:-apple-system,"Segoe UI",system-ui,sans-serif;
+    font-size:15px; line-height:1.6;
+    background:var(--bg); color:var(--text);
+    min-height:100vh;
+    display:flex; flex-direction:column;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 60px; }
 
-  /* ── BARRE LANGUE (fixée en haut à droite) ── */
+  /* ── BARRE LANGUE ── */
   .lang-bar {
-    position: fixed; top: 14px; right: 18px; z-index: 999;
+    position:fixed; top:14px; right:18px; z-index:999;
   }
-  .lang-bar .tm-lang-btn {
-    cursor: pointer;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-    font-family: inherit;
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-    transition: background .15s, border-color .15s;
+  .lang-bar button {
+    cursor:pointer; background:var(--bg); border:1px solid var(--border);
+    border-radius:20px; padding:5px 14px; font-size:12px; font-weight:700;
+    color:var(--text); font-family:inherit; box-shadow:0 1px 4px rgba(0,0,0,.08);
+    transition:background .15s, border-color .15s;
   }
-  .lang-bar .tm-lang-btn:hover {
-    background: var(--surface);
-    border-color: var(--accent);
-    color: var(--accent);
+  .lang-bar button:hover { background:var(--surface); border-color:var(--accent); color:var(--accent); }
+
+  /* ── CONTENU CENTRAL ── */
+  .main {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:40px 24px 20px;
   }
 
-  /* ── EN-TÊTE ── */
-  .logo { margin-bottom: 40px; }
-  .logo h1 { font-size: 26px; font-weight: 700; letter-spacing: .2px; }
-  .logo p  { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  /* ── LOGO ── */
+  .logo { text-align:center; margin-bottom:48px; }
+  .logo-sub { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:10px; }
+  .logo h1  { font-size:38px; font-weight:800; letter-spacing:-.5px; color:var(--text); line-height:1.1; }
+  .logo h2  { font-size:15px; font-weight:400; color:var(--muted); margin-top:8px; }
 
-  /* ── GROUPE ── */
-  .group { margin-bottom: 32px; }
-  .group-label {
-    font-size: 15px; font-weight: 700;
-    color: var(--text);
-    padding-bottom: 10px; margin-bottom: 2px;
-    border-bottom: 2px solid var(--border);
+  /* ── BOUTON PRINCIPAL ── */
+  .main-btn {
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    width:100%; max-width:400px;
+    background:var(--accent); color:#fff;
+    border:none; border-radius:14px; padding:20px 24px;
+    font-size:17px; font-weight:700; font-family:inherit;
+    cursor:pointer; text-decoration:none;
+    transition:filter .15s, transform .1s;
+    box-shadow:0 4px 20px rgba(59,130,212,.3);
+    margin-bottom:16px;
   }
-  .group-label span {
-    display: inline-block; margin-right: 8px; font-size: 17px; vertical-align: middle;
-  }
+  .main-btn:hover { filter:brightness(1.08); transform:translateY(-2px); }
+  .main-btn:active { transform:translateY(0); }
+  .main-btn-left { display:flex; align-items:center; gap:14px; }
+  .main-btn-icon { font-size:28px; flex-shrink:0; }
+  .main-btn-text { text-align:left; }
+  .main-btn-title { font-size:17px; font-weight:700; line-height:1.2; }
+  .main-btn-desc  { font-size:12px; font-weight:400; opacity:.85; margin-top:2px; }
+  .main-btn-arrow { font-size:22px; opacity:.7; flex-shrink:0; }
 
-  /* ── GRILLE 2 colonnes ── */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
-
-  /* ── CARTE ── */
-  .card {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--border); border-radius: 10px;
-    background: var(--surface);
-    text-decoration: none; color: inherit;
-    transition: border-color .15s, background .15s;
-    cursor: pointer;
-  }
-  .card:hover { border-color: var(--accent); background: #fff; }
-  .card-icon {
-    font-size: 22px; flex-shrink: 0;
-    width: 42px; height: 42px;
-    display: flex; align-items: center; justify-content: center;
-    background: #fff; border: 1px solid var(--border); border-radius: 8px;
-  }
-  .card-body { flex: 1; min-width: 0; }
-  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 1px; }
-  .card-desc  { font-size: 12px; color: var(--muted); line-height: 1.4; }
-  .card-arrow { font-size: 16px; color: var(--muted); flex-shrink: 0; }
-
-  /* ── FOOTER ── */
+  /* ── FOOTER DREAMTEAM ── */
   footer {
-    margin-top: 48px; padding-top: 16px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 10px;
-    font-size: 12px; color: var(--muted);
+    padding:24px; text-align:center;
   }
-  .footer-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-    font-size: 12px; font-weight: 600; color: var(--text);
-    text-decoration: none; cursor: pointer; font-family: inherit;
+  .dreamteam-btn {
+    cursor:pointer; background:transparent; border:1px solid var(--border);
+    border-radius:20px; padding:8px 20px; font-size:12px; font-weight:700;
+    color:var(--muted); font-family:inherit; letter-spacing:.5px;
+    transition:border-color .15s, color .15s, background .15s;
+    display:inline-flex; align-items:center; gap:7px;
   }
-  .footer-btn:hover { background: var(--border); }
+  .dreamteam-btn:hover { border-color:var(--text); color:var(--text); background:var(--surface); }
+
+  /* ── MODALE MOT DE PASSE ── */
+  .pw-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,.5); z-index:9999;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .pw-overlay.open { display:flex; }
+  .pw-box {
+    background:#fff; border-radius:14px; padding:36px 32px;
+    max-width:340px; width:100%;
+    box-shadow:0 12px 40px rgba(0,0,0,.2);
+    font-family:-apple-system,"Segoe UI",system-ui,sans-serif;
+  }
+  .pw-icon { font-size:32px; margin-bottom:10px; }
+  .pw-title { font-size:18px; font-weight:800; color:#1f2328; margin-bottom:6px; }
+  .pw-sub   { font-size:13px; color:#57606a; margin-bottom:22px; }
+  .pw-input {
+    width:100%; padding:11px 14px; border:1px solid #e5e7eb;
+    border-radius:8px; font-size:16px; outline:none; margin-bottom:10px;
+    transition:border-color .15s;
+    font-family:inherit; letter-spacing:4px; text-align:center;
+  }
+  .pw-input:focus { border-color:#3b82d4; box-shadow:0 0 0 3px rgba(59,130,212,.12); }
+  .pw-error { font-size:12px; color:#dc2626; min-height:18px; margin-bottom:12px; text-align:center; }
+  .pw-actions { display:flex; gap:10px; }
+  .pw-cancel {
+    flex:1; padding:10px; border:1px solid #e5e7eb; border-radius:8px;
+    background:#f7f8fa; font-size:14px; cursor:pointer; font-family:inherit;
+  }
+  .pw-cancel:hover { background:#e5e7eb; }
+  .pw-confirm {
+    flex:1; padding:10px; border:none; border-radius:8px;
+    background:#3b82d4; color:#fff; font-size:14px; font-weight:700;
+    cursor:pointer; font-family:inherit;
+  }
+  .pw-confirm:hover { background:#2563eb; }
 </style>
 <script src="ref_translations.js"></script>
 <script src="i18n.js"></script>
 </head>
 <body>
 
-<!-- ── MODALE MOT DE PASSE ── -->
-<div id="pwOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:12px;padding:36px 32px;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.18);font-family:-apple-system,'Segoe UI',system-ui,sans-serif;">
-    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#57606a;margin-bottom:6px;" id="pwTarget"></p>
-    <p style="font-size:17px;font-weight:700;color:#1f2328;margin-bottom:20px;" data-i18n="pw_acces_restreint">🔒 Accès restreint</p>
-    <input id="pwInput" type="password" data-i18n-placeholder="pw_placeholder" placeholder="Mot de passe" autocomplete="off"
-      style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;outline:none;margin-bottom:8px;"
-      onkeydown="if(event.key==='Enter')checkPw()" />
-    <p id="pwError" style="font-size:12px;color:#dc2626;min-height:18px;margin-bottom:12px;"></p>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closePw()" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f7f8fa;font-size:14px;cursor:pointer;" data-i18n="pw_annuler">Annuler</button>
-      <button onclick="checkPw()" style="flex:1;padding:10px;border:none;border-radius:8px;background:#3b82d4;color:#fff;font-size:14px;font-weight:600;cursor:pointer;" data-i18n="pw_ouvrir">Ouvrir</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── BOUTON LANGUE (haut droite) ── -->
+<!-- ── BARRE LANGUE ── -->
 <div class="lang-bar">
   <button class="tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
 </div>
 
-<div class="wrap">
+<!-- ── CONTENU PRINCIPAL ── -->
+<main class="main">
 
   <div class="logo">
-    <h1>Tantramour 2026</h1>
-    <p data-i18n="home_subtitle">Portail des rapports — 29 août › 4 septembre 2026</p>
+    <div class="logo-sub">Festival · 29 août – 4 septembre 2026</div>
+    <h1>Tantramour</h1>
+    <h1>2026</h1>
+    <h2>Bienvenue · Welcome</h2>
   </div>
 
-  <!-- ══════════════════════════════════
-       GROUPE 1 — GÉNÉRAL
-  ══════════════════════════════════ -->
-  <div class="group">
-    <div class="group-label"><span>📆</span><span data-i18n="home_group_general">Général</span></div>
-    <div class="grid">
+  <a class="main-btn" href="Rapport_Programme.html" target="_blank" rel="noopener">
+    <div class="main-btn-left">
+      <div class="main-btn-icon">🎪</div>
+      <div class="main-btn-text">
+        <div class="main-btn-title" data-i18n="prog_btn_title">Programme des Ateliers</div>
+        <div class="main-btn-desc"  data-i18n="prog_btn_desc">Découvrez les ateliers jour par jour</div>
+      </div>
+    </div>
+    <div class="main-btn-arrow">›</div>
+  </a>
 
-      <a class="card" href="Rapport_Agenda_par_Jour.html" target="_blank" rel="noopener">
-        <div class="card-icon">📅</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_agenda_jour_title">Agenda par Jour (Per day)</div>
-          <div class="card-desc" data-i18n="card_agenda_jour_desc">Tous les ateliers — filtres jour, lieu, rôle</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
+</main>
 
-      <a class="card" href="Rapport_Agenda_par_Personne.html" target="_blank" rel="noopener">
-        <div class="card-icon">👤</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_agenda_personne_title">Agenda par Personne (Per Person)</div>
-          <div class="card-desc" data-i18n="card_agenda_personne_desc">Planning individuel par facilitateur, helper ou angel</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
+<!-- ── FOOTER DREAMTEAM ── -->
+<footer>
+  <button class="dreamteam-btn" onclick="openPw()">
+    🌀 <span data-i18n="dreamteam_btn">DREAM TEAM</span>
+  </button>
+</footer>
 
-      <a class="card" href="Rapport_Mon_Planning.html" target="_blank" rel="noopener">
-        <div class="card-icon">🗓️</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_mon_planning_title">Mon Planning (My Planning)</div>
-          <div class="card-desc" data-i18n="card_mon_planning_desc">Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Logistique_par_Atelier.html" target="_blank" rel="noopener">
-        <div class="card-icon">📋</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_logistique_title">Logistique par Atelier</div>
-          <div class="card-desc" data-i18n="card_logistique_desc">Vue détaillée atelier — lieux, équipes &amp; notes</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Logistics_Input.html" target="_blank" rel="noopener" style="border-color:#86efac;">
-        <div class="card-icon">✏️</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_saisie_log_title">Saisie des besoins logistiques (Logistic needs)</div>
-          <div class="card-desc" data-i18n="card_saisie_log_desc">Facilitateurs : saisissez vos besoins atelier par atelier</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Colibri.html" target="_blank" rel="noopener" style="border-color:#c4b5fd;">
-        <div class="card-icon">🐦</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_colibri_title">Ateliers Colibri</div>
-          <div class="card-desc" data-i18n="card_colibri_desc">Ateliers avec facilitateur ayant le rôle helper "Shift Colibri"</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Traducteurs.html" target="_blank" rel="noopener">
-        <div class="card-icon">🌐</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_traducteurs_title">Planning Traducteurs</div>
-          <div class="card-desc" data-i18n="card_traducteurs_desc">Vue par traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
+<!-- ── MODALE MOT DE PASSE ── -->
+<div class="pw-overlay" id="pwOverlay" onclick="overlayClick(event)">
+  <div class="pw-box" id="pwBox">
+    <div class="pw-icon">🔒</div>
+    <div class="pw-title" data-i18n="pw_acces_restreint">Accès restreint</div>
+    <div class="pw-sub"   data-i18n="dreamteam_pw_sub">Espace réservé à l'équipe Tantramour.</div>
+    <input id="pwInput" class="pw-input" type="password"
+      placeholder="••••••"
+      autocomplete="off"
+      onkeydown="if(event.key==='Enter')checkPw()"
+    />
+    <div class="pw-error" id="pwError"></div>
+    <div class="pw-actions">
+      <button class="pw-cancel"  onclick="closePw()"  data-i18n="pw_annuler">Annuler</button>
+      <button class="pw-confirm" onclick="checkPw()"  data-i18n="pw_ouvrir">Ouvrir</button>
     </div>
   </div>
-
-  <!-- ══════════════════════════════════
-       GROUPE 4 — GESTION PLANNING
-  ══════════════════════════════════ -->
-  <div class="group">
-    <div class="group-label"><span>📊</span><span data-i18n="home_group_planning">Gestion planning</span></div>
-    <div class="grid">
-
-      <button class="card" onclick="openPw('Rapport_Conflits.html','⚠️ Conflits de planning')">
-        <div class="card-icon">⚠️</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_conflits_title">Conflits de planning</div>
-          <div class="card-desc" data-i18n="card_conflits_desc">Personnes assignées à plusieurs rôles simultanément</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Charge_Travail.html','⚖️ Charge de travail')">
-        <div class="card-icon">⚖️</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_charge_title">Charge de travail (Workload)</div>
-          <div class="card-desc" data-i18n="card_charge_desc">Helpers &amp; Angels — nombre d'ateliers, durée, harmonisation</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Editer_Atelier.html','✏️ Éditer un atelier')" style="border-color:#86efac;">
-        <div class="card-icon">✏️</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_editer_title">Éditer un atelier</div>
-          <div class="card-desc" data-i18n="card_editer_desc">Sélectionnez un atelier et modifiez ses champs — génère le code à copier dans data.js</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Gerer_Ressources.html','👥 Gérer les Ressources')" style="border-color:#86efac;">
-        <div class="card-icon">👥</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_ressources_title">Gérer les Ressources</div>
-          <div class="card-desc" data-i18n="card_ressources_desc">Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié éditable</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Remplacement_Ressource.html','🔄 Remplacement de Ressource')" style="border-color:#fca5a5;">
-        <div class="card-icon">🔄</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_remplacement_title">Remplacement de Ressource</div>
-          <div class="card-desc" data-i18n="card_remplacement_desc">Personne indisponible — proposition automatique de remplaçants sans conflit, charge équilibrée</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Problemes.html','🚨 Problèmes de planning')" style="border-color:#fca5a5;">
-        <div class="card-icon">🚨</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_problemes_title">Problèmes de planning</div>
-          <div class="card-desc" data-i18n="card_problemes_desc">Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-      <button class="card" onclick="openPw('Rapport_Traducteur_Affectation.html','🌐✅ Affectation Traducteur')" style="border-color:#c4b5fd;">
-        <div class="card-icon">🌐✅</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_trad_affect_title">Affectation Traducteur</div>
-          <div class="card-desc" data-i18n="card_trad_affect_desc">Ateliers anglophones sans traducteur — détection TBC et affectation guidée</div>
-        </div>
-        <div class="card-arrow">🔒</div>
-      </button>
-
-    </div>
-  </div>
-
-  <footer>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <a href="user-manual.html" target="_blank" rel="noopener" class="footer-btn">📖 <span data-i18n="nav_manuel">Manuel</span></a>
-      <a href="Rapport_Regles.html" target="_blank" rel="noopener" class="footer-btn">📐 <span data-i18n="nav_regles">Règles</span></a>
-      <button onclick="openPw('Admin.html','⚙️ Admin')" class="footer-btn">⚙️ <span data-i18n="nav_admin">Admin</span></button>
-      <button onclick="openPw('MasterData.html','🗂 Master Data')" class="footer-btn">🗂 <span data-i18n="nav_masterdata">Master Data</span></button>
-    </div>
-  </footer>
-
 </div>
 
 <script>
-const PW = '007';
-let _dest = '';
+// ── Mot de passe ────────────────────────────────────────────────────────────
+var PW = 'ohm';
 
-// Ajoute un timestamp à l'URL pour forcer un rechargement sans cache
-function withTs(url) {
-  return url + '?v=' + Date.now();
-}
-
-// Remplace tous les liens de rapports par des versions avec timestamp
-document.querySelectorAll('a.card[href]').forEach(a => {
-  const base = a.getAttribute('href');
-  a.addEventListener('click', function(e) {
-    e.preventDefault();
-    window.open(withTs(base), '_blank', 'noopener');
-  });
-});
-
-function openPw(url, label) {
-  _dest = url;
-  document.getElementById('pwTarget').textContent = label;
+function openPw() {
   document.getElementById('pwInput').value = '';
   document.getElementById('pwError').textContent = '';
-  const ov = document.getElementById('pwOverlay');
-  ov.style.display = 'flex';
-  setTimeout(() => document.getElementById('pwInput').focus(), 50);
+  document.getElementById('pwOverlay').classList.add('open');
+  setTimeout(function() { document.getElementById('pwInput').focus(); }, 80);
 }
 
 function closePw() {
-  document.getElementById('pwOverlay').style.display = 'none';
+  document.getElementById('pwOverlay').classList.remove('open');
+}
+
+function overlayClick(e) {
+  if (e.target === document.getElementById('pwOverlay')) closePw();
 }
 
 function checkPw() {
-  if (document.getElementById('pwInput').value === PW) {
+  var val = document.getElementById('pwInput').value;
+  if (val === PW) {
     closePw();
-    window.open(withTs(_dest), '_blank', 'noopener');
+    window.location.href = 'index_bis.html';
   } else {
-    document.getElementById('pwError').textContent = I18n.t('pw_incorrect');
-    document.getElementById('pwInput').select();
+    var err = document.getElementById('pwError');
+    err.textContent = I18n.t('pw_incorrect');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+    // Petite animation shake
+    var inp = document.getElementById('pwInput');
+    inp.style.borderColor = '#dc2626';
+    setTimeout(function() { inp.style.borderColor = ''; }, 1200);
   }
 }
 
-document.getElementById('pwOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closePw();
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePw();
 });
 </script>
 </body>

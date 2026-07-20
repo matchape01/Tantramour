@@ -107,6 +107,8 @@
   .box { border-radius: 8px; padding: 10px 14px; font-size: 13px; line-height: 1.55; }
   .box-note { background: var(--note-bg); border: 1px solid var(--note-border); color: var(--note-text); }
   .box-log  { background: var(--log-bg);  border: 1px solid var(--log-border);  color: var(--log-text); }
+  .box-log-special { background: #f5f3ff; border: 1px solid #c4b5fd; color: #4c1d95; }
+  .dark .box-log-special { background: #1e1a2e; border-color: #6d28d9; color: #c4b5fd; }
   .box-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; opacity: .75; margin-bottom: 4px; }
 
   /* ── SHARED ── */
@@ -140,7 +142,7 @@
       <p>Infos Logistiques Helpers</p>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
@@ -195,7 +197,7 @@
 <script src="ref_ressources.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['logistics.js','data.js'], function() {
+loadData(['logistics.js','logistics.special.js','data.js'], function() {
 
 // ════════════════════════════════════════════════
 // UTILITAIRES
@@ -292,6 +294,10 @@ function renderAtelier(e) {
   const boxNote = hasNote
     ? `<div class="box box-note"><div class="box-label">📌 Note spéciale</div>${e.note}</div>`
     : '';
+  const specEntry = (e.logisticId && typeof LOGISTICS_SPECIAL !== 'undefined') ? (LOGISTICS_SPECIAL[e.logisticId] || null) : null;
+  const boxLogSpecial = specEntry
+    ? `<div class="box box-log-special"><div class="box-label">⭐ Informations logistiques spéciales</div>${specEntry.html || specEntry.text.replace(/\n/g,'<br>')}</div>`
+    : '';
   const boxLog = hasLog
     ? `<div class="box box-log"><div class="box-label">🔧 Informations logistiques</div>${logEntry.html || logEntry.text.replace(/\n/g,'<br>')}</div>`
     : '';
@@ -319,7 +325,7 @@ function renderAtelier(e) {
         <div class="info-value">${angel}</div>
       </div>` : ''}
     </div>
-    ${boxNote || boxLog ? `<div class="boxes">${boxNote}${boxLog}</div>` : ''}
+    ${boxNote || boxLog || boxLogSpecial ? `<div class="boxes">${boxNote}${boxLog}${boxLogSpecial}</div>` : ''}
   </div>`;
 }
 

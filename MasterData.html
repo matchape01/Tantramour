@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -120,7 +120,7 @@
   if (pw !== '007') {
     var entered = prompt('🔒 Accès restreint — Mot de passe :');
     if (entered !== '007') {
-      document.write('<div style="font-family:system-ui;padding:60px;text-align:center"><h2>Accès refusé</h2><p style="margin-top:12px;color:#57606a">Mot de passe incorrect.</p><br><a href="index.html">← Retour</a></div>');
+      document.write('<div style="font-family:system-ui;padding:60px;text-align:center"><h2>Accès refusé</h2><p style="margin-top:12px;color:#57606a">Mot de passe incorrect.</p><br><a href="index_bis.html">← Retour</a></div>');
       document.close(); throw 'access denied';
     }
     sessionStorage.setItem('tm_admin_auth', '007');
@@ -136,7 +136,7 @@
       <p data-i18n="md_title">Master Data</p>
     </div>
     <div class="hdr-btns">
-      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn-ghost" onclick="toggleMode()" id="modeBtn">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
       <button class="btn-ghost tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>

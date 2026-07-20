@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -60,6 +60,10 @@
   .logistics-box { width: 100%; background: var(--logistics-bg); border: 2px solid var(--logistics-border); border-radius: 8px; padding: 16px 20px; font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: break-word; }
   .logistics-box.empty-log { color: var(--muted); font-style: italic; }
   .logistic-box { width: 100%; min-height: 240px; }
+  .logistics-special-label { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: #7c5cd8; font-weight: 600; margin-bottom: 10px; margin-top: 20px; }
+  .logistics-special-box { width: 100%; background: #f5f3ff; border: 2px solid #c4b5fd; border-radius: 8px; padding: 16px 20px; font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+  .dark .logistics-special-box { background: #1e1a2e; border-color: #6d28d9; }
+  .logistics-special-box.empty-log { color: var(--muted); font-style: italic; }
   .placeholder { text-align: center; padding: 64px 20px; color: var(--muted); border: 2px dashed var(--border); border-radius: 10px; }
   .placeholder p { font-size: 15px; margin-bottom: 6px; }
   .placeholder small { font-size: 12px; }
@@ -89,7 +93,7 @@
       <p data-i18n="r4_title">Logistique par Atelier</p>
     </div>
     <div class="header-actions">
-      <a class="mode-btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="mode-btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="mode-btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
@@ -134,12 +138,14 @@
     <hr class="divider">
     <div class="logistics-label" data-i18n="r4_info_logistique">Informations Logistiques</div>
     <div class="logistics-box logistic-box" id="rLogistics"></div>
+    <div class="logistics-special-label" id="rSpecialLabel" style="display:none">⭐ Informations Logistiques Spéciales</div>
+    <div class="logistics-special-box logistic-box" id="rLogisticsSpecial" style="display:none"></div>
   </div>
 </div>
 <script src="ref_notes.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['logistics.js','data.js'], function() {
+loadData(['logistics.js','logistics.special.js','data.js'], function() {
 const DATA = agendaToRaw(AGENDA);
 const ROWS = DATA.map(r => { while(r.length<15) r.push(""); return r; });
 
@@ -209,6 +215,20 @@ function showRecap(r) {
   } else {
     logBox.textContent = 'Aucune information logistique renseignée pour cet atelier.';
     logBox.className   = 'logistics-box logistic-box empty-log';
+  }
+  // Informations Logistiques Spéciales
+  const specBox   = document.getElementById('rLogisticsSpecial');
+  const specLabel = document.getElementById('rSpecialLabel');
+  const specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL[logId] : null;
+  const specText  = specEntry ? (specEntry.text || '').trim() : '';
+  if (specEntry && specText) {
+    specBox.innerHTML  = specEntry.html || specEntry.text.replace(/\n/g,'<br>');
+    specBox.className  = 'logistics-special-box logistic-box';
+    specBox.style.display  = '';
+    specLabel.style.display = '';
+  } else {
+    specBox.style.display  = 'none';
+    specLabel.style.display = 'none';
   }
 }
 

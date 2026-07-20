@@ -1,9 +1,6 @@
 /**
- * TANTRAMOUR 2026 — * Référentiel : Lieux / Salles
+ * TANTRAMOUR 2026 — Référentiel : Lieux / Salles
  * Chaque entrée : { id, value, label }
- *   id    : clé unique (stable, ne jamais changer)
- *   value : valeur stockée dans AGENDA (champ "lieu")
- *   label : texte affiché dans les listes déroulantes
  */
 var REF_LIEUX = [
   { id: "L_SHIVA", value: "SHIVA", label: "SHIVA — Chapiteau principal" },
@@ -14,5 +11,8 @@ var REF_LIEUX = [
   { id: "L_PISCINE", value: "PISCINE", label: "PISCINE" },
   { id: "L_EXTERIEUR", value: "EXTERIEUR", label: "EXTERIEUR" },
   { id: "L_DREAM", value: "SALLE DREAM TEAM", label: "SALLE DREAM TEAM" },
-   { id: "L_TEST", value: "TEST", label: "TEST" },
+  { id: "L_TEST", value: "TEST", label: "TEST" },
+  { id: "L_BUDDHA", value: "BUDDHA", label: "BUDDHA" },
+  { id: "L_HANUMAN", value: "HANUMAN", label: "HANUMAN" },
 ];
+""

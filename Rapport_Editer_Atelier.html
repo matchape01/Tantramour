@@ -179,7 +179,7 @@
       <p>Éditer un atelier</p>
     </div>
     <div class="header-actions">
-      <a class="btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-new" onclick="newAtelier()">＋ Nouvel atelier</button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
@@ -238,7 +238,7 @@
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['data.js', 'logistics.js'], function() {
+loadData(['data.js', 'logistics.js', 'logistics.special.js'], function() {
 
 // ══════════════════════════════════════════════
 // ÉTAT
@@ -544,11 +544,26 @@ function renderEditor() {
       </div>
       <div id="logSection"></div>
     </div>
+
+    <!-- ── SECTION LOGISTIQUE SPÉCIALE liée à l'atelier ── -->
+    <div style="margin-top:24px;padding-top:24px;border-top:2px solid #c4b5fd">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#7c5cd8;">⭐ Informations Logistiques Spéciales</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Informations logistiques supplémentaires pour cet atelier</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="logistics-saving" id="logSpecialSaving"><div class="spinner"></div> Sauvegarde…</div>
+        </div>
+      </div>
+      <div id="logSpecialSection"></div>
+    </div>
   `;
 
-  // La section logistique n'est disponible que pour les ateliers existants
+  // Les sections logistiques ne sont disponibles que pour les ateliers existants
   if (!isNew) {
     logRenderForAtelier(e.logisticId || '');
+    logSpecialRenderForAtelier(e.logisticId || '');
   }
 }
 
@@ -869,6 +884,8 @@ renderList();
 
 // Copie de travail de logistics.js
 var LOG = Object.assign({}, LOGISTICS);
+// Copie de travail de logistics.special.js
+var LOG_SPECIAL = Object.assign({}, typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL : {});
 
 // ── RENDU de la section pour l'atelier en cours ────────────────────────────
 function logRenderForAtelier(logId) {
@@ -1064,6 +1081,20 @@ function genererLogisticsJs() {
     entries + (entries ? '\n\n' : '') + '};\n';
 }
 
+function genererLogisticsSpecialJs() {
+  var keys    = Object.keys(LOG_SPECIAL);
+  var entries = keys.map(function(k) {
+    var e = LOG_SPECIAL[k];
+    return '  "' + escJs(k) + '": {\n' +
+      '    html: "' + escJs(e.html || '') + '",\n' +
+      '    text: "' + escJs(e.text || '') + '",\n' +
+      '    updatedAt: "' + escJs(e.updatedAt || '') + '"\n' +
+      '  }';
+  }).join(',\n\n');
+  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques Spéciales (Supplémentaires)\n * =======================================================================\n * Structure : LOGISTICS_SPECIAL = { "<logisticId>": { html, text, updatedAt } }\n */\n\nvar LOGISTICS_SPECIAL = {\n\n' +
+    entries + (entries ? '\n\n' : '') + '};\n';
+}
+
 // ── SAUVEGARDE logistics.js ────────────────────────────────────────────────
 async function logSauvegarder() {
   if (location.protocol === 'file:') {
@@ -1084,6 +1115,175 @@ async function logSauvegarder() {
   }
   await githubSaveFile('logistics.js', genererLogisticsJs());
 }
+
+async function logSpecialSauvegarder() {
+  if (location.protocol === 'file:') {
+    throw new Error('Ouvrez via http://localhost:3000 (lancez start.bat) pour sauvegarder.');
+  }
+  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) {
+    var res = await fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: 'logistics.special.js', content: genererLogisticsSpecialJs() })
+    });
+    if (!res.ok) {
+      var err = await res.json().catch(function(){return{};});
+      throw new Error(err.error || 'Erreur ' + res.status);
+    }
+    return;
+  }
+  await githubSaveFile('logistics.special.js', genererLogisticsSpecialJs());
+}
+
+// ══════════════════════════════════════════════════════
+// SECTION LOGISTIQUE SPÉCIALE — liée à l'atelier sélectionné
+// ══════════════════════════════════════════════════════
+
+function logSpecialRenderForAtelier(logId) {
+  var sec = document.getElementById('logSpecialSection');
+  if (!sec) return;
+
+  if (!LOG_SPECIAL[logId]) {
+    sec.innerHTML =
+      '<div style="padding:16px;background:var(--surface);border:1px dashed #c4b5fd;border-radius:8px;text-align:center;">' +
+        '<div style="color:var(--muted);font-size:13px;margin-bottom:12px;">Aucune information logistique spéciale pour cet atelier.</div>' +
+        '<button class="btn-primary" style="font-size:13px;padding:7px 18px;background:#7c5cd8;border-color:#7c5cd8" onclick="logSpecialCreer()">＋ Créer les informations logistiques spéciales</button>' +
+      '</div>';
+    return;
+  }
+
+  var entry  = LOG_SPECIAL[logId];
+  var toolbar = [
+    '<div class="rte-toolbar">',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'bold\')"><b>B</b></button>',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'italic\')"><i>I</i></button>',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'underline\')"><u>U</u></button>',
+      '<div class="rte-sep"></div>',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'insertUnorderedList\')">• Liste</button>',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'insertOrderedList\')">1. Liste</button>',
+      '<div class="rte-sep"></div>',
+      '<button class="rte-btn" onclick="rteCmd(\'log-special-rte\',\'removeFormat\')">✖ Format</button>',
+    '</div>',
+  ].join('');
+
+  sec.innerHTML =
+    '<div id="log-special-preview" class="logistics-html-preview" style="padding:10px 0 14px">' +
+      (entry.html || '<em style="color:var(--muted)">Aucun contenu.</em>') +
+    '</div>' +
+    '<div id="log-special-editzone" class="logistics-edit-zone">' +
+      toolbar +
+      '<div class="rte-editor" id="log-special-rte" contenteditable="true" style="border-color:#c4b5fd">' + (entry.html || '') + '</div>' +
+      '<div class="logistics-edit-actions">' +
+        '<button class="btn-success" style="background:#7c5cd8;border-color:#7c5cd8;color:#fff" onclick="logSpecialSaveEntry()">✅ Sauvegarder</button>' +
+        '<button class="btn-secondary" onclick="logSpecialCancelEdit()">✖ Annuler</button>' +
+        '<button class="btn-danger" style="margin-left:auto" onclick="logSpecialSupprimerEntree()">🗑 Supprimer</button>' +
+        '<div class="logistics-saving" id="logspecialsavind"><div class="spinner"></div> Sauvegarde…</div>' +
+      '</div>' +
+    '</div>' +
+    '<div id="log-special-actions" style="display:flex;gap:8px;margin-top:10px;">' +
+      '<button class="btn" style="border-color:#c4b5fd;color:#7c5cd8" onclick="logSpecialOuvrirEdition()">✏️ Modifier</button>' +
+    '</div>';
+}
+
+function logSpecialCreer() {
+  if (selectedIdx === null) return;
+  var a = AGENDA[selectedIdx];
+  var logId = a.logisticId;
+
+  // Si l'atelier n'a pas encore de logisticId, en générer un et le lier
+  if (!logId) {
+    var base = ('LOG_' + (a.jour || '').replace(/\s/g,'') + '_' + (a.atelier || 'NEW').replace(/[^A-Za-z0-9]/g,'_').toUpperCase()).slice(0, 40);
+    var newId = base, n = 2;
+    while (LOG[newId] || LOG_SPECIAL[newId]) { newId = base + '_' + n; n++; }
+    logId = newId;
+    editedData.logisticId = logId;
+    AGENDA[selectedIdx].logisticId = logId;
+    // Sauvegarder data.js pour persister le lien
+    sauvegarder(genererDataJs()).catch(function(err) {
+      showToast('❌ Impossible de lier l\'ID : ' + err.message, true);
+    });
+  }
+
+  LOG_SPECIAL[logId] = { html: '', text: '', updatedAt: new Date().toISOString().slice(0,10) };
+
+  logSpecialRenderForAtelier(logId);
+  logSpecialOuvrirEdition();
+}
+window.logSpecialCreer = logSpecialCreer;
+
+function logSpecialOuvrirEdition() {
+  var preview  = document.getElementById('log-special-preview');
+  var editzone = document.getElementById('log-special-editzone');
+  var actions  = document.getElementById('log-special-actions');
+  if (preview)  preview.style.display  = 'none';
+  if (editzone) editzone.classList.add('active');
+  if (actions)  actions.style.display  = 'none';
+  var rte = document.getElementById('log-special-rte');
+  if (rte) { rte.focus(); placeCursorAtEnd(rte); }
+}
+window.logSpecialOuvrirEdition = logSpecialOuvrirEdition;
+
+function logSpecialCancelEdit() {
+  var preview  = document.getElementById('log-special-preview');
+  var editzone = document.getElementById('log-special-editzone');
+  var actions  = document.getElementById('log-special-actions');
+  if (preview)  preview.style.display  = '';
+  if (editzone) editzone.classList.remove('active');
+  if (actions)  actions.style.display  = '';
+}
+window.logSpecialCancelEdit = logSpecialCancelEdit;
+
+async function logSpecialSaveEntry() {
+  if (selectedIdx === null) return;
+  var logId = (editedData && editedData.logisticId) || AGENDA[selectedIdx].logisticId;
+  if (!logId) return;
+
+  var rte     = document.getElementById('log-special-rte');
+  var newHtml = rte ? rte.innerHTML.trim() : '';
+  var tmp = document.createElement('div');
+  tmp.innerHTML = newHtml;
+  var newText = (tmp.textContent || tmp.innerText || '').trim();
+
+  LOG_SPECIAL[logId] = { html: newHtml, text: newText, updatedAt: new Date().toISOString().slice(0,10) };
+
+  var ind = document.getElementById('logspecialsavind');
+  if (ind) ind.classList.add('show');
+  try {
+    await logSpecialSauvegarder();
+    showToast('✅ Informations logistiques spéciales sauvegardées !');
+    var preview = document.getElementById('log-special-preview');
+    if (preview) preview.innerHTML = newHtml || '<em style="color:var(--muted)">Aucun contenu.</em>';
+    logSpecialCancelEdit();
+  } catch(err) {
+    showToast('❌ Sauvegarde impossible : ' + err.message, true);
+  } finally {
+    if (ind) ind.classList.remove('show');
+  }
+}
+window.logSpecialSaveEntry = logSpecialSaveEntry;
+
+async function logSpecialSupprimerEntree() {
+  if (selectedIdx === null) return;
+  var logId = AGENDA[selectedIdx].logisticId;
+  if (!logId) return;
+  if (!confirm('Supprimer les informations logistiques spéciales de cet atelier ?')) return;
+
+  delete LOG_SPECIAL[logId];
+
+  var ind = document.getElementById('logSpecialSaving');
+  if (ind) ind.classList.add('show');
+  try {
+    await logSpecialSauvegarder();
+    showToast('🗑 Informations logistiques spéciales supprimées.');
+    logSpecialRenderForAtelier(logId);
+  } catch(err) {
+    showToast('❌ Suppression impossible : ' + err.message, true);
+  } finally {
+    if (ind) ind.classList.remove('show');
+  }
+}
+window.logSpecialSupprimerEntree = logSpecialSupprimerEntree;
 
 }); // fin loadData
 </script>

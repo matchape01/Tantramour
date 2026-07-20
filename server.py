@@ -19,6 +19,8 @@ ROOT  = Path(__file__).parent.resolve()
 ALLOWED = {
     'data.js',
     'logistics.js',
+    'logistics.special.js',
+    'ref_descriptions.js',
     'ref_ressources.js',
     'ref_resource_types.js',
     'ref_lieux.js',

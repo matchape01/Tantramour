@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -131,7 +131,7 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-primary" onclick="ouvrirNouvelAtelier()" style="font-size:13px;padding:7px 14px;">➕ <span data-i18n="msg_ajouter">Ajouter</span></button>
-      <a class="btn-ghost" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
       <button class="btn-ghost tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
@@ -272,6 +272,22 @@
           </div>
         </div>
 
+        <!-- Logistique Spéciale -->
+        <div class="form-group full">
+          <label style="color:#7c5cd8">⭐ Informations Logistiques Spéciales</label>
+          <div class="editor-toolbar" style="border-color:#c4b5fd">
+            <button onclick="fmtSpecial('bold')" title="Gras"><b>B</b></button>
+            <button onclick="fmtSpecial('italic')" title="Italique"><i>I</i></button>
+            <button onclick="fmtSpecial('underline')" title="Souligné"><u>U</u></button>
+            <div class="sep"></div>
+            <button onclick="fmtSpecial('insertUnorderedList')" title="Liste à puces">• Liste</button>
+            <button onclick="fmtSpecial('insertOrderedList')"   title="Liste numérotée">1. Liste</button>
+            <div class="sep"></div>
+            <button onclick="fmtSpecial('removeFormat')" title="Effacer la mise en forme">✕ Format</button>
+          </div>
+          <div id="fLogisticSpecialEditor" contenteditable="true" spellcheck="true" style="border-color:#c4b5fd;background:#f5f3ff"></div>
+        </div>
+
       </div>
     </div>
 
@@ -309,7 +325,7 @@
 loadData([
   'ref_jours.js','ref_lieux.js','ref_types.js',
   'ref_resource_types.js','ref_ressources.js','ref_notes.js',
-  'logistics.js','data.js'
+  'logistics.js','logistics.special.js','data.js'
 ], function() {
 // ════════════════════════════════════════════════
 // RÉFÉRENTIELS → SELECTS
@@ -443,6 +459,9 @@ function chargerFormulaire(e) {
   const logEntry = logId ? (LOGISTICS[logId] || null) : null;
   document.getElementById('fLogisticEditor').innerHTML = logEntry ? logEntry.html : '';
   document.getElementById('fLogisticId').textContent = logId || '(aucun)';
+  // Charger le contenu logistique spécial
+  const logSpecialEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? (LOGISTICS_SPECIAL[logId] || null) : null;
+  document.getElementById('fLogisticSpecialEditor').innerHTML = logSpecialEntry ? logSpecialEntry.html : '';
 
   document.getElementById('editCardTitle').textContent =
     (e.heure ? e.heure + '  —  ' : '') + (e.atelier || 'Nouvel atelier');
@@ -478,6 +497,10 @@ function fmtH(tag) {
   document.getElementById('fLogisticEditor').focus();
   document.execCommand('formatBlock', false, tag);
 }
+function fmtSpecial(cmd) {
+  document.getElementById('fLogisticSpecialEditor').focus();
+  document.execCommand(cmd, false, null);
+}
 
 // Génère un logisticId stable à partir du jour + atelier
 function genLogisticId(jour, atelier) {
@@ -496,6 +519,9 @@ function lireFormulaire() {
   const existingId = document.getElementById('fLogisticId').textContent.trim();
   const validId = (existingId && existingId !== '(aucun)') ? existingId : '';
   const logisticId = hasContent ? (validId || genLogisticId(jour, atelier)) : '';
+  // Contenu logistique spécial
+  const editorSpecialHtml = document.getElementById('fLogisticSpecialEditor').innerHTML.trim();
+  const hasSpecialContent = editorSpecialHtml && editorSpecialHtml !== '<br>' && editorSpecialHtml !== '<p><br></p>';
   return {
     jour, atelier,
     date:       document.getElementById('fDate').value.trim(),
@@ -512,6 +538,7 @@ function lireFormulaire() {
     note:       document.getElementById('fNote').value.trim(),
     logisticId,
     _logisticHtml: hasContent ? editorHtml : '',
+    _logisticSpecialHtml: hasSpecialContent ? editorSpecialHtml : '',
   };
 }
 
@@ -595,11 +622,21 @@ async function confirmerValidation() {
   } else if (!e.logisticId) {
     // Si on a effacé le contenu, on peut laisser l'ancienne entrée — elle sera simplement non référencée
   }
+  // Mettre à jour LOGISTICS_SPECIAL en mémoire si du contenu spécial existe
+  if (e.logisticId && e._logisticSpecialHtml) {
+    if (typeof LOGISTICS_SPECIAL === 'undefined') window.LOGISTICS_SPECIAL = {};
+    LOGISTICS_SPECIAL[e.logisticId] = {
+      html: e._logisticSpecialHtml,
+      text: e._logisticSpecialHtml.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(),
+      updatedAt: new Date().toISOString().slice(0,10)
+    };
+  }
 
-  // Sauvegarder les deux fichiers
-  const ok1 = await sauverFichier('data.js',     genererDataJs());
-  const ok2 = await sauverFichier('logistics.js', genererLogisticsJs());
-  if (ok1 && ok2) afficherToast('✅ data.js & logistics.js mis à jour — rechargez les rapports.');
+  // Sauvegarder les fichiers
+  const ok1 = await sauverFichier('data.js',              genererDataJs());
+  const ok2 = await sauverFichier('logistics.js',         genererLogisticsJs());
+  const ok3 = await sauverFichier('logistics.special.js', genererLogisticsSpecialJs());
+  if (ok1 && ok2 && ok3) afficherToast('✅ data.js, logistics.js & logistics.special.js mis à jour — rechargez les rapports.');
 }
 
 // ════════════════════════════════════════════════
@@ -705,6 +742,29 @@ function genererLogisticsJs() {
  */
 
 const LOGISTICS = {
+
+${entries}
+
+};
+`;
+}
+
+function genererLogisticsSpecialJs() {
+  const today = new Date().toISOString().slice(0,10);
+  const src = (typeof LOGISTICS_SPECIAL !== 'undefined') ? LOGISTICS_SPECIAL : {};
+  const entries = Object.entries(src).map(([id, entry]) => {
+    return `  "${escHtml(id)}": {\n    html: \`${escHtml(entry.html||'')}\`,\n    text: \`${escHtml(entry.text||'')}\`,\n    updatedAt: "${entry.updatedAt || today}"\n  }`;
+  }).join(',\n\n');
+  return `/**
+ * TANTRAMOUR 2026 — Informations Logistiques Spéciales (Supplémentaires)
+ * =======================================================================
+ * Fichier géré automatiquement par Admin.html.
+ * Ne pas modifier manuellement.
+ *
+ * Chaque entrée : { html, text, updatedAt }
+ */
+
+var LOGISTICS_SPECIAL = {
 
 ${entries}
 

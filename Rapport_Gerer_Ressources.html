@@ -15,6 +15,9 @@
     --badge-h-bg:#e0f2fe;  --badge-h-tx:#0369a1;
     --badge-t-bg:#fef9c3;  --badge-t-tx:#854d0e;
     --badge-a-bg:#fce7f3;  --badge-a-tx:#9d174d;
+    /* Badges langues */
+    --badge-fr-bg:#eff6ff; --badge-fr-tx:#1d4ed8; --badge-fr-bd:#bfdbfe;
+    --badge-en-bg:#f0fdf4; --badge-en-tx:#166534; --badge-en-bd:#86efac;
   }
   .dark {
     --bg:#0d1117; --surface:#161b22; --border:#30363d;
@@ -25,6 +28,8 @@
     --badge-h-bg:#0c2d48;  --badge-h-tx:#58a6ff;
     --badge-t-bg:#2d2006;  --badge-t-tx:#fbbf24;
     --badge-a-bg:#3b1030;  --badge-a-tx:#f0abca;
+    --badge-fr-bg:#0c2d48; --badge-fr-tx:#79a8ff; --badge-fr-bd:#1e4e7a;
+    --badge-en-bg:#052e16; --badge-en-tx:#4ade80; --badge-en-bd:#166534;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
@@ -78,6 +83,10 @@
   .role-h { background:var(--badge-h-bg); color:var(--badge-h-tx); }
   .role-t { background:var(--badge-t-bg); color:var(--badge-t-tx); }
   .role-a { background:var(--badge-a-bg); color:var(--badge-a-tx); }
+  /* Badges langues */
+  .lang-badge-fr { background:var(--badge-fr-bg); color:var(--badge-fr-tx); border:1px solid var(--badge-fr-bd); }
+  .lang-badge-en { background:var(--badge-en-bg); color:var(--badge-en-tx); border:1px solid var(--badge-en-bd); }
+  .td-langues { display:flex; gap:4px; flex-wrap:wrap; }
   .td-id { font-size:11px; color:var(--muted); font-family:monospace; }
   .td-actions { text-align:right; white-space:nowrap; }
   .btn-icon { cursor:pointer; background:transparent; border:none; font-size:15px; padding:3px 5px; border-radius:4px; color:var(--muted); }
@@ -117,6 +126,14 @@
   /* rôles additionnels : couleur générique accent */
   .role-chk.checked-x { border-color:var(--accent); background:#eff6ff; }
   .dark .role-chk.checked-x { background:#0c2d48; }
+  /* ── CHECKBOXES LANGUES ── */
+  .langues-check { display:flex; gap:14px; flex-wrap:wrap; margin-top:4px; }
+  .lang-chk { display:flex; align-items:center; gap:6px; cursor:pointer; padding:6px 12px; border-radius:6px; border:2px solid var(--border); background:var(--bg); transition:all .15s; user-select:none; }
+  .lang-chk:hover { border-color:var(--accent); }
+  .lang-chk input { width:15px; height:15px; cursor:pointer; accent-color:var(--accent); }
+  .lang-chk .rc-label { font-size:13px; font-weight:600; }
+  .lang-chk.checked-fr { border-color:var(--badge-fr-tx); background:var(--badge-fr-bg); }
+  .lang-chk.checked-en { border-color:var(--badge-en-tx); background:var(--badge-en-bg); }
 
   /* ── ACTIONS ÉDITEUR ── */
   .editor-actions { display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; align-items:center; }
@@ -178,7 +195,7 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-add" onclick="openAdd()">＋ Ajouter une ressource</button>
-      <a class="btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
@@ -220,9 +237,10 @@
       <thead>
         <tr>
           <th onclick="sortBy('value')" id="th-value">Nom <span class="sort-icon">↕</span></th>
-          <th>Rôles</th>
-          <th onclick="sortBy('id')" id="th-id">ID <span class="sort-icon">↕</span></th>
-          <th></th>
+            <th>Rôles</th>
+            <th>Langues</th>
+            <th onclick="sortBy('id')" id="th-id">ID <span class="sort-icon">↕</span></th>
+            <th></th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -250,7 +268,7 @@ let sortAsc     = true;
 // Init : cloner le référentiel chargé
 function initData() {
   data = REF_RESSOURCES.map(function(r) {
-    return { id: r.id, value: r.value, roles: r.roles.slice() };
+    return { id: r.id, value: r.value, roles: r.roles.slice(), langues: (r.langues || []).slice() };
   });
 }
 
@@ -331,9 +349,14 @@ function renderTable() {
       var m = ROLE_META[rl];
       return m ? '<span class="role-badge ' + m.cls + '">' + m.label + '</span>' : '';
     }).join('');
+    var langBadges = (r.langues || []).map(function(lg) {
+      var cls = lg === 'FR' ? 'lang-badge-fr' : 'lang-badge-en';
+      return '<span class="role-badge ' + cls + '">' + esc(lg) + '</span>';
+    }).join('');
     return '<tr' + sel + ' onclick="selectRow(' + realIdx + ')" id="row-' + realIdx + '">' +
       '<td class="td-name">' + esc(r.value) + '</td>' +
       '<td><div class="td-roles">' + badges + '</div></td>' +
+      '<td><div class="td-langues">' + (langBadges || '<span style="color:var(--muted);font-size:11px">—</span>') + '</div></td>' +
       '<td class="td-id">' + esc(r.id) + '</td>' +
       '<td class="td-actions">' +
         '<button class="btn-icon" title="Éditer" onclick="event.stopPropagation();selectRow(' + realIdx + ')">✏️</button>' +
@@ -384,19 +407,33 @@ window.closeEditor = closeEditor;
 // RENDU FORMULAIRE
 // ══════════════════════════════════════════════════════════
 function renderEditor(isNew) {
-  var r = isNew ? { id:'', value:'', roles:[] } : data[editingIdx];
+  var r = isNew ? { id:'', value:'', roles:[], langues:[] } : data[editingIdx];
   var panel = document.getElementById('editorPanel');
 
-  // Construire les checkboxes depuis REF_RESOURCE_TYPES (dynamique)
+  // Checkboxes rôles (dynamique depuis REF_RESOURCE_TYPES)
   var chkboxes = REF_RESOURCE_TYPES.map(function(rt) {
     var rl = rt.value;
     var checked = r.roles.indexOf(rl) !== -1;
-    var chkSuffix = ROLE_FIXED_CLS[rl] ? rl[0] : 'x'; // f/h/t/a ou x
+    var chkSuffix = ROLE_FIXED_CLS[rl] ? rl[0] : 'x';
     return '<label class="role-chk' + (checked ? ' checked-' + chkSuffix : '') + '" id="lbl-' + rl + '">' +
       '<input type="checkbox" id="chk-' + rl + '" ' + (checked ? 'checked' : '') + ' onchange="onRoleChange(\'' + rl + '\')">' +
       '<span class="rc-label">' + rt.icon + ' ' + rt.label + '</span>' +
     '</label>';
   }).join('');
+
+  // Checkboxes langues (FR / EN)
+  var langues = r.langues || [];
+  var chkFR = langues.indexOf('FR') !== -1;
+  var chkEN = langues.indexOf('EN') !== -1;
+  var langChkboxes =
+    '<label class="lang-chk' + (chkFR ? ' checked-fr' : '') + '" id="lbl-lang-FR">' +
+      '<input type="checkbox" id="chk-lang-FR" ' + (chkFR ? 'checked' : '') + ' onchange="onLangChange(\'FR\')">' +
+      '<span class="rc-label">🇫🇷 Français</span>' +
+    '</label>' +
+    '<label class="lang-chk' + (chkEN ? ' checked-en' : '') + '" id="lbl-lang-EN">' +
+      '<input type="checkbox" id="chk-lang-EN" ' + (chkEN ? 'checked' : '') + ' onchange="onLangChange(\'EN\')">' +
+      '<span class="rc-label">🇬🇧 English</span>' +
+    '</label>';
 
   var badgeHtml = isNew
     ? '<span class="editor-badge new">+ Nouvelle ressource</span>'
@@ -427,6 +464,11 @@ function renderEditor(isNew) {
         '<div class="roles-check" id="roles-check">' + chkboxes + '</div>' +
       '</div>' +
 
+      '<div class="form-group full">' +
+        '<label>🌐 Langues parlées</label>' +
+        '<div class="langues-check" id="langues-check">' + langChkboxes + '</div>' +
+      '</div>' +
+
     '</div>' +
 
     '<div class="editor-actions">' +
@@ -440,11 +482,20 @@ function renderEditor(isNew) {
 function onRoleChange(rl) {
   var chk = document.getElementById('chk-' + rl);
   var lbl = document.getElementById('lbl-' + rl);
-  var sfx = ROLE_FIXED_CLS[rl] ? rl[0] : 'x'; // f/h/t/a ou x pour les rôles additionnels
+  var sfx = ROLE_FIXED_CLS[rl] ? rl[0] : 'x';
   if (chk.checked) lbl.classList.add('checked-' + sfx);
   else lbl.classList.remove('checked-' + sfx);
 }
 window.onRoleChange = onRoleChange;
+
+function onLangChange(lg) {
+  var chk = document.getElementById('chk-lang-' + lg);
+  var lbl = document.getElementById('lbl-lang-' + lg);
+  var sfx = lg.toLowerCase(); // 'fr' ou 'en'
+  if (chk.checked) lbl.classList.add('checked-' + sfx);
+  else lbl.classList.remove('checked-' + sfx);
+}
+window.onLangChange = onLangChange;
 
 // ══════════════════════════════════════════════════════════
 // SAUVEGARDE RESSOURCE
@@ -458,7 +509,11 @@ function collectForm() {
       var chk = document.getElementById('chk-' + rl);
       return chk && chk.checked;
     });
-  return { val: val, id: id, roles: roles };
+  var langues = ['FR', 'EN'].filter(function(lg) {
+    var chk = document.getElementById('chk-lang-' + lg);
+    return chk && chk.checked;
+  });
+  return { val: val, id: id, roles: roles, langues: langues };
 }
 
 function validateForm(form, isNew) {
@@ -485,11 +540,12 @@ async function saveResource() {
 
   // Appliquer en mémoire
   if (isNew) {
-    data.push({ id: form.id, value: form.val, roles: form.roles });
+    data.push({ id: form.id, value: form.val, roles: form.roles, langues: form.langues });
     editingIdx = data.length - 1;
   } else {
-    data[editingIdx].value = form.val;
-    data[editingIdx].roles = form.roles;
+    data[editingIdx].value  = form.val;
+    data[editingIdx].roles  = form.roles;
+    data[editingIdx].langues = form.langues;
     // id = readonly, pas modifiable
   }
 
@@ -583,12 +639,16 @@ function genererRefRessources() {
   var sorted = data.slice().sort(function(a, b) { return a.value.localeCompare(b.value); });
 
   var lines = sorted.map(function(r) {
-    var rolesStr = '["' + r.roles.join('", "') + '"]';
+    var rolesStr   = '["' + r.roles.join('", "') + '"]';
+    var langues    = r.langues && r.langues.length ? r.langues : [];
+    var languesStr = '["' + langues.join('", "') + '"]';
     var pad = Math.max(0, 16 - r.id.length);
     return '  { id: "' + escJs(r.id) + '",  ' + ' '.repeat(pad) +
            'value: "' + escJs(r.value) + '",  ' +
            ' '.repeat(Math.max(0, 40 - r.value.length)) +
-           'roles: ' + rolesStr + ' },';
+           'roles: ' + rolesStr + ', ' +
+           ' '.repeat(Math.max(0, 56 - rolesStr.length)) +
+           'langues: ' + languesStr + ' },';
   }).join('\n');
 
   return (

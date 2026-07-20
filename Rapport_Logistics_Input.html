@@ -157,7 +157,7 @@
       <p data-i18n="r14_title">Saisie des besoins logistiques</p>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      <a class="btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')" style="cursor:pointer;">🌐 EN</button>
     </div>
   </header>
@@ -264,10 +264,27 @@
       <p class="editor-hint" data-i18n="r14_editor_hint">Décrivez vos besoins matériels, de salle, techniques ou autres. Utilisez la liste à puces pour plus de clarté.</p>
     </div>
 
+    <!-- Informations logistiques spéciales -->
+    <div class="field-wrap" style="margin-bottom:6px;margin-top:20px;">
+      <label style="color:#7c5cd8" data-i18n="r14_special_label">⭐ Informations logistiques spéciales</label>
+      <div class="toolbar" style="border-bottom-color:#c4b5fd">
+        <button class="tb-btn" onclick="fmtSpecial('bold')"><strong>G</strong></button>
+        <button class="tb-btn" onclick="fmtSpecial('italic')"><em>I</em></button>
+        <button class="tb-btn" onclick="fmtSpecial('underline')"><u>S</u></button>
+        <button class="tb-btn" onclick="fmtSpecial('insertUnorderedList')" data-i18n="r14_tb_liste">• Liste</button>
+        <button class="tb-btn" onclick="fmtSpecial('insertOrderedList')" data-i18n="r14_tb_num">1. Liste</button>
+        <button class="tb-btn" onclick="fmtSpecial('removeFormat')" data-i18n="r14_tb_format">✖ Format</button>
+      </div>
+      <div id="logisticSpecialEditor" contenteditable="true" spellcheck="true"
+           style="min-height:140px;max-height:360px;overflow-y:auto;border:1px solid #c4b5fd;border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.6;background:#f5f3ff;color:var(--text);outline:none;"></div>
+      <p class="editor-hint" data-i18n="r14_special_hint">Informations supplémentaires / spéciales (internes). Utilisez la liste à puces pour plus de clarté.</p>
+    </div>
+
     <div class="editor-actions">
       <button class="btn btn-primary" onclick="askConfirm()" data-i18n="r14_btn_save">💾 Enregistrer</button>
       <button class="btn" onclick="goStep2()" data-i18n="r14_btn_back">← Retour à mes ateliers</button>
       <span id="edSavedAt" style="font-size:12px;color:var(--muted);margin-left:8px;"></span>
+      <span id="edSpecialSavedAt" style="font-size:12px;color:#7c5cd8;margin-left:8px;"></span>
     </div>
   </div>
 
@@ -298,7 +315,7 @@
 <script src="ref_lieux.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['data.js','logistics.js'], function() {
+loadData(['data.js','logistics.js','logistics.special.js'], function() {
 
 const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 
@@ -467,6 +484,13 @@ function selectWorkshop(agendaIdx) {
   var updatedAt = hasLog ? LOGISTICS[currentLogId].updatedAt : '';
   document.getElementById('edSavedAt').textContent = updatedAt ? I18n.t('r14_last_update') + ' ' + updatedAt : '';
 
+  // Éditeur logistique spécial
+  var hasSpecial = currentLogId && typeof LOGISTICS_SPECIAL !== 'undefined' && LOGISTICS_SPECIAL[currentLogId];
+  var existingSpecial = hasSpecial ? LOGISTICS_SPECIAL[currentLogId].html : '';
+  document.getElementById('logisticSpecialEditor').innerHTML = existingSpecial || '<p></p>';
+  var updatedAtSpecial = hasSpecial ? LOGISTICS_SPECIAL[currentLogId].updatedAt : '';
+  document.getElementById('edSpecialSavedAt').textContent = updatedAtSpecial ? I18n.t('r14_last_update') + ' ' + updatedAtSpecial : '';
+
   showStep(3);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -493,6 +517,12 @@ function fmt(cmd) {
   document.execCommand(cmd, false, null);
 }
 window.fmt = fmt;
+
+function fmtSpecial(cmd) {
+  document.getElementById('logisticSpecialEditor').focus();
+  document.execCommand(cmd, false, null);
+}
+window.fmtSpecial = fmtSpecial;
 
 // ─── Confirmation ────────────────────────────────────────────────────────────
 function askConfirm() {
@@ -533,12 +563,23 @@ async function doSave() {
   var text  = edEl.innerText.trim();
   LOGISTICS[currentLogId] = { html: html, text: text, updatedAt: today };
 
+  // Contenu logistique spécial
+  var specEl   = document.getElementById('logisticSpecialEditor');
+  var specHtml = specEl.innerHTML.trim();
+  var specText = specEl.innerText.trim();
+  if (specHtml && specHtml !== '<p></p>' && specHtml !== '<br>') {
+    if (typeof LOGISTICS_SPECIAL === 'undefined') window.LOGISTICS_SPECIAL = {};
+    LOGISTICS_SPECIAL[currentLogId] = { html: specHtml, text: specText, updatedAt: today };
+  }
+
   try {
-    await saveFile('logistics.js', buildLogisticsJs());
-    await saveFile('data.js',      buildDataJs());
+    await saveFile('logistics.js',         buildLogisticsJs());
+    await saveFile('logistics.special.js', buildLogisticsSpecialJs());
+    await saveFile('data.js',              buildDataJs());
 
     // Mettre à jour l'UI
     document.getElementById('edSavedAt').textContent = I18n.t('r14_last_update') + ' ' + today;
+    document.getElementById('edSpecialSavedAt').textContent = (specHtml && specHtml !== '<p></p>') ? I18n.t('r14_last_update') + ' ' + today : '';
     document.getElementById('s3Title').textContent   = newNom;
     showToast('✔ ' + I18n.t('r14_btn_save').replace('💾 ', '') + ' — OK', 'ok');
 
@@ -575,6 +616,21 @@ function buildLogisticsJs() {
   }).join(',\n\n');
 
   return '/**\n * TANTRAMOUR 2026 — Informations Logistiques\n */\n\nvar LOGISTICS = {\n\n' +
+    entries + (entries ? '\n\n' : '') + '};\n';
+}
+
+function buildLogisticsSpecialJs() {
+  var src = (typeof LOGISTICS_SPECIAL !== 'undefined') ? LOGISTICS_SPECIAL : {};
+  var entries = Object.entries(src).map(function(pair) {
+    var id = pair[0], v = pair[1];
+    return '  "' + escJs(id) + '": {\n' +
+      '    html: "' + escJs(v.html || '') + '",\n' +
+      '    text: "' + escJs(v.text || '') + '",\n' +
+      '    updatedAt: "' + escJs(v.updatedAt || '') + '"\n' +
+      '  }';
+  }).join(',\n\n');
+
+  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques Spéciales (Supplémentaires)\n */\n\nvar LOGISTICS_SPECIAL = {\n\n' +
     entries + (entries ? '\n\n' : '') + '};\n';
 }
 

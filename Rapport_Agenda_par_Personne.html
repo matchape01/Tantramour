@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -158,7 +158,7 @@
       <p data-i18n="r2_title">Agenda par Personne</p>
     </div>
     <div class="header-actions">
-      <a class="mode-btn" href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="mode-btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="mode-btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="mode-btn" id="viewBtn" onclick="toggleView()">📱 <span data-i18n="nav_vue_mobile" id="viewBtnText">Vue Mobile</span></button>
       <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit" id="modeBtnText">Mode Nuit</span></button>
@@ -246,7 +246,7 @@
 </div>
 
 <script>
-loadData(['data.js', 'logistics.js'], function() {
+loadData(['data.js', 'logistics.js', 'logistics.special.js'], function() {
 const RAW = agendaToRaw(AGENDA);
 const DATA = RAW.map((r, i) => { while(r.length<16) r.push(""); r._agendaIdx = i; return r; });
 
@@ -634,6 +634,14 @@ function openLogModal(agendaIdx) {
   var logHtml = (logId && typeof LOGISTICS !== 'undefined' && LOGISTICS[logId] && LOGISTICS[logId].html)
     ? '<div class="log-modal-content">' + LOGISTICS[logId].html + '</div>'
     : '<div class="log-modal-empty">Aucune information logistique pour cet atelier.</div>';
+  // ── CONTENU LOGISTIQUE SPÉCIAL ──
+  var specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL[logId] : null;
+  if (specEntry && specEntry.html) {
+    logHtml += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #e5e7eb">' +
+      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7c5cd8;margin-bottom:6px">⭐ Informations Logistiques Spéciales</div>' +
+      '<div class="log-modal-content" style="background:#f5f3ff;border-radius:6px;padding:8px 10px">' + specEntry.html + '</div>' +
+    '</div>';
+  }
   document.getElementById('logModalContent').innerHTML = logHtml;
 
   document.getElementById('logModalOverlay').classList.add('open');
