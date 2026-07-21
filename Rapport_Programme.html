@@ -113,6 +113,8 @@
   .badge-type { border:1px solid; }
   .badge-lieu { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
   .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; }
+  .badge-note  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:13px; padding:1px 6px; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }
@@ -246,11 +248,22 @@
 <script src="loader.js"></script>
 <script src="ref_piment.js"></script>
 <script>
-loadData(['data.js', 'ref_descriptions.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js'], function() {
 
 // ════════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════════
+// Set des noms de facilitateurs bilingues (FR + EN)
+var BILINGUES = new Set(
+  (typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES : [])
+    .filter(function(r) {
+      var l = r.langues || [];
+      return l.indexOf('FR') !== -1 && l.indexOf('EN') !== -1;
+    })
+    .map(function(r) { return r.value.trim(); })
+);
+function isBilingue(nom) { return nom && BILINGUES.has(nom.trim()); }
+
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 var JOUR_META = {
   'Jour 1': { jourEn:'Day 1', date:'Samedi 29 août',    dateEn:'Saturday Aug 29',  emoji:'🌅' },
@@ -445,6 +458,8 @@ function renderProgList(ateliers) {
         '<div class="prog-meta">' +
           '<span class="badge badge-type badge-type-c">' + esc(typeLabel(e.type)) + '</span>' +
           facs.map(function(f) { return '<span class="badge badge-fac">🎓 ' + esc(f) + '</span>'; }).join('') +
+          (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2) ? '<span class="badge badge-trad" title="' + (e.traduction ? esc(e.traduction) : '🇫🇷🇬🇧') + '">🇫🇷🇬🇧</span>' : '') +
+          (e.note ? '<span class="badge badge-note">🏷 ' + esc(e.note) + '</span>' : '') +
         '</div>' +
       '</div>' +
       '<div class="prog-action">' +
@@ -481,12 +496,17 @@ window.openDetail = function(idx) {
   if (e.lieu)  rows.push([I18n.t('rp_lieu'),         esc(e.lieu)]);
   var facs = [e.fac1, e.fac2].filter(Boolean);
   if (facs.length) rows.push([facs.length > 1 ? I18n.t('rp_facilitateurs') : I18n.t('rp_facilitateur'), facs.map(esc).join(' &amp; ')]);
+  if (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2))
+    rows.push(['🇫🇷🇬🇧', e.traduction ? esc(e.traduction) : (I18n.getLang() === 'en' ? 'Bilingual facilitator' : 'Animateur bilingue')]);
   if (e.piment > 0) rows.push([I18n.t('rp_piment'),  '🌶️'.repeat(e.piment)]);
-  if (e.traduction) rows.push([I18n.t('rp_traduction'), esc(e.traduction)]);
+
+  var noteHtml = e.note
+    ? '<div style="grid-column:1/-1"><span class="badge badge-note">🏷 ' + esc(e.note) + '</span></div>'
+    : '';
 
   document.getElementById('mGrid').innerHTML = rows.map(function(r) {
     return '<div class="modal-grid-lbl">' + r[0] + '</div><div class="modal-grid-val">' + r[1] + '</div>';
-  }).join('');
+  }).join('') + noteHtml;
 
   // Descriptions
   var descFrEl = document.getElementById('mDescFr');

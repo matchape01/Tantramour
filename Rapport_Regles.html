@@ -208,6 +208,24 @@ const CLS_MAP  = { block:'ri-block', check:'ri-check', info:'ri-info', warn:'ri-
 
 var REPORTS = [
   {
+    id: 'programme_festivaliers',
+    icon: '🎪',
+    title: 'Programme des Ateliers (Festivaliers)',
+    file: 'Rapport_Programme.html',
+    type: 'lecture',
+    description: 'Page publique festivaliers — présentation des ateliers jour par jour avec descriptions et filtre par type.',
+    rules: [
+      { type: 'info',  text: 'Accessible depuis index.html (page d\'accueil publique) sans mot de passe — conçu pour les festivaliers.' },
+      { type: 'info',  text: 'Écran 1 — Grille des jours : affiche uniquement les jours ayant au moins un atelier de type public. Cliquer sur un jour ouvre l\'écran 2.' },
+      { type: 'block', text: 'Seuls les types publics sont affichés : MEDITATION/YOGA, ATELIER ARTISTIQUE, ATELIERS TANTRA, CEREMONIE & CONCERT, POOL PARTY & DJ Set, LOVE TEMPLE, SUPPORT EMOTIONNEL, TANTRA CAFE & CONFERENCE, RASSEMBLEMENT. Les types internes (REPAS, PREPA, REUNION, TEST) sont exclus.' },
+      { type: 'info',  text: 'Écran 2 — Programme du jour : liste des ateliers triée par heure, avec chips de filtre par type (uniquement les types présents ce jour-là).' },
+      { type: 'info',  text: 'Bouton ℹ️ sur chaque atelier : ouvre une modale de détail avec horaire, lieu, facilitateur(s), niveau piment, traduction, et les descriptions FR et EN si disponibles.' },
+      { type: 'check', text: 'Les descriptions proviennent de ref_descriptions.js — chargé via loadData(). Si aucune description n\'est disponible, un message "Aucune description disponible" s\'affiche.' },
+      { type: 'info',  text: 'Bilingue FR / EN : bouton 🌐 EN dans le header. Tous les libellés d\'interface, dates, noms des jours (Jour 1 → Day 1) et types d\'ateliers sont traduits. La langue est persistée en localStorage.' },
+      { type: 'info',  text: 'Le changement de langue est instantané — un listener tm_lang_changed re-rend la grille des jours, l\'écran programme actif et les chips de filtre sans recharger la page.' },
+    ]
+  },
+  {
     id: 'agenda_jour',
     icon: '📅',
     title: 'Agenda par Jour',
@@ -443,6 +461,44 @@ var REPORTS = [
       { type: 'info',  text: 'Pour un atelier TBC : bouton ✏️ Assigner un traducteur ouvre Éditer un atelier dans un nouvel onglet avec l\'atelier pré-sélectionné via ?idx=N.' },
       { type: 'info',  text: 'Filtres disponibles : Statut (✅ OK / ⏳ TBC / Tous), Jour.' },
       { type: 'check', text: 'ref_ressources.js est chargé via loadData() pour garantir la fraîcheur du cache.' },
+    ]
+  },
+  {
+    id: 'logistique_manquante',
+    icon: '📦',
+    title: 'Logistique manquante',
+    file: 'Rapport_Logistique_Manquante.html',
+    type: 'lecture',
+    description: 'Ateliers sans information logistique saisie ou non validés par les facilitateurs.',
+    rules: [
+      { type: 'info',  text: 'Affiche par défaut tous les ateliers qui nécessitent attention : info logistique manquante OU non validés par le facilitateur.' },
+      { type: 'block', text: 'Types exclus : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST — pas de besoin logistique pour ces ateliers.' },
+      { type: 'block', text: 'Seuls les ateliers ayant au moins un facilitateur (fac1 ou fac2) sont inclus.' },
+      { type: 'info',  text: 'Les ateliers sont groupés par facilitateur principal (fac1), triés par jour puis heure.' },
+      { type: 'info',  text: 'Bordure rouge = info logistique manquante (champ text vide). Bordure orange = info présente mais non validée par le facilitateur.' },
+      { type: 'info',  text: 'Filtres disponibles : Jour, Facilitateur, Statut (Info manquante / Non validé Fac / Manquant ET non validé).' },
+      { type: 'check', text: 'Bouton ✏️ Saisir : ouvre Rapport_Logistics_Input.html dans un nouvel onglet pour que le facilitateur complète sa fiche.' },
+      { type: 'info',  text: 'Barre de statistiques : total ateliers avec fac, renseignés, validés Fac, info manquante, non validés.' },
+      { type: 'info',  text: 'Bilingue FR / EN — bouton 🌐 EN dans le header, re-render instantané via tm_lang_changed.' },
+    ]
+  },
+  {
+    id: 'descriptions_manquantes',
+    icon: '📋',
+    title: 'Descriptions manquantes',
+    file: 'Rapport_Descriptions_Manquantes.html',
+    type: 'lecture',
+    description: 'Suivi des ateliers publics sans description FR ou EN — accès direct à l\'éditeur.',
+    rules: [
+      { type: 'info',  text: 'Affiche uniquement les ateliers de types publics (TANTRA, YOGA, ARTISTIQUE, CEREMONIE, etc.) — les types internes (REPAS, PREPA, REUNION, TEST) sont exclus.' },
+      { type: 'block', text: 'Seuls les ateliers ayant au moins un facilitateur (fac1 ou fac2) sont inclus.' },
+      { type: 'info',  text: 'Dédupliqués par nom d\'atelier : si un même atelier apparaît sur plusieurs jours, il ne compte qu\'une seule fois.' },
+      { type: 'info',  text: 'Filtres disponibles : Jour, Type d\'atelier, Statut (Aucune / FR manquante / EN manquante / Non validée Fac).' },
+      { type: 'info',  text: 'Chaque carte affiche : type, nom, horaire, lieu, facilitateur(s), pills de statut FR/EN et badge "Validée Fac" si applicable.' },
+      { type: 'info',  text: 'Couleur de la bordure de la carte : rouge = aucune description, orange = EN manquante, bleu = FR manquante.' },
+      { type: 'check', text: 'Bouton ✏️ Compléter : ouvre Rapport_Descriptions_Ateliers.html dans un nouvel onglet pour saisir la description.' },
+      { type: 'info',  text: 'Barre de statistiques : total ateliers publics, FR+EN complets, partiels, aucune, validés Fac.' },
+      { type: 'info',  text: 'Bilingue FR / EN — bouton 🌐 EN dans le header, re-render instantané via tm_lang_changed.' },
     ]
   },
   {

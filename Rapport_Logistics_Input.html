@@ -141,6 +141,11 @@
   #toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
   #toast.ok   { background:#166534; }
   #toast.err  { background:#dc2626; }
+  .validee-row { display:flex; align-items:center; gap:10px; margin-bottom:24px; padding:12px 16px; border-radius:8px; border:1px solid var(--border); background:var(--surface); }
+  .validee-row input[type=checkbox] { width:18px; height:18px; cursor:pointer; accent-color:var(--green,#16a34a); flex-shrink:0; }
+  .validee-label { font-size:13px; font-weight:600; cursor:pointer; user-select:none; }
+  .validee-row.checked { border-color:var(--green-border,#86efac); background:var(--green-bg,#dcfce7); }
+  .ws-pill.validated { background:var(--green-bg,#dcfce7); color:var(--green,#166534); border:1px solid var(--green-border,#86efac); }
 
   footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
 </style>
@@ -280,6 +285,11 @@
       <p class="editor-hint" data-i18n="r14_special_hint">Informations supplémentaires / spéciales (internes). Utilisez la liste à puces pour plus de clarté.</p>
     </div>
 
+    <div class="validee-row" id="valideeRow">
+      <input type="checkbox" id="s3ValidatedByFac" onchange="toggleValideeStyle()">
+      <label class="validee-label" for="s3ValidatedByFac" data-i18n="r14_validee_fac">Validée par le facilitateur</label>
+    </div>
+
     <div class="editor-actions">
       <button class="btn btn-primary" onclick="askConfirm()" data-i18n="r14_btn_save">💾 Enregistrer</button>
       <button class="btn" onclick="goStep2()" data-i18n="r14_btn_back">← Retour à mes ateliers</button>
@@ -416,10 +426,13 @@ function buildStep2(fac) {
 
   list.innerHTML = ws.map(function(x) {
     var e = x.e;
-    var hasLog = e.logisticId && LOGISTICS[e.logisticId];
-    var pillHtml = hasLog
+    var logEntry = e.logisticId && LOGISTICS[e.logisticId];
+    var hasContent = logEntry && (LOGISTICS[e.logisticId].text || '').trim().length > 0;
+    var isValidated = logEntry && LOGISTICS[e.logisticId].validatedByFac;
+    var pillHtml = hasContent
       ? '<span class="ws-pill filled">' + I18n.t('r14_pill_filled') + '</span>'
       : '<span class="ws-pill empty">' + I18n.t('r14_pill_empty') + '</span>';
+    if (isValidated) pillHtml += '<span class="ws-pill validated">' + I18n.t('r14_pill_validee') + '</span>';
     var facs = [e.fac1, e.fac2].filter(Boolean).join(' & ');
     return '<div class="ws-card" onclick="selectWorkshop(' + x.i + ')">' +
       '<div class="ws-card-left">' +
@@ -483,6 +496,9 @@ function selectWorkshop(agendaIdx) {
 
   var updatedAt = hasLog ? LOGISTICS[currentLogId].updatedAt : '';
   document.getElementById('edSavedAt').textContent = updatedAt ? I18n.t('r14_last_update') + ' ' + updatedAt : '';
+  var isValidated = hasLog && !!LOGISTICS[currentLogId].validatedByFac;
+  document.getElementById('s3ValidatedByFac').checked = isValidated;
+  document.getElementById('valideeRow').classList.toggle('checked', isValidated);
 
   // Éditeur logistique spécial
   var hasSpecial = currentLogId && typeof LOGISTICS_SPECIAL !== 'undefined' && LOGISTICS_SPECIAL[currentLogId];
@@ -510,6 +526,12 @@ function setPiment(val) {
   buildPimentBtns(val);
 }
 window.setPiment = setPiment;
+
+function toggleValideeStyle() {
+  var checked = document.getElementById('s3ValidatedByFac').checked;
+  document.getElementById('valideeRow').classList.toggle('checked', checked);
+}
+window.toggleValideeStyle = toggleValideeStyle;
 
 // RTE
 function fmt(cmd) {
@@ -561,7 +583,8 @@ async function doSave() {
   var edEl  = document.getElementById('logisticEditor');
   var html  = edEl.innerHTML.trim();
   var text  = edEl.innerText.trim();
-  LOGISTICS[currentLogId] = { html: html, text: text, updatedAt: today };
+  var validatedByFac = document.getElementById('s3ValidatedByFac').checked;
+  LOGISTICS[currentLogId] = { html: html, text: text, validatedByFac: validatedByFac, updatedAt: today };
 
   // Contenu logistique spécial
   var specEl   = document.getElementById('logisticSpecialEditor');
@@ -611,6 +634,7 @@ function buildLogisticsJs() {
     return '  "' + escJs(id) + '": {\n' +
       '    html: "' + escJs(v.html || '') + '",\n' +
       '    text: "' + escJs(v.text || '') + '",\n' +
+      '    validatedByFac: ' + (v.validatedByFac ? 'true' : 'false') + ',\n' +
       '    updatedAt: "' + escJs(v.updatedAt || '') + '"\n' +
       '  }';
   }).join(',\n\n');

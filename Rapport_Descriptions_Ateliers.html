@@ -133,6 +133,12 @@
   }
   .desc-area.fr:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.1); background:var(--fr-bg); }
   .desc-area.en:focus { border-color:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,.1);  background:var(--en-bg); }
+  .validee-row { display:flex; align-items:center; gap:10px; margin-bottom:24px; padding:12px 16px; border-radius:8px; border:1px solid var(--border); background:var(--surface); }
+  .validee-row input[type=checkbox] { width:18px; height:18px; cursor:pointer; accent-color:var(--green,#16a34a); flex-shrink:0; }
+  .validee-label { font-size:13px; font-weight:600; cursor:pointer; user-select:none; }
+  .validee-row.checked { border-color:var(--green-border,#86efac); background:var(--green-bg,#dcfce7); }
+  .dark .validee-row.checked { background:#052e16; border-color:#166534; }
+  .ws-pill.validated { background:#dcfce7; color:#166534; border:1px solid #86efac; }
 
   .editor-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:24px; }
   .save-stamp { font-size:12px; color:var(--muted); margin-left:8px; }
@@ -258,6 +264,11 @@
       <textarea class="desc-area en" id="s4DescEn"
         data-i18n-placeholder="r_desc_ph_en"
         placeholder="Enter or paste the English description…"></textarea>
+    </div>
+
+    <div class="validee-row" id="valideeRow">
+      <input type="checkbox" id="s4ValidatedByFac" onchange="toggleValideeStyle()">
+      <label class="validee-label" for="s4ValidatedByFac" id="valideeLabel" data-i18n="r_desc_validee_fac">Validée par Facilitateur</label>
     </div>
 
     <div class="editor-actions">
@@ -466,7 +477,7 @@ function renderList(ateliers) {
           (facs ? '<span>🎓 ' + esc(facs) + '</span>' : '') +
         '</div>' +
       '</div>' +
-      '<div class="ws-card-right">' + descPill(d) + '<span style="font-size:18px;color:var(--muted);margin-left:4px">›</span></div>' +
+      '<div class="ws-card-right">' + validatedPill(d) + descPill(d) + '<span style="font-size:18px;color:var(--muted);margin-left:4px">›</span></div>' +
     '</div>';
   }).join('');
 
@@ -481,6 +492,11 @@ function findDescByName(nom) {
   return Object.values(DESCS).find(function(d) {
     return (d.atelier||'').trim() === nom;
   }) || null;
+}
+
+function validatedPill(d) {
+  if (d && d.validatedByFac) return '<span class="ws-pill validated">' + I18n.t('r_desc_pill_validee') + '</span>';
+  return '';
 }
 
 function descPill(d) {
@@ -507,7 +523,7 @@ function selectAtelier(idx) {
                   .replace(/_+/g,'_').replace(/^_|_$/g,'');
     var base = newKey, n = 2;
     while (DESCS[newKey]) { newKey = base + '_' + n; n++; }
-    d = { key:newKey, atelier:e.atelier, type:e.type, piment:e.piment||0, fac1:e.fac1||'', fac2:e.fac2||'', descFr:'', descEn:'', updatedAt:'' };
+    d = { key:newKey, atelier:e.atelier, type:e.type, piment:e.piment||0, fac1:e.fac1||'', fac2:e.fac2||'', descFr:'', descEn:'', validatedByFac:false, updatedAt:'' };
     DESCS[newKey] = d;
   }
 
@@ -531,6 +547,9 @@ function selectAtelier(idx) {
   document.getElementById('s4DescFr').value = d.descFr || '';
   document.getElementById('s4DescEn').value = d.descEn || '';
   document.getElementById('s4Stamp').textContent = d.updatedAt ? I18n.t('r_desc_last_modif') + ' ' + d.updatedAt : '';
+  var cbx = document.getElementById('s4ValidatedByFac');
+  cbx.checked = !!d.validatedByFac;
+  document.getElementById('valideeRow').classList.toggle('checked', !!d.validatedByFac);
 
   showScreen('edit');
 }
@@ -567,6 +586,12 @@ function setPiment(val) {
 }
 window.setPiment = setPiment;
 
+function toggleValideeStyle() {
+  var checked = document.getElementById('s4ValidatedByFac').checked;
+  document.getElementById('valideeRow').classList.toggle('checked', checked);
+}
+window.toggleValideeStyle = toggleValideeStyle;
+
 // ════════════════════════════════════════════
 // SAUVEGARDE
 // ════════════════════════════════════════════
@@ -574,20 +599,35 @@ async function doSave() {
   var d = DESCS[currentKey];
   if (!d) return;
 
-  d.piment    = currentPiment;
-  d.descFr    = document.getElementById('s4DescFr').value;
-  d.descEn    = document.getElementById('s4DescEn').value;
-  d.updatedAt = new Date().toISOString().slice(0,10);
+  var prevPiment    = d.piment !== undefined ? d.piment : 0;
+  d.piment          = currentPiment;
+  d.descFr          = document.getElementById('s4DescFr').value;
+  d.descEn          = document.getElementById('s4DescEn').value;
+  d.validatedByFac  = document.getElementById('s4ValidatedByFac').checked;
+  d.updatedAt       = new Date().toISOString().slice(0,10);
 
   var orig = REF_DESCRIPTIONS.find(function(x) { return x.key === d.key; });
   if (orig) {
-    orig.piment = d.piment; orig.descFr = d.descFr; orig.descEn = d.descEn; orig.updatedAt = d.updatedAt;
+    orig.piment = d.piment; orig.descFr = d.descFr; orig.descEn = d.descEn;
+    orig.validatedByFac = d.validatedByFac; orig.updatedAt = d.updatedAt;
   } else {
     REF_DESCRIPTIONS.push(Object.assign({}, d));
   }
 
+  // Mettre à jour piment dans AGENDA (data.js) pour toutes les entrées de cet atelier
+  var atelierName = (d.atelier || '').trim();
+  AGENDA.forEach(function(e) {
+    if ((e.atelier || '').trim() === atelierName) {
+      e.piment = d.piment;
+    }
+  });
+
   try {
-    await saveFile('ref_descriptions.js', buildRefDescJs());
+    var saves = [saveFile('ref_descriptions.js', buildRefDescJs())];
+    if (d.piment !== prevPiment) {
+      saves.push(saveFile('data.js', buildDataJs()));
+    }
+    await Promise.all(saves);
     document.getElementById('s4Stamp').textContent = I18n.t('r_desc_last_modif') + ' ' + d.updatedAt;
     showToast(I18n.t('r_desc_saved_ok'), 'ok');
   } catch(err) {
@@ -597,7 +637,55 @@ async function doSave() {
 window.doSave = doSave;
 
 // ════════════════════════════════════════════
-// SÉRIALISATION
+// SÉRIALISATION data.js
+// ════════════════════════════════════════════
+function buildDataJs() {
+  var lines = AGENDA.map(function(e) {
+    return '  {jour:"'       + escJs(e.jour||'') +
+      '",date:"'             + escJs(e.date||'') +
+      '",heure:"'            + escJs(e.heure||'') +
+      '",type:"'             + escJs(e.type||'') +
+      '",atelier:"'          + escJs(e.atelier||'') +
+      '",lieu:"'             + escJs(e.lieu||'') +
+      '",fac1:"'             + escJs(e.fac1||'') +
+      '",fac2:"'             + escJs(e.fac2||'') +
+      '",traduction:"'       + escJs(e.traduction||'') +
+      '",helper1:"'          + escJs(e.helper1||'') +
+      '",helper2:"'          + escJs(e.helper2||'') +
+      '",helper3:"'          + escJs(e.helper3||'') +
+      '",angel:"'            + escJs(e.angel||'') +
+      '",note:"'             + escJs(e.note||'') +
+      '",piment:'            + (e.piment||0) +
+      ',logisticId:"'        + escJs(e.logisticId||'') + '"}';
+  }).join(',\n');
+
+  return '/**\n' +
+    ' * TANTRAMOUR 2026 \u2014 R\u00e9f\u00e9rentiel de donn\u00e9es commun\n' +
+    ' * ================================================\n' +
+    ' * Source unique pour les 3 rapports HTML.\n' +
+    ' * Pour mettre \u00e0 jour : modifier uniquement ce fichier.\n' +
+    ' *\n' +
+    ' * Structure de chaque entr\u00e9e :\n' +
+    ' *   jour       {string}  "Jour 1" \u2026 "Jour 7"\n' +
+    ' *   date       {string}  "Samedi 29 aout" \u2026\n' +
+    ' *   heure      {string}  "9:45 - 11:00" | "Matin" | "APRES MIDI"\n' +
+    ' *   type       {string}  cat\u00e9gorie (ex: "ATELIERS TANTRA (AM)")\n' +
+    ' *   atelier    {string}  nom de l\'atelier / activit\u00e9\n' +
+    ' *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" \u2026)\n' +
+    ' *   fac1       {string}  Facilitateur principal\n' +
+    ' *   fac2       {string}  Facilitateur secondaire\n' +
+    ' *   traduction {string}  Langue / traducteur\n' +
+    ' *   helper1    {string}  Helper 1\n' +
+    ' *   helper2    {string}  Helper 2\n' +
+    ' *   helper3    {string}  Helper 3\n' +
+    ' *   angel      {string}  Angel\n' +
+    ' *   note       {string}  Note logistique (ex: "Shift Colibri", "Atelier + long")\n' +
+    ' */\n\n' +
+    'var AGENDA = [\n\n' + lines + '\n];\n';
+}
+
+// ════════════════════════════════════════════
+// SÉRIALISATION ref_descriptions.js
 // ════════════════════════════════════════════
 function escJs(s) {
   return (s||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r?\n/g,'\\n').replace(/\t/g,'\\t');
@@ -613,14 +701,15 @@ function buildRefDescJs() {
 
   var lines = merged.map(function(d) {
     return '  { key:"' + escJs(d.key||'') +
-      '", atelier:"' + escJs(d.atelier||'') +
-      '", type:"'    + escJs(d.type||'') +
-      '", piment:'   + (d.piment||0) +
-      ', fac1:"'     + escJs(d.fac1||'') +
-      '", fac2:"'    + escJs(d.fac2||'') +
-      '", descFr:"'  + escJs(d.descFr||'') +
-      '", descEn:"'  + escJs(d.descEn||'') +
-      '", updatedAt:"' + escJs(d.updatedAt||'') + '" }';
+      '", atelier:"'        + escJs(d.atelier||'') +
+      '", type:"'           + escJs(d.type||'') +
+      '", piment:'          + (d.piment||0) +
+      ', fac1:"'            + escJs(d.fac1||'') +
+      '", fac2:"'           + escJs(d.fac2||'') +
+      '", descFr:"'         + escJs(d.descFr||'') +
+      '", descEn:"'         + escJs(d.descEn||'') +
+      '", validatedByFac:'  + (d.validatedByFac ? 'true' : 'false') +
+      ', updatedAt:"'       + escJs(d.updatedAt||'') + '" }';
   }).join(',\n');
 
   return '/**\n * TANTRAMOUR 2026 — Descriptions des Ateliers (FR / EN)\n' +
