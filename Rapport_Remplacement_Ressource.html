@@ -330,7 +330,7 @@ function initials(nom) {
 
 // Roles fields in AGENDA
 const ROLE_FIELDS = {
-  helper:      ['helper1', 'helper2', 'helper3'],
+  helper:      ['helper1', 'helper2', 'helper3', 'helper4'],
   angel:       ['angel'],
   traducteur:  ['traduction'],
   facilitateur:['fac1', 'fac2'],
@@ -383,6 +383,7 @@ function populateAbsentSelect(roleFilter) {
     if (e.helper1)    addPerson(e.helper1, 'helper');
     if (e.helper2)    addPerson(e.helper2, 'helper');
     if (e.helper3)    addPerson(e.helper3, 'helper');
+    if (e.helper4)    addPerson(e.helper4, 'helper');
     if (e.angel)      addPerson(e.angel, 'angel');
   });
 
@@ -488,7 +489,7 @@ function hasConflict(nom, targetEntry, targetIdx) {
 
 // Déjà assigné à cet atelier (dans un autre rôle) ?
 function alreadyInEntry(nom, entry) {
-  return ['fac1','fac2','traduction','helper1','helper2','helper3','angel']
+  return ['fac1','fac2','traduction','helper1','helper2','helper3','helper4','angel']
     .some(f => entry[f] === nom);
 }
 
@@ -817,6 +818,7 @@ async function saveAll() {
     ',helper1:' + JSON.stringify(e.helper1 || '') +
     ',helper2:' + JSON.stringify(e.helper2 || '') +
     ',helper3:' + JSON.stringify(e.helper3 || '') +
+    ',helper4:' + JSON.stringify(e.helper4 || '') +
     ',angel:' + JSON.stringify(e.angel || '') +
     ',note:' + JSON.stringify(e.note || '') +
     ',piment:' + (e.piment || 0) +
@@ -834,7 +836,7 @@ async function saveAll() {
     '  return entries.map(function(e) { return [\n' +
     '    e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,\n' +
     '    e.fac1, e.fac2, e.traduction,\n' +
-    '    e.helper1, e.helper2, e.helper3,\n' +
+    '    e.helper1, e.helper2, e.helper3, e.helper4 || \'\',\n' +
     '    e.angel, e.note, e.logisticId, e.piment || 0\n' +
     '  ]; });\n}\n';
 

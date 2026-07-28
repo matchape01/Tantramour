@@ -416,7 +416,7 @@ function construireData() {
       heure: e.heure, lieu: e.lieu||'', type: e.type,
       fac1: e.fac1||'', fac2: e.fac2||'', piment: e.piment||0,
       traduction: e.traduction||'', helper1: e.helper1||'',
-      helper2: e.helper2||'', helper3: e.helper3||'',
+      helper2: e.helper2||'', helper3: e.helper3||'', helper4: e.helper4||'',
       angel: e.angel||'', note: e.note||'',
       logisticId: e.logisticId||''
     };
@@ -429,6 +429,7 @@ function construireData() {
     if (e.helper1) addEntry(e.helper1, 'H', base);
     if (e.helper2) addEntry(e.helper2, 'H', base);
     if (e.helper3) addEntry(e.helper3, 'H', base);
+    if (e.helper4) addEntry(e.helper4, 'H', base);
     // Angel
     if (e.angel) addEntry(e.angel, 'A', base);
   });
@@ -761,7 +762,7 @@ function openLogModal(midx) {
   }
 
   var facs = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f')].filter(Boolean).join(' ');
-  var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h')].filter(Boolean).join(' ');
+  var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h'), pill(e.helper4,'pill-sm-h')].filter(Boolean).join(' ');
   var trad   = pill(e.traduction, 'pill-sm-t');
   var angel  = pill(e.angel, 'pill-sm-a');
 
@@ -771,6 +772,9 @@ function openLogModal(midx) {
   if (e.lieu)  meta += metaRow('📍 Lieu',   '<span class="tag-lieu">' + esc(e.lieu) + '</span>');
   if (facs)    meta += metaRow('🎓 Anim.',  facs);
   if (helpers) meta += metaRow('🤝 Helpers', helpers);
+  var _logEntryPrep = e.logisticId && typeof LOGISTICS !== 'undefined' ? LOGISTICS[e.logisticId] : null;
+  var _prepDur = _logEntryPrep && _logEntryPrep.prepDuration !== undefined ? _logEntryPrep.prepDuration : null;
+  if (_prepDur !== null) meta += metaRow('⏱ Prép.', '<span style="font-size:12px;color:var(--muted)">' + _prepDur + ' min</span>');
   if (trad)    meta += metaRow('🌐 Trad.',  trad);
   if (angel)   meta += metaRow('👼 Angel',  angel);
   if (e.note)  meta += metaRow('📝 Note',   '<span style="color:var(--muted);font-size:12px">' + esc(e.note) + '</span>');

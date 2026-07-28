@@ -195,7 +195,7 @@ function fmtMin(mins) {
 
 // ════════════════════════════════════════════════
 // CONSTRUIRE LES SHIFTS
-// Un helper peut apparaître dans helper1, helper2 ou helper3
+// Un helper peut apparaître dans helper1, helper2, helper3 ou helper4
 // Un shift = même helper, même jour, groupe d'ateliers simultanés/consécutifs
 // On regroupe en "blocs contigus" (tolérance 5 min)
 // ════════════════════════════════════════════════
@@ -205,8 +205,8 @@ function construireShiftsHelpers() {
   AGENDA.forEach(e => {
     const iv = parseIntervalle(e.heure);
     if (!iv) return;
-    // Un helper peut être dans helper1, helper2 ou helper3
-    ['helper1','helper2','helper3'].forEach(field => {
+    // Un helper peut être dans helper1, helper2, helper3 ou helper4
+    ['helper1','helper2','helper3','helper4'].forEach(field => {
       const nom = e[field];
       if (!nom) return;
       if (!parHelper.has(nom)) parHelper.set(nom, []);

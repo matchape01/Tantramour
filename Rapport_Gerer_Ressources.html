@@ -469,6 +469,13 @@ function renderEditor(isNew) {
         '<div class="langues-check" id="langues-check">' + langChkboxes + '</div>' +
       '</div>' +
 
+      // Champ téléphone — visible seulement si le rôle "angel" est coché
+      '<div class="form-group full" id="grp-tel" style="' + (r.roles.indexOf('angel') !== -1 ? '' : 'display:none') + '">' +
+        '<label>📞 Téléphone (angel)</label>' +
+        '<input type="text" id="f-tel" value="' + esc(r.tel || '') + '" placeholder="Ex : +33 6 12 34 56 78">' +
+        '<span class="hint">Numéro affiché dans le rapport Planning Shifts Angel</span>' +
+      '</div>' +
+
     '</div>' +
 
     '<div class="editor-actions">' +
@@ -485,6 +492,11 @@ function onRoleChange(rl) {
   var sfx = ROLE_FIXED_CLS[rl] ? rl[0] : 'x';
   if (chk.checked) lbl.classList.add('checked-' + sfx);
   else lbl.classList.remove('checked-' + sfx);
+  // Afficher/masquer le champ téléphone selon le rôle angel
+  if (rl === 'angel') {
+    var grpTel = document.getElementById('grp-tel');
+    if (grpTel) grpTel.style.display = chk.checked ? '' : 'none';
+  }
 }
 window.onRoleChange = onRoleChange;
 
@@ -513,7 +525,9 @@ function collectForm() {
     var chk = document.getElementById('chk-lang-' + lg);
     return chk && chk.checked;
   });
-  return { val: val, id: id, roles: roles, langues: langues };
+  var telEl = document.getElementById('f-tel');
+  var tel   = telEl ? telEl.value.trim() : '';
+  return { val: val, id: id, roles: roles, langues: langues, tel: tel };
 }
 
 function validateForm(form, isNew) {
@@ -540,12 +554,20 @@ async function saveResource() {
 
   // Appliquer en mémoire
   if (isNew) {
-    data.push({ id: form.id, value: form.val, roles: form.roles, langues: form.langues });
+    var newEntry = { id: form.id, value: form.val, roles: form.roles, langues: form.langues };
+    if (form.roles.indexOf('angel') !== -1) newEntry.tel = form.tel;
+    data.push(newEntry);
     editingIdx = data.length - 1;
   } else {
-    data[editingIdx].value  = form.val;
-    data[editingIdx].roles  = form.roles;
+    data[editingIdx].value   = form.val;
+    data[editingIdx].roles   = form.roles;
     data[editingIdx].langues = form.langues;
+    // Gérer le champ tel : présent seulement si angel
+    if (form.roles.indexOf('angel') !== -1) {
+      data[editingIdx].tel = form.tel;
+    } else {
+      delete data[editingIdx].tel;
+    }
     // id = readonly, pas modifiable
   }
 
@@ -643,12 +665,15 @@ function genererRefRessources() {
     var langues    = r.langues && r.langues.length ? r.langues : [];
     var languesStr = '["' + langues.join('", "') + '"]';
     var pad = Math.max(0, 16 - r.id.length);
+    var telPart = r.roles.indexOf('angel') !== -1
+      ? ', tel: "' + escJs(r.tel || '') + '"'
+      : '';
     return '  { id: "' + escJs(r.id) + '",  ' + ' '.repeat(pad) +
            'value: "' + escJs(r.value) + '",  ' +
            ' '.repeat(Math.max(0, 40 - r.value.length)) +
            'roles: ' + rolesStr + ', ' +
            ' '.repeat(Math.max(0, 56 - rolesStr.length)) +
-           'langues: ' + languesStr + ' },';
+           'langues: ' + languesStr + telPart + ' },';
   }).join('\n');
 
   return (

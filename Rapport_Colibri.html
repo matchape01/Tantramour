@@ -10,6 +10,7 @@
     --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
     --header-bg:#f0f4fb; --row-alt:#f7f8fa;
     --green:#16a34a; --green-bg:#dcfce7; --green-border:#86efac;
+    --red:#dc2626; --red-bg:#fee2e2; --red-border:#fca5a5;
     --colibri:#7c3aed; --colibri-bg:#f5f3ff; --colibri-border:#c4b5fd;
     --badge-f-bg:#dcfce7; --badge-f-tx:#166534;
     --badge-h-bg:#e0f2fe; --badge-h-tx:#0369a1;
@@ -22,6 +23,7 @@
     --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
     --header-bg:#1c2333; --row-alt:#161b22;
     --green-bg:#052e16; --green-border:#166534;
+    --red-bg:#2d0a0a; --red-border:#991b1b;
     --colibri:#a78bfa; --colibri-bg:#1e1b4b; --colibri-border:#5b21b6;
     --badge-f-bg:#0a2e1a; --badge-f-tx:#4ade80;
     --badge-h-bg:#0c2d48; --badge-h-tx:#58a6ff;
@@ -50,6 +52,8 @@
   .stat-pill.colibri .num { color:var(--colibri); }
   .stat-pill.colibri { border-color:var(--colibri-border); background:var(--colibri-bg); }
   .stat-pill.info .num { color:var(--accent); }
+  .stat-pill.err .num { color:var(--red); }
+  .stat-pill.err { border-color:var(--red-border); background:var(--red-bg); }
 
   /* ── FILTRES ── */
   .filters { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; align-items:flex-end; }
@@ -63,6 +67,10 @@
 
   /* ── CARTE ATELIER ── */
   .ws-card { border:1px solid var(--colibri-border); border-radius:10px; overflow:hidden; margin-bottom:12px; }
+  .ws-card.missing { border-color:var(--red-border); }
+  .ws-card.missing .ws-header { background:var(--red-bg); border-bottom-color:var(--red-border); }
+  .ws-card.missing .ws-day { color:var(--red); }
+  .alert-banner { display:flex; align-items:center; gap:8px; padding:7px 16px; background:var(--red-bg); border-bottom:1px solid var(--red-border); font-size:12px; font-weight:700; color:var(--red); }
   .ws-header { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; background:var(--colibri-bg); border-bottom:1px solid var(--colibri-border); }
   .ws-day   { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--colibri); min-width:52px; }
   .ws-time  { font-size:12px; color:var(--muted); min-width:120px; font-variant-numeric:tabular-nums; white-space:nowrap; }
@@ -84,6 +92,25 @@
   .pill-a { background:var(--badge-a-bg); color:var(--badge-a-tx); }
   .pill-colibri { background:var(--colibri-bg); color:var(--colibri); border:1px solid var(--colibri-border); font-weight:800; }
   .avail-note { font-size:11px; color:var(--muted); font-style:italic; }
+
+  /* ── BOUTON ÉDITER ── */
+  .btn-edit { cursor:pointer; background:var(--accent); color:#fff; border:none; border-radius:6px; padding:6px 14px; font-size:12px; font-weight:700; font-family:inherit; display:inline-flex; align-items:center; gap:5px; align-self:flex-start; margin-top:2px; }
+  .btn-edit:hover { filter:brightness(1.1); }
+
+  /* ── MODALE MOT DE PASSE ── */
+  .pw-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:9999; align-items:center; justify-content:center; }
+  .pw-overlay.open { display:flex; }
+  .pw-box { background:var(--bg); border-radius:12px; padding:32px 28px; max-width:320px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,.2); display:flex; flex-direction:column; gap:10px; }
+  .pw-box h3 { font-size:16px; font-weight:700; }
+  .pw-box p  { font-size:12px; color:var(--muted); }
+  .pw-box input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:15px; background:var(--surface); color:var(--text); font-family:inherit; outline:none; }
+  .pw-box input:focus { border-color:var(--accent); }
+  .pw-error { font-size:12px; color:var(--red); min-height:16px; }
+  .pw-actions { display:flex; gap:8px; }
+  .pw-btn-ok     { flex:1; padding:10px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .pw-btn-ok:hover { filter:brightness(1.1); }
+  .pw-btn-cancel { flex:1; padding:10px; border:1px solid var(--border); border-radius:8px; background:var(--surface); font-size:14px; cursor:pointer; font-family:inherit; color:var(--text); }
+  .pw-btn-cancel:hover { background:var(--border); }
 
   /* ── VIDE ── */
   .empty { text-align:center; padding:48px; color:var(--muted); border:2px dashed var(--border); border-radius:10px; }
@@ -129,6 +156,14 @@
       </select>
     </div>
     <div class="fg">
+      <label>Statut</label>
+      <select id="filterStatut" onchange="render()">
+        <option value="">Tous les ateliers</option>
+        <option value="manquant">⚠️ Colibri manquant</option>
+        <option value="ok">✅ Colibri assigné</option>
+      </select>
+    </div>
+    <div class="fg">
       <label>Colibri</label>
       <select id="filterColibri" onchange="render()">
         <option value="">Tous les Colibris</option>
@@ -140,6 +175,20 @@
 
 </div>
 
+<!-- ── MODALE MOT DE PASSE ── -->
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-box">
+    <h3>🔒 Accès restreint</h3>
+    <p id="pwTarget" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)"></p>
+    <input id="pwInput" type="password" placeholder="Mot de passe" autocomplete="off"
+      onkeydown="if(event.key==='Enter') checkPw()">
+    <div class="pw-error" id="pwError"></div>
+    <div class="pw-actions">
+      <button class="pw-btn-cancel" onclick="closePw()">Annuler</button>
+      <button class="pw-btn-ok"     onclick="checkPw()">Ouvrir ✏️</button>
+    </div>
+  </div>
+</div>
 
 <script src="ref_resource_types.js"></script>
 <script src="ref_ressources.js"></script>
@@ -175,31 +224,36 @@ COLIBRIS.forEach(function(nom) {
 });
 
 // ── Construction de la liste des ateliers Colibri ─────────────────────────────
-// Un atelier est "Colibri" si au moins un de ses helpers ou traducteur
-// est une personne ayant le rôle "colibri".
+// Inclut :
+//   • Les ateliers qui ont au moins un helper/traducteur avec le rôle "colibri" (ok)
+//   • Les ateliers dont le flag e.colibri===true mais sans aucune ressource colibri assignée (manquant)
 function buildList() {
   var result = [];
   AGENDA.forEach(function(e, idx) {
-    // Slots helper + traduction
     var slots = [
       { nom: e.helper1,    role: 'helper' },
       { nom: e.helper2,    role: 'helper' },
       { nom: e.helper3,    role: 'helper' },
+      { nom: e.helper4,    role: 'helper' },
       { nom: e.traduction, role: 'traducteur' },
     ];
-    // Colibris présents dans cet atelier
     var colibrisPresents = slots.filter(function(s) {
       return s.nom && isColibri(s.nom);
     }).map(function(s) {
       return { nom: s.nom, slot: s.role };
     });
 
-    if (!colibrisPresents.length) return;
+    var hasAssigned = colibrisPresents.length > 0;
+    var flagged     = !!e.colibri; // champ booléen "Shift Colibri" coché dans l'éditeur
+
+    // Garder si : colibri assigné OU flag colibri sans assignation
+    if (!hasAssigned && !flagged) return;
 
     result.push({
-      idx:             idx,
-      entry:           e,
+      idx:              idx,
+      entry:            e,
       colibrisPresents: colibrisPresents,
+      manquant:         flagged && !hasAssigned, // ⚠️ requis mais non assigné
     });
   });
   return result;
@@ -209,23 +263,31 @@ var WORKSHOPS = buildList();
 
 // ── Filtrage ──────────────────────────────────────────────────────────────────
 function getFiltered() {
-  var jour     = document.getElementById('filterJour').value;
-  var colibri  = document.getElementById('filterColibri').value;
+  var jour    = document.getElementById('filterJour').value;
+  var statut  = document.getElementById('filterStatut').value;
+  var colibri = document.getElementById('filterColibri').value;
   return WORKSHOPS.filter(function(w) {
-    if (jour && w.entry.jour !== jour) return false;
-    if (colibri && !w.colibrisPresents.some(function(c) { return c.nom === colibri; })) return false;
+    if (jour    && w.entry.jour !== jour) return false;
+    if (statut === 'manquant' && !w.manquant) return false;
+    if (statut === 'ok'       &&  w.manquant) return false;
+    // Le filtre Colibri ne s'applique que sur les ateliers qui ont un colibri assigné
+    if (colibri && !w.manquant && !w.colibrisPresents.some(function(c) { return c.nom === colibri; })) return false;
+    // Quand un filtre Colibri est actif, on masque les manquants (ils n'ont personne assigné)
+    if (colibri && w.manquant) return false;
     return true;
   });
 }
 
 // ── Rendu ─────────────────────────────────────────────────────────────────────
 function render() {
-  var filtered = getFiltered();
-  var total    = WORKSHOPS.length;
+  var filtered  = getFiltered();
+  var total     = WORKSHOPS.length;
+  var nManquant = WORKSHOPS.filter(function(w) { return w.manquant; }).length;
+  var nOk       = total - nManquant;
 
   // Stats
   var colibriCount = {};
-  WORKSHOPS.forEach(function(w) {
+  WORKSHOPS.filter(function(w) { return !w.manquant; }).forEach(function(w) {
     w.colibrisPresents.forEach(function(c) {
       colibriCount[c.nom] = (colibriCount[c.nom] || 0) + 1;
     });
@@ -234,8 +296,9 @@ function render() {
 
   document.getElementById('statsBar').innerHTML =
     '<div class="stat-pill colibri"><div class="num">' + total + '</div><div class="lbl">Ateliers Colibri</div></div>' +
-    '<div class="stat-pill info"><div class="num">' + nbColibris + '</div><div class="lbl">Colibris actifs</div></div>' +
-    '<div class="stat-pill info"><div class="num">' + filtered.length + '</div><div class="lbl">Affichés</div></div>';
+    '<div class="stat-pill err"><div class="num">' + nManquant + '</div><div class="lbl">⚠️ Colibri manquant</div></div>' +
+    '<div class="stat-pill info"><div class="num">' + nOk + '</div><div class="lbl">✅ Colibri assigné</div></div>' +
+    '<div class="stat-pill info"><div class="num">' + nbColibris + '</div><div class="lbl">Colibris actifs</div></div>';
 
   if (!filtered.length) {
     document.getElementById('results').innerHTML =
@@ -243,22 +306,35 @@ function render() {
     return;
   }
 
-  // Grouper par jour
-  var byDay = {};
-  filtered.forEach(function(w) {
-    var j = w.entry.jour;
-    if (!byDay[j]) byDay[j] = [];
-    byDay[j].push(w);
-  });
+  // Les ateliers manquants en premier, puis le reste — groupés par jour
+  var manquants = filtered.filter(function(w) { return  w.manquant; });
+  var assignes  = filtered.filter(function(w) { return !w.manquant; });
 
   var html = '';
-  JOUR_ORDER.forEach(function(jour) {
-    if (!byDay[jour]) return;
-    var items = byDay[jour];
-    html += '<div class="day-sep">' + esc(jour) + ' — ' + esc(items[0].entry.date) +
-      ' <span class="day-count">' + items.length + '</span></div>';
-    items.forEach(function(w) { html += renderCard(w); });
-  });
+
+  // Bloc d'alerte : ateliers sans colibri assigné (uniquement si présents dans la sélection filtrée)
+  if (manquants.length) {
+    html += '<div class="day-sep" style="border-color:var(--red-border);color:var(--red)">' +
+      '⚠️ Colibri requis mais non assigné <span class="day-count" style="background:var(--red)">' + manquants.length + '</span></div>';
+    manquants.forEach(function(w) { html += renderCard(w); });
+  }
+
+  // Bloc normal : ateliers avec colibri assigné, groupés par jour (uniquement si présents dans la sélection filtrée)
+  if (assignes.length) {
+    var byDay = {};
+    assignes.forEach(function(w) {
+      var j = w.entry.jour;
+      if (!byDay[j]) byDay[j] = [];
+      byDay[j].push(w);
+    });
+    JOUR_ORDER.forEach(function(jour) {
+      if (!byDay[jour]) return;
+      var items = byDay[jour];
+      html += '<div class="day-sep">' + esc(jour) + ' — ' + esc(items[0].entry.date) +
+        ' <span class="day-count">' + items.length + '</span></div>';
+      items.forEach(function(w) { html += renderCard(w); });
+    });
+  }
 
   document.getElementById('results').innerHTML = html;
 }
@@ -272,10 +348,10 @@ function renderCard(w) {
     .join('') || '<span class="avail-note">—</span>';
 
   // Helpers — marquer les Colibris
-  var helpers = [e.helper1, e.helper2, e.helper3].filter(Boolean);
+  var helpers = [e.helper1, e.helper2, e.helper3, e.helper4].filter(Boolean);
   var helpersHtml = helpers.length
     ? helpers.map(function(nom) {
-        var col = isColibri(nom);
+        var col  = isColibri(nom);
         var trad = isTraducteur(nom);
         var cls  = col ? 'pill-colibri' : (trad ? 'pill-t' : 'pill-h');
         var icon = col ? '🐦 ' : (trad ? '🌐 ' : '');
@@ -286,32 +362,42 @@ function renderCard(w) {
   // Traducteur — marquer si Colibri
   var tradHtml = '';
   if (e.traduction) {
-    var col = isColibri(e.traduction);
-    var cls = col ? 'pill-colibri' : 'pill-t';
+    var col  = isColibri(e.traduction);
+    var cls  = col ? 'pill-colibri' : 'pill-t';
     var icon = col ? '🐦 ' : '🌐 ';
     tradHtml = '<span class="pill ' + cls + '">' + icon + esc(e.traduction) + '</span>';
   } else {
     tradHtml = '<span class="avail-note">—</span>';
   }
 
-  // Liste des Colibris de cet atelier (résumé dans le header)
-  var colibriTags = w.colibrisPresents.map(function(c) {
-    return '<span class="pill pill-colibri">🐦 ' + esc(c.nom) + '</span>';
-  }).join('');
+  // Ligne Colibri(s) : alerte si manquant, pills si assigné
+  var colibriRowHtml;
+  if (w.manquant) {
+    colibriRowHtml =
+      '<span style="font-size:12px;font-weight:700;color:var(--red)">⚠️ Aucun colibri assigné — à pourvoir</span>';
+  } else {
+    colibriRowHtml = w.colibrisPresents.map(function(c) {
+      return '<span class="pill pill-colibri">🐦 ' + esc(c.nom) + '</span>';
+    }).join('');
+  }
 
-  return '<div class="ws-card">' +
+  var cardCls = w.manquant ? 'ws-card missing' : 'ws-card';
+
+  return '<div class="' + cardCls + '">' +
+    (w.manquant ? '<div class="alert-banner">⚠️ Shift Colibri requis — aucun colibri assigné en helper ou traducteur</div>' : '') +
     '<div class="ws-header">' +
-      '<div class="ws-day">'  + esc(e.jour)  + '</div>' +
-      '<div class="ws-time">' + esc(e.heure) + '</div>' +
+      '<div class="ws-day">'   + esc(e.jour)    + '</div>' +
+      '<div class="ws-time">'  + esc(e.heure)   + '</div>' +
       '<div class="ws-title">' + esc(e.atelier) + '</div>' +
       (e.lieu ? '<div class="ws-lieu">' + esc(e.lieu) + '</div>' : '') +
-      '<div class="ws-type">'  + esc(e.type)  + '</div>' +
+      '<div class="ws-type">'  + esc(e.type)    + '</div>' +
     '</div>' +
     '<div class="ws-body">' +
-      '<div class="info-row"><span class="info-label">🐦 Colibri(s)</span><div class="pills-wrap">' + colibriTags + '</div></div>' +
-      '<div class="info-row"><span class="info-label">🎓 Animateurs</span><div class="pills-wrap">' + facsHtml    + '</div></div>' +
-      '<div class="info-row"><span class="info-label">🤝 Helpers</span><div class="pills-wrap">'    + helpersHtml + '</div></div>' +
-      '<div class="info-row"><span class="info-label">🌐 Traducteur</span><div class="pills-wrap">' + tradHtml    + '</div></div>' +
+      '<div class="info-row"><span class="info-label">🐦 Colibri(s)</span><div class="pills-wrap">' + colibriRowHtml + '</div></div>' +
+      '<div class="info-row"><span class="info-label">🎓 Animateurs</span><div class="pills-wrap">' + facsHtml       + '</div></div>' +
+      '<div class="info-row"><span class="info-label">🤝 Helpers</span><div class="pills-wrap">'    + helpersHtml    + '</div></div>' +
+      '<div class="info-row"><span class="info-label">🌐 Traducteur</span><div class="pills-wrap">' + tradHtml       + '</div></div>' +
+      '<button class="btn-edit" onclick="openPw(' + w.idx + ')">✏️ Éditer cet atelier</button>' +
     '</div>' +
   '</div>';
 }
@@ -327,6 +413,44 @@ function toggleMode() {
 function hardReload() { location.reload(true); }
 window.toggleMode = toggleMode;
 window.hardReload = hardReload;
+
+// ── Modale mot de passe → Éditer Atelier ──────────────────────────────────────
+var PW = '007';
+var _pendingIdx = null;
+
+function openPw(idx) {
+  _pendingIdx = idx;
+  var e = AGENDA[idx];
+  document.getElementById('pwTarget').textContent = e ? e.atelier : '';
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').textContent = '';
+  document.getElementById('pwOverlay').classList.add('open');
+  setTimeout(function() { document.getElementById('pwInput').focus(); }, 50);
+}
+window.openPw = openPw;
+
+function closePw() {
+  document.getElementById('pwOverlay').classList.remove('open');
+  _pendingIdx = null;
+}
+window.closePw = closePw;
+
+function checkPw() {
+  if (document.getElementById('pwInput').value === PW) {
+    closePw();
+    // Ouvrir Rapport_Editer_Atelier.html avec ?idx= uniquement — pas de v= pour ne pas déclencher hardReload
+    var url = 'Rapport_Editer_Atelier.html?idx=' + _pendingIdx;
+    window.open(url, '_blank', 'noopener');
+  } else {
+    document.getElementById('pwError').textContent = '❌ Mot de passe incorrect';
+    document.getElementById('pwInput').select();
+  }
+}
+window.checkPw = checkPw;
+
+document.getElementById('pwOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePw();
+});
 
 // Auto-refresh si ouvert depuis Home
 if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {

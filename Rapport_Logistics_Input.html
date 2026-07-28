@@ -248,6 +248,18 @@
       <input type="text" id="s3Nom" data-i18n-placeholder="r14_field_nom_ph" placeholder="Nom de l'atelier">
     </div>
 
+    <!-- Durée de préparation -->
+    <div class="field-wrap">
+      <label>⏱ Estimation durée préparation</label>
+      <select id="s3PrepDuration" style="padding:7px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg);color:var(--text);font-family:inherit;cursor:pointer;">
+        <option value="0">0 min — Aucune préparation</option>
+        <option value="15" selected>15 min</option>
+        <option value="30">30 min</option>
+        <option value="45">45 min</option>
+        <option value="60">60 min</option>
+      </select>
+    </div>
+
     <!-- Piment -->
     <div class="field-wrap">
       <label data-i18n="r14_field_piment">Niveau Piment</label>
@@ -467,7 +479,7 @@ function selectWorkshop(agendaIdx) {
 
   // Grille lecture seule
   var facs    = [e.fac1, e.fac2].filter(Boolean).join(' / ') || '—';
-  var helpers = [e.helper1, e.helper2, e.helper3].filter(Boolean).join(', ') || '—';
+  var helpers = [e.helper1, e.helper2, e.helper3, e.helper4].filter(Boolean).join(', ') || '—';
   document.getElementById('s3ReadGrid').innerHTML = [
     [I18n.t('r14_grid_jour'),    e.jour         || '—'],
     [I18n.t('r14_grid_date'),    e.date         || '—'],
@@ -499,6 +511,10 @@ function selectWorkshop(agendaIdx) {
   var isValidated = hasLog && !!LOGISTICS[currentLogId].validatedByFac;
   document.getElementById('s3ValidatedByFac').checked = isValidated;
   document.getElementById('valideeRow').classList.toggle('checked', isValidated);
+  var prepDur = hasLog && LOGISTICS[currentLogId].prepDuration !== undefined
+    ? LOGISTICS[currentLogId].prepDuration
+    : 15;
+  document.getElementById('s3PrepDuration').value = String(prepDur);
 
   // Éditeur logistique spécial
   var hasSpecial = currentLogId && typeof LOGISTICS_SPECIAL !== 'undefined' && LOGISTICS_SPECIAL[currentLogId];
@@ -584,7 +600,8 @@ async function doSave() {
   var html  = edEl.innerHTML.trim();
   var text  = edEl.innerText.trim();
   var validatedByFac = document.getElementById('s3ValidatedByFac').checked;
-  LOGISTICS[currentLogId] = { html: html, text: text, validatedByFac: validatedByFac, updatedAt: today };
+  var prepDuration = parseInt(document.getElementById('s3PrepDuration').value, 10) || 0;
+  LOGISTICS[currentLogId] = { html: html, text: text, validatedByFac: validatedByFac, prepDuration: prepDuration, updatedAt: today };
 
   // Contenu logistique spécial
   var specEl   = document.getElementById('logisticSpecialEditor');
@@ -631,10 +648,12 @@ function escJs(s) {
 function buildLogisticsJs() {
   var entries = Object.entries(LOGISTICS).map(function(pair) {
     var id = pair[0], v = pair[1];
+    var prepDur = (v.prepDuration !== undefined && v.prepDuration !== null) ? v.prepDuration : 15;
     return '  "' + escJs(id) + '": {\n' +
       '    html: "' + escJs(v.html || '') + '",\n' +
       '    text: "' + escJs(v.text || '') + '",\n' +
       '    validatedByFac: ' + (v.validatedByFac ? 'true' : 'false') + ',\n' +
+      '    prepDuration: ' + prepDur + ',\n' +
       '    updatedAt: "' + escJs(v.updatedAt || '') + '"\n' +
       '  }';
   }).join(',\n\n');
@@ -662,7 +681,7 @@ function buildDataJs() {
   var header = '/**\n * TANTRAMOUR 2026 — Référentiel de données commun\n' +
     ' * ================================================\n' +
     ' * Structure : jour, date, heure, type, atelier, lieu,\n' +
-    ' *   fac1, fac2, traduction, helper1, helper2, helper3,\n' +
+    ' *   fac1, fac2, traduction, helper1, helper2, helper3, helper4,\n' +
     ' *   angel, note, piment, logisticId\n */\n\nvar AGENDA = [\n';
 
   var lines = AGENDA.map(function(e) {
@@ -672,7 +691,7 @@ function buildDataJs() {
       '",fac1:"' + escJs(e.fac1) + '",fac2:"' + escJs(e.fac2) +
       '",traduction:"' + escJs(e.traduction) + '",helper1:"' + escJs(e.helper1) +
       '",helper2:"' + escJs(e.helper2) + '",helper3:"' + escJs(e.helper3) +
-      '",angel:"' + escJs(e.angel) + '",note:"' + escJs(e.note) +
+      '",helper4:"' + escJs(e.helper4 || '') + '",angel:"' + escJs(e.angel) + '",note:"' + escJs(e.note) +
       '",piment:' + (e.piment || 0) +
       ',logisticId:"' + escJs(e.logisticId) + '"}';
   }).join(',\n');
@@ -682,7 +701,7 @@ function buildDataJs() {
     '  return entries.map(function(e) { return [\n' +
     '    e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,\n' +
     '    e.fac1, e.fac2, e.traduction,\n' +
-    '    e.helper1, e.helper2, e.helper3,\n' +
+    '    e.helper1, e.helper2, e.helper3, e.helper4 || \'\',\n' +
     '    e.angel, e.note, e.logisticId, e.piment || 0\n' +
     '  ]; });\n}\n';
 

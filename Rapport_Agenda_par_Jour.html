@@ -234,13 +234,13 @@
 <script src="ref_ressources.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['data.js'], function() {
+loadData(['data.js', 'logistics.js'], function() {
 // RAW : chaque entrée est augmentée d'une propriété _idx = index dans AGENDA
 const RAW = AGENDA.map((e, i) => {
   const r = [
     e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
     e.fac1, e.fac2, e.traduction,
-    e.helper1, e.helper2, e.helper3,
+    e.helper1, e.helper2, e.helper3, e.helper4 || '',
     e.angel, e.note, e.logisticId || '', e.piment || 0
   ];
   r._idx = i; // index stable dans AGENDA
@@ -279,6 +279,7 @@ function buildConflictIndex() {
     add(e.helper1,    'Helper',       'helper1');
     add(e.helper2,    'Helper',       'helper2');
     add(e.helper3,    'Helper',       'helper3');
+    add(e.helper4,    'Helper',       'helper4');
     add(e.angel,      'Angel',        'angel');
   });
 
@@ -356,14 +357,14 @@ REF_TRADUCTEURS.filter(t => tradsPresents.has(t.value)).forEach(t => {
 });
 
 // Peupler le filtre Helper depuis REF_HELPERS (seulement ceux présents dans les données)
-const helpersPresents = new Set(RAW.flatMap(r=>[r[9],r[10],r[11]]).filter(Boolean));
+const helpersPresents = new Set(RAW.flatMap(r=>[r[9],r[10],r[11],r[12]]).filter(Boolean));
 const selHelper = document.getElementById('filterHelper');
 REF_HELPERS.filter(h => helpersPresents.has(h.value)).forEach(h => {
   const o=document.createElement('option'); o.value=h.value; o.text=h.value; selHelper.appendChild(o);
 });
 
 // Peupler le filtre Angel depuis REF_ANGELS (seulement ceux présents dans les données)
-const angelsPresents = new Set(RAW.map(r=>r[12]).filter(Boolean));
+const angelsPresents = new Set(RAW.map(r=>r[13]).filter(Boolean));
 const selAngel = document.getElementById('filterAngel');
 REF_ANGELS.filter(a => angelsPresents.has(a.value)).forEach(a => {
   const o=document.createElement('option'); o.value=a.value; o.text=a.value; selAngel.appendChild(o);
@@ -385,8 +386,8 @@ function getFiltered() {
     (!l  || r[5]===l) &&
     (!f  || r[6]===f || r[7]===f) &&
     (!tr || r[8]===tr) &&
-    (!h  || r[9]===h || r[10]===h || r[11]===h) &&
-    (!a  || r[12]===a)
+    (!h  || r[9]===h || r[10]===h || r[11]===h || r[12]===h) &&
+    (!a  || r[13]===a)
   );
 }
 
@@ -457,7 +458,7 @@ function render() {
 const COL_FIELDS = {
   6: ['fac1','fac2'],
   7: ['traduction'],
-  8: ['helper1','helper2','helper3'],
+  8: ['helper1','helper2','helper3','helper4'],
   9: ['angel'],
 };
 
@@ -484,7 +485,7 @@ function renderTable(data) {
         : `<span class="pill ${cls}">${v}</span>`;
     }).join('');
 
-    const piment = parseInt(r[15]) || 0;
+    const piment = parseInt(r[16]) || 0;
     const pimentHtml = piment > 0 ? '🌶️'.repeat(piment) : '';
 
     const realIdx = r._idx !== undefined ? r._idx : 0;
@@ -496,8 +497,8 @@ function renderTable(data) {
       : '';
 
     // Angel avec conflit éventuel
-    const angelHtml = r[12]
-      ? `<span class="pill pill-a"${cf&&cf.has('angel')?' style="background:#fef08a;color:#b91c1c;font-weight:700;border:1px solid #f59e0b"':''}>${r[12]}</span>`
+    const angelHtml = r[13]
+      ? `<span class="pill pill-a"${cf&&cf.has('angel')?' style="background:#fef08a;color:#b91c1c;font-weight:700;border:1px solid #f59e0b"':''}>${r[13]}</span>`
       : '';
 
     return `<tr${rowCls}>
@@ -505,12 +506,12 @@ function renderTable(data) {
       <td>${r[1]||''}</td>
       <td class="heure">${r[2]||''}</td>
       <td><span class="tag" style="font-size:10px">${r[3]||''}</span></td>
-      <td class="td-wrap">${r[4]||''}${enBadge}${r[13]?'<span style="color:#e53e3e;font-weight:700;margin-left:3px">*</span>':''}</td>
+      <td class="td-wrap">${r[4]||''}${enBadge}${r[14]?'<span style="color:#e53e3e;font-weight:700;margin-left:3px">*</span>':''}</td>
       <td class="td-piment">${pimentHtml}</td>
       <td>${r[5]||''}</td>
       <td${ccNames(6)}>${pillsNames([r[6],r[7]],['fac1','fac2'],'pill-f')}</td>
       <td class="td-names">${tradHtml}</td>
-      <td${ccNames(8)}>${pillsNames([r[9],r[10],r[11]],['helper1','helper2','helper3'],'pill-h')}</td>
+      <td${ccNames(8)}>${pillsNames([r[9],r[10],r[11],r[12]],['helper1','helper2','helper3','helper4'],'pill-h')}</td>
       <td class="td-names">${angelHtml}</td>
     </tr>`;
   }).join('');
@@ -544,8 +545,8 @@ function renderCards(data) {
   cv.innerHTML = groups.map(g => {
     const cards = g.items.map(r => {
       const facs = pills([r[6],r[7]],'pill-f');
-      const helpers = pills([r[9],r[10],r[11]],'pill-h');
-      const angel = r[12] ? `<span class="pill pill-a">${r[12]}</span>` : '';
+      const helpers = pills([r[9],r[10],r[11],r[12]],'pill-h');
+      const angel = r[13] ? `<span class="pill pill-a">${r[13]}</span>` : '';
       const trad = r[8] ? `<span class="pill pill-t">${r[8]}</span>` : '';
       const lieu = r[5] ? `<span class="tag">${r[5]}</span>` : '';
       const enBadgeCard = hasAnglophoneFac(r) ? ' <span title="Atelier anglophone" style="font-size:13px">🇬🇧</span>' : '';
@@ -560,7 +561,8 @@ function renderCards(data) {
         <div class="card-rows">
           ${facs ? `<div class="card-row"><span class="card-label">${I18n.t('role_facilitateur')}</span><span class="card-value">${facs}</span></div>` : ''}
           ${trad ? `<div class="card-row"><span class="card-label">${I18n.t('role_traducteur')}</span><span class="card-value">${trad}</span></div>` : ''}
-          ${helpers||r[13] ? `<div class="card-row"><span class="card-label">${I18n.t('col_helpers')}</span><span class="card-value">${helpers}${r[13]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:6px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[13]}</span>`:''}</span></div>` : ''}
+          ${helpers||r[14] ? `<div class="card-row"><span class="card-label">${I18n.t('col_helpers')}</span><span class="card-value">${helpers}${r[14]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:6px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[14]}</span>`:''}</span></div>` : ''}
+          ${(()=>{ const logId=r[15]; const logE=logId&&typeof LOGISTICS!=='undefined'?LOGISTICS[logId]:null; const pd=logE&&logE.prepDuration!==undefined?logE.prepDuration:null; return pd!==null?`<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value" style="font-size:12px;color:var(--muted)">${pd} min</span></div>`:''; })()}
           ${angel ? `<div class="card-row"><span class="card-label">${I18n.t('col_angel')}</span><span class="card-value">${angel}</span></div>` : ''}
         </div>
       </div>`;
@@ -659,7 +661,7 @@ function exportXlsx() {
   // ── Colonnes ────────────────────────────────────────────────────────────
   const HEADERS = ['Jour','Date','Heure','Type','Atelier','Piment','Lieu',
                    'Facilitateur 1','Facilitateur 2','Traducteur',
-                   'Helper 1','Helper 2','Helper 3','Angel','Note'];
+                   'Helper 1','Helper 2','Helper 3','Helper 4','Angel','Note'];
 
   // ── Helpers XML ─────────────────────────────────────────────────────────
   function esc(v) {
@@ -694,8 +696,8 @@ function exportXlsx() {
   // Données (à partir de la ligne 2)
   data.forEach((r, ri) => {
     const rowNum = ri + 2;
-    // r = [jour, date, heure, type, atelier, lieu, fac1, fac2, trad, h1, h2, h3, angel, note, logisticId, piment]
-    const vals = [r[0],r[1],r[2],r[3],r[4], r[15]||0, r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13]];
+    // r = [jour, date, heure, type, atelier, lieu, fac1, fac2, trad, h1, h2, h3, h4, angel, note, logisticId, piment]
+    const vals = [r[0],r[1],r[2],r[3],r[4], r[16]||0, r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13],r[14]];
     rowsXml += `<row r="${rowNum}">`;
     vals.forEach((v, ci) => { rowsXml += cellS(ci, rowNum, v == null ? '' : v); });
     rowsXml += `</row>`;
@@ -704,7 +706,7 @@ function exportXlsx() {
   // ── Calcul des largeurs de colonnes ─────────────────────────────────────
   const colWidths = HEADERS.map((h, ci) => {
     const maxLen = data.reduce((m, r) => {
-      const vals = [r[0],r[1],r[2],r[3],r[4], r[15]||0, r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13]];
+      const vals = [r[0],r[1],r[2],r[3],r[4], r[16]||0, r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13],r[14]];
       return Math.max(m, String(vals[ci] == null ? '' : vals[ci]).length);
     }, h.length);
     return Math.min(Math.max(maxLen + 2, 10), 60);

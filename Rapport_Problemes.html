@@ -219,14 +219,43 @@ const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 
 
 // Types d'ateliers exclus de la vérification (logistique interne, repas, etc.)
 const TYPES_EXCLUS = new Set([
-  'REPAS & PAUSE', 'PREPA & LOGITICS', "REUNION D'EQUIPE", 'TEST', 'LOVE TEMPLE'
+  'REPAS & PAUSE', 'PREPA & LOGITICS', 'PREPA & LOGISTICS', "REUNION D'EQUIPE",
+  'TEST', 'LOVE TEMPLE', 'SHIFT ANGEL', 'RASSEMBLEMENT', 'SUPPORT EMOTIONNEL'
 ]);
 
-// Type spécial : 1 seule ressource suffit (au lieu de 2)
-const TYPE_MIN_1 = new Set(['MEDITATION / YOGA', 'POOL PARTY & DJ Set']);
+// ── Minimums de ressources par type ─────────────────────────────────────────
+// Règle métier :
+//   min 2 → Tantra, Artistique, Cérémonie & Concert, Tantra Café & Conférence
+//   min 1 → DJ Set & Pool Party, Méditation / Yoga
+//   (les autres types sont exclus ou ont min 2 par défaut)
+const TYPE_MIN = {
+  // min 2
+  'ATELIERS TANTRA (AM)'         : 2,
+  'ATELIERS TANTRA (PM)'         : 2,
+  'ATELIER ARTISTIQUE (AM)'      : 2,
+  'ATELIER ARTISTIQUE (PM)'      : 2,
+  'CEREMONIE & CONCERT'          : 2,
+  'TANTRA CAFE & CONFERENCE'     : 2,
+  'TANTRA CAFÉ & CONFERENCE'     : 2,   // variante avec accent
+  // min 1
+  'MEDITATION / YOGA'            : 1,
+  'DJ Set & POOL PARTY'          : 1,
+  'POOL PARTY & DJ Set'          : 1,   // variante
+};
 
 // Types pour lesquels le traducteur n'est PAS requis (même si le fac est anglophone)
-const TYPES_NO_TRAD = new Set(['POOL PARTY & DJ Set']);
+const TYPES_NO_TRAD = new Set([
+  'DJ Set & POOL PARTY', 'POOL PARTY & DJ Set', 'MEDITATION / YOGA'
+]);
+
+// Types pour lesquels le traducteur compte comme ressource d'accompagnement
+// même si le facilitateur n'est PAS anglophone
+// Règle : 1 traducteur + 1 helper = 2 ressources → pas de conflit
+// (uniquement Tantra et Artistique — pas Cérémonie ni Tantra Café)
+const TYPES_TRAD_COUNTS = new Set([
+  'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
+  'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
+]);
 
 // Index des ressources par nom
 const RES_MAP = {};
@@ -244,17 +273,20 @@ function isTraducteur(nom) { return hasRole(nom, 'traducteur'); }
 // ════════════════════════════════════════════════════════════════
 
 // Règle : nombre minimum de ressources helpers+traducteur
+// Retourne null si le type n'est pas soumis à vérification (pas dans TYPE_MIN)
 function minRessources(type) {
-  return TYPE_MIN_1.has(type) ? 1 : 2;
+  const v = TYPE_MIN[type];
+  return v !== undefined ? v : null;
 }
 
 // Compte les ressources d'accompagnement d'un atelier.
-// Pour un atelier NON-anglophone : seuls les helpers comptent
-//   (le traducteur n'est pas requis donc n'est pas une ressource attendue)
+// Pour un atelier NON-anglophone : seuls les helpers comptent en général.
+//   Exception : pour les types TANTRA et ARTISTIQUE, le traducteur compte aussi
+//   (1 traducteur + 1 helper = 2 ressources → pas de conflit)
 // Pour un atelier anglophone : helpers + traducteur comptent tous
 function compterRessources(e, isAnglo) {
-  const slots = [e.helper1, e.helper2, e.helper3];
-  if (isAnglo) slots.push(e.traduction);
+  const slots = [e.helper1, e.helper2, e.helper3, e.helper4];
+  if (isAnglo || TYPES_TRAD_COUNTS.has(e.type)) slots.push(e.traduction);
   return slots.filter(v => v && v.trim() !== '').length;
 }
 
@@ -262,13 +294,15 @@ function analyserAtelier(e, idx) {
   if (TYPES_EXCLUS.has(e.type)) return null;
   // Ignorer les ateliers sans facilitateur (ateliers fantômes / angel-only)
   if (!e.fac1 && !e.fac2) return null;
+  // Ignorer les types non soumis à vérification
+  const minRes = minRessources(e.type);
+  if (minRes === null) return null;
 
   const angloFacs    = [e.fac1, e.fac2].filter(isAnglophone);
   const isAnglo      = angloFacs.length > 0;
   const tradRequired = isAnglo && !TYPES_NO_TRAD.has(e.type); // traducteur requis seulement si anglophone ET type non exclu
   const hasTrad      = !!(e.traduction && e.traduction.trim());
   const nbRes        = compterRessources(e, tradRequired);
-  const minRes       = minRessources(e.type);
 
   const cas1 = tradRequired && !hasTrad;  // Anglophone sans traducteur (si requis)
   const cas2 = nbRes < minRes;            // Ressources insuffisantes
@@ -391,7 +425,7 @@ function renderCard(p) {
   }).join('');
 
   // Pills helpers
-  const helpers = [e.helper1, e.helper2, e.helper3].filter(Boolean);
+  const helpers = [e.helper1, e.helper2, e.helper3, e.helper4].filter(Boolean);
   const helpersHtml = helpers.length
     ? helpers.map(n => `<span class="pill ${isTraducteur(n) ? 'pill-t' : 'pill-h'}">${esc(n)}</span>`).join('')
     : `<span class="pill pill-missing">Aucun helper</span>`;
@@ -511,6 +545,13 @@ function populateEditor(idx) {
         ${helpers.map(r => `<option value="${esc(r.value)}"${r.value === e.helper3 ? ' selected' : ''}>${esc(r.value)}</option>`).join('')}
       </select>
     </div>
+    <div class="form-group">
+      <label>Helper 4</label>
+      <select id="ef_h4_${idx}" onchange="onEF(${idx},'helper4',this.value)">
+        <option value="">— aucun —</option>
+        ${helpers.map(r => `<option value="${esc(r.value)}"${r.value === e.helper4 ? ' selected' : ''}>${esc(r.value)}</option>`).join('')}
+      </select>
+    </div>
   `;
 }
 
@@ -534,7 +575,7 @@ function genererDataJs() {
  * ================================================
  * Structure de chaque entrée :
  *   jour, date, heure, type, atelier, lieu,
- *   fac1, fac2, traduction, helper1, helper2, helper3,
+ *   fac1, fac2, traduction, helper1, helper2, helper3, helper4,
  *   angel, note, piment, logisticId
  */
 
@@ -546,7 +587,7 @@ var AGENDA = [`;
     if (!prev || prev.jour !== e.jour) {
       section = `\n  // ─── ${e.jour} — ${e.date} ───\n`;
     }
-    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu||'')}",fac1:"${escJs(e.fac1||'')}",fac2:"${escJs(e.fac2||'')}",traduction:"${escJs(e.traduction||'')}",helper1:"${escJs(e.helper1||'')}",helper2:"${escJs(e.helper2||'')}",helper3:"${escJs(e.helper3||'')}",angel:"${escJs(e.angel||'')}",note:"${escJs(e.note||'')}",piment:${e.piment||0},logisticId:"${escJs(e.logisticId||'')}"},`;
+    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu||'')}",fac1:"${escJs(e.fac1||'')}",fac2:"${escJs(e.fac2||'')}",traduction:"${escJs(e.traduction||'')}",helper1:"${escJs(e.helper1||'')}",helper2:"${escJs(e.helper2||'')}",helper3:"${escJs(e.helper3||'')}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel||'')}",note:"${escJs(e.note||'')}",piment:${e.piment||0},logisticId:"${escJs(e.logisticId||'')}"},`;
     return section + line;
   }).join('\n');
 
@@ -557,7 +598,7 @@ function agendaToRaw(entries) {
   return entries.map(function(e) { return [
     e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
     e.fac1, e.fac2, e.traduction,
-    e.helper1, e.helper2, e.helper3,
+    e.helper1, e.helper2, e.helper3, e.helper4 || '',
     e.angel, e.note, e.logisticId || '', e.piment || 0
   ]; });
 }`;

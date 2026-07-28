@@ -105,6 +105,17 @@
   .detail-dur { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; }
   .detail-dedupe { font-size: 10px; color: var(--muted); font-style: italic; }
   .day-dur-badge { margin-left: 10px; font-size: 11px; font-weight: 700; background: var(--accent); color: #fff; border-radius: 99px; padding: 1px 9px; vertical-align: middle; letter-spacing: .2px; }
+  /* ── Angel shift block ── */
+  .angel-shift-block { margin: 10px 0 6px; border: 1px solid var(--angel-border); border-radius: 8px; overflow: hidden; }
+  .angel-shift-header { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--angel-bg); }
+  .angel-shift-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--angel-text); }
+  .angel-shift-heure { font-size: 12px; color: var(--angel-text); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .angel-shift-dur   { font-size: 11px; font-weight: 700; background: var(--angel-text); color: #fff; border-radius: 99px; padding: 1px 10px; margin-left: auto; }
+  .angel-shift-ateliers { background: var(--bg); border-top: 1px solid var(--angel-border); }
+  .angel-shift-atelier-row { display: flex; gap: 10px; align-items: flex-start; padding: 5px 10px 5px 28px; border-bottom: 1px solid var(--border); flex-wrap: wrap; position: relative; }
+  .angel-shift-atelier-row::before { content: '└'; position: absolute; left: 12px; top: 5px; color: var(--angel-border); font-size: 13px; }
+  .angel-shift-atelier-row:last-child { border-bottom: none; }
+  .angel-orphan-rows { padding: 0; }
 
   /* ── SECTION HARMONISATION ── */
   .section-title { font-size: 16px; font-weight: 700; margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
@@ -206,10 +217,12 @@ const TYPES_ACTIFS = new Set([
   'CEREMONIE & CONCERT',
   'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
   'POOL PARTY & DJ Set',
+  'DJ Set & POOL PARTY',            // variante utilisée dans data.js
   'TANTRA CAFÉ & CONFERENCE',
   'TANTRA CAFE & CONFERENCE',       // variante sans accent
   'TANTRA CAF\u00C9 & CONFERENCE',  // É en unicode
   'PREPA & LOGISTICS',
+  'SHIFT ANGEL',                    // nécessaire pour grouper les ateliers par shift angel
 ]);
 
 // Fonction utilitaire : normalise un type avant comparaison
@@ -293,14 +306,26 @@ function buildStats(jourFilter) {
     map[nom].push(entry);
   }
 
+  // Helpers et traducteurs : filtrés par TYPES_ACTIFS (pas de repas, réunions, etc.)
   filtered.forEach(e => {
     const base = { atelier: e.atelier, jour: e.jour, heure: e.heure, type: e.type, date: e.date };
-    // Tous les helpers sont affichés — les exclus sont juste marqués pour les moyennes
-    addTo(helpers, e.helper1, { ...base, role: 'Helper' });
-    addTo(helpers, e.helper2, { ...base, role: 'Helper' });
-    addTo(helpers, e.helper3, { ...base, role: 'Helper' });
-    addTo(angels,  e.angel,      { ...base, role: 'Angel'  });
+    addTo(helpers, e.helper1,    { ...base, role: 'Helper' });
+    addTo(helpers, e.helper2,    { ...base, role: 'Helper' });
+    addTo(helpers, e.helper3,    { ...base, role: 'Helper' });
+    addTo(helpers, e.helper4,    { ...base, role: 'Helper' });
     addTo(trads,   e.traduction, { ...base, role: 'Traducteur' });
+  });
+
+  // Angels : collectés depuis TOUTES les entrées du jour (sans filtre typeActif),
+  // sauf les types sans intérêt pour la charge de travail.
+  const ANGEL_TYPES_EXCLUS = new Set(['REPAS & PAUSE', 'PREPA & LOGISTICS', "REUNION D'EQUIPE"]);
+  const allForAngel = AGENDA.filter(e =>
+    (jourFilter === '' || e.jour === jourFilter) &&
+    !ANGEL_TYPES_EXCLUS.has(e.type)
+  );
+  allForAngel.forEach(e => {
+    const base = { atelier: e.atelier, jour: e.jour, heure: e.heure, type: e.type, date: e.date };
+    addTo(angels, e.angel, { ...base, role: 'Angel' });
   });
 
   // Pour les angels : fusion des intervalles qui se chevauchent (interval merging)
@@ -443,6 +468,19 @@ function renderPersonCard(person, rank, max, roleOverride) {
     byDay[a.jour].push(a);
   });
 
+  // Rendu d'une ligne atelier (commun)
+  function rowHtml(a) {
+    const dur = parseDuration(a.heure);
+    return `
+    <div class="detail-row">
+      <span class="detail-heure">${a.heure || '—'}</span>
+      <span class="detail-atelier">${a.atelier}</span>
+      ${dur && !a.isDupe ? `<span class="detail-dur">${fmtMin(dur)}</span>` : ''}
+      <span class="detail-role ${badgeCls}">${a.role}</span>
+      ${a.isDupe ? '<span class="detail-dedupe">⟳ dédupliqué</span>' : ''}
+    </div>`;
+  }
+
   const detailHtml = JOUR_ORDER
     .filter(j => byDay[j])
     .map(j => {
@@ -458,24 +496,96 @@ function renderPersonCard(person, rank, max, roleOverride) {
       });
       const dayMin = merged.reduce((s, iv) => s + (iv.e - iv.s), 0);
 
-      const rows = byDay[j].map(a => {
-        const dur = parseDuration(a.heure);
-        return `
-        <div class="detail-row">
-          <span class="detail-heure">${a.heure || '—'}</span>
-          <span class="detail-atelier">${a.atelier}</span>
-          ${dur && !a.isDupe ? `<span class="detail-dur">${fmtMin(dur)}</span>` : ''}
-          <span class="detail-role ${badgeCls}">${a.role}</span>
-          ${a.isDupe ? '<span class="detail-dedupe">⟳ dédupliqué</span>' : ''}
-        </div>`;
-      }).join('');
+      // Tri chronologique pour tout le jour
+      const sorted = byDay[j].slice().sort((a, b) => {
+        const sa = parseInterval(a.heure); const sb = parseInterval(b.heure);
+        return (sa ? sa.s : 9999) - (sb ? sb.s : 9999);
+      });
+
+      let bodyHtml;
+
+      // Le rendu shift s'active si la personne a des SHIFT ANGEL ce jour-là
+      // (fonctionne aussi en vue combinée où role peut être "Helper + Angel")
+      const hasShifts = sorted.some(a => a.type === 'SHIFT ANGEL');
+
+      if (hasShifts) {
+        // ── Rendu spécial Angels : shift en tête, ateliers couverts indentés dessous ──
+        const shifts   = sorted.filter(a => a.type === 'SHIFT ANGEL');
+        const ateliers = sorted.filter(a => a.type !== 'SHIFT ANGEL');
+
+        // Source étendue : tous les ateliers du jour depuis AGENDA (pas seulement ceux de cet angel),
+        // pour pouvoir afficher tous les ateliers couverts pendant le shift, quel que soit l'angel assigné.
+        const AGENDA_SHIFT_EXCLUS = new Set(['REPAS & PAUSE', 'PREPA & LOGISTICS', "REUNION D'EQUIPE", 'PREPA & LOGITICS', 'SHIFT ANGEL']);
+        const allDayEntries = AGENDA.filter(e =>
+          e.jour === j &&
+          !AGENDA_SHIFT_EXCLUS.has(e.type)
+        );
+
+        // Rendu d'une ligne atelier indentée sous un shift
+        function shiftRowHtml(a) {
+          const dur = parseDuration(a.heure);
+          // Indique si cet atelier a un angel différent de la personne courante
+          const angelLabel = (a.angel && a.angel !== person.nom)
+            ? `<span style="font-size:10px;color:var(--muted);margin-left:4px;">(angel: ${a.angel})</span>`
+            : '';
+          return `<div class="angel-shift-atelier-row">
+            <span class="detail-heure">${a.heure || '—'}</span>
+            <span class="detail-atelier">${a.atelier}${angelLabel}</span>
+            ${dur ? `<span class="detail-dur">${fmtMin(dur)}</span>` : ''}
+          </div>`;
+        }
+
+        // Pour chaque shift, rattacher tous les ateliers du jour dont le début tombe dans la fenêtre du shift
+        const covered = new Set();
+        const shiftBlocks = shifts.map(sh => {
+          const shIv = parseInterval(sh.heure);
+          const inside = shIv
+            ? allDayEntries.filter(a => {
+                const aIv = parseInterval(a.heure);
+                return aIv && aIv.s >= shIv.s && aIv.s < shIv.e;
+              })
+            : [];
+          // Marquer aussi les assignments de cette personne comme couverts (pour les orphelins)
+          ateliers.forEach(a => {
+            const aIv = parseInterval(a.heure);
+            if (shIv && aIv && aIv.s >= shIv.s && aIv.s < shIv.e) covered.add(a);
+          });
+          const shDur = shIv ? fmtMin(shIv.e - shIv.s) : '';
+          return `<div class="angel-shift-block">
+            <div class="angel-shift-header">
+              <span class="angel-shift-label">👼 ${sh.atelier || 'Shift Angel'}</span>
+              <span class="angel-shift-heure">${sh.heure || '—'}</span>
+              ${shDur ? `<span class="angel-shift-dur">${shDur}</span>` : ''}
+            </div>
+            <div class="angel-shift-ateliers">
+              ${inside.length
+                ? inside.map(shiftRowHtml).join('')
+                : '<div style="padding:6px 14px;font-size:12px;color:var(--muted);font-style:italic">Aucun atelier dans ce créneau</div>'}
+            </div>
+          </div>`;
+        }).join('');
+
+        // Ateliers orphelins (début hors de tout shift connu)
+        const orphans = ateliers.filter(a => !covered.has(a));
+        const orphanHtml = orphans.length
+          ? `<div class="angel-orphan-rows">
+               <div style="padding:5px 14px 3px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);">Hors shifts</div>
+               ${orphans.map(rowHtml).join('')}
+             </div>`
+          : '';
+
+        bodyHtml = shiftBlocks + orphanHtml;
+      } else {
+        // ── Rendu standard (Helpers / Traducteurs) ──
+        bodyHtml = sorted.map(rowHtml).join('');
+      }
 
       return `<div class="detail-day">
         <div class="detail-day-label">
           ${j} — ${byDay[j][0].date}
           ${dayMin ? `<span class="day-dur-badge">${fmtMin(dayMin)} comptabilisé${role === 'Angel' ? ' (net)' : ''}</span>` : ''}
         </div>
-        ${rows}
+        ${bodyHtml}
       </div>`;
     }).join('');
 

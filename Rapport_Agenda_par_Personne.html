@@ -270,8 +270,8 @@ function addPerson(name, role) {
 DATA.forEach(r => {
   addPerson(r[6],'F'); addPerson(r[7],'F');
   addPerson(r[8],'T');
-  addPerson(r[9],'H'); addPerson(r[10],'H'); addPerson(r[11],'H');
-  addPerson(r[12],'A');
+  addPerson(r[9],'H'); addPerson(r[10],'H'); addPerson(r[11],'H'); addPerson(r[12],'H');
+  addPerson(r[13],'A');
 });
 
 const persons = Object.keys(personRoleMap).sort((a,b)=>a.localeCompare(b,'fr'));
@@ -290,15 +290,15 @@ function getMatches(person, role) {
     const roles = [];
     if (r[6]===person||r[7]===person) roles.push('F');
     if (r[8]===person) roles.push('T');
-    if (r[9]===person||r[10]===person||r[11]===person) roles.push('H');
-    if (r[12]===person) roles.push('A');
+    if (r[9]===person||r[10]===person||r[11]===person||r[12]===person) roles.push('H');
+    if (r[13]===person) roles.push('A');
     // Si "Toutes les personnes" : inclure toutes les lignes qui ont au moins un rôle renseigné
     if (!person) {
       const allRoles = [];
       if (r[6]||r[7]) allRoles.push('F');
       if (r[8]) allRoles.push('T');
-      if (r[9]||r[10]||r[11]) allRoles.push('H');
-      if (r[12]) allRoles.push('A');
+      if (r[9]||r[10]||r[11]||r[12]) allRoles.push('H');
+      if (r[13]) allRoles.push('A');
       if (!allRoles.length) return;
       if (role && !allRoles.includes(role)) return;
       results.push({r, roles: role ? [role] : allRoles});
@@ -320,7 +320,7 @@ function getVal(item, col) {
     case 7: return [r[6],r[7]].filter(Boolean).join('/');
     case 8: return r[8];
     case 9: return [r[9],r[10],r[11]].filter(Boolean).join('/');
-    case 10: return r[12];
+    case 10: return r[13];
   }
   return '';
 }
@@ -366,14 +366,14 @@ function renderTable(matches) {
       <td>${r[0]}</td><td>${r[1]}</td>
       <td style="white-space:nowrap">${r[2]}</td>
       <td><span class="tag">${r[3]}</span></td>
-      <td>${r[4]}${r[13]?'<span style="color:#e53e3e;font-weight:700;margin-left:3px">*</span>':''}</td>
-      <td style="text-align:center;letter-spacing:-1px">${'🌶️'.repeat(r[15]||0)}</td>
+      <td>${r[4]}${r[14]?'<span style="color:#e53e3e;font-weight:700;margin-left:3px">*</span>':''}</td>
+      <td style="text-align:center;letter-spacing:-1px">${'🌶️'.repeat(r[16]||0)}</td>
       <td>${r[5]}</td>
       <td>${roleHtml}</td>
       <td>${pills([r[6],r[7]],'pill-f')}</td>
       <td>${r[8]?`<span class="pill pill-t">${r[8]}</span>`:''}</td>
-      <td>${pills([r[9],r[10],r[11]],'pill-h')}</td>
-      <td>${r[12]?`<span class="pill pill-a">${r[12]}</span>`:''}</td>
+      <td>${pills([r[9],r[10],r[11],r[12]],'pill-h')}</td>
+      <td>${r[13]?`<span class="pill pill-a">${r[13]}</span>`:''}</td>
     </tr>`;
   }).join('');
 }
@@ -386,11 +386,11 @@ function cardHtml({r, roles}) {
     return `<span class="role-badge ${cls}">${lbl}</span>`;
   }).join(' ');
   const facs = pills([r[6],r[7]],'pill-f');
-  const helpers = pills([r[9],r[10],r[11]],'pill-h');
-  const angel = r[12] ? `<span class="pill pill-a">${r[12]}</span>` : '';
+  const helpers = pills([r[9],r[10],r[11],r[12]],'pill-h');
+  const angel = r[13] ? `<span class="pill pill-a">${r[13]}</span>` : '';
   const trad = r[8] ? `<span class="pill pill-t">${r[8]}</span>` : '';
   const lieu = r[5] ? `<span class="tag">${r[5]}</span>` : '';
-  const piment = (r[15]||0) > 0 ? `<span style="letter-spacing:-1px;font-size:13px">${'🌶️'.repeat(r[15])}</span>` : '';
+  const piment = (r[16]||0) > 0 ? `<span style="letter-spacing:-1px;font-size:13px">${'🌶️'.repeat(r[16])}</span>` : '';
   const agendaIdx = r._agendaIdx !== undefined ? r._agendaIdx : -1;
   const logBtn = agendaIdx >= 0
     ? `<button class="log-link" onclick="openLogModal(${agendaIdx})" title="Voir la fiche logistique">📋</button>`
@@ -404,10 +404,11 @@ function cardHtml({r, roles}) {
       <span class="tag">${r[3]||''}</span>${lieu ? ' '+lieu : ''}
     </div>
     <div class="card-rows">
-      <div class="card-row"><span class="card-label">Rôle</span><span class="card-value">${roleHtml}${r[13]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:8px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[13]}</span>`:''}</span></div>
+      <div class="card-row"><span class="card-label">Rôle</span><span class="card-value">${roleHtml}${r[14]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:8px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[14]}</span>`:''}</span></div>
       ${facs ? `<div class="card-row"><span class="card-label">Facilitateur</span><span class="card-value">${facs}</span></div>` : ''}
       ${trad ? `<div class="card-row"><span class="card-label">Traducteur</span><span class="card-value">${trad}</span></div>` : ''}
       ${helpers ? `<div class="card-row"><span class="card-label">Helper(s)</span><span class="card-value">${helpers}</span></div>` : ''}
+      ${(()=>{ const logId=r[15]; const logE=logId&&typeof LOGISTICS!=='undefined'?LOGISTICS[logId]:null; const pd=logE&&typeof logE.prepDuration==='number'?logE.prepDuration:0; if(pd>0) return `<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value"><strong style="background:#ffe066;color:#7a5c00;padding:2px 8px;border-radius:4px;border:1.5px solid #e6b800;font-size:13px;">⏱ ${pd} min</strong></span></div>`; return `<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value" style="font-size:12px;color:var(--muted)">0 min</span></div>`; })()}
       ${angel ? `<div class="card-row"><span class="card-label">Angel</span><span class="card-value">${angel}</span></div>` : ''}
     </div>
   </div>`;
@@ -452,8 +453,8 @@ function groupByPersonThenDay(matches) {
     item.roles.forEach(ro => {
       if (ro==='F') { if(r[6]) persons.add(r[6]); if(r[7]) persons.add(r[7]); }
       if (ro==='T') { if(r[8]) persons.add(r[8]); }
-      if (ro==='H') { if(r[9]) persons.add(r[9]); if(r[10]) persons.add(r[10]); if(r[11]) persons.add(r[11]); }
-      if (ro==='A') { if(r[12]) persons.add(r[12]); }
+      if (ro==='H') { if(r[9]) persons.add(r[9]); if(r[10]) persons.add(r[10]); if(r[11]) persons.add(r[11]); if(r[12]) persons.add(r[12]); }
+      if (ro==='A') { if(r[13]) persons.add(r[13]); }
     });
     // Si filtre personne spécifique → une seule personne
     const filterVal = document.getElementById('filterPerson').value;
@@ -614,7 +615,7 @@ function openLogModal(agendaIdx) {
   }
 
   var facs    = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f')].filter(Boolean).join(' ');
-  var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h')].filter(Boolean).join(' ');
+  var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h'), pill(e.helper4,'pill-sm-h')].filter(Boolean).join(' ');
   var trad    = pill(e.traduction, 'pill-sm-t');
   var angel   = pill(e.angel, 'pill-sm-a');
 

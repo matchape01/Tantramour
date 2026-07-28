@@ -344,7 +344,7 @@ var REF_TRANSLATIONS = [
   { key: "rp_type_art_pm",     fr: "Artistique PM",                           en: "Arts PM" },
   { key: "rp_type_yoga",       fr: "Méditation / Yoga",                       en: "Meditation / Yoga" },
   { key: "rp_type_cere",       fr: "Cérémonie & Concert",                     en: "Ceremony & Concert" },
-  { key: "rp_type_pool",       fr: "Pool Party & DJ",                         en: "Pool Party & DJ" },
+  { key: "rp_type_pool",       fr: "DJ Set & Pool Party",                     en: "DJ Set & Pool Party" },
   { key: "rp_type_love",       fr: "Love Temple",                             en: "Love Temple" },
   { key: "rp_type_support",    fr: "Support Émotionnel",                      en: "Emotional Support" },
   { key: "rp_type_cafe",       fr: "Tantra Café",                             en: "Tantra Café" },

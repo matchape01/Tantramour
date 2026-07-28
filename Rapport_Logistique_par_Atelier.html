@@ -44,6 +44,14 @@
   .recap-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
   .atelier-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .atelier-meta { font-size: 13px; color: var(--muted); margin-bottom: 16px; flex-wrap: wrap; }
+  .prep-banner { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 10px 0 16px; padding: 12px 18px; background: #fffbeb; border: 2px solid #f59e0b; border-radius: 8px; }
+  .dark .prep-banner { background: #2a1f00; border-color: #d97706; }
+  .prep-banner .prep-time { font-size: 18px; font-weight: 800; color: #b45309; }
+  .dark .prep-banner .prep-time { color: #fbbf24; }
+  .prep-banner .prep-arrive { font-size: 15px; font-weight: 600; color: #1f2328; }
+  .dark .prep-banner .prep-arrive { color: #e6edf3; }
+  .prep-banner .prep-arrive span { font-size: 22px; font-weight: 800; color: #b45309; margin-left: 6px; }
+  .dark .prep-banner .prep-arrive span { color: #fbbf24; }
   .recap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; margin-top: 12px; }
   .recap-item { display: flex; flex-direction: column; gap: 4px; }
   .recap-item .ri-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 600; }
@@ -128,6 +136,7 @@
     <div class="recap-card">
       <div class="atelier-name" id="rAtelier"></div>
       <div class="atelier-meta" id="rMeta"></div>
+      <div class="prep-banner" id="rPrepBanner" style="display:none"></div>
       <div class="recap-grid">
         <div class="recap-item"><div class="ri-label" data-i18n="col_facilitateur">Facilitateur(s)</div><div class="ri-value" id="rFac"></div></div>
         <div class="recap-item"><div class="ri-label" data-i18n="col_helpers">Helper(s)</div><div class="ri-value" id="rHelpers"></div></div>
@@ -190,25 +199,47 @@ function hideRecap() {
 function pill(text, cls) { return text ? `<span class="pill ${cls}">${text}</span>` : ''; }
 function pillList(vals, cls) { return vals.filter(Boolean).map(v=>pill(v,cls)).join(''); }
 
+function minutesToHeure(mins) {
+  if (mins >= 9999) return null;
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
 function showRecap(r) {
   document.getElementById('placeholder').style.display='none';
   document.getElementById('recapSection').classList.add('visible');
   document.getElementById('rAtelier').innerHTML = r[2] ? `<span style="font-weight:700">${r[2]}</span> &nbsp;—&nbsp; ${r[4]}` : r[4];
   const type = r[3]?`<span class="tag">${r[3]}</span> `:'';
   const lieu = r[5]?`<span class="pill pill-lieu">${r[5]}</span>`:'';
-  const noteVal2 = r[13] ? r[13].trim() : '';
+  const noteVal2 = r[14] ? r[14].trim() : '';
   const noteRef2 = noteVal2 ? REF_NOTES.find(n => n.value === noteVal2) : null;
   const noteLabel2 = noteRef2 ? noteRef2.value : noteVal2;
   const notePill = noteLabel2 ? `<span class="pill pill-lieu" style="background:#fff8e1;color:#78350f;border-color:#fde68a">${noteLabel2}</span>` : '';
   document.getElementById('rMeta').innerHTML = `${r[0]} — ${r[1]} &nbsp;·&nbsp; ${r[2]} &nbsp; ${type} ${lieu}${notePill ? ' &nbsp;' + notePill : ''}`;
   document.getElementById('rFac').innerHTML = pillList([r[6],r[7]],'pill-f') || '<span style="color:var(--muted)">—</span>';
-  document.getElementById('rHelpers').innerHTML = pillList([r[9],r[10],r[11]],'pill-h') || '<span style="color:var(--muted)">—</span>';
-  document.getElementById('rAngel').innerHTML = pill(r[12],'pill-a') || '<span style="color:var(--muted)">—</span>';
+  document.getElementById('rHelpers').innerHTML = pillList([r[9],r[10],r[11],r[12]],'pill-h') || '<span style="color:var(--muted)">—</span>';
+  document.getElementById('rAngel').innerHTML = pill(r[13],'pill-a') || '<span style="color:var(--muted)">—</span>';
   document.getElementById('rTraduction').innerHTML = pill(r[8],'pill-t') || '<span style="color:var(--muted)">—</span>';
-  // Informations Logistiques — lecture depuis LOGISTICS via logisticId (r[14])
+  // Informations Logistiques — lecture depuis LOGISTICS via logisticId (r[15])
   const logBox = document.getElementById('rLogistics');
-  const logId  = r[14] && r[14].trim();
+  const logId  = r[15] && r[15].trim();
   const logEntry = logId && typeof LOGISTICS !== 'undefined' ? LOGISTICS[logId] : null;
+
+  // Bannière temps de préparation — toujours affichée
+  // Valeur : logEntry.prepDuration si disponible, sinon 0 par défaut
+  const prepBanner = document.getElementById('rPrepBanner');
+  const prepMin    = (logEntry && typeof logEntry.prepDuration === 'number') ? logEntry.prepDuration : 0;
+  const debutMins  = heureEnMinutes(r[2]);
+  const arriveeMins = debutMins - prepMin;
+  const arriveeStr  = minutesToHeure(arriveeMins);
+  let prepHtml = `<div class="prep-time">⏱ Préparation : ${prepMin} min</div>`;
+  if (prepMin > 0 && arriveeStr) {
+    prepHtml += `<div class="prep-arrive">Arriver à la salle à <span>${arriveeStr}</span></div>`;
+  }
+  prepBanner.innerHTML = prepHtml;
+  prepBanner.style.display = '';
+
   if (logEntry) {
     logBox.innerHTML  = logEntry.html || logEntry.text.replace(/\n/g,'<br>');
     logBox.className  = 'logistics-box logistic-box';

@@ -353,6 +353,24 @@
     </div>
   </div>
 
+  <!-- ── DATA UPDATE ── -->
+  <div style="margin-top:40px;padding:20px 22px;border:1px solid var(--border);border-radius:10px;background:var(--surface);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:180px;">
+      <div style="font-size:14px;font-weight:700;margin-bottom:2px;">🗓 Data update</div>
+      <div style="font-size:12px;color:var(--muted);">Date de dernière mise à jour des données — affichée en bas à droite de chaque rapport.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <input type="text" id="dataUpdateInput" placeholder="JJ/MM/AAAA"
+        style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;color:var(--text);font-family:inherit;width:140px;outline:none;"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <button onclick="saveDataUpdate()"
+        style="cursor:pointer;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:13px;font-weight:700;font-family:inherit;">
+        💾 Enregistrer
+      </button>
+      <span id="dataUpdateStatus" style="font-size:12px;color:var(--muted);"></span>
+    </div>
+  </div>
+
 </div><!-- /wrap -->
 
 <!-- CONFIRM -->
@@ -708,10 +726,10 @@ function genDataJs() {
       section = '\n  // ─── ' + e.jour + ' — ' + dl + ' ' + '─'.repeat(Math.max(0, 56 - e.jour.length - dl.length)) + '\n';
     }
     var v = escJs;
-    return section + '  {jour:"' + v(e.jour) + '",date:"' + v(e.date) + '",heure:"' + v(e.heure) + '",type:"' + v(e.type) + '",atelier:"' + v(e.atelier) + '",lieu:"' + v(e.lieu) + '",fac1:"' + v(e.fac1) + '",fac2:"' + v(e.fac2) + '",traduction:"' + v(e.traduction) + '",helper1:"' + v(e.helper1) + '",helper2:"' + v(e.helper2) + '",helper3:"' + v(e.helper3) + '",angel:"' + v(e.angel) + '",note:"' + v(e.note) + '",piment:' + (e.piment||0) + ',logisticId:"' + v(e.logisticId||'') + '"},';
+    return section + '  {jour:"' + v(e.jour) + '",date:"' + v(e.date) + '",heure:"' + v(e.heure) + '",type:"' + v(e.type) + '",atelier:"' + v(e.atelier) + '",lieu:"' + v(e.lieu) + '",fac1:"' + v(e.fac1) + '",fac2:"' + v(e.fac2) + '",traduction:"' + v(e.traduction) + '",helper1:"' + v(e.helper1) + '",helper2:"' + v(e.helper2) + '",helper3:"' + v(e.helper3) + '",helper4:"' + v(e.helper4||'') + '",angel:"' + v(e.angel) + '",note:"' + v(e.note) + '",piment:' + (e.piment||0) + ',logisticId:"' + v(e.logisticId||'') + '"},';
   }).join('\n');
 
-  return '/**\n * TANTRAMOUR 2026 — Données AGENDA\n */\nvar AGENDA = [\n' + lines + '\n];\n\nfunction agendaToRaw(entries) {\n  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.angel,e.note,e.logisticId||"",e.piment||0]; });\n}';
+  return '/**\n * TANTRAMOUR 2026 — Données AGENDA\n */\nvar AGENDA = [\n' + lines + '\n];\n\nfunction agendaToRaw(entries) {\n  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4||"",e.angel,e.note,e.logisticId||"",e.piment||0]; });\n}';
 }
 
 // ════════════════════════════════════════════════════════════
@@ -772,6 +790,30 @@ function toggleMode() {
   }
 }
 window.toggleMode = toggleMode;
+
+// ── Data Update ──────────────────────────────────────────────────────────────
+(function() {
+  var inp = document.getElementById('dataUpdateInput');
+  if (inp) inp.value = localStorage.getItem('tm_data_update') || '';
+})();
+
+function saveDataUpdate() {
+  var inp = document.getElementById('dataUpdateInput');
+  var status = document.getElementById('dataUpdateStatus');
+  var val = (inp ? inp.value : '').trim();
+  localStorage.setItem('tm_data_update', val);
+  // Mettre à jour le badge sur cette page immédiatement
+  var badge = document.getElementById('tm-data-badge');
+  if (badge) {
+    badge.textContent = val ? ('🗓 Data update : ' + val) : '';
+    badge.style.display = val ? 'block' : 'none';
+  }
+  if (status) {
+    status.textContent = val ? '✅ Enregistré' : '✅ Effacé';
+    setTimeout(function() { status.textContent = ''; }, 2500);
+  }
+}
+window.saveDataUpdate = saveDataUpdate;
 
 }); // fin loadData
 </script>

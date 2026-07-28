@@ -56,6 +56,7 @@
   .li-jour { font-size:11px; font-weight:700; color:var(--accent); min-width:52px; white-space:nowrap; }
   .li-heure { font-size:11px; color:var(--muted); min-width:108px; white-space:nowrap; font-variant-numeric:tabular-nums; }
   .li-atelier { font-size:13px; font-weight:600; flex:1; }
+  .li-fac { font-size:11px; color:var(--muted); min-width:140px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .li-piment { font-size:12px; letter-spacing:-1px; min-width:52px; text-align:center; }
   .li-type { font-size:10px; font-weight:600; padding:1px 7px; border-radius:4px; background:var(--tag-bg); color:var(--tag-text); white-space:nowrap; max-width:160px; overflow:hidden; text-overflow:ellipsis; }
   .li-lieu { font-size:11px; color:var(--muted); min-width:70px; }
@@ -79,6 +80,10 @@
     outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(59,130,212,.12);
   }
   .form-group textarea { resize:vertical; min-height:60px; }
+  .checkbox-row { display:flex; align-items:center; gap:10px; padding:8px 0; }
+  .checkbox-row input[type="checkbox"] { width:17px; height:17px; cursor:pointer; accent-color:var(--accent); flex-shrink:0; }
+  .checkbox-row .cb-label { font-size:13px; font-weight:600; cursor:pointer; user-select:none; }
+  .checkbox-row .cb-hint { font-size:11px; color:var(--muted); }
   .piment-btns { display:flex; gap:8px; flex-wrap:wrap; }
   .piment-btn { cursor:pointer; padding:6px 14px; border-radius:6px; border:2px solid var(--border); background:var(--bg); font-size:13px; font-family:inherit; color:var(--text); transition:all .15s; }
   .piment-btn.active { border-color:var(--accent); background:#eff6ff; font-weight:700; }
@@ -209,6 +214,12 @@
       </select>
     </div>
     <div class="filter-group">
+      <label>Facilitateur</label>
+      <select id="filterFac" onchange="renderList()">
+        <option value="">Tous les facilitateurs</option>
+      </select>
+    </div>
+    <div class="filter-group">
       <label>Recherche</label>
       <input type="text" id="filterSearch" placeholder="Nom d'atelier…" oninput="renderList()">
     </div>
@@ -256,6 +267,17 @@ REF_TYPES.forEach(t => {
   selType.appendChild(o);
 });
 
+// Peupler le filtre facilitateur (liste triée des fac1/fac2 présents dans AGENDA)
+const selFac = document.getElementById('filterFac');
+const facsUniq = [...new Set(
+  AGENDA.flatMap(e => [e.fac1, e.fac2].filter(Boolean))
+)].sort((a, b) => a.localeCompare(b, 'fr'));
+facsUniq.forEach(f => {
+  const o = document.createElement('option');
+  o.value = f; o.text = f;
+  selFac.appendChild(o);
+});
+
 // ══════════════════════════════════════════════
 // FILTRE + TRI
 // ══════════════════════════════════════════════
@@ -264,12 +286,14 @@ const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 
 function getFiltered() {
   const j = document.getElementById('filterJour').value;
   const t = document.getElementById('filterType').value;
+  const f = document.getElementById('filterFac').value;
   const s = document.getElementById('filterSearch').value.trim().toLowerCase();
   return AGENDA
     .map((e, i) => ({ e, i }))
     .filter(({e}) =>
       (!j || e.jour === j) &&
       (!t || e.type === t) &&
+      (!f || e.fac1 === f || e.fac2 === f) &&
       (!s || e.atelier.toLowerCase().includes(s) || (e.fac1||'').toLowerCase().includes(s) || (e.fac2||'').toLowerCase().includes(s))
     )
     .sort((a, b) => {
@@ -283,6 +307,39 @@ function heureMin(h) {
   if (!h) return 9999;
   const m = h.replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
   return m ? parseInt(m[1])*60+parseInt(m[2]) : 9999;
+}
+
+// ════════════════════════════════════════════════
+// LOGIQUE ANGEL — résolution dynamique
+// ════════════════════════════════════════════════
+function _parseHM(s) {
+  if (!s) return null;
+  const norm = String(s).replace(/\./g, ':').trim();
+  const m = norm.match(/(\d{1,2}):(\d{2})/);
+  return m ? parseInt(m[1]) * 60 + parseInt(m[2]) : null;
+}
+
+function resolveAngelEdit(jour, heure) {
+  if (!jour || !heure) return '';
+  const norm = String(heure).replace(/\./g, ':').replace(/[–\u2013\u2014]/g, '-');
+  const parts = norm.split(/\s*-+\s*/);
+  const debut = _parseHM(parts[0]);
+  let fin = parts[1] ? _parseHM(parts[1]) : null;
+  if (debut === null) return '';
+  if (fin !== null && fin <= debut) fin += 24 * 60;
+  const milieu = fin !== null ? (debut + fin) / 2 : debut + 1;
+  const shifts = AGENDA.filter(s => s.type === 'SHIFT ANGEL' && s.jour === jour && s.angel);
+  for (const s of shifts) {
+    const sn = String(s.heure).replace(/\./g, ':').replace(/[–\u2013\u2014]/g, '-');
+    const sp = sn.split(/\s*-+\s*/);
+    const sd = _parseHM(sp[0]);
+    let sf = sp[1] ? _parseHM(sp[1]) : null;
+    if (sd === null) continue;
+    if (sf !== null && sf <= sd) sf += 24 * 60;
+    if (sf === null) sf = sd + 180;
+    if (milieu >= sd && milieu <= sf) return s.angel;
+  }
+  return '';
 }
 
 // ══════════════════════════════════════════════
@@ -305,7 +362,8 @@ function renderList() {
     return `<div class="list-item${sel}" onclick="selectAtelier(${i})" id="li-${i}">
       <div class="li-jour">${e.jour}</div>
       <div class="li-heure">${e.heure||'—'}</div>
-      <div class="li-atelier">${e.atelier||'—'}${facs ? `<span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:6px">(${facs})</span>` : ''}</div>
+      <div class="li-atelier">${e.atelier||'—'}</div>
+      <div class="li-fac">${facs || '<span style="color:var(--muted)">—</span>'}</div>
       <div class="li-piment">${pimentStr}</div>
       <div class="li-type">${e.type||''}</div>
       <div class="li-lieu">${e.lieu||''}</div>
@@ -346,7 +404,7 @@ function newAtelier() {
   editedData  = {
     jour:'Jour 1', date:'Samedi 29 aout', heure:'', type: REF_TYPES[0] ? REF_TYPES[0].value : '',
     atelier:'', lieu:'', fac1:'', fac2:'', traduction:'',
-    helper1:'', helper2:'', helper3:'', angel:'', note:'', piment:0, logisticId:''
+    helper1:'', helper2:'', helper3:'', helper4:'', angel:'', note:'', piment:0, colibri:false, logisticId:''
   };
 
   // Désélectionner toute ligne en cours
@@ -512,13 +570,30 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label data-i18n="col_angel">Angel</label>
-        ${buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')}
+        <label>Helper 4</label>
+        ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'')}
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="col_angel">Angel${e.type !== 'SHIFT ANGEL' ? `<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">(calculé automatiquement)</span>` : ''}</label>
+        ${e.type === 'SHIFT ANGEL'
+          ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')
+          : `<div style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:13px;min-height:34px">${(()=>{const a=resolveAngelEdit(e.jour,e.heure)||e.angel||'';return a?`<span class="pill pill-a" style="font-size:12px">${a}</span>`:'<em>Aucun shift Angel sur cette période</em>';})()}</div>`
+        }
       </div>
 
       <div class="form-group full">
         <label>Niveau Piment</label>
         <div class="piment-btns" id="piment-btns">${pimentBtns}</div>
+      </div>
+
+      <div class="form-group">
+        <label>Options</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="f-colibri" ${e.colibri ? 'checked' : ''} onchange="toggleColibri(this.checked)">
+          <label class="cb-label" for="f-colibri">🐦 Shift Colibri</label>
+          <span class="cb-hint">Cocher si un colibri est requis pour cet atelier</span>
+        </div>
       </div>
 
     </div>
@@ -579,9 +654,9 @@ function fieldChange(id) {
   const map = {
     'jour':'jour','atelier':'atelier','type':'type','lieu':'lieu',
     'fac1':'fac1','fac2':'fac2','traduction':'traduction',
-    'helper1':'helper1','helper2':'helper2','helper3':'helper3',
+    'helper1':'helper1','helper2':'helper2','helper3':'helper3','helper4':'helper4',
     'angel':'angel','note':'note'
-    // 'heure' est géré séparément via onHeureChange()
+    // 'heure' et 'colibri' sont gérés séparément
   };
   const key = map[field];
   if (key) editedData[key] = val;
@@ -602,6 +677,11 @@ function setPiment(val) {
   });
 }
 window.setPiment = setPiment;
+
+function toggleColibri(checked) {
+  editedData.colibri = checked;
+}
+window.toggleColibri = toggleColibri;
 
 function resetEdit() {
   if (selectedIdx === -1) {
@@ -662,6 +742,55 @@ async function saveUpdate() {
     if (ref) newEntry.date = ref.date;
   }
 
+  // Types d'ateliers dont le champ angel est piloté par les shifts
+  const TYPES_ANGEL_PILOTES = new Set([
+    'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
+    'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
+    'LOVE TEMPLE', 'TANTRA CAFE & CONFERENCE', 'TANTRA CAFÉ & CONFERENCE',
+    'SUPPORT EMOTIONNEL', 'CEREMONIE & CONCERT',
+    'DJ Set & POOL PARTY', 'DJ SET & POOL PARTY', 'POOL PARTY & DJ Set',
+  ]);
+
+  // Pour les ateliers non-SHIFT ANGEL, calculer l'angel depuis le shift ANGEL correspondant
+  if (newEntry.type !== 'SHIFT ANGEL') {
+    if (TYPES_ANGEL_PILOTES.has(newEntry.type)) {
+      newEntry.angel = resolveAngelEdit(newEntry.jour, newEntry.heure);
+    } else {
+      newEntry.angel = ''; // types non pilotés → angel toujours vide
+    }
+  }
+
+  // ── Propagation en cascade : si on modifie un SHIFT ANGEL, mettre à jour
+  //    le champ angel de tous les ateliers couverts sur le même jour ──────────
+  function propagateShiftAngel(shiftEntry) {
+    const shiftIv = (function(h) {
+      const norm = String(h).replace(/\./g, ':').replace(/[–\u2013\u2014]/g, '-');
+      const parts = norm.split(/\s*-+\s*/);
+      const s = _parseHM(parts[0]);
+      let e = parts[1] ? _parseHM(parts[1]) : null;
+      if (s === null) return null;
+      if (e !== null && e <= s) e += 1440;
+      return { s, e: e ?? s + 180 };
+    })(shiftEntry.heure);
+    if (!shiftIv) return 0;
+
+    let count = 0;
+    AGENDA.forEach(function(entry) {
+      if (entry === shiftEntry) return;
+      if (entry.jour !== shiftEntry.jour) return;
+      if (!TYPES_ANGEL_PILOTES.has(entry.type)) return;
+      const norm = String(entry.heure).replace(/\./g, ':').replace(/[–\u2013\u2014]/g, '-');
+      const parts = norm.split(/\s*-+\s*/);
+      const aStart = _parseHM(parts[0]);
+      if (aStart === null) return;
+      if (aStart >= shiftIv.s && aStart < shiftIv.e) {
+        entry.angel = shiftEntry.angel;
+        count++;
+      }
+    });
+    return count;
+  }
+
   if (isNew) {
     // Ajouter en fin de tableau
     AGENDA.push(newEntry);
@@ -687,14 +816,34 @@ async function saveUpdate() {
     }
   } else {
     const originalEntry = Object.assign({}, AGENDA[selectedIdx]);
+    // Sauvegardes rollback des ateliers impactés (si SHIFT ANGEL)
+    const rollbackAngels = [];
     AGENDA[selectedIdx] = newEntry;
+
+    // Propagation cascade si c'est un SHIFT ANGEL
+    let propagated = 0;
+    if (newEntry.type === 'SHIFT ANGEL') {
+      // Mémoriser l'état avant pour rollback
+      AGENDA.forEach(function(entry, idx) {
+        if (entry.jour === newEntry.jour && TYPES_ANGEL_PILOTES.has(entry.type)) {
+          rollbackAngels.push({ idx, angel: entry.angel });
+        }
+      });
+      propagated = propagateShiftAngel(newEntry);
+    }
+
     try {
       const content = genererDataJs();
       await sauvegarder(content);
       renderList();
-      showToast('✅ data.js mis à jour avec succès !', false);
+      const msg = propagated > 0
+        ? `✅ data.js mis à jour — ${propagated} atelier(s) mis à jour avec angel : ${newEntry.angel}`
+        : '✅ data.js mis à jour avec succès !';
+      showToast(msg, false);
     } catch(err) {
+      // Rollback
       AGENDA[selectedIdx] = originalEntry;
+      rollbackAngels.forEach(function(rb) { AGENDA[rb.idx].angel = rb.angel; });
       showToast('❌ Sauvegarde impossible : ' + err.message, true);
       console.error('[Rapport11] Erreur saveUpdate:', err);
     } finally {
@@ -787,8 +936,10 @@ function genererDataJs() {
  *   helper1    {string}  Helper 1
  *   helper2    {string}  Helper 2
  *   helper3    {string}  Helper 3
+ *   helper4    {string}  Helper 4
  *   angel      {string}  Angel
  *   note       {string}  Note logistique (ex: "Shift Colibri", "Atelier + long")
+ *   colibri    {boolean} Vrai si un Colibri est requis pour cet atelier
  */
 
 var AGENDA = [`;
@@ -801,7 +952,7 @@ var AGENDA = [`;
       const dateLabel = ref ? ref.date : e.date;
       section = `\n  // ─── ${e.jour} — ${dateLabel} ${'─'.repeat(Math.max(0, 60 - e.jour.length - dateLabel.length))}\n`;
     }
-    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},logisticId:"${escJs(e.logisticId||'')}"},`;
+    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"},`;
     return section + line;
   }).join('\n');
 
@@ -809,17 +960,17 @@ var AGENDA = [`;
 ];
 
 /**
- * Convertit un objet AGENDA en tableau positionnel [16 colonnes]
+ * Convertit un objet AGENDA en tableau positionnel [17 colonnes]
  * identique au format RAW utilisé par les rapports.
  * Indice : [0]jour [1]date [2]heure [3]type [4]atelier [5]lieu
  *          [6]fac1 [7]fac2 [8]traduction [9]helper1 [10]helper2
- *          [11]helper3 [12]angel [13]note [14]logisticId [15]piment
+ *          [11]helper3 [12]helper4 [13]angel [14]note [15]logisticId [16]piment
  */
 function agendaToRaw(entries) {
   return entries.map(e => [
     e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
     e.fac1, e.fac2, e.traduction,
-    e.helper1, e.helper2, e.helper3,
+    e.helper1, e.helper2, e.helper3, e.helper4 || '',
     e.angel, e.note, e.logisticId || '', e.piment || 0
   ]);
 }`;
@@ -853,8 +1004,9 @@ function toggleMode() {
 }
 window.toggleMode = toggleMode;
 
-// Auto-refresh si ouvert depuis Home
-if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
+// Auto-refresh si ouvert depuis Home (uniquement sans paramètre idx pour éviter de perdre la pré-sélection)
+const _params0 = new URLSearchParams(location.search);
+if (location.search.includes('v=') && !_params0.has('idx') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
   sessionStorage.setItem('_refreshed_' + location.pathname, '1');
   hardReload();
 }
@@ -862,20 +1014,18 @@ if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + lo
 renderList();
 
 // ── Pré-sélection via paramètre URL ?idx=N ──────────────────────────────────
+// Doit s'exécuter ICI, à l'intérieur du callback loadData, donc AGENDA est garanti disponible.
 (function() {
   const params = new URLSearchParams(location.search);
   const idxParam = params.get('idx');
-  if (idxParam !== null) {
-    const idx = parseInt(idxParam, 10);
-    if (!isNaN(idx) && idx >= 0 && idx < AGENDA.length) {
-      // Appliquer le filtre jour correspondant pour que la ligne soit visible
-      const jour = AGENDA[idx].jour;
-      document.getElementById('filterJour').value = jour;
-      renderList();
-      // Sélectionner l'atelier et faire défiler vers le formulaire
-      setTimeout(function() { selectAtelier(idx); }, 80);
-    }
-  }
+  if (idxParam === null) return;
+  const idx = parseInt(idxParam, 10);
+  if (isNaN(idx) || idx < 0 || idx >= AGENDA.length) return;
+  // Appliquer le filtre jour pour rendre la ligne visible dans la liste
+  document.getElementById('filterJour').value = AGENDA[idx].jour;
+  renderList();
+  // Sélectionner et scroller vers le formulaire (sans délai arbitraire — le DOM est déjà prêt)
+  selectAtelier(idx);
 })();
 
 // ══════════════════════════════════════════════════════
@@ -918,6 +1068,10 @@ function logRenderForAtelier(logId) {
     '</div>',
   ].join('');
 
+  // Pour les SHIFT ANGEL, la préparation est toujours 0 (pas de setup nécessaire)
+  var isShiftAngel = (selectedIdx !== null && AGENDA[selectedIdx] && AGENDA[selectedIdx].type === 'SHIFT ANGEL');
+  var prepVal = isShiftAngel ? 0 : (typeof entry.prepDuration === 'number') ? entry.prepDuration : 15;
+
   sec.innerHTML =
     // Prévisualisation
     '<div id="log-preview" class="logistics-html-preview" style="padding:10px 0 14px">' +
@@ -926,6 +1080,13 @@ function logRenderForAtelier(logId) {
 
     // Zone d'édition (masquée par défaut)
     '<div id="log-editzone" class="logistics-edit-zone">' +
+      // Champ durée de préparation (masqué pour les SHIFT ANGEL, toujours 0)
+      '<div style="' + (isShiftAngel ? 'display:none;' : 'display:flex;align-items:center;gap:10px;') + 'margin-bottom:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">' +
+        '<label for="log-prep-duration" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap;">⏱ Estimation durée préparation</label>' +
+        '<select id="log-prep-duration" ' + (isShiftAngel ? 'disabled ' : '') + 'style="width:90px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;">' +
+          [0,15,30,45,60].map(function(v){ return '<option value="'+v+'"'+(prepVal===v?' selected':'')+'>'+v+' min</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
       toolbar +
       '<div class="rte-editor" id="log-rte" contenteditable="true">' + (entry.html || '') + '</div>' +
       '<div class="logistics-edit-actions">' +
@@ -936,9 +1097,10 @@ function logRenderForAtelier(logId) {
       '</div>' +
     '</div>' +
 
-    // Barre d'actions prévisualisation
-    '<div id="log-actions" style="display:flex;gap:8px;margin-top:10px;">' +
+    // Barre d'actions prévisualisation (avec affichage durée courante)
+    '<div id="log-actions" style="display:flex;gap:8px;align-items:center;margin-top:10px;">' +
       '<button class="btn" onclick="logOuvrirEdition()">✏️ Modifier</button>' +
+      (prepVal > 0 ? '<span style="font-size:12px;color:var(--muted);padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">⏱ Préparation : <strong>' + prepVal + ' min</strong></span>' : '') +
     '</div>';
 }
 
@@ -951,7 +1113,7 @@ function logCreer() {
   var newId = base, n = 2;
   while (LOG[newId]) { newId = base + '_' + n; n++; }
 
-  LOG[newId] = { html: '', text: '', updatedAt: new Date().toISOString().slice(0,10) };
+  LOG[newId] = { html: '', text: '', prepDuration: 15, updatedAt: new Date().toISOString().slice(0,10) };
 
   // Lier l'atelier à ce nouvel ID (en mémoire + dans editedData)
   editedData.logisticId = newId;
@@ -997,8 +1159,11 @@ async function logSaveEntry() {
   var tmp = document.createElement('div');
   tmp.innerHTML = newHtml;
   var newText = (tmp.textContent || tmp.innerText || '').trim();
+  var prepInput = document.getElementById('log-prep-duration');
+  var newPrep   = prepInput ? parseInt(prepInput.value, 10) : (LOG[logId].prepDuration || 0);
+  if (isNaN(newPrep) || newPrep < 0) newPrep = 0;
 
-  LOG[logId] = { html: newHtml, text: newText, updatedAt: new Date().toISOString().slice(0,10) };
+  LOG[logId] = { html: newHtml, text: newText, prepDuration: newPrep, updatedAt: new Date().toISOString().slice(0,10) };
 
   var ind = document.getElementById('logsavind');
   if (ind) ind.classList.add('show');
@@ -1071,13 +1236,16 @@ function genererLogisticsJs() {
   var keys    = Object.keys(LOG);
   var entries = keys.map(function(k) {
     var e = LOG[k];
+    var prep = (typeof e.prepDuration === 'number') ? e.prepDuration : 15;
     return '  "' + escJs(k) + '": {\n' +
       '    html: "' + escJs(e.html || '') + '",\n' +
       '    text: "' + escJs(e.text || '') + '",\n' +
+      '    validatedByFac: ' + (e.validatedByFac ? 'true' : 'false') + ',\n' +
+      '    prepDuration: ' + prep + ',\n' +
       '    updatedAt: "' + escJs(e.updatedAt || '') + '"\n' +
       '  }';
   }).join(',\n\n');
-  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques\n * ===========================================\n * Structure : LOGISTICS = { "<logisticId>": { html, text, updatedAt } }\n */\n\nvar LOGISTICS = {\n\n' +
+  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques\n * ===========================================\n * Structure : LOGISTICS = { "<logisticId>": { html, text, validatedByFac, prepDuration, updatedAt } }\n */\n\nvar LOGISTICS = {\n\n' +
     entries + (entries ? '\n\n' : '') + '};\n';
 }
 

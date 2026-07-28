@@ -225,7 +225,7 @@ function construire() {
   const parHelper = new Map(); // nom → Map(jour → [atelier entry])
 
   AGENDA.forEach(e => {
-    ['helper1','helper2','helper3'].forEach(field => {
+    ['helper1','helper2','helper3','helper4'].forEach(field => {
       const nom = e[field];
       if (!nom) return;
       if (!parHelper.has(nom)) parHelper.set(nom, new Map());
@@ -283,7 +283,7 @@ REF_HELPERS.forEach(ref => {
 function renderAtelier(e) {
   const facs    = pills([e.fac1, e.fac2], 'pill-f');
   const coHelpers = pills(
-    ['helper1','helper2','helper3'].map(f => e[f]).filter(Boolean),
+    ['helper1','helper2','helper3','helper4'].map(f => e[f]).filter(Boolean),
     'pill-h'
   );
   const angel = pill(e.angel, 'pill-a');
