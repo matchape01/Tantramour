@@ -386,13 +386,37 @@ function closePw() {
   document.getElementById('pwOverlay').style.display = 'none';
 }
 
+var _pwLocked = false;
 function checkPw() {
-  if (document.getElementById('pwInput').value === PW) {
+  if (_pwLocked) return;
+  var inp = document.getElementById('pwInput');
+  if (inp.value === PW) {
     closePw();
     window.open(withTs(_dest), '_blank', 'noopener');
   } else {
-    document.getElementById('pwError').textContent = I18n.t('pw_incorrect');
-    document.getElementById('pwInput').select();
+    var err = document.getElementById('pwError');
+    var btns = document.querySelectorAll('#pwOverlay button');
+    inp.value = '';
+    inp.style.borderColor = '#dc2626';
+    _pwLocked = true;
+    inp.disabled = true;
+    btns.forEach(function(b) { b.disabled = true; });
+    var remaining = 3;
+    err.textContent = '❌ Incorrect — réessayez dans ' + remaining + 's';
+    var countdown = setInterval(function() {
+      remaining--;
+      if (remaining > 0) {
+        err.textContent = '❌ Incorrect — réessayez dans ' + remaining + 's';
+      } else {
+        clearInterval(countdown);
+        _pwLocked = false;
+        inp.disabled = false;
+        btns.forEach(function(b) { b.disabled = false; });
+        inp.style.borderColor = '';
+        err.textContent = '';
+        inp.focus();
+      }
+    }, 1000);
   }
 }
 

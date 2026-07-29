@@ -454,7 +454,7 @@ function renderProgList(ateliers) {
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
           (heureDuree(e.heure) ? ' <span style="font-weight:400;color:var(--muted)">(' + heureDuree(e.heure) + ')</span>' : '') +
-          (e.lieu  ? ' &nbsp;·&nbsp; 🗺️ Lieu&nbsp;: ' + esc(e.lieu) : '') +
+          (e.lieu  ? ' &nbsp;·&nbsp; ' + I18n.t('col_lieu') + '&nbsp;: ' + esc(e.lieu) : '') +
         '</div>' +
         '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:13px">' + pimentStr + '</span>' : '') + '</div>' +
         '<div class="prog-meta">' +
@@ -499,12 +499,17 @@ window.openDetail = function(idx) {
 
   // Grille info
   var rows = [];
-  if (e.heure) rows.push([I18n.t('rp_horaire'),     esc(e.heure)]);
+  if (e.heure) {
+    var duree = heureDuree(e.heure);
+    rows.push([I18n.t('rp_horaire'), esc(e.heure) + (duree ? ' <span style="color:var(--muted);font-weight:400">(' + duree + ')</span>' : '')]);
+  }
   if (e.lieu)  rows.push([I18n.t('rp_lieu'),         esc(e.lieu)]);
   var facs = [e.fac1, e.fac2].filter(Boolean);
   if (facs.length) rows.push([facs.length > 1 ? I18n.t('rp_facilitateurs') : I18n.t('rp_facilitateur'), facs.map(esc).join(' &amp; ')]);
-  if (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2))
-    rows.push(['FR / ENG', e.traduction ? esc(e.traduction) : (I18n.getLang() === 'en' ? 'Bilingual facilitator' : 'Animateur bilingue')]);
+  if (e.traduction)
+    rows.push([I18n.getLang() === 'en' ? 'Translator' : 'Traducteur', esc(e.traduction)]);
+  else if (isBilingue(e.fac1) || isBilingue(e.fac2))
+    rows.push(['FR / ENG', I18n.getLang() === 'en' ? 'Bilingual facilitator' : 'Animateur bilingue']);
   if (e.piment > 0) rows.push([I18n.t('rp_piment'),  '🌶️'.repeat(e.piment)]);
 
   var noteHtml = e.note

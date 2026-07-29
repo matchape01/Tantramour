@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tantramour 2026 — Ateliers Colibri</title>
+<title>Tantramour 2026 — Planning Colibri</title>
 <style>
   :root {
     --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
@@ -128,7 +128,7 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>Ateliers Colibri 🐦</p>
+      <p data-i18n="r8_title">Planning Colibri 🐦</p>
       <small>Ateliers avec un helper ou traducteur ayant le rôle Colibri</small>
     </div>
     <div class="header-actions">
@@ -153,14 +153,6 @@
         <option value="Jour 5" data-i18n="jour5_label">Jour 5 — Mer. 2 sept.</option>
         <option value="Jour 6" data-i18n="jour6_label">Jour 6 — Jeu. 3 sept.</option>
         <option value="Jour 7" data-i18n="jour7_label">Jour 7 — Ven. 4 sept.</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>Statut</label>
-      <select id="filterStatut" onchange="render()">
-        <option value="">Tous les ateliers</option>
-        <option value="manquant">⚠️ Colibri manquant</option>
-        <option value="ok">✅ Colibri assigné</option>
       </select>
     </div>
     <div class="fg">
@@ -209,19 +201,6 @@ function hasRole(nom, role) {
 function isColibri(nom)    { return hasRole(nom, 'colibri'); }
 function isTraducteur(nom) { return hasRole(nom, 'traducteur'); }
 
-// ── Liste des Colibris (pour le filtre) ───────────────────────────────────────
-var COLIBRIS = (REF_RESSOURCES || [])
-  .filter(function(r) { return r.roles.indexOf('colibri') !== -1; })
-  .map(function(r) { return r.value; })
-  .sort();
-
-// Peupler le filtre Colibri
-var selColibri = document.getElementById('filterColibri');
-COLIBRIS.forEach(function(nom) {
-  var o = document.createElement('option');
-  o.value = nom; o.text = nom;
-  selColibri.appendChild(o);
-});
 
 // ── Construction de la liste des ateliers Colibri ─────────────────────────────
 // Inclut :
@@ -243,17 +222,14 @@ function buildList() {
       return { nom: s.nom, slot: s.role };
     });
 
-    var hasAssigned = colibrisPresents.length > 0;
-    var flagged     = !!e.colibri; // champ booléen "Shift Colibri" coché dans l'éditeur
-
-    // Garder si : colibri assigné OU flag colibri sans assignation
-    if (!hasAssigned && !flagged) return;
+    // Inclure uniquement les ateliers avec au moins un Colibri assigné
+    if (colibrisPresents.length === 0) return;
 
     result.push({
       idx:              idx,
       entry:            e,
       colibrisPresents: colibrisPresents,
-      manquant:         flagged && !hasAssigned, // ⚠️ requis mais non assigné
+      manquant:         false,
     });
   });
   return result;
@@ -261,19 +237,25 @@ function buildList() {
 
 var WORKSHOPS = buildList();
 
+// ── Peupler le filtre Colibri avec uniquement les Colibris qui ont des ateliers ─
+var colibrisActifs = {};
+WORKSHOPS.forEach(function(w) {
+  w.colibrisPresents.forEach(function(c) { colibrisActifs[c.nom] = true; });
+});
+var selColibri = document.getElementById('filterColibri');
+Object.keys(colibrisActifs).sort().forEach(function(nom) {
+  var o = document.createElement('option');
+  o.value = nom; o.text = nom;
+  selColibri.appendChild(o);
+});
+
 // ── Filtrage ──────────────────────────────────────────────────────────────────
 function getFiltered() {
   var jour    = document.getElementById('filterJour').value;
-  var statut  = document.getElementById('filterStatut').value;
   var colibri = document.getElementById('filterColibri').value;
   return WORKSHOPS.filter(function(w) {
     if (jour    && w.entry.jour !== jour) return false;
-    if (statut === 'manquant' && !w.manquant) return false;
-    if (statut === 'ok'       &&  w.manquant) return false;
-    // Le filtre Colibri ne s'applique que sur les ateliers qui ont un colibri assigné
-    if (colibri && !w.manquant && !w.colibrisPresents.some(function(c) { return c.nom === colibri; })) return false;
-    // Quand un filtre Colibri est actif, on masque les manquants (ils n'ont personne assigné)
-    if (colibri && w.manquant) return false;
+    if (colibri && !w.colibrisPresents.some(function(c) { return c.nom === colibri; })) return false;
     return true;
   });
 }
@@ -296,7 +278,6 @@ function render() {
 
   document.getElementById('statsBar').innerHTML =
     '<div class="stat-pill colibri"><div class="num">' + total + '</div><div class="lbl">Ateliers Colibri</div></div>' +
-    '<div class="stat-pill err"><div class="num">' + nManquant + '</div><div class="lbl">⚠️ Colibri manquant</div></div>' +
     '<div class="stat-pill info"><div class="num">' + nOk + '</div><div class="lbl">✅ Colibri assigné</div></div>' +
     '<div class="stat-pill info"><div class="num">' + nbColibris + '</div><div class="lbl">Colibris actifs</div></div>';
 
@@ -306,35 +287,21 @@ function render() {
     return;
   }
 
-  // Les ateliers manquants en premier, puis le reste — groupés par jour
-  var manquants = filtered.filter(function(w) { return  w.manquant; });
-  var assignes  = filtered.filter(function(w) { return !w.manquant; });
-
+  // Grouper par jour
   var html = '';
-
-  // Bloc d'alerte : ateliers sans colibri assigné (uniquement si présents dans la sélection filtrée)
-  if (manquants.length) {
-    html += '<div class="day-sep" style="border-color:var(--red-border);color:var(--red)">' +
-      '⚠️ Colibri requis mais non assigné <span class="day-count" style="background:var(--red)">' + manquants.length + '</span></div>';
-    manquants.forEach(function(w) { html += renderCard(w); });
-  }
-
-  // Bloc normal : ateliers avec colibri assigné, groupés par jour (uniquement si présents dans la sélection filtrée)
-  if (assignes.length) {
-    var byDay = {};
-    assignes.forEach(function(w) {
-      var j = w.entry.jour;
-      if (!byDay[j]) byDay[j] = [];
-      byDay[j].push(w);
-    });
-    JOUR_ORDER.forEach(function(jour) {
-      if (!byDay[jour]) return;
-      var items = byDay[jour];
-      html += '<div class="day-sep">' + esc(jour) + ' — ' + esc(items[0].entry.date) +
-        ' <span class="day-count">' + items.length + '</span></div>';
-      items.forEach(function(w) { html += renderCard(w); });
-    });
-  }
+  var byDay = {};
+  filtered.forEach(function(w) {
+    var j = w.entry.jour;
+    if (!byDay[j]) byDay[j] = [];
+    byDay[j].push(w);
+  });
+  JOUR_ORDER.forEach(function(jour) {
+    if (!byDay[jour]) return;
+    var items = byDay[jour];
+    html += '<div class="day-sep">' + esc(jour) + ' — ' + esc(items[0].entry.date) +
+      ' <span class="day-count">' + items.length + '</span></div>';
+    items.forEach(function(w) { html += renderCard(w); });
+  });
 
   document.getElementById('results').innerHTML = html;
 }
@@ -403,6 +370,8 @@ function renderCard(w) {
 }
 
 // ── Utilitaires ───────────────────────────────────────────────────────────────
+window.render = render;
+
 function esc(v) {
   return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }

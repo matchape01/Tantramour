@@ -203,20 +203,38 @@ function overlayClick(e) {
   if (e.target === document.getElementById('pwOverlay')) closePw();
 }
 
+var _pwLocked = false;
 function checkPw() {
+  if (_pwLocked) return;
   var val = document.getElementById('pwInput').value;
   if (val === PW) {
     closePw();
     window.location.href = 'index_bis.html';
   } else {
-    var err = document.getElementById('pwError');
-    err.textContent = I18n.t('pw_incorrect');
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwInput').focus();
-    // Petite animation shake
     var inp = document.getElementById('pwInput');
+    var err = document.getElementById('pwError');
+    var btn = document.querySelector('.pw-confirm');
+    inp.value = '';
     inp.style.borderColor = '#dc2626';
-    setTimeout(function() { inp.style.borderColor = ''; }, 1200);
+    _pwLocked = true;
+    inp.disabled = true;
+    if (btn) btn.disabled = true;
+    var remaining = 3;
+    err.textContent = '❌ Incorrect — réessayez dans ' + remaining + 's';
+    var countdown = setInterval(function() {
+      remaining--;
+      if (remaining > 0) {
+        err.textContent = '❌ Incorrect — réessayez dans ' + remaining + 's';
+      } else {
+        clearInterval(countdown);
+        _pwLocked = false;
+        inp.disabled = false;
+        if (btn) btn.disabled = false;
+        inp.style.borderColor = '';
+        err.textContent = '';
+        inp.focus();
+      }
+    }, 1000);
   }
 }
 

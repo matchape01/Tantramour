@@ -254,6 +254,7 @@
 <script src="ref_resource_types.js"></script>
 <script src="ref_ressources.js"></script>
 <script src="github-api.js"></script>
+<script src="loader.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════════
@@ -264,6 +265,8 @@ let editingIdx  = null; // index dans data (null = nouveau)
 let pendingDel  = null; // index à supprimer
 let sortCol     = 'value';
 let sortAsc     = true;
+var AGENDA_DATA        = [];  // copie de travail de AGENDA (data.js)
+var DESCRIPTIONS_DATA  = [];  // copie de travail de REF_DESCRIPTIONS
 
 // Init : cloner le référentiel chargé
 function initData() {
@@ -552,6 +555,11 @@ async function saveResource() {
   if (btn) btn.disabled = true;
   if (ind) ind.classList.add('show');
 
+  // Capturer l'ancien nom AVANT modification (pour propagation)
+  var oldName = (!isNew && data[editingIdx]) ? data[editingIdx].value : null;
+  var newName = form.val;
+  var nameChanged = !isNew && oldName && oldName !== newName;
+
   // Appliquer en mémoire
   if (isNew) {
     var newEntry = { id: form.id, value: form.val, roles: form.roles, langues: form.langues };
@@ -562,24 +570,34 @@ async function saveResource() {
     data[editingIdx].value   = form.val;
     data[editingIdx].roles   = form.roles;
     data[editingIdx].langues = form.langues;
-    // Gérer le champ tel : présent seulement si angel
     if (form.roles.indexOf('angel') !== -1) {
       data[editingIdx].tel = form.tel;
     } else {
       delete data[editingIdx].tel;
     }
-    // id = readonly, pas modifiable
+  }
+
+  // Propager le renommage dans AGENDA et DESCRIPTIONS si nécessaire
+  if (nameChanged) {
+    propagateRename(oldName, newName);
   }
 
   try {
-    await sauvegarder('ref_ressources.js', genererRefRessources());
-    showToast(isNew ? '✅ Ressource ajoutée !' : '✅ Ressource mise à jour !');
+    var saves = [sauvegarder('ref_ressources.js', genererRefRessources())];
+    if (nameChanged) {
+      saves.push(sauvegarder('data.js', buildDataJs()));
+      saves.push(sauvegarder('ref_descriptions.js', buildRefDescJs()));
+    }
+    await Promise.all(saves);
+    var msg = isNew ? '✅ Ressource ajoutée !'
+            : nameChanged ? '✅ Ressource renommée et propagée dans data.js & ref_descriptions.js !'
+            : '✅ Ressource mise à jour !';
+    showToast(msg);
     closeEditor();
     renderTable();
   } catch(err) {
-    // Rollback
     if (isNew) { data.pop(); editingIdx = null; }
-    else { /* la copie en mémoire est déjà dans data — on la relit depuis form original */ }
+    if (nameChanged) { propagateRename(newName, oldName); } // rollback propagation
     showToast('❌ Sauvegarde impossible : ' + err.message, true);
     console.error('[Rapport12] saveResource:', err);
   } finally {
@@ -627,6 +645,73 @@ async function confirmDelete() {
   }
 }
 window.confirmDelete = confirmDelete;
+
+// ══════════════════════════════════════════════════════════
+// PROPAGATION DU RENOMMAGE
+// ══════════════════════════════════════════════════════════
+function propagateRename(oldName, newName) {
+  // Mettre à jour AGENDA_DATA (tous les champs texte qui peuvent contenir un nom)
+  var fields = ['fac1','fac2','traduction','helper1','helper2','helper3','helper4','angel'];
+  AGENDA_DATA.forEach(function(e) {
+    fields.forEach(function(f) {
+      if (e[f] === oldName) e[f] = newName;
+    });
+  });
+  // Mettre à jour DESCRIPTIONS_DATA
+  DESCRIPTIONS_DATA.forEach(function(d) {
+    if (d.fac1 === oldName) d.fac1 = newName;
+    if (d.fac2 === oldName) d.fac2 = newName;
+    // Mettre à jour les références dans le texte des descriptions si besoin
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// SÉRIALISATION data.js
+// ══════════════════════════════════════════════════════════
+function buildDataJs() {
+  var lines = AGENDA_DATA.map(function(e) {
+    return '  {jour:"'       + escJs(e.jour||'') +
+      '",date:"'             + escJs(e.date||'') +
+      '",heure:"'            + escJs(e.heure||'') +
+      '",type:"'             + escJs(e.type||'') +
+      '",atelier:"'          + escJs(e.atelier||'') +
+      '",lieu:"'             + escJs(e.lieu||'') +
+      '",fac1:"'             + escJs(e.fac1||'') +
+      '",fac2:"'             + escJs(e.fac2||'') +
+      '",traduction:"'       + escJs(e.traduction||'') +
+      '",helper1:"'          + escJs(e.helper1||'') +
+      '",helper2:"'          + escJs(e.helper2||'') +
+      '",helper3:"'          + escJs(e.helper3||'') +
+      '",helper4:"'          + escJs(e.helper4||'') +
+      '",angel:"'            + escJs(e.angel||'') +
+      '",note:"'             + escJs(e.note||'') +
+      '",piment:'            + (e.piment||0) +
+      ',logisticId:"'        + escJs(e.logisticId||'') + '"}';
+  }).join(',\n');
+  return '/**\n * TANTRAMOUR 2026 \u2014 Donn\u00e9es AGENDA\n */\nvar AGENDA = [\n\n' + lines + '\n];\n';
+}
+
+// ══════════════════════════════════════════════════════════
+// SÉRIALISATION ref_descriptions.js
+// ══════════════════════════════════════════════════════════
+function buildRefDescJs() {
+  var lines = DESCRIPTIONS_DATA.map(function(d) {
+    return '  { key:"'           + escJs(d.key||'') +
+      '", atelier:"'             + escJs(d.atelier||'') +
+      '", type:"'                + escJs(d.type||'') +
+      '", piment:'               + (d.piment||0) +
+      ', fac1:"'                 + escJs(d.fac1||'') +
+      '", fac2:"'                + escJs(d.fac2||'') +
+      '", descFr:"'              + escJs(d.descFr||'') +
+      '", descEn:"'              + escJs(d.descEn||'') +
+      '", consigne:"'            + escJs(d.consigne||'') +
+      '", validatedByFac:'       + (d.validatedByFac ? 'true' : 'false') +
+      ', updatedAt:"'            + escJs(d.updatedAt||'') + '" }';
+  }).join(',\n');
+  return '/**\n * TANTRAMOUR 2026 \u2014 Descriptions des Ateliers (FR / EN)\n' +
+    ' * G\u00e9r\u00e9 automatiquement par Rapport_Descriptions_Ateliers.html\n */\n\n' +
+    'var REF_DESCRIPTIONS = [\n\n' + lines + '\n\n];\n';
+}
 
 // ══════════════════════════════════════════════════════════
 // SAUVEGARDE → ref_ressources.js
@@ -751,9 +836,13 @@ function toggleMode() {
 window.toggleMode = toggleMode;
 
 // ── Démarrage ─────────────────────────────────────────────
-initData();
-buildRoleMeta();
-renderTable();
+loadData(['data.js', 'ref_descriptions.js'], function() {
+  AGENDA_DATA       = AGENDA.map(function(e) { return Object.assign({}, e); });
+  DESCRIPTIONS_DATA = REF_DESCRIPTIONS.map(function(d) { return Object.assign({}, d); });
+  initData();
+  buildRoleMeta();
+  renderTable();
+});
 
 if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
   sessionStorage.setItem('_refreshed_' + location.pathname, '1');
