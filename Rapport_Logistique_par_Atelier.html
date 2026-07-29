@@ -122,6 +122,12 @@
       </select>
     </div>
     <div class="step-group">
+      <label data-i18n="filter_facilitateur">Facilitateur</label>
+      <select id="selFac" onchange="onFacChange()" disabled>
+        <option value="">— Tous les facilitateurs —</option>
+      </select>
+    </div>
+    <div class="step-group">
       <label data-i18n="r4_choisir_atelier">2. Choisir l'atelier</label>
       <select id="selAtelier" onchange="onAtelierChange()" disabled>
         <option value="" data-i18n="r4_choisir_dabord">-- Choisir d'abord un jour --</option>
@@ -167,18 +173,54 @@ function heureEnMinutes(h) {
 
 function onDateChange() {
   const jour = document.getElementById('selDate').value;
+  const sf = document.getElementById('selFac');
+  const sa = document.getElementById('selAtelier');
+
+  // Réinitialiser facilitateur et atelier
+  sf.innerHTML = '<option value="">— Tous les facilitateurs —</option>';
+  sa.innerHTML = '<option value="">-- Sélectionner un atelier --</option>';
+  sa.disabled = true;
+
+  if (!jour) { sf.disabled = true; hideRecap(); return; }
+
+  // Peupler le filtre facilitateur (triés alphabétiquement)
+  const facsSet = new Set();
+  ROWS.filter(r => r[0] === jour && (r[6] || r[7])).forEach(r => {
+    if (r[6]) facsSet.add(r[6]);
+    if (r[7]) facsSet.add(r[7]);
+  });
+  Array.from(facsSet).sort((a, b) => a.localeCompare(b, 'fr')).forEach(f => {
+    const o = document.createElement('option'); o.value = f; o.text = f; sf.appendChild(o);
+  });
+  sf.disabled = false;
+
+  // Peupler les ateliers (sans filtre fac pour l'instant)
+  populateAteliers(jour, '');
+  hideRecap();
+}
+
+function onFacChange() {
+  const jour = document.getElementById('selDate').value;
+  const fac  = document.getElementById('selFac').value;
+  populateAteliers(jour, fac);
+  hideRecap();
+}
+
+function populateAteliers(jour, fac) {
   const sa = document.getElementById('selAtelier');
   sa.innerHTML = '<option value="">-- Sélectionner un atelier --</option>';
-  if (!jour) { sa.disabled=true; hideRecap(); return; }
-  const ateliers = ROWS.filter(r=>r[0]===jour)
-    .map(r=>({key: r[2]+'|||'+r[4], label: r[2]?`[${r[2]}] ${r[4]}`:r[4], mins: heureEnMinutes(r[2])}))
-    .filter((v,i,a)=>a.findIndex(x=>x.key===v.key)===i)
-    .sort((a,b) => a.mins - b.mins);
-  ateliers.forEach(a=>{
-    const o=document.createElement('option'); o.value=a.key; o.text=a.label; sa.appendChild(o);
+  if (!jour) { sa.disabled = true; return; }
+
+  const ateliers = ROWS
+    .filter(r => r[0] === jour && (!fac || r[6] === fac || r[7] === fac))
+    .map(r => ({ key: r[2] + '|||' + r[4], label: r[2] ? `[${r[2]}] ${r[4]}` : r[4], mins: heureEnMinutes(r[2]) }))
+    .filter((v, i, a) => a.findIndex(x => x.key === v.key) === i)
+    .sort((a, b) => a.mins - b.mins);
+
+  ateliers.forEach(a => {
+    const o = document.createElement('option'); o.value = a.key; o.text = a.label; sa.appendChild(o);
   });
-  sa.disabled=false;
-  hideRecap();
+  sa.disabled = false;
 }
 
 function onAtelierChange() {
@@ -313,6 +355,7 @@ if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + lo
 window.hardReload      = hardReload;
 window.toggleMode      = toggleMode;
 window.onDateChange    = onDateChange;
+window.onFacChange     = onFacChange;
 window.onAtelierChange = onAtelierChange;
 
 }); // fin loadData

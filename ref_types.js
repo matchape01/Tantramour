@@ -3,10 +3,10 @@
  * Chaque entrée : { id, value, label }
  */
 var REF_TYPES = [
-  { id: "T_TANTRA_AM", value: "ATELIERS TANTRA (AM)", label: "ATELIERS TANTRA (AM)" },
-  { id: "T_TANTRA_PM", value: "ATELIERS TANTRA (PM)", label: "ATELIERS TANTRA (PM)" },
-  { id: "T_ART_AM", value: "ATELIER ARTISTIQUE (AM)", label: "ATELIER ARTISTIQUE (AM)" },
-  { id: "T_ART_PM", value: "ATELIER ARTISTIQUE (PM)", label: "ATELIER ARTISTIQUE (PM)" },
+  { id: "T_TANTRA_AM", value: "ATELIERS TANTRA (Matin)", label: "ATELIERS TANTRA (Matin)" },
+  { id: "T_TANTRA_PM", value: "ATELIERS TANTRA (Apres-Midi)", label: "ATELIERS TANTRA (Apres-Midi)" },
+  { id: "T_ART_AM", value: "ATELIER ARTISTIQUE (Matin)", label: "ATELIER ARTISTIQUE (Matin)" },
+  { id: "T_ART_PM", value: "ATELIER ARTISTIQUE (Apres-Midi)", label: "ATELIER ARTISTIQUE (Apres-Midi)" },
   { id: "T_CEREMONIE", value: "CEREMONIE & CONCERT", label: "CEREMONIE & CONCERT" },
   { id: "T_LOVE_TEMPLE", value: "LOVE TEMPLE", label: "LOVE TEMPLE" },
   { id: "T_YOGA", value: "MEDITATION / YOGA", label: "MEDITATION / YOGA" },

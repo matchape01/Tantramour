@@ -31,23 +31,23 @@ var REF_TRANSLATIONS = [
   { key: "home_group_planning",fr: "Gestion planning",           en: "Schedule Management" },
 
   // Cartes index
-  { key: "card_agenda_jour_title",    fr: "Agenda par Jour (Per day)",              en: "Agenda by Day" },
+  { key: "card_agenda_jour_title",    fr: "Agenda par Jour",                        en: "Agenda by Day" },
   { key: "card_agenda_jour_desc",     fr: "Tous les ateliers — filtres jour, lieu, rôle", en: "All workshops — filters by day, venue, role" },
-  { key: "card_agenda_personne_title",fr: "Agenda par Personne (Per Person)",       en: "Agenda by Person" },
+  { key: "card_agenda_personne_title",fr: "Agenda par Personne",                    en: "Agenda by Person" },
   { key: "card_agenda_personne_desc", fr: "Planning individuel par facilitateur, helper ou angel", en: "Individual schedule by facilitator, helper or angel" },
-  { key: "card_mon_planning_title",   fr: "Mon Planning (My Planning)",             en: "My Planning" },
+  { key: "card_mon_planning_title",   fr: "Mon Planning",                           en: "My Planning" },
   { key: "card_mon_planning_desc",    fr: "Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels", en: "Combined view or by role — Facilitators, Helpers, Translators, Angels" },
   { key: "card_logistique_title",     fr: "Logistique par Atelier",                 en: "Logistics per Workshop" },
   { key: "card_logistique_desc",      fr: "Vue détaillée atelier — lieux, équipes & notes", en: "Detailed workshop view — venues, teams & notes" },
-  { key: "card_saisie_log_title",     fr: "Saisie des besoins logistiques (Logistic needs)", en: "Logistic Needs Input" },
+  { key: "card_saisie_log_title",     fr: "Saisie des besoins logistiques",         en: "Logistic Needs Input" },
   { key: "card_saisie_log_desc",      fr: "Facilitateurs : saisissez vos besoins atelier par atelier", en: "Facilitators: enter your needs workshop by workshop" },
-  { key: "card_colibri_title",        fr: "Ateliers Colibri",                       en: "Colibri Workshops" },
-  { key: "card_colibri_desc",         fr: "Ateliers avec facilitateur ayant le rôle helper \"Shift Colibri\"", en: "Workshops with a facilitor in the \"Shift Colibri\" role" },
+  { key: "card_colibri_title",        fr: "Planning Colibri",                       en: "Colibri Schedule" },
+  { key: "card_colibri_desc",         fr: "Ateliers avec facilitateur ayant le rôle Shift Colibri", en: "Workshops with a facilitator in the Shift Colibri role" },
   { key: "card_traducteurs_title",    fr: "Planning Traducteurs",                   en: "Translators Schedule" },
-  { key: "card_traducteurs_desc",     fr: "Vue par traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau", en: "View by translator — grouped shifts, Day/Translator filters" },
+  { key: "card_traducteurs_desc",     fr: "Vue par traducteur — shifts regroupés, filtres Jour/Traducteur", en: "View by translator — grouped shifts, Day/Translator filters" },
   { key: "card_conflits_title",       fr: "Conflits de planning",                   en: "Schedule Conflicts" },
   { key: "card_conflits_desc",        fr: "Personnes assignées à plusieurs rôles simultanément", en: "People assigned to multiple simultaneous roles" },
-  { key: "card_charge_title",         fr: "Charge de travail (Workload)",           en: "Workload" },
+  { key: "card_charge_title",         fr: "Charge de travail",                      en: "Workload" },
   { key: "card_charge_desc",          fr: "Helpers & Angels — nombre d'ateliers, durée, harmonisation", en: "Helpers & Angels — workshop count, duration, balancing" },
   { key: "card_editer_title",         fr: "Éditer un atelier",                      en: "Edit Workshop" },
   { key: "card_editer_desc",          fr: "Sélectionnez un atelier et modifiez ses champs — génère le code à copier dans data.js", en: "Select a workshop and edit its fields — generates code to paste into data.js" },
@@ -56,16 +56,16 @@ var REF_TRANSLATIONS = [
   { key: "card_remplacement_title",   fr: "Remplacement de Ressource",              en: "Resource Replacement" },
   { key: "card_remplacement_desc",    fr: "Personne indisponible — proposition automatique de remplaçants sans conflit, charge équilibrée", en: "Unavailable person — automatic conflict-free replacement suggestions, balanced workload" },
   { key: "card_problemes_title",      fr: "Problèmes de planning",                  en: "Schedule Issues" },
-  { key: "card_problemes_desc",       fr: "Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline", en: "English workshops without translator · Insufficient resources — inline fix" },
+  { key: "card_problemes_desc",       fr: "Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline", en: "English-language workshops without translator · Insufficient resources — inline fix" },
   { key: "card_trad_affect_title",    fr: "Affectation Traducteur",                 en: "Translator Assignment" },
-  { key: "card_trad_affect_desc",     fr: "Ateliers anglophones sans traducteur — détection TBC et affectation guidée", en: "English workshops without translator — TBC detection and guided assignment" },
+  { key: "card_trad_affect_desc",     fr: "Ateliers anglophones sans traducteur — détection TBC et affectation guidée", en: "English-language workshops without translator — TBC detection and guided assignment" },
 
   // Modale mot de passe
   { key: "pw_acces_restreint",        fr: "🔒 Accès restreint",                    en: "🔒 Restricted Access" },
   { key: "pw_placeholder",            fr: "Mot de passe",                           en: "Password" },
   { key: "pw_annuler",                fr: "Annuler",                                en: "Cancel" },
   { key: "pw_ouvrir",                 fr: "Ouvrir",                                 en: "Open" },
-  { key: "pw_incorrect",              fr: "Mot de passe incorrect.",               en: "Incorrect password." },
+  { key: "pw_incorrect",              fr: "Mot de passe incorrect.",                en: "Incorrect password." },
 
   // ── COLONNES COMMUNES RAPPORTS ───────────────────────────────────────────────
   { key: "col_jour",           fr: "Jour",                       en: "Day" },
@@ -113,7 +113,7 @@ var REF_TRANSLATIONS = [
   { key: "r2_title",           fr: "Agenda par Personne",        en: "Agenda by Person" },
 
   // ── RAPPORT MON PLANNING ────────────────────────────────────────────────────
-  { key: "r3_title",           fr: "Mon Planning (My Planning)", en: "My Planning" },
+  { key: "r3_title",           fr: "Mon Planning",               en: "My Planning" },
   { key: "r3_tab_tous",        fr: "Tous les rôles",             en: "All roles" },
   { key: "r3_tab_fac",         fr: "Facilitateurs",              en: "Facilitators" },
   { key: "r3_tab_helpers",     fr: "Helpers",                    en: "Helpers" },
@@ -126,15 +126,15 @@ var REF_TRANSLATIONS = [
 
   // ── RAPPORT LOGISTIQUE PAR ATELIER ──────────────────────────────────────────
   { key: "r4_title",           fr: "Logistique par Atelier",     en: "Logistics per Workshop" },
-  { key: "r4_choisir_jour",    fr: "1. Choisir le jour",         en: "1. Select day" },
-  { key: "r4_choisir_atelier", fr: "2. Choisir l'atelier",       en: "2. Select workshop" },
+  { key: "r4_choisir_jour",    fr: "1. Choisir le jour",         en: "1. Select a day" },
+  { key: "r4_choisir_atelier", fr: "2. Choisir l'atelier",       en: "2. Select a workshop" },
   { key: "r4_select_jour",     fr: "-- Sélectionner un jour --", en: "-- Select a day --" },
   { key: "r4_select_atelier",  fr: "-- Sélectionner un atelier --", en: "-- Select a workshop --" },
   { key: "r4_choisir_dabord",  fr: "-- Choisir d'abord un jour --", en: "-- Choose a day first --" },
   { key: "r4_placeholder_p",   fr: "Sélectionnez un jour et un atelier", en: "Select a day and a workshop" },
   { key: "r4_placeholder_s",   fr: "La fiche logistique complète s'affichera ici", en: "The complete logistics sheet will appear here" },
   { key: "r4_info_logistique", fr: "Informations Logistiques",   en: "Logistics Information" },
-  { key: "r4_no_info",         fr: "Aucune information logistique saisie.",  en: "No logistics information entered." },
+  { key: "r4_no_info",         fr: "Aucune information logistique saisie.", en: "No logistics information entered." },
 
   // ── RAPPORT CONFLITS ────────────────────────────────────────────────────────
   { key: "r5_title",           fr: "Conflits de planning",       en: "Schedule Conflicts" },
@@ -149,7 +149,7 @@ var REF_TRANSLATIONS = [
   { key: "r7_title",           fr: "Planning Traducteurs",       en: "Translators Schedule" },
 
   // ── RAPPORT COLIBRI ─────────────────────────────────────────────────────────
-  { key: "r8_title",           fr: "Ateliers Colibri",           en: "Colibri Workshops" },
+  { key: "r8_title",           fr: "Planning Colibri",           en: "Colibri Schedule" },
 
   // ── RAPPORT ÉDITER ATELIER ──────────────────────────────────────────────────
   { key: "r9_title",           fr: "Éditer un atelier",          en: "Edit Workshop" },
@@ -199,7 +199,7 @@ var REF_TRANSLATIONS = [
   { key: "r14_confirm_cancel", fr: "Annuler",                        en: "Cancel" },
   { key: "r14_confirm_ok",     fr: "✔ Confirmer et enregistrer",     en: "✔ Confirm and save" },
   { key: "r14_pill_filled",    fr: "✔ Rempli",                       en: "✔ Filled" },
-  { key: "r14_pill_empty",     fr: "⚠ À remplir",                    en: "⚠ To fill" },
+  { key: "r14_pill_empty",     fr: "⚠ À remplir",                    en: "⚠ To fill in" },
   { key: "r14_no_ws",          fr: "Aucun atelier trouvé.",           en: "No workshop found." },
   { key: "r14_no_ws_fac",      fr: "Aucun atelier trouvé pour ce facilitateur.", en: "No workshop found for this facilitator." },
   { key: "r14_ws_count_one",   fr: "atelier assigné en tant que facilitateur", en: "workshop assigned as facilitator" },
@@ -281,13 +281,13 @@ var REF_TRANSLATIONS = [
   { key: "manual_toc_title",   fr: "Table des matières",         en: "Table of Contents" },
 
   // ── JOURS (options filtres) ─────────────────────────────────────────────────
-  { key: "jour1_label",        fr: "Jour 1 — Sam. 29 août",     en: "Day 1 — Sat. Aug 29" },
-  { key: "jour2_label",        fr: "Jour 2 — Dim. 30 août",     en: "Day 2 — Sun. Aug 30" },
-  { key: "jour3_label",        fr: "Jour 3 — Lun. 31 août",     en: "Day 3 — Mon. Aug 31" },
-  { key: "jour4_label",        fr: "Jour 4 — Mar. 1 sept.",      en: "Day 4 — Tue. Sep 1" },
-  { key: "jour5_label",        fr: "Jour 5 — Mer. 2 sept.",      en: "Day 5 — Wed. Sep 2" },
-  { key: "jour6_label",        fr: "Jour 6 — Jeu. 3 sept.",      en: "Day 6 — Thu. Sep 3" },
-  { key: "jour7_label",        fr: "Jour 7 — Ven. 4 sept.",      en: "Day 7 — Fri. Sep 4" },
+  { key: "jour1_label",        fr: "Jour 1 — Sam. 29 août",      en: "Day 1 — Sat. Aug 29" },
+  { key: "jour2_label",        fr: "Jour 2 — Dim. 30 août",      en: "Day 2 — Sun. Aug 30" },
+  { key: "jour3_label",        fr: "Jour 3 — Lun. 31 août",      en: "Day 3 — Mon. Aug 31" },
+  { key: "jour4_label",        fr: "Jour 4 — Mar. 1 sept.",       en: "Day 4 — Tue. Sep 1" },
+  { key: "jour5_label",        fr: "Jour 5 — Mer. 2 sept.",       en: "Day 5 — Wed. Sep 2" },
+  { key: "jour6_label",        fr: "Jour 6 — Jeu. 3 sept.",       en: "Day 6 — Thu. Sep 3" },
+  { key: "jour7_label",        fr: "Jour 7 — Ven. 4 sept.",       en: "Day 7 — Fri. Sep 4" },
 
   // ── RÔLES ───────────────────────────────────────────────────────────────────
   { key: "role_facilitateur",  fr: "Facilitateur",               en: "Facilitator" },
@@ -328,8 +328,8 @@ var REF_TRANSLATIONS = [
   { key: "rp_tous",            fr: "Tous",                                    en: "All" },
   { key: "rp_atelier_s",       fr: "atelier",                                 en: "workshop" },
   { key: "rp_ateliers_s",      fr: "ateliers",                                en: "workshops" },
-  { key: "rp_au_programme",    fr: "au programme",                            en: "scheduled" },
-  { key: "rp_aucun_filtre",    fr: "Aucun atelier pour ce filtre.",            en: "No workshop for this filter." },
+  { key: "rp_au_programme",    fr: "au programme",                            en: "on the schedule" },
+  { key: "rp_aucun_filtre",    fr: "Aucun atelier pour ce filtre.",            en: "No workshop matches this filter." },
   { key: "rp_horaire",         fr: "🕐 Horaire",                              en: "🕐 Time" },
   { key: "rp_lieu",            fr: "📍 Lieu",                                 en: "📍 Venue" },
   { key: "rp_facilitateur",    fr: "🎓 Facilitateur",                         en: "🎓 Facilitator" },
@@ -338,10 +338,10 @@ var REF_TRANSLATIONS = [
   { key: "rp_traduction",      fr: "🌐 Traduction",                           en: "🌐 Translation" },
   { key: "rp_no_desc",         fr: "Aucune description disponible pour cet atelier.", en: "No description available for this workshop." },
   { key: "rp_details_btn",     fr: "Détails",                                 en: "Details" },
-  { key: "rp_type_tantra_am",  fr: "Tantra AM",                               en: "Tantra AM" },
-  { key: "rp_type_tantra_pm",  fr: "Tantra PM",                               en: "Tantra PM" },
-  { key: "rp_type_art_am",     fr: "Artistique AM",                           en: "Arts AM" },
-  { key: "rp_type_art_pm",     fr: "Artistique PM",                           en: "Arts PM" },
+  { key: "rp_type_tantra_am",  fr: "Tantra Matin",                            en: "Tantra Morning" },
+  { key: "rp_type_tantra_pm",  fr: "Tantra Après-Midi",                       en: "Tantra Afternoon" },
+  { key: "rp_type_art_am",     fr: "Artistique Matin",                        en: "Arts Morning" },
+  { key: "rp_type_art_pm",     fr: "Artistique Après-Midi",                   en: "Arts Afternoon" },
   { key: "rp_type_yoga",       fr: "Méditation / Yoga",                       en: "Meditation / Yoga" },
   { key: "rp_type_cere",       fr: "Cérémonie & Concert",                     en: "Ceremony & Concert" },
   { key: "rp_type_pool",       fr: "DJ Set & Pool Party",                     en: "DJ Set & Pool Party" },
@@ -372,7 +372,7 @@ var REF_TRANSLATIONS = [
   { key: "r_desc_workshop",       fr: "atelier",                                en: "workshop" },
   { key: "r_desc_workshops",      fr: "ateliers",                               en: "workshops" },
   { key: "r_desc_no_result",      fr: "Aucun atelier ne correspond aux filtres sélectionnés.", en: "No workshop matches the selected filters." },
-  { key: "r_desc_back",           fr: "← Retour à la liste",                   en: "← Back to list" },
+  { key: "r_desc_back",           fr: "← Retour à la liste",                   en: "← Back to the list" },
   { key: "r_desc_breadcrumb",     fr: "Ateliers",                               en: "Workshops" },
   { key: "r_desc_piment_label",   fr: "Niveau Piment",                          en: "Spice Level" },
   { key: "r_desc_label_fr",       fr: "Description",                            en: "Description" },
@@ -403,8 +403,8 @@ var REF_TRANSLATIONS = [
   { key: "rlm_footer",             fr: "Tantramour 2026 — Suivi de la logistique", en: "Tantramour 2026 — Logistics Tracking" },
   { key: "card_log_manq_title",    fr: "Logistique manquante",                 en: "Missing Logistics" },
   { key: "card_log_manq_desc",     fr: "Ateliers sans info logistique ou non validés par les facilitateurs", en: "Workshops missing logistics info or not validated by facilitators" },
-  { key: "r_desc_validee_fac",    fr: "Validée par Facilitateur",             en: "Validated by Facilitator" },
-  { key: "r_desc_pill_validee",   fr: "✔ Validée Fac",                        en: "✔ Fac Validated" },
+  { key: "r_desc_validee_fac",     fr: "Validée par Facilitateur",             en: "Validated by Facilitator" },
+  { key: "r_desc_pill_validee",    fr: "✔ Validée Fac",                        en: "✔ Fac Validated" },
 
   // ── RAPPORT DESCRIPTIONS MANQUANTES ─────────────────────────────────────────
   { key: "rdm_title",             fr: "Descriptions manquantes",              en: "Missing Descriptions" },
@@ -432,7 +432,7 @@ var REF_TRANSLATIONS = [
   { key: "lsp_stat_jours",     fr: "Jours concernés",                           en: "Days concerned" },
   { key: "lsp_stat_facs",      fr: "Facilitateurs",                             en: "Facilitators" },
   { key: "lsp_empty",          fr: "Aucun besoin logistique spécial renseigné.", en: "No special logistics needs filled in." },
-  { key: "lsp_sans_jour",      fr: "Sans jour",                                 en: "No day" },
+  { key: "lsp_sans_jour",      fr: "Sans jour",                                 en: "No day assigned" },
   { key: "lsp_edit_btn",       fr: "Modifier",                                  en: "Edit" },
   { key: "lsp_footer",         fr: "Tantramour 2026 — Besoins logistiques spéciaux", en: "Tantramour 2026 — Special Logistics Needs" },
   { key: "card_log_spec_title",fr: "Logistique Spéciale",                       en: "Special Logistics" },
