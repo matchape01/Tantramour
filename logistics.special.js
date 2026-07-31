@@ -130,6 +130,30 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-07-28"
+  },
+
+  "JOUR3_POOL_PARTY_____DJ_PASCAL_DE_LA": {
+    html: "Installer la sono à cote de la piscine&nbsp;(voir avec Felix et le DJ)",
+    text: "Installer la sono à cote de la piscine (voir avec Felix et le DJ)",
+    updatedAt: "2026-07-31 10:07"
+  },
+
+  "JOUR5_POOL_PARTY___DJ_JUAN_FELIX": {
+    html: "",
+    text: "",
+    updatedAt: "2026-07-31 10:09"
+  },
+
+  "JOUR1_SOIREE_ECSTATIC_DANSE": {
+    html: "",
+    text: "",
+    updatedAt: "2026-07-31 10:10"
+  },
+
+  "JOUR3_DJ_SET_AVEC_JUAN_FELIX": {
+    html: "",
+    text: "",
+    updatedAt: "2026-07-31 10:10"
   }
 
 };

@@ -24,7 +24,7 @@
     --c-pool:#166534;      --c-pool-bg:#f0fdf4;      --c-pool-bd:#4ade80;
     --c-love:#dc2626;      --c-love-bg:#fff1f2;      --c-love-bd:#fca5a5;
     --c-support:#0891b2;   --c-support-bg:#ecfeff;   --c-support-bd:#67e8f9;
-    --c-cafe:#92400e;      --c-cafe-bg:#fffbeb;      --c-cafe-bd:#fcd34d;
+    --c-cafe:#65a30d;      --c-cafe-bg:#ecfccb;      --c-cafe-bd:#a3e635;
     --c-rass:#1e40af;      --c-rass-bg:#eff6ff;      --c-rass-bd:#93c5fd;
   }
   .dark {
@@ -37,7 +37,7 @@
     --c-pool-bg:#001a0a; --c-pool-bd:#166534;
     --c-love-bg:#2d0000; --c-love-bd:#991b1b;
     --c-support-bg:#00141a; --c-support-bd:#0e7490;
-    --c-cafe-bg:#1a0e00; --c-cafe-bd:#92400e;
+    --c-cafe-bg:#1a2e05; --c-cafe-bd:#65a30d;
     --c-rass-bg:#0c1a40; --c-rass-bd:#1e40af;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -96,20 +96,29 @@
   /* ── SECTIONS PAR TYPE ── */
   .prog-list { display:flex; flex-direction:column; gap:24px; }
   .type-section { }
+  .type-section {
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:var(--surface);
+    padding:12px;
+  }
   .type-section-header {
     display:flex; align-items:center; gap:10px;
-    padding:6px 12px 6px 14px;
-    border-radius:8px; margin-bottom:10px;
-    border-left:4px solid var(--tc);
-    background:var(--tbg);
+    padding:8px 12px 8px 14px;
+    border-radius:8px; margin-bottom:12px;
+    border-left:4px solid #6b7280;
+    background:#eef0f3;
   }
-  .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--tc); flex:1; }
-  .type-section-count { font-size:11px; font-weight:700; background:var(--tc); color:#fff; border-radius:20px; padding:1px 8px; }
+  .dark .type-section { background:#11161d; }
+  .dark .type-section-header { background:#1b222c; border-left-color:#9ca3af; }
+  .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#4b5563; flex:1; }
+  .dark .type-section-label { color:#cbd5e1; }
+  .type-section-count { font-size:11px; font-weight:700; background:#6b7280; color:#fff; border-radius:20px; padding:1px 8px; }
 
-  /* ── GRILLE CARTES — 5 colonnes fixes, largeur identique quelle que soit la quantité ── */
+  /* ── GRILLE CARTES ── */
   .ateliers-grid {
     display:grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap:10px;
   }
   @media(max-width:900px)  { .ateliers-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -134,11 +143,12 @@
   .prog-name  { font-size:12px; font-weight:700; margin-bottom:5px; line-height:1.3; color:var(--text); }
   .prog-meta  { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
   .prog-card-footer {
-    display:flex; align-items:center; justify-content:flex-end;
+    display:flex; align-items:center; justify-content:space-between;
     padding:5px 8px;
     border-top:1px solid var(--tbd);
     background:var(--tbg);
     flex-shrink:0;
+    gap:8px;
   }
   .detail-btn {
     cursor:pointer; background:transparent; border:1px solid var(--tbd); border-radius:6px;
@@ -357,7 +367,9 @@ var TYPES_PUBLICS = [
   'RASSEMBLEMENT',                   // 2
   'ATELIERS TANTRA (Matin)',         // 3
   'ATELIER ARTISTIQUE (Matin)',      // 4
-  // TANTRA CAFE & CONFERENCE : position dynamique selon heure (voir typeOrder())
+  // TANTRA CAFE / CONFERENCE : position dynamique selon heure (voir typeOrder())
+  'TANTRA CAFE',
+  'CONFERENCE',
   'SUPPORT EMOTIONNEL',              // 5
   'POOL PARTY',                      // 6 (après-midi)
   'DJ Set',                          // 6b
@@ -368,48 +380,87 @@ var TYPES_PUBLICS = [
 ];
 
 // Ordre dynamique des types pour un jour donné.
-// TANTRA CAFE & CONFERENCE est inséré :
+// TANTRA CAFE est inséré :
 //   - après ATELIER ARTISTIQUE (Matin)  si son premier atelier commence ≥ 11h00
 //   - avant SUPPORT EMOTIONNEL          si son premier atelier commence ≥ 13h30
-// Dans tous les autres cas il est placé après ATELIER ARTISTIQUE (Matin).
+// CONFERENCE est positionné strictement selon son heure de début.
+// DJ Set est placé après ATELIER ARTISTIQUE (Apres-Midi) si son premier atelier commence
+// après le début du premier ATELIER ARTISTIQUE (Apres-Midi) du jour.
+// Dans tous les autres cas il conserve sa position par défaut.
 function typeOrder(ateliers) {
-  // Heure de début du premier atelier TANTRA CAFE ce jour
-  var cafeItems = ateliers.filter(function(e) { return e.type === 'TANTRA CAFE & CONFERENCE'; });
+  function insertCafeLike(ordre, typeName, typeMin, idxArtAmRef, currentType) {
+    if (currentType === 'SUPPORT EMOTIONNEL' && typeMin >= 13 * 60 + 30) {
+      ordre = ordre.filter(function(x) { return x !== typeName; });
+      ordre.push(typeName);
+    }
+    if (currentType === TYPES_PUBLICS[idxArtAmRef + 1] && typeMin >= 11 * 60) {
+      ordre.push(typeName);
+    }
+    return ordre;
+  }
+
+  var cafeItems = ateliers.filter(function(e) { return e.type === 'TANTRA CAFE'; });
   var cafeMin   = cafeItems.length
     ? Math.min.apply(null, cafeItems.map(function(e) { return heureMin(e.heure); }))
     : 9999;
+  var confItems = ateliers.filter(function(e) { return e.type === 'CONFERENCE'; });
+  var confMin   = confItems.length
+    ? Math.min.apply(null, confItems.map(function(e) { return heureMin(e.heure); }))
+    : 9999;
+
+  var djItems   = ateliers.filter(function(e) { return e.type === 'DJ Set'; });
+  var djMin     = djItems.length
+    ? Math.min.apply(null, djItems.map(function(e) { return heureMin(e.heure); }))
+    : 9999;
+  var artPmItems = ateliers.filter(function(e) { return e.type === 'ATELIER ARTISTIQUE (Apres-Midi)'; });
+  var artPmMin   = artPmItems.length
+    ? Math.min.apply(null, artPmItems.map(function(e) { return heureMin(e.heure); }))
+    : 9999;
+  var moveDjAfterArtPm = djItems.length && artPmItems.length && djMin > artPmMin;
+
+  var confAnchorType = 'ATELIER ARTISTIQUE (Matin)';
+  if (confMin <= heureMinFromType(ateliers, 'ATELIERS TANTRA (Matin)')) {
+    confAnchorType = 'ATELIERS TANTRA (Matin)';
+  } else if (confMin < heureMinFromType(ateliers, 'ATELIER ARTISTIQUE (Matin)')) {
+    confAnchorType = 'RASSEMBLEMENT';
+  }
+  if (confMin < heureMinFromType(ateliers, 'RASSEMBLEMENT')) {
+    confAnchorType = 'MEDITATION / YOGA';
+  }
 
   // Positions de référence dans TYPES_PUBLICS
-  var idxArtAm  = TYPES_PUBLICS.indexOf('ATELIER ARTISTIQUE (Matin)');   // 3
-  var idxSupport = TYPES_PUBLICS.indexOf('SUPPORT EMOTIONNEL');           // 4
+  var idxArtAm   = TYPES_PUBLICS.indexOf('ATELIER ARTISTIQUE (Matin)');
+  var idxDj      = TYPES_PUBLICS.indexOf('DJ Set');
 
-  // Construire l'ordre complet en insérant TANTRA CAFE à la bonne position
+  // Construire l'ordre complet en insérant TANTRA CAFE / CONFERENCE à la bonne position
   var ordre = [];
   TYPES_PUBLICS.forEach(function(t, i) {
-    // Insérer TANTRA CAFE juste après ATELIER ARTISTIQUE (Matin) si heure ≥ 11h00
-    if (i === idxArtAm + 1 && cafeMin >= 11 * 60) {
-      ordre.push('TANTRA CAFE & CONFERENCE');
+    ordre = insertCafeLike(ordre, 'TANTRA CAFE', cafeMin, idxArtAm, t);
+    if (confItems.length && t === confAnchorType) {
+      ordre.push('CONFERENCE');
     }
-    // Insérer TANTRA CAFE juste avant SUPPORT EMOTIONNEL si heure ≥ 13h30
-    // (ce cas remplace le précédent si l'heure est encore plus tardive)
-    if (t === 'SUPPORT EMOTIONNEL' && cafeMin >= 13 * 60 + 30) {
-      // retirer TANTRA CAFE s'il a déjà été inséré plus tôt
-      ordre = ordre.filter(function(x) { return x !== 'TANTRA CAFE & CONFERENCE'; });
-      ordre.push('TANTRA CAFE & CONFERENCE');
-    }
+    if (moveDjAfterArtPm && i === idxDj) return;
     ordre.push(t);
-  });
-  // Si TANTRA CAFE n'a pas encore été inséré (heure < 11h00 ou pas d'atelier ce jour)
-  // on le place après ATELIER ARTISTIQUE (Matin) par défaut
-  if (ordre.indexOf('TANTRA CAFE & CONFERENCE') === -1) {
-    var pos = ordre.indexOf('ATELIER ARTISTIQUE (Matin)');
-    if (pos !== -1) {
-      ordre.splice(pos + 1, 0, 'TANTRA CAFE & CONFERENCE');
-    } else {
-      ordre.push('TANTRA CAFE & CONFERENCE');
+    if (moveDjAfterArtPm && t === 'ATELIER ARTISTIQUE (Apres-Midi)') {
+      ordre.push('DJ Set');
     }
+  });
+  if (cafeItems.length && ordre.indexOf('TANTRA CAFE') === -1) {
+    var posCafe = ordre.indexOf('ATELIER ARTISTIQUE (Matin)');
+    if (posCafe !== -1) ordre.splice(posCafe + 1, 0, 'TANTRA CAFE');
+    else ordre.push('TANTRA CAFE');
+  }
+  if (confItems.length && ordre.indexOf('CONFERENCE') === -1) {
+    ordre.unshift('CONFERENCE');
   }
   return ordre;
+}
+
+function heureMinFromType(ateliers, type) {
+  var items = ateliers.filter(function(e) { return e.type === type; });
+  return items.length
+    ? Math.min.apply(null, items.map(function(e) { return heureMin(e.heure); }))
+    : 9999;
 }
 
 // Couleur CSS par type
@@ -424,7 +475,8 @@ var TYPE_CSS = {
   'POOL PARTY':                     't-pool',
   'LOVE TEMPLE':                    't-love',
   'SUPPORT EMOTIONNEL':             't-support',
-  'TANTRA CAFE & CONFERENCE':       't-cafe',
+  'TANTRA CAFE':                    't-cafe',
+  'CONFERENCE':                     't-cafe',
   'RASSEMBLEMENT':                  't-rass',
 };
 
@@ -440,7 +492,8 @@ var TYPE_I18N_KEY = {
   'POOL PARTY':                     'rp_type_pool_party',
   'LOVE TEMPLE':                    'rp_type_love',
   'SUPPORT EMOTIONNEL':             'rp_type_support',
-  'TANTRA CAFE & CONFERENCE':       'rp_type_cafe',
+  'TANTRA CAFE':                    'rp_type_cafe',
+  'CONFERENCE':                     'rp_type_conference',
   'RASSEMBLEMENT':                  'rp_type_rass',
 };
 function typeLabel(type) {
@@ -569,7 +622,7 @@ function cardHtml(e, globalIdx) {
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
           (heureDuree(e.heure) ? ' <span style="font-weight:400;color:var(--muted)">(' + heureDuree(e.heure) + ')</span>' : '') +
-          (e.lieu  ? ' &nbsp;·&nbsp; ' + esc(e.lieu) : '') +
+          (e.lieu  ? ' &nbsp;·&nbsp; ' + I18n.t('rp_lieu') + ' : ' + esc(e.lieu) : '') +
         '</div>' +
         '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
         '<div class="prog-meta">' +
@@ -585,9 +638,26 @@ function cardHtml(e, globalIdx) {
       '</div>' +
     '</div>' +
     '<div class="prog-card-footer">' +
+      '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
       '<button class="detail-btn" onclick="openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (I18n.getLang() === 'en' ? 'Details' : 'Détails') + '</button>' +
     '</div>' +
   '</div>';
+}
+
+function renderSection(label, css, items, allAteliers) {
+  if (!items.length) return '';
+  var word = items.length > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
+  var html = '<div class="type-section ' + css + '">' +
+    '<div class="type-section-header">' +
+      '<span class="type-section-label">' + esc(label) + '</span>' +
+      '<span class="type-section-count">' + items.length + ' ' + word + '</span>' +
+    '</div>' +
+    '<div class="ateliers-grid">';
+  items.forEach(function(e) {
+    html += cardHtml(e, allAteliers.indexOf(e));
+  });
+  html += '</div></div>';
+  return html;
 }
 
 function renderProgList(ateliers) {
@@ -600,41 +670,36 @@ function renderProgList(ateliers) {
     return;
   }
 
-  // Stocker la liste complète pour openDetail (index global stable)
   window._progRows = ateliers;
 
-  // Grouper par type — ordre dynamique (TANTRA CAFE positionné selon son heure)
-  var typesDuJour = [];
-  var seenTypes   = new Set();
-  ateliers.forEach(function(e) {
-    if (!seenTypes.has(e.type)) { seenTypes.add(e.type); typesDuJour.push(e.type); }
+  var matin = ateliers.filter(function(e) {
+    var hm = heureMin(e.heure);
+    return ['ATELIERS TANTRA (Matin)','ATELIER ARTISTIQUE (Matin)','CONFERENCE'].indexOf(e.type) !== -1 && hm >= 10 * 60 && hm <= 12 * 60;
   });
-  var ordreJour = typeOrder(ateliers);
-  typesDuJour.sort(function(a,b) { return ordreJour.indexOf(a) - ordreJour.indexOf(b); });
+  var apresMidi = ateliers.filter(function(e) {
+    return ['SUPPORT EMOTIONNEL','POOL PARTY','TANTRA CAFE','ATELIERS TANTRA (Apres-Midi)','ATELIER ARTISTIQUE (Apres-Midi)'].indexOf(e.type) !== -1;
+  });
+  var soiree = ateliers.filter(function(e) {
+    return ['DJ Set','CEREMONIE & CONCERT','LOVE TEMPLE'].indexOf(e.type) !== -1;
+  });
+  var yogaMeditation = ateliers.filter(function(e) { return e.type === 'MEDITATION / YOGA'; });
+  var rassemblement = ateliers.filter(function(e) { return e.type === 'RASSEMBLEMENT'; });
+
+  var byTime = function(a, b) { return heureMin(a.heure) - heureMin(b.heure); };
+  matin.sort(byTime);
+  apresMidi.sort(byTime);
+  soiree.sort(byTime);
+  yogaMeditation.sort(byTime);
+  rassemblement.sort(byTime);
 
   var html = '';
-  typesDuJour.forEach(function(type) {
-    var css      = TYPE_CSS[type] || '';
-    var groupe   = ateliers.filter(function(e) { return e.type === type; });
-    var nbG      = groupe.length;
-    var wordG    = nbG > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
+  html += renderSection(I18n.t('rp_sec_yoga'), 't-yoga', yogaMeditation, ateliers);
+  html += renderSection(I18n.t('rp_sec_rass'), 't-rass', rassemblement, ateliers);
+  html += renderSection(I18n.t('rp_sec_matin'), 't-tantra', matin, ateliers);
+  html += renderSection(I18n.t('rp_sec_apm'), 't-cafe', apresMidi, ateliers);
+  html += renderSection(I18n.t('rp_sec_soiree'), 't-cere', soiree, ateliers);
 
-    html += '<div class="type-section ' + css + '">' +
-      '<div class="type-section-header">' +
-        '<span class="type-section-label">' + esc(typeLabel(type)) + '</span>' +
-        '<span class="type-section-count">' + nbG + ' ' + wordG + '</span>' +
-      '</div>' +
-      '<div class="ateliers-grid">';
-
-    groupe.forEach(function(e) {
-      var globalIdx = ateliers.indexOf(e);
-      html += cardHtml(e, globalIdx);
-    });
-
-    html += '</div></div>';
-  });
-
-  list.innerHTML = html;
+  list.innerHTML = html || '<div class="empty-prog">' + I18n.t('rp_aucun_filtre') + '</div>';
 }
 
 // ════════════════════════════════════════════

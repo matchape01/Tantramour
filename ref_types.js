@@ -20,8 +20,9 @@ var REF_TYPES = [
   { id: "T_REPAS", value: "REPAS & PAUSE", label: "REPAS & PAUSE", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_REUNION", value: "REUNION D'EQUIPE", label: "REUNION D'EQUIPE", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_SUPPORT", value: "SUPPORT EMOTIONNEL", label: "SUPPORT EMOTIONNEL", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
-  { id: "T_TANTRA_CAFE", value: "TANTRA CAFE & CONFERENCE", label: "TANTRA CAFE & CONFERENCE", minRes: 2, minHelpers: 1, minTrad: 1, tradCounts: 1 },
+  { id: "T_TANTRA_CAFE", value: "TANTRA CAFE", label: "TANTRA CAFE", minRes: 2, minHelpers: 1, minTrad: 1, tradCounts: 1 },
   { id: "T_TEST", value: "TEST", label: "TEST", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_ANGEL", value: "SHIFT ANGEL", label: "SHIFT ANGEL", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_POOL", value: "POOL PARTY", label: "POOL PARTY", minRes: 1, minHelpers: 1, minTrad: 0, tradCounts: 1 },
+  { id: "T_NEW1", value: "CONFERENCE", label: "CONFERENCE", minRes: 2, minHelpers: 1, minTrad: 0, tradCounts: 1 },
 ];

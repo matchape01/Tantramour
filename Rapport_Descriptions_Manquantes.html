@@ -158,20 +158,28 @@
 
 <script src="loader.js"></script>
 <script>
-loadData(['data.js', 'ref_descriptions.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'ref_types.js'], function() {
 
 // ══════════════════════════════════════
 // CONFIG — types publics uniquement
 // ══════════════════════════════════════
-var TYPES_PUBLICS = [
-  'MEDITATION / YOGA',
-  'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
-  'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
-  'CEREMONIE & CONCERT',
-  'DJ Set', 'POOL PARTY',
-  'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
-  'TANTRA CAFE & CONFERENCE', 'RASSEMBLEMENT',
-];
+var TYPES_PUBLICS = (
+  typeof REF_TYPES !== 'undefined'
+    ? REF_TYPES.filter(function(t) {
+        return ['REPAS & PAUSE', 'PREPA & LOGISTICS', "REUNION D'EQUIPE", 'SHIFT ANGEL', 'TEST'].indexOf(t.value) === -1;
+      }).map(function(t) {
+        return t.value;
+      })
+    : [
+        'MEDITATION / YOGA',
+        'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
+        'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
+        'CEREMONIE & CONCERT',
+        'DJ Set', 'POOL PARTY',
+        'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
+        'TANTRA CAFE & CONFERENCE', 'RASSEMBLEMENT'
+      ]
+);
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 var JOUR_META = {
   'Jour 1':{ date:'Samedi 29 août',   emoji:'🌅' },
@@ -323,7 +331,7 @@ function render() {
       ' <span class="day-count">' + items.length + '</span>' +
     '</div>';
     html += '<div class="card-list">' +
-      items.map(function(e) { return renderCard(e); }).join('') +
+      items.map(function(e) { return renderCard(e, AGENDA.indexOf(e)); }).join('') +
     '</div>';
   });
 
@@ -331,7 +339,7 @@ function render() {
 }
 window.render = render;
 
-function renderCard(e) {
+function renderCard(e, agendaIdx) {
   var s = getStatus(e);
   var facs = [e.fac1, e.fac2].filter(Boolean).join(' & ');
 
@@ -353,8 +361,8 @@ function renderCard(e) {
   if (s.validated)
     pills += '<span class="pill pill-validee">✔ ' + I18n.t('r_desc_validee_fac') + '</span>';
 
-  // URL vers Rapport_Descriptions_Ateliers pour édition directe
-  var editUrl = 'Rapport_Saisie_Ateliers.html';
+  // URL vers Éditer un atelier avec pré-sélection de l'entrée courante
+  var editUrl = 'Rapport_Editer_Atelier.html?idx=' + agendaIdx;
 
   return '<div class="ws-card' + (cls ? ' ' + cls : '') + '">' +
     '<div class="ws-header">' +
@@ -364,7 +372,7 @@ function renderCard(e) {
     '</div>' +
     '<div class="ws-body">' +
       '<div class="ws-info">' +
-        (e.lieu  ? '<span>📍 ' + esc(e.lieu)  + '</span>' : '') +
+        (e.lieu  ? '<span>📍 ' + I18n.t('rp_lieu') + ' : ' + esc(e.lieu)  + '</span>' : '') +
         (facs    ? '<span>🎓 ' + esc(facs)    + '</span>' : '') +
       '</div>' +
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +

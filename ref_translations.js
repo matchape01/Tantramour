@@ -350,7 +350,13 @@ var REF_TRANSLATIONS = [
   { key: "rp_type_love",       fr: "Love Temple",                             en: "Love Temple" },
   { key: "rp_type_support",    fr: "Support Émotionnel",                      en: "Emotional Support" },
   { key: "rp_type_cafe",       fr: "Tantra Café",                             en: "Tantra Café" },
+  { key: "rp_type_conference", fr: "Conférence",                              en: "Conference" },
   { key: "rp_type_rass",       fr: "Rassemblement",                           en: "Gathering" },
+  { key: "rp_sec_yoga",        fr: "Yoga & Méditation",                       en: "Yoga & Meditation" },
+  { key: "rp_sec_rass",        fr: "Rassemblement",                           en: "Gathering" },
+  { key: "rp_sec_matin",       fr: "Matin",                                   en: "Morning" },
+  { key: "rp_sec_apm",         fr: "Après-Midi",                              en: "Afternoon" },
+  { key: "rp_sec_soiree",      fr: "Soirée",                                  en: "Evening" },
 
   // ── RAPPORT DESCRIPTIONS ATELIERS ───────────────────────────────────────────
   { key: "r_desc_title",          fr: "Descriptions des Ateliers",              en: "Workshop Descriptions" },
