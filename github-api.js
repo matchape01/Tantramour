@@ -137,33 +137,36 @@ async function githubSaveFile(filename, content) {
   // Passe 2 — PUT avec le SHA récupéré (ou null si nouveau fichier)
   let res = await doPut(sha);
 
-  // Passe 3 — Si conflit de SHA (409/422), refaire un GET frais pour obtenir
-  // le vrai SHA actuel, puis réessayer le PUT avec ce SHA garanti frais.
+  // Passe 3 — Si conflit de SHA (409/422), récupérer le SHA actuel depuis le
+  // message d'erreur ("is at <sha>") puis réessayer le PUT avec ce SHA.
   if (res.status === 409 || res.status === 422) {
     const errData = await res.json().catch(() => ({}));
     const msg = errData.message || '';
     console.log(`[github-api] Conflit ${res.status} pour ${filename}: ${msg}`);
 
-    // GET frais sans aucun cache possible
+    // Priorité 1 : extraire le SHA actuel depuis "is at <sha40>" dans le message GitHub
     let freshSha = null;
-    try {
-      const retryGet = await fetch(
-        `${apiBase}?ref=${GITHUB_BRANCH}&_nocache=${Date.now()}`,
-        { method: 'GET', headers, cache: 'no-store' }
-      );
-      if (retryGet.ok) {
-        const retryData = await retryGet.json();
-        freshSha = retryData.sha || null;
-        console.log(`[github-api] SHA frais après conflit: ${freshSha}`);
-      }
-    } catch(e) {
-      console.warn(`[github-api] GET de récupération échoué: ${e.message}`);
+    const isAtMatch = msg.match(/is at ([0-9a-f]{40})/);
+    if (isAtMatch) {
+      freshSha = isAtMatch[1];
+      console.log(`[github-api] SHA extrait du message 409: ${freshSha}`);
     }
 
-    // Fallback : extraire le SHA depuis le message d'erreur si GET échoue
+    // Priorité 2 : GET frais sans cache si le message ne contenait pas le SHA
     if (!freshSha) {
-      const match = msg.match(/([0-9a-f]{40})/);
-      if (match) freshSha = match[1];
+      try {
+        const retryGet = await fetch(
+          `${apiBase}?ref=${GITHUB_BRANCH}&_nocache=${Date.now()}`,
+          { method: 'GET', headers, cache: 'no-store' }
+        );
+        if (retryGet.ok) {
+          const retryData = await retryGet.json();
+          freshSha = retryData.sha || null;
+          console.log(`[github-api] SHA frais via GET après conflit: ${freshSha}`);
+        }
+      } catch(e) {
+        console.warn(`[github-api] GET de récupération échoué: ${e.message}`);
+      }
     }
 
     if (freshSha) {
