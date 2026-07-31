@@ -109,7 +109,22 @@
     border-left:4px solid #6b7280;
     background:#eef0f3;
   }
+  .type-section-divider {
+    height:1px;
+    background:var(--border);
+    margin:0 0 12px;
+  }
+  .type-section.section-yoga  { background:#f6fbf7; }
+  .type-section.section-rass  { background:#f6f8fb; }
+  .type-section.section-matin { background:#fbf7fb; }
+  .type-section.section-apm   { background:#eef8e8; }
+  .type-section.section-soir  { background:#f8ecef; }
   .dark .type-section { background:#11161d; }
+  .dark .type-section.section-yoga  { background:#0f1713; }
+  .dark .type-section.section-rass  { background:#111826; }
+  .dark .type-section.section-matin { background:#18131d; }
+  .dark .type-section.section-apm   { background:#16210f; }
+  .dark .type-section.section-soir  { background:#24141b; }
   .dark .type-section-header { background:#1b222c; border-left-color:#9ca3af; }
   .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#4b5563; flex:1; }
   .dark .type-section-label { color:#cbd5e1; }
@@ -644,14 +659,15 @@ function cardHtml(e, globalIdx) {
   '</div>';
 }
 
-function renderSection(label, css, items, allAteliers) {
+function renderSection(label, css, items, allAteliers, sectionClass) {
   if (!items.length) return '';
   var word = items.length > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
-  var html = '<div class="type-section ' + css + '">' +
+  var html = '<div class="type-section ' + css + ' ' + (sectionClass || '') + '">' +
     '<div class="type-section-header">' +
       '<span class="type-section-label">' + esc(label) + '</span>' +
       '<span class="type-section-count">' + items.length + ' ' + word + '</span>' +
     '</div>' +
+    '<div class="type-section-divider"></div>' +
     '<div class="ateliers-grid">';
   items.forEach(function(e) {
     html += cardHtml(e, allAteliers.indexOf(e));
@@ -693,11 +709,11 @@ function renderProgList(ateliers) {
   rassemblement.sort(byTime);
 
   var html = '';
-  html += renderSection(I18n.t('rp_sec_yoga'), 't-yoga', yogaMeditation, ateliers);
-  html += renderSection(I18n.t('rp_sec_rass'), 't-rass', rassemblement, ateliers);
-  html += renderSection(I18n.t('rp_sec_matin'), 't-tantra', matin, ateliers);
-  html += renderSection(I18n.t('rp_sec_apm'), 't-cafe', apresMidi, ateliers);
-  html += renderSection(I18n.t('rp_sec_soiree'), 't-cere', soiree, ateliers);
+  html += renderSection(I18n.t('rp_sec_yoga'), 't-yoga', yogaMeditation, ateliers, 'section-yoga');
+  html += renderSection(I18n.t('rp_sec_rass'), 't-rass', rassemblement, ateliers, 'section-rass');
+  html += renderSection(I18n.t('rp_sec_matin'), 't-tantra', matin, ateliers, 'section-matin');
+  html += renderSection(I18n.t('rp_sec_apm'), 't-cafe', apresMidi, ateliers, 'section-apm');
+  html += renderSection(I18n.t('rp_sec_soiree'), 't-cere', soiree, ateliers, 'section-soir');
 
   list.innerHTML = html || '<div class="empty-prog">' + I18n.t('rp_aucun_filtre') + '</div>';
 }
