@@ -144,11 +144,12 @@ async function githubSaveFile(filename, content) {
     const msg = errData.message || '';
     console.log(`[github-api] Conflit ${res.status} pour ${filename}: ${msg}`);
 
-    // Priorité 1 : extraire le SHA actuel depuis "is at <sha40>" dans le message GitHub
+    // Priorité 1 : extraire le SHA actuel depuis le message GitHub
+    // Formats connus : "is at <sha>" ou "does not match <sha>"
     let freshSha = null;
-    const isAtMatch = msg.match(/is at ([0-9a-f]{40})/);
-    if (isAtMatch) {
-      freshSha = isAtMatch[1];
+    const shaMatch = msg.match(/(?:is at|does not match) ([0-9a-f]{40})/);
+    if (shaMatch) {
+      freshSha = shaMatch[1];
       console.log(`[github-api] SHA extrait du message 409: ${freshSha}`);
     }
 

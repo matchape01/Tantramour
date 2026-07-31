@@ -899,16 +899,15 @@ async function doSave() {
   document.getElementById('eStamp').textContent = 'Dernière modif. : ' + today;
 
   try {
-    var saves = [
-      saveFile('ref_descriptions.js', buildRefDescJs()),
-      saveFile('logistics.js',         buildLogisticsJs()),
-      saveFile('logistics.special.js', buildLogisticsSpecialJs()),
-      saveFile('logistics.helpers.js', buildLogisticsHelpersJs()),
-    ];
+    // Sauvegardes séquentielles pour éviter les conflits de SHA sur GitHub
+    // (les PUT parallèles causent des 409 "does not match" car même SHA utilisé)
+    await saveFile('ref_descriptions.js', buildRefDescJs());
+    await saveFile('logistics.js',         buildLogisticsJs());
+    await saveFile('logistics.special.js', buildLogisticsSpecialJs());
+    await saveFile('logistics.helpers.js', buildLogisticsHelpersJs());
     if (d.piment !== prevPiment || needDataSave) {
-      saves.push(saveFile('data.js', buildDataJs()));
+      await saveFile('data.js', buildDataJs());
     }
-    await Promise.all(saves);
     showToast('✔ Enregistré', 'ok');
   } catch(err) {
     showToast('❌ ' + err.message, 'err');
