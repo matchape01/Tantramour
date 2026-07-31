@@ -74,9 +74,12 @@
   }
   .plan-thumb {
     max-width:400px; width:100%; border-radius:10px;
-    border:1px solid var(--border); cursor:zoom-in;
+    border:1px solid var(--border); cursor:pointer;
     transition:transform .15s, box-shadow .15s;
-    display:block; margin:0 auto;
+    display:inline-flex; align-items:center; justify-content:center;
+    margin:0 auto; padding:14px 18px;
+    background:var(--surface); color:var(--text);
+    font-family:inherit; font-size:14px; font-weight:700;
   }
   .plan-thumb:hover { transform:scale(1.01); box-shadow:0 4px 20px rgba(0,0,0,.12); }
 
@@ -188,13 +191,14 @@
 
   <!-- ── PLAN HAMEAU ── -->
   <div class="plan-section">
-    <div class="plan-label">🗺 Plan du Hameau</div>
-    <img
+    <div class="plan-label" data-i18n="home_hameau_map">🗺 Plan du Hameau</div>
+    <button
       class="plan-thumb"
-      src="TAF%202026%20_%20PLAN%20HAMEAU%20V1.jpg"
-      alt="Plan du Hameau Tantramour 2026"
+      type="button"
       onclick="openLightbox()"
-    />
+    >
+      <span data-i18n="home_hameau_open">Ouvrir le plan du Hameau</span>
+    </button>
   </div>
 
 </main>
@@ -204,7 +208,7 @@
   <button class="lightbox-close" onclick="closeLightbox()">✕ Fermer</button>
   <img
     class="lightbox-img"
-    src="TAF%202026%20_%20PLAN%20HAMEAU%20V1.jpg"
+    src="Hameau%20de%20l%27etoile_FESTI%20PLAN%20V2.jpeg"
     alt="Plan du Hameau Tantramour 2026 — plein écran"
   />
 </div>

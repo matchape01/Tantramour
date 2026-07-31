@@ -316,6 +316,8 @@ var REF_TRANSLATIONS = [
   { key: "prog_btn_desc",      fr: "Découvrez les ateliers jour par jour",    en: "Explore workshops day by day" },
   { key: "dreamteam_btn",      fr: "DREAM TEAM",                              en: "DREAM TEAM" },
   { key: "dreamteam_pw_sub",   fr: "Espace réservé à l'équipe Tantramour.",   en: "Restricted area for the Tantramour team." },
+  { key: "home_hameau_map",    fr: "Plan du Hameau",                           en: "MAP of the Hameau de l'Etoile" },
+  { key: "home_hameau_open",   fr: "Ouvrir le plan du Hameau",                 en: "Open the MAP of the Hameau de l'Etoile" },
 
   // ── RAPPORT PROGRAMME (festivaliers) ────────────────────────────────────────
   { key: "rp_title",           fr: "🎪 Programme",                            en: "🎪 Schedule" },
