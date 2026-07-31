@@ -211,30 +211,19 @@ loadData(['ref_ressources.js', 'data.js'], function() {
 // ════════════════════════════════════════════════
 // Types d'ateliers pris en compte (exclut repas, prep, réunions internes)
 const TYPES_ACTIFS = new Set([
-  'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
-  'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
+  'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
+  'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
   'MEDITATION / YOGA', 'RASSEMBLEMENT',
   'CEREMONIE & CONCERT',
   'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
-  'POOL PARTY & DJ Set',
-  'DJ Set & POOL PARTY',            // variante utilisée dans data.js
-  'TANTRA CAFÉ & CONFERENCE',
-  'TANTRA CAFE & CONFERENCE',       // variante sans accent
-  'TANTRA CAF\u00C9 & CONFERENCE',  // É en unicode
+  'DJ Set', 'POOL PARTY',
+  'TANTRA CAFE & CONFERENCE',
   'PREPA & LOGISTICS',
   'SHIFT ANGEL',                    // nécessaire pour grouper les ateliers par shift angel
 ]);
 
-// Fonction utilitaire : normalise un type avant comparaison
-// (gère les problèmes d'encodage UTF-8 de data.js)
 function typeActif(type) {
-  if (!type) return false;
-  if (TYPES_ACTIFS.has(type)) return true;
-  // Normalise les caractères mal encodés (â€" → —, Ã‰ → É, etc.)
-  const norm = type.replace(/Ã‰/g, 'É').replace(/Ã©/g, 'é')
-                   .replace(/â€œ/g, '"').replace(/â€/g, '"')
-                   .replace(/Ã /g, 'à').replace(/Ã¨/g, 'è');
-  return TYPES_ACTIFS.has(norm);
+  return type ? TYPES_ACTIFS.has(type) : false;
 }
 
 const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
@@ -515,7 +504,7 @@ function renderPersonCard(person, rank, max, roleOverride) {
 
         // Source étendue : tous les ateliers du jour depuis AGENDA (pas seulement ceux de cet angel),
         // pour pouvoir afficher tous les ateliers couverts pendant le shift, quel que soit l'angel assigné.
-        const AGENDA_SHIFT_EXCLUS = new Set(['REPAS & PAUSE', 'PREPA & LOGISTICS', "REUNION D'EQUIPE", 'PREPA & LOGITICS', 'SHIFT ANGEL']);
+        const AGENDA_SHIFT_EXCLUS = new Set(['REPAS & PAUSE', 'PREPA & LOGISTICS', "REUNION D'EQUIPE", 'SHIFT ANGEL']);
         const allDayEntries = AGENDA.filter(e =>
           e.jour === j &&
           !AGENDA_SHIFT_EXCLUS.has(e.type)

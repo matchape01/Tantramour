@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantramour 2026 — Mon Planning V2</title>
+<script src="ref_translations.js"></script>
+<script src="i18n.js"></script>
+<style>
+:root {
+  --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
+  --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
+  --header-bg:#f0f4fb; --row-alt:#f7f8fa;
+  --badge-f-bg:#dcfce7; --badge-f-tx:#166534;
+  --badge-h-bg:#e0f2fe; --badge-h-tx:#0369a1;
+  --badge-t-bg:#fef9c3; --badge-t-tx:#854d0e;
+  --badge-a-bg:#fce7f3; --badge-a-tx:#9d174d;
+  --badge-x-bg:#f3f4f6; --badge-x-tx:#374151;
+}
+.dark {
+  --bg:#0d1117; --surface:#161b22; --border:#30363d;
+  --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
+  --header-bg:#1c2333; --row-alt:#161b22;
+  --badge-f-bg:#0a2e1a; --badge-f-tx:#4ade80;
+  --badge-h-bg:#0c2d48; --badge-h-tx:#58a6ff;
+  --badge-t-bg:#2d2006; --badge-t-tx:#fbbf24;
+  --badge-a-bg:#3b1030; --badge-a-tx:#f0abca;
+  --badge-x-bg:#1f2937; --badge-x-tx:#9ca3af;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); }
+.wrap { max-width:1100px; margin:0 auto; padding:24px 20px 60px; }
+
+/* ── HEADER ── */
+header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+.logo h1 { font-size:19px; font-weight:700; }
+.logo p  { font-size:22px; font-weight:800; color:var(--accent); line-height:1.2; margin-top:2px; }
+.header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.btn { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:13px; color:var(--text); font-family:inherit; display:inline-flex; align-items:center; gap:6px; text-decoration:none; transition:background .15s; }
+.btn:hover { background:var(--border); }
+
+/* ── FILTRES ── */
+.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:flex-end; }
+.filter-group { display:flex; flex-direction:column; gap:4px; }
+.filter-group label { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:600; }
+select, input[type="text"] { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; }
+select { min-width:150px; }
+input[type="text"] { min-width:200px; }
+.stats { font-size:12px; color:var(--muted); margin-bottom:16px; }
+.stats span { color:var(--accent); font-weight:600; }
+
+/* ── CARTE RESSOURCE ── */
+.resource-list { display:flex; flex-direction:column; gap:16px; }
+.resource-card { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+.resource-header { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--header-bg); cursor:pointer; user-select:none; }
+.resource-header:hover { filter:brightness(.97); }
+.resource-avatar { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; flex-shrink:0; }
+.resource-name { font-size:15px; font-weight:700; flex:1; }
+.resource-badges { display:flex; gap:5px; flex-wrap:wrap; }
+.resource-stats { font-size:11px; color:var(--muted); text-align:right; white-space:nowrap; }
+.resource-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+.resource-card.open .resource-chevron { transform:rotate(90deg); }
+.resource-body { display:none; border-top:1px solid var(--border); }
+.resource-card.open .resource-body { display:block; }
+
+/* ── LIGNE JOUR ── */
+.day-row { display:flex; align-items:center; gap:10px; padding:8px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .1s; }
+.day-row:last-child { border-bottom:none; }
+.day-row:hover { background:var(--row-alt); }
+.day-label { font-size:12px; font-weight:700; color:var(--accent); min-width:56px; white-space:nowrap; }
+.day-date  { font-size:11px; color:var(--muted); min-width:110px; white-space:nowrap; }
+.day-roles { display:flex; gap:4px; flex-wrap:wrap; flex:1; }
+.day-meta  { display:flex; gap:12px; font-size:11px; color:var(--muted); white-space:nowrap; }
+.day-meta span { font-weight:600; color:var(--text); }
+.day-chevron { font-size:14px; color:var(--muted); transition:transform .2s; }
+.day-row.open .day-chevron { transform:rotate(90deg); }
+
+/* ── TABLE ATELIERS ── */
+.ateliers-wrap { border-top:1px solid var(--border); overflow-x:auto; }
+.ateliers-table { width:100%; border-collapse:collapse; font-size:12px; }
+.ateliers-table th { background:var(--surface); padding:6px 10px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; }
+.ateliers-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.ateliers-table tr:last-child td { border-bottom:none; }
+.ateliers-table tr:hover td { background:var(--row-alt); }
+.at-name { font-weight:600; color:var(--text); }
+.at-heure { white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent); font-weight:600; }
+.at-duree { white-space:nowrap; color:var(--muted); }
+.badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; white-space:nowrap; }
+.badge-f  { background:var(--badge-f-bg); color:var(--badge-f-tx); }
+.badge-h  { background:var(--badge-h-bg); color:var(--badge-h-tx); }
+.badge-t  { background:var(--badge-t-bg); color:var(--badge-t-tx); }
+.badge-a  { background:var(--badge-a-bg); color:var(--badge-a-tx); }
+.badge-x  { background:var(--badge-x-bg); color:var(--badge-x-tx); }
+.badge-lang { font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; }
+.badge-fr { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+.badge-en { background:#f0fdf4; color:#166534; border:1px solid #86efac; }
+.info-btn { cursor:pointer; background:transparent; border:none; font-size:15px; padding:3px 6px; border-radius:4px; color:var(--muted); }
+.info-btn:hover { background:var(--border); color:var(--accent); }
+
+/* ── SHIFT ANGEL BLOCK ── */
+.angel-shift-row td { background:var(--badge-a-bg) !important; font-weight:700; color:var(--badge-a-tx) !important; }
+.angel-shift-row td.at-heure { color:var(--badge-a-tx) !important; }
+.angel-shift-row td.at-name  { color:var(--badge-a-tx) !important; }
+.angel-covered-row td { background:#fdf2f8; color:#9ca3af; }
+.dark .angel-covered-row td { background:#2a0e22; color:#6b7280; }
+.angel-covered-row td.at-heure { padding-left:22px; position:relative; }
+.angel-covered-row td.at-heure::before { content:'└'; position:absolute; left:8px; top:6px; color:#f9a8d4; font-size:12px; line-height:1; }
+.dark .angel-covered-row td.at-heure::before { color:#9d174d; }
+.angel-shift-dur-pill { display:inline-block; font-size:10px; font-weight:700; background:var(--badge-a-tx); color:#fff; border-radius:99px; padding:1px 10px; margin-left:8px; vertical-align:middle; }
+.dark .angel-shift-dur-pill { background:var(--badge-a-tx); }
+
+/* ── MODALE DÉTAIL ── */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:flex-start; justify-content:center; padding:24px 16px; overflow-y:auto; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:var(--bg); border-radius:14px; max-width:680px; width:100%; border:1px solid var(--border); box-shadow:0 12px 40px rgba(0,0,0,.2); }
+.modal-top { display:flex; align-items:flex-start; justify-content:space-between; padding:18px 22px 14px; border-bottom:1px solid var(--border); gap:12px; }
+.modal-top-left { flex:1; min-width:0; }
+.modal-top-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+.modal-atelier { font-size:18px; font-weight:800; line-height:1.3; }
+.modal-sub { font-size:12px; color:var(--muted); margin-top:3px; }
+.modal-close { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:13px; font-weight:700; font-family:inherit; color:var(--text); }
+.modal-close:hover { background:var(--border); }
+.modal-lang-toggle { display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.modal-lang-btn { cursor:pointer; background:var(--surface); border:none; padding:5px 12px; font-size:12px; font-weight:700; font-family:inherit; color:var(--muted); }
+.modal-lang-btn:not(:last-child) { border-right:1px solid var(--border); }
+.modal-lang-btn.active { background:var(--accent); color:#fff; }
+.modal-body { padding:18px 22px 22px; display:flex; flex-direction:column; gap:20px; }
+.modal-section { }
+.modal-section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+.modal-grid { display:grid; grid-template-columns:auto 1fr; gap:6px 16px; align-items:start; }
+.modal-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); white-space:nowrap; padding-top:2px; }
+.modal-val { font-size:13px; }
+.modal-desc-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 14px; font-size:13px; line-height:1.6; }
+.modal-desc-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:6px; }
+.no-content { font-style:italic; color:var(--muted); font-size:12px; }
+.validated-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; }
+.validated-yes { background:#dcfce7; color:#166534; }
+.validated-no  { background:#fee2e2; color:#dc2626; }
+.dark .validated-yes { background:#0a2e1a; color:#4ade80; }
+.dark .validated-no  { background:#2d0a0a; color:#f87171; }
+.piment { letter-spacing:-2px; font-size:13px; }
+footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+.empty { text-align:center; padding:48px; color:var(--muted); font-style:italic; }
+
+@media(max-width:640px) {
+  .modal-top { flex-direction:column; }
+  .modal-top-right { flex-direction:row; align-items:center; }
+  .day-date { display:none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <h1>Tantramour 2026</h1>
+      <p>📋 Mon Planning V2</p>
+    </div>
+    <div class="header-actions" id="headerActions">
+      <a class="btn" href="index_bis.html">🏠 Home</a>
+      <button class="btn" onclick="hardReload()">🔄 Refresh</button>
+      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+    </div>
+  </header>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label>Nom</label>
+      <select id="fNom" onchange="applyFilters()">
+        <option value="">Toutes les personnes</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Recherche nom</label>
+      <input type="text" id="fSearch" placeholder="Nom de la personne…" oninput="applyFilters()">
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="resource-list" id="resourceList"></div>
+</div>
+
+<!-- ── MODALE DÉTAIL ATELIER ── -->
+<div class="modal-overlay" id="detailModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box" id="detailBox">
+    <div class="modal-top">
+      <div class="modal-top-left">
+        <div class="modal-atelier" id="mTitle">—</div>
+        <div class="modal-sub" id="mSub"></div>
+      </div>
+      <div class="modal-top-right">
+        <button class="modal-close" onclick="closeModal()">✕ Fermer</button>
+        <div class="modal-lang-toggle">
+          <button class="modal-lang-btn active" id="mlBtnFr" onclick="setModalLang('fr')">FR</button>
+          <button class="modal-lang-btn" id="mlBtnEn" onclick="setModalLang('en')">ENG</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<footer>Tantramour 2026 — Mon Planning V2</footer>
+
+<script src="ref_piment.js"></script>
+<script src="ref_notes.js"></script>
+<script src="ref_ressources.js"></script>
+<script src="loader.js"></script>
+<script>
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.helpers.js','logistics.special.js'], function() {
+
+// ════════════════════════════════════════════
+// UTILITAIRES
+// ════════════════════════════════════════════
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function heureMin(h) {
+  if (!h) return null;
+  var m = String(h).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
+  return m ? parseInt(m[1])*60+parseInt(m[2]) : null;
+}
+function calcDuree(h) {
+  if (!h) return null;
+  var m = String(h).replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  var d = (parseInt(m[3])*60+parseInt(m[4])) - (parseInt(m[1])*60+parseInt(m[2]));
+  if (d < 0) d += 1440;
+  return d;
+}
+function fmtDuree(mins) {
+  if (!mins) return '';
+  var h = Math.floor(mins/60), mn = mins%60;
+  return h > 0 ? (mn > 0 ? h+'h'+(mn<10?'0':'')+mn : h+'h') : mn+'min';
+}
+function fmtHeure(mins) {
+  if (mins == null) return '';
+  var h = Math.floor(mins/60)%24, m = mins%60;
+  return h+':'+(m<10?'0':'')+m;
+}
+function noteLabel(val, lang) {
+  if (!val) return '';
+  if (typeof REF_NOTES !== 'undefined') {
+    var e = REF_NOTES.find(function(n){ return n.value===val; });
+    if (e) return (lang==='en' && e.valueEn) ? e.valueEn : e.value;
+  }
+  return val;
+}
+function pimentHtml(n) {
+  return n > 0 ? '<span class="piment">'+'🌶️'.repeat(n)+'</span>' : '';
+}
+function isBilingue(nom) {
+  if (!nom || typeof REF_RESSOURCES==='undefined') return false;
+  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  return r && r.langues && r.langues.indexOf('FR')!==-1 && r.langues.indexOf('EN')!==-1;
+}
+function isColibri(nom) {
+  if (!nom || typeof REF_RESSOURCES==='undefined') return false;
+  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  return r && r.roles && r.roles.indexOf('colibri')!==-1;
+}
+var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
+
+// Extrait les intervalles des SHIFT ANGEL (type === 'SHIFT ANGEL') parmi les entrées.
+function getAngelShiftIntervals(entries) {
+  var ivs = [];
+  entries.forEach(function(x) {
+    if ((x.entry.type||'').toUpperCase() !== 'SHIFT ANGEL') return;
+    var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+    if (!m) return;
+    var s = parseInt(m[1])*60+parseInt(m[2]), e = parseInt(m[3])*60+parseInt(m[4]);
+    if (e < s) e += 1440;
+    ivs.push({ s:s, e:e });
+  });
+  return ivs;
+}
+
+// Calcule la durée réelle d'un groupe de jour :
+// - Pour chaque SHIFT ANGEL : on compte la durée du shift.
+// - Pour chaque autre entrée : on ne la compte QUE si elle n'est pas couverte par un shift angel.
+// - Si pas de shift angel : somme simple de toutes les durées.
+function calcDurJour(entries) {
+  var shiftIvs = getAngelShiftIntervals(entries);
+  if (shiftIvs.length === 0) {
+    return entries.reduce(function(s,x){ return s+(calcDuree(x.entry.heure)||0); }, 0);
+  }
+  // Durée des shifts angel
+  var shiftDur = shiftIvs.reduce(function(t,iv){ return t+(iv.e-iv.s); }, 0);
+  // Entrées hors shift angel : compter celles qui ne sont pas couvertes par un shift
+  var extraDur = entries.reduce(function(t,x) {
+    if ((x.entry.type||'').toUpperCase() === 'SHIFT ANGEL') return t; // déjà compté
+    var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+    if (!m) return t;
+    var as=parseInt(m[1])*60+parseInt(m[2]), ae=parseInt(m[3])*60+parseInt(m[4]);
+    if (ae<as) ae+=1440;
+    var covered = shiftIvs.some(function(iv){ return as>=iv.s && ae<=iv.e; });
+    return covered ? t : t+(ae-as);
+  }, 0);
+  return shiftDur + extraDur;
+}
+
+// ════════════════════════════════════════════
+// INDEXATION PAR RESSOURCE
+// ════════════════════════════════════════════
+// Pour chaque atelier, on détermine le(s) rôle(s) de chaque personne
+function buildIndex() {
+  // Map nom → [ { entry, roles[] } ]
+  var idx = new Map();
+
+  function add(nom, entry, role) {
+    if (!nom || !nom.trim()) return;
+    var key = nom.trim();
+    if (!idx.has(key)) idx.set(key, []);
+    var arr = idx.get(key);
+    // Chercher si l'entry existe déjà (même atelier, même jour)
+    var found = arr.find(function(x){
+      return x.entry.atelier===entry.atelier && x.entry.jour===entry.jour && x.entry.heure===entry.heure;
+    });
+    if (found) { if (found.roles.indexOf(role)===-1) found.roles.push(role); }
+    else arr.push({ entry: entry, roles: [role] });
+  }
+
+  AGENDA.forEach(function(e) {
+    if (e.fac1)       add(e.fac1, e, 'facilitateur');
+    if (e.fac2)       add(e.fac2, e, 'facilitateur');
+    if (e.traduction) add(e.traduction, e, 'traducteur');
+    if (e.helper1)    add(e.helper1, e, 'helper');
+    if (e.helper2)    add(e.helper2, e, 'helper');
+    if (e.helper3)    add(e.helper3, e, 'helper');
+    if (e.helper4)    add(e.helper4, e, 'helper');
+    if (e.angel)      add(e.angel, e, 'angel');
+  });
+  return idx;
+}
+
+var FULL_INDEX = buildIndex();
+
+// ════════════════════════════════════════════
+// FILTRES
+// ════════════════════════════════════════════
+// Peupler le filtre NOM
+var allNoms = [...FULL_INDEX.keys()].sort(function(a,b){ return a.localeCompare(b,'fr'); });
+var selNom = document.getElementById('fNom');
+allNoms.forEach(function(n) {
+  var o = document.createElement('option'); o.value=n; o.text=n; selNom.appendChild(o);
+});
+
+window.applyFilters = function applyFilters() {
+  var fNom    = document.getElementById('fNom').value;
+  var fSearch = document.getElementById('fSearch').value.trim().toLowerCase();
+
+  // Filtrer les noms de ressources
+  var results = [];
+  FULL_INDEX.forEach(function(entries, nom) {
+    // Filtre select nom exact
+    if (fNom && nom !== fNom) return;
+    // Filtre recherche texte libre
+    if (fSearch && nom.toLowerCase().indexOf(fSearch)===-1) return;
+
+    results.push({ nom: nom, entries: entries });
+  });
+
+  // Trier alphabétiquement
+  results.sort(function(a,b){ return a.nom.localeCompare(b.nom,'fr'); });
+
+  document.getElementById('stats').innerHTML = '<span>'+results.length+'</span> ressource(s) affichée(s)';
+  renderList(results);
+}
+
+// ════════════════════════════════════════════
+// RENDU LISTE
+// ════════════════════════════════════════════
+var ROLE_CSS  = { facilitateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a' };
+var ROLE_LBL  = { facilitateur:'Facilitateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' };
+
+function renderList(results) {
+  var list = document.getElementById('resourceList');
+  if (!results.length) {
+    list.innerHTML = '<div class="empty">Aucun résultat pour ces filtres.</div>';
+    return;
+  }
+
+  list.innerHTML = results.map(function(res, ri) {
+    // Grouper par jour
+    var byJour = new Map();
+    res.entries.forEach(function(x) {
+      var j = x.entry.jour;
+      if (!byJour.has(j)) byJour.set(j, { jour:j, date:x.entry.date, entries:[] });
+      byJour.get(j).entries.push(x);
+    });
+
+    // Trier les jours
+    var jours = JOUR_ORDER.filter(function(j){ return byJour.has(j); }).map(function(j){ return byJour.get(j); });
+
+    // Total ateliers + durée totale (somme des durées par jour, respect de la logique angel)
+    var totalAteliers = res.entries.length;
+    var totalMins = jours.reduce(function(s,g){ return s + calcDurJour(g.entries); }, 0);
+
+    // Rôles uniques de cette ressource
+    var rolesSet = new Set();
+    res.entries.forEach(function(x){ x.roles.forEach(function(r){ rolesSet.add(r); }); });
+    var rolesBadges = [...rolesSet].map(function(r) {
+      var css = ROLE_CSS[r]||'badge-x';
+      var lbl = ROLE_LBL[r]||r;
+      return '<span class="badge '+css+'">'+lbl+'</span>';
+    }).join('');
+
+    // Badge COLIBRI : affiché uniquement si la personne est colibri ET a au moins
+    // un atelier où son rôle est helper ou traducteur (pas facilitateur)
+    var hasColibriRole = isColibri(res.nom) && res.entries.some(function(x) {
+      return x.roles.indexOf('helper') !== -1 || x.roles.indexOf('traducteur') !== -1;
+    });
+    var colibriHtml = hasColibriRole
+      ? '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">🕊 Colibri</span>'
+      : '';
+
+    // Avatar initiale
+    var initiale = res.nom.charAt(0).toUpperCase();
+
+    // Lignes par jour
+    var dayRows = jours.map(function(g, gi) {
+      var rolesJour = new Set();
+      g.entries.forEach(function(x){ x.roles.forEach(function(r){ rolesJour.add(r); }); });
+      var rBadges = [...rolesJour].map(function(r){
+        return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+(ROLE_LBL[r]||r)+'</span>';
+      }).join('');
+
+      // Badge Colibri au niveau du jour : si au moins 1 atelier du jour = helper/traducteur
+      var hasColibriJour = isColibri(res.nom) && g.entries.some(function(x){
+        return x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1;
+      });
+      if (hasColibriJour) {
+        rBadges += '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">🕊 Colibri</span>';
+      }
+
+      // Durée jour via la fonction partagée calcDurJour
+      var durJour = calcDurJour(g.entries);
+
+      // Intervalles des SHIFT ANGEL (pour le grisage des lignes couvertes)
+      var angelIntervals = getAngelShiftIntervals(g.entries);
+
+      function isAngelEntry(x) { return (x.entry.type||'').toUpperCase() === 'SHIFT ANGEL'; }
+      function isCoveredByAngel(x) {
+        if (!angelIntervals.length) return false;
+        if (isAngelEntry(x)) return false; // le shift lui-même n'est pas grisé
+        var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+        if (!m) return false;
+        var s=parseInt(m[1])*60+parseInt(m[2]), e=parseInt(m[3])*60+parseInt(m[4]);
+        if (e<s) e+=1440;
+        return angelIntervals.some(function(iv){ return s>=iv.s && e<=iv.e; });
+      }
+
+      var nb = g.entries.length;
+
+      // ── Tri et regroupement ──────────────────────────────────────────────────
+      // Règle : ordre chronologique global.
+      // Exception : un SHIFT ANGEL entraîne juste après lui, dans l'ordre chrono,
+      // tous les ateliers couverts par ce shift (grisés).
+      // Les ateliers couverts sont retirés de leur position naturelle.
+
+      function entryStart(x) {
+        return heureMin(String(x.entry.heure||'').replace(/[–—]/g,'-').split('-')[0].trim()) || 9999;
+      }
+
+      // Trouver le shift angel (s'il y en a) qui couvre une entrée donnée
+      function shiftFor(x) {
+        if (!angelIntervals.length) return null;
+        var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+        if (!m) return null;
+        var s=parseInt(m[1])*60+parseInt(m[2]), e=parseInt(m[3])*60+parseInt(m[4]);
+        if (e<s) e+=1440;
+        for (var i=0; i<angelIntervals.length; i++) {
+          if (s>=angelIntervals[i].s && e<=angelIntervals[i].e) return angelIntervals[i];
+        }
+        return null;
+      }
+
+      // Séparer : shifts, entrées couvertes (par shift), entrées libres
+      var shiftEntries   = g.entries.filter(function(x){ return isAngelEntry(x); });
+      var coveredEntries = g.entries.filter(function(x){ return !isAngelEntry(x) && shiftFor(x); });
+      var freeEntries    = g.entries.filter(function(x){ return !isAngelEntry(x) && !shiftFor(x); });
+
+      // Trier shifts et libres chronologiquement
+      shiftEntries.sort(function(a,b){ return entryStart(a)-entryStart(b); });
+      freeEntries.sort(function(a,b){  return entryStart(a)-entryStart(b); });
+
+      // Construire la séquence finale :
+      // Mélanger shifts et libres dans l'ordre chrono ; après chaque shift, insérer ses couverts
+      var sequence = [];
+      var usedShiftIdxs = [];
+
+      // Tous les "points de départ" : shifts + libres, triés
+      var anchors = shiftEntries.concat(freeEntries).sort(function(a,b){ return entryStart(a)-entryStart(b); });
+      anchors.forEach(function(x) {
+        sequence.push({ x:x, covered:false });
+        if (isAngelEntry(x)) {
+          // Chercher le shift interval correspondant
+          var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+          if (m) {
+            var ss=parseInt(m[1])*60+parseInt(m[2]), se=parseInt(m[3])*60+parseInt(m[4]);
+            if (se<ss) se+=1440;
+            // Insérer les ateliers couverts par CE shift, triés chrono
+            var kids = coveredEntries.filter(function(c){
+              var cm = String(c.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+              if (!cm) return false;
+              var cs=parseInt(cm[1])*60+parseInt(cm[2]), ce=parseInt(cm[3])*60+parseInt(cm[4]);
+              if (ce<cs) ce+=1440;
+              return cs>=ss && ce<=se;
+            }).sort(function(a,b){ return entryStart(a)-entryStart(b); });
+            kids.forEach(function(c){ sequence.push({ x:c, covered:true }); });
+          }
+        }
+      });
+
+      // Fonction de rendu d'une ligne
+      function renderRow(x, covered) {
+        var e = x.entry;
+        var isShift = isAngelEntry(x);
+        var dur = calcDuree(e.heure);
+        var langBadge = (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2))
+          ? '<span class="badge badge-lang badge-en">FR/EN</span>'
+          : '<span class="badge badge-lang badge-fr">FR</span>';
+        var facs = [e.fac1,e.fac2].filter(Boolean).join(' & ');
+        var pm = parseInt(e.piment)||0;
+        var roleBadge = x.roles.map(function(r){
+          return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+(ROLE_LBL[r]||r)+'</span>';
+        }).join('');
+        var agendaIdx = AGENDA.indexOf(e);
+
+        // Classe de ligne selon type
+        var rowClass = isShift ? ' class="angel-shift-row"'
+                     : covered ? ' class="angel-covered-row"'
+                     : '';
+
+        // Pill de durée pour la ligne shift
+        var shiftDurPill = (isShift && dur)
+          ? '<span class="angel-shift-dur-pill">'+fmtDuree(dur)+'</span>'
+          : '';
+
+        return '<tr'+rowClass+'>'+
+          '<td class="at-heure">'+esc(e.heure||'—')+'</td>'+
+          '<td class="at-duree">'+((!isShift && dur) ? fmtDuree(dur) : (isShift ? '' : '—'))+'</td>'+
+          '<td class="at-name">'+esc(e.atelier||'—')+shiftDurPill+
+            (pm?'<span style="margin-left:4px;font-size:11px">'+pimentHtml(pm)+'</span>':'')+
+            (isColibri(res.nom) && (x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1) ? '<span class="badge" style="margin-left:5px;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;font-size:9px;">🕊 Colibri</span>' : '')+
+          '</td>'+
+          '<td>'+esc(e.lieu||'—')+'</td>'+
+          '<td>'+roleBadge+'</td>'+
+          '<td>'+esc(facs||'—')+'</td>'+
+          '<td>'+langBadge+'</td>'+
+          '<td>'+(e.note?'<span style="font-size:11px;color:#d97706">'+esc(e.note)+'</span>':'')+'</td>'+
+          '<td><button class="info-btn" title="Détails" onclick="openDetail('+agendaIdx+',\''+ri+'\')">ℹ️</button></td>'+
+        '</tr>';
+      }
+
+      var tableRows = sequence.map(function(item){ return renderRow(item.x, item.covered); }).join('');
+
+      var tableId = 'tbl-'+ri+'-'+gi;
+      return '<div class="day-row" id="drow-'+ri+'-'+gi+'" onclick="toggleDay(\''+ri+'\',\''+gi+'\')">' +
+          '<span class="day-label">'+esc(g.jour)+'</span>' +
+          '<span class="day-date">'+esc(g.date)+'</span>' +
+          '<span class="day-roles">'+rBadges+'</span>' +
+          '<span class="day-meta"><span>'+fmtDuree(durJour)+'</span>&nbsp;·&nbsp;<span>'+nb+'</span>&nbsp;atelier'+(nb>1?'s':'')+'</span>' +
+          '<span class="day-chevron">›</span>' +
+        '</div>' +
+        '<div id="'+tableId+'" style="display:none">' +
+          '<div class="ateliers-wrap">' +
+            '<table class="ateliers-table">' +
+              '<thead><tr>' +
+                '<th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Facilitateur(s)</th><th>Lang.</th><th>Note</th><th></th>' +
+              '</tr></thead>' +
+              '<tbody>'+tableRows+'</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+
+    return '<div class="resource-card" id="rcard-'+ri+'">' +
+      '<div class="resource-header" onclick="toggleResource('+ri+')">' +
+        '<div class="resource-avatar">'+esc(initiale)+'</div>' +
+        '<span class="resource-name">'+esc(res.nom)+'</span>' +
+        (colibriHtml ? '<span style="margin-left:4px">'+colibriHtml+'</span>' : '') +
+        '<span class="resource-badges">'+rolesBadges+'</span>' +
+        '<span class="resource-stats">'+totalAteliers+' atelier'+(totalAteliers>1?'s':'')+' · '+fmtDuree(totalMins)+'</span>' +
+        '<span class="resource-chevron">›</span>' +
+      '</div>' +
+      '<div class="resource-body">'+dayRows+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+window.toggleResource = function(ri) {
+  var card = document.getElementById('rcard-'+ri);
+  if (card) card.classList.toggle('open');
+};
+
+window.toggleDay = function(ri, gi) {
+  var row = document.getElementById('drow-'+ri+'-'+gi);
+  var tbl = document.getElementById('tbl-'+ri+'-'+gi);
+  if (!row || !tbl) return;
+  var open = tbl.style.display !== 'none';
+  tbl.style.display = open ? 'none' : 'block';
+  row.classList.toggle('open', !open);
+};
+
+// ════════════════════════════════════════════
+// MODALE DÉTAIL
+// ════════════════════════════════════════════
+var _modalLang = 'fr';
+var _modalEntry = null;
+
+window.setModalLang = function(lang) {
+  _modalLang = lang;
+  document.getElementById('mlBtnFr').classList.toggle('active', lang==='fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', lang==='en');
+  renderModalBody();
+};
+
+window.openDetail = function(agendaIdx, ri) {
+  var e = AGENDA[agendaIdx];
+  if (!e) return;
+  _modalEntry = e;
+  _modalLang = (typeof I18n!=='undefined') ? I18n.getLang() : 'fr';
+  document.getElementById('mlBtnFr').classList.toggle('active', _modalLang==='fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', _modalLang==='en');
+
+  var pm = parseInt(e.piment)||0;
+  document.getElementById('mTitle').innerHTML = esc(e.atelier||'—') + (pm ? ' '+pimentHtml(pm) : '');
+  document.getElementById('mSub').textContent = e.jour + (e.date ? ' — ' + e.date : '');
+
+  renderModalBody();
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeModal = function() {
+  document.getElementById('detailModal').classList.remove('open');
+  document.body.style.overflow = '';
+};
+window.closeModalOnOverlay = function(ev) {
+  if (ev.target === document.getElementById('detailModal')) closeModal();
+};
+document.addEventListener('keydown', function(ev) {
+  if (ev.key==='Escape') closeModal();
+});
+
+function renderModalBody() {
+  var e    = _modalEntry;
+  var lang = _modalLang;
+  if (!e) return;
+
+  var logId   = e.logisticId || '';
+  var logE    = logId && typeof LOGISTICS!=='undefined' ? LOGISTICS[logId] : null;
+  var logH    = logId && typeof LOGISTICS_HELPERS!=='undefined' ? LOGISTICS_HELPERS[logId] : null;
+  var logS    = logId && typeof LOGISTICS_SPECIAL!=='undefined' ? LOGISTICS_SPECIAL[logId] : null;
+  var desc    = (typeof REF_DESCRIPTIONS!=='undefined')
+    ? REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); })
+    : null;
+
+  var dur   = calcDuree(e.heure);
+  var prep  = (logE && logE.prepDuration != null) ? logE.prepDuration : 15; // 15 min par défaut
+  var debut = heureMin(e.heure);
+  var arrivee = (debut!==null) ? fmtHeure(debut-prep) : '';
+
+  var facs    = [e.fac1,e.fac2].filter(Boolean);
+  var helpers = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean);
+  var hasBilingue = isBilingue(e.fac1) || isBilingue(e.fac2);
+  var langBadge = (e.traduction || hasBilingue)
+    ? '<span class="badge badge-lang badge-en">FR / EN</span>'
+    : '<span class="badge badge-lang badge-fr">FR</span>';
+
+  var noteVal = e.note ? noteLabel(e.note, lang) : '';
+
+  // ── Section 1 : Infos générales ─────────────────────────────────────────
+  var rows1 = [];
+  rows1.push(['🕐 '+(lang==='en'?'Schedule':'Horaire'),
+    esc(e.heure||'—') +
+    (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '') +
+    (arrivee ? ' <span style="color:#dc2626;font-size:12px;font-weight:700;margin-left:8px;">⏰ '+(lang==='en'?'Arrive at':'Arrivée')+' '+arrivee+'</span>' : '')]);
+  if (e.lieu)    rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), esc(e.lieu)]);
+  if (facs.length) rows1.push(['🎓 '+(lang==='en'?'Facilitator(s)':'Facilitateur(s)'), facs.map(esc).join(' &amp; ')]);
+  if (helpers.length) rows1.push(['🙌 Helpers', helpers.map(esc).join(', ')]);
+  if (e.traduction) rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), esc(e.traduction)]);
+  if (e.angel)  rows1.push(['👼 Angel', esc(e.angel)]);
+  if (noteVal)  rows1.push(['🏷 Note', esc(noteVal)]);
+  rows1.push(['🌐 Langue', langBadge]);
+  if (parseInt(e.piment)) rows1.push(['🌶️ Piment', pimentHtml(parseInt(e.piment))]);
+
+  var gridHtml1 = rows1.map(function(r){
+    return '<div class="modal-lbl">'+r[0]+'</div><div class="modal-val">'+r[1]+'</div>';
+  }).join('');
+
+  var noTxt = lang==='en' ? '<span class="no-content">—</span>' : '<span class="no-content">—</span>';
+  var dark = document.body.classList.contains('dark');
+
+  // Description + consigne (toujours affichées)
+  var descTxt = (lang==='en' && desc && desc.descEn && desc.descEn.trim())
+    ? desc.descEn : (desc && desc.descFr && desc.descFr.trim() ? desc.descFr : '');
+  var consigneTxt = (lang==='en' && desc && desc.consigneEn && desc.consigneEn.trim())
+    ? desc.consigneEn : (desc && desc.consigne && desc.consigne.trim() ? desc.consigne : '');
+  var consigneLabel = lang==='en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
+
+  var sec1 = '<div class="modal-section">'+
+    '<div class="modal-section-title">'+(lang==='en'?'General information':'Informations générales')+'</div>'+
+    '<div class="modal-grid">'+gridHtml1+'</div>'+
+    '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box" style="border-color:#fcd34d;background:'+(dark?'#2d2006':'#fffbeb')+'">'+
+        '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
+        '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'Description':'Description')+'</div>'+
+        '<div>'+(descTxt ? esc(descTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  // ── Section 2 : Logistique (tous les champs toujours affichés) ───────────
+  // prep vaut toujours un nombre (15 par défaut si non renseigné)
+  var isDefaultPrep = !(logE && logE.prepDuration != null);
+  var prepVal = prep+' min'+
+    (isDefaultPrep ? ' <span style="font-size:10px;color:var(--muted);font-style:italic;">('+( lang==='en'?'default':'défaut')+')</span>' : '')+
+    (arrivee ? ' → '+(lang==='en'?'Arrive at':'Arrivée')+' <strong style="color:#dc2626">'+arrivee+'</strong>' : '');
+
+  var validBadge = logE
+    ? (logE.validatedByFac
+        ? '<span class="validated-badge validated-yes">✅ '+(lang==='en'?'Validated by facilitator':'Validé par facilitateur')+'</span>'
+        : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>')
+    : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>';
+
+  var updatedAt = logE && logE.updatedAt ? logE.updatedAt : (logH && logH.updatedAt ? logH.updatedAt : '');
+
+  var avantTxt   = logH && logH.avant   && logH.avant.trim().replace(/<[^>]*>/g,'').trim()   ? logH.avant   : '';
+  var pendantTxt = logH && logH.pendant && logH.pendant.trim().replace(/<[^>]*>/g,'').trim() ? logH.pendant : '';
+  var apresTxt   = logH && logH.apres   && logH.apres.trim().replace(/<[^>]*>/g,'').trim()   ? logH.apres   : '';
+  var logInfoTxt = logE && logE.html && logE.html.trim() ? logE.html : '';
+  var logSpecTxt = logS && logS.html && logS.html.trim().replace(/<[^>]*>/g,'').trim() ? logS.html : '';
+
+  var sec2 = '<div class="modal-section">'+
+    '<div class="modal-section-title">'+(lang==='en'?'Logistics':'Logistique')+'</div>'+
+    '<div class="modal-grid">'+
+      '<div class="modal-lbl">⏱ '+(lang==='en'?'Prep time':'Temps de préparation')+'</div>'+
+      '<div class="modal-val">'+prepVal+'</div>'+
+    '</div>'+
+    '<div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">▶ '+(lang==='en'?'Before':'Avant')+'</div>'+
+        '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">⏯ '+(lang==='en'?'During':'Pendant')+'</div>'+
+        '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">⏹ '+(lang==='en'?'After':'Après')+'</div>'+
+        '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box" style="border-color:#fca5a5;background:'+(dark?'#2d0a0a':'#fff5f5')+'">'+
+        '<div class="modal-desc-lbl" style="color:#dc2626">'+(lang==='en'?'Special logistics needs':'Besoins logistiques spéciaux')+'</div>'+
+        '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:10px">'+validBadge+'</div>'+
+    '<div style="margin-top:6px;font-size:11px;color:var(--muted)">🕓 '+(lang==='en'?'Last updated':'Dernière modification')+' : '+(updatedAt ? esc(updatedAt) : '—')+'</div>'+
+  '</div>';
+
+  document.getElementById('mBody').innerHTML = sec1 + sec2;
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+applyFilters();
+
+if (typeof I18n !== 'undefined') {
+  I18n.renderToggleBtn('headerActions', 'btn');
+  document.addEventListener('tm_lang_changed', function() {
+    applyFilters();
+    var modeBtn = document.getElementById('modeBtn');
+    if (modeBtn) modeBtn.textContent = document.body.classList.contains('dark') ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+  });
+}
+
+function toggleMode() {
+  var dark = document.body.classList.toggle('dark');
+  var btn  = document.getElementById('modeBtn');
+  if (btn) btn.textContent = dark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+}
+window.toggleMode = toggleMode;
+
+function hardReload() {
+  if ('caches' in window) {
+    caches.keys().then(function(k){ return Promise.all(k.map(function(x){ return caches.delete(x); })); })
+      .finally(function(){ location.reload(true); });
+  } else { location.reload(true); }
+}
+window.hardReload = hardReload;
+
+}); // fin loadData
+</script>
+</body>
+</html>

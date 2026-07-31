@@ -12,33 +12,37 @@
     --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
     --green:#16a34a; --green-bg:#dcfce7; --green-border:#86efac;
     --purple:#7c3aed; --purple-bg:#f5f3ff; --purple-border:#c4b5fd;
-    /* couleurs par type */
+    /* ── COULEURS PAR TYPE ──────────────────────────────────────────
+       tantra  = ROSE         art     = ORANGE       yoga  = VERT
+       cere    = VIOLET       pool    = VERT FONCÉ   love  = ROUGE
+       support = BLEU CLAIR   cafe    = JAUNE FONCÉ  rass  = BLEU FONCÉ
+    ────────────────────────────────────────────────────────────────── */
     --c-tantra:#be185d;    --c-tantra-bg:#fdf2f8;    --c-tantra-bd:#fbcfe8;
-    --c-art:#0369a1;       --c-art-bg:#eff6ff;       --c-art-bd:#bfdbfe;
-    --c-yoga:#059669;      --c-yoga-bg:#ecfdf5;      --c-yoga-bd:#a7f3d0;
-    --c-cere:#92400e;      --c-cere-bg:#fffbeb;      --c-cere-bd:#fde68a;
-    --c-pool:#7c3aed;      --c-pool-bg:#f5f3ff;      --c-pool-bd:#c4b5fd;
-    --c-love:#dc2626;      --c-love-bg:#fff1f2;      --c-love-bd:#fecdd3;
-    --c-support:#0891b2;   --c-support-bg:#ecfeff;   --c-support-bd:#a5f3fc;
-    --c-cafe:#78350f;      --c-cafe-bg:#fefce8;      --c-cafe-bd:#fef08a;
-    --c-rass:#16a34a;      --c-rass-bg:#f0fdf4;      --c-rass-bd:#bbf7d0;
+    --c-art:#c2410c;       --c-art-bg:#fff7ed;       --c-art-bd:#fed7aa;
+    --c-yoga:#16a34a;      --c-yoga-bg:#f0fdf4;      --c-yoga-bd:#86efac;
+    --c-cere:#7c3aed;      --c-cere-bg:#f5f3ff;      --c-cere-bd:#c4b5fd;
+    --c-pool:#166534;      --c-pool-bg:#f0fdf4;      --c-pool-bd:#4ade80;
+    --c-love:#dc2626;      --c-love-bg:#fff1f2;      --c-love-bd:#fca5a5;
+    --c-support:#0891b2;   --c-support-bg:#ecfeff;   --c-support-bd:#67e8f9;
+    --c-cafe:#92400e;      --c-cafe-bg:#fffbeb;      --c-cafe-bd:#fcd34d;
+    --c-rass:#1e40af;      --c-rass-bg:#eff6ff;      --c-rass-bd:#93c5fd;
   }
   .dark {
     --bg:#0d1117; --surface:#161b22; --border:#30363d;
     --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
     --c-tantra-bg:#2d0a1e; --c-tantra-bd:#9d174d;
-    --c-art-bg:#0c1d2e; --c-art-bd:#1e4e7a;
-    --c-yoga-bg:#052e1a; --c-yoga-bd:#065f46;
-    --c-cere-bg:#1c1400; --c-cere-bd:#92400e;
-    --c-pool-bg:#1a0a2e; --c-pool-bd:#5b21b6;
+    --c-art-bg:#2a1200; --c-art-bd:#c2410c;
+    --c-yoga-bg:#052e1a; --c-yoga-bd:#16a34a;
+    --c-cere-bg:#1a0a2e; --c-cere-bd:#7c3aed;
+    --c-pool-bg:#001a0a; --c-pool-bd:#166534;
     --c-love-bg:#2d0000; --c-love-bd:#991b1b;
     --c-support-bg:#00141a; --c-support-bd:#0e7490;
-    --c-cafe-bg:#1a1000; --c-cafe-bd:#78350f;
-    --c-rass-bg:#011a09; --c-rass-bd:#166534;
+    --c-cafe-bg:#1a0e00; --c-cafe-bd:#92400e;
+    --c-rass-bg:#0c1a40; --c-rass-bd:#1e40af;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
-  .wrap { max-width:900px; margin:0 auto; padding:24px 20px 80px; }
+  .wrap { max-width:1280px; margin:0 auto; padding:24px 20px 80px; }
 
   /* ── HEADER ── */
   header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
@@ -78,7 +82,7 @@
   .prog-sub   { font-size:13px; color:var(--muted); margin-top:2px; }
   .prog-count { display:inline-block; font-size:12px; font-weight:700; background:var(--accent); color:#fff; border-radius:20px; padding:2px 10px; margin-left:8px; vertical-align:middle; }
 
-  /* Filtre type (barre de chips) */
+  /* ── FILTRE TYPE (chips colorés selon le type actif) ── */
   .type-filter { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
   .type-chip {
     cursor:pointer; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700;
@@ -86,27 +90,62 @@
     transition:all .15s; white-space:nowrap; user-select:none;
   }
   .type-chip.active { border-color:var(--accent); background:var(--accent); color:#fff; }
-  .type-chip:hover:not(.active) { border-color:var(--accent); color:var(--accent); }
+  .type-chip.active-colored { border-color:var(--tc) !important; background:var(--tc) !important; color:#fff !important; }
+  .type-chip:hover:not(.active):not(.active-colored) { border-color:var(--accent); color:var(--accent); }
 
-  /* Liste ateliers */
-  .prog-list { display:flex; flex-direction:column; gap:8px; }
-  .prog-row {
-    display:flex; align-items:stretch; border-radius:10px; overflow:hidden;
-    border:1px solid var(--border); transition:box-shadow .15s;
+  /* ── SECTIONS PAR TYPE ── */
+  .prog-list { display:flex; flex-direction:column; gap:24px; }
+  .type-section { }
+  .type-section-header {
+    display:flex; align-items:center; gap:10px;
+    padding:6px 12px 6px 14px;
+    border-radius:8px; margin-bottom:10px;
+    border-left:4px solid var(--tc);
+    background:var(--tbg);
   }
-  .prog-row:hover { box-shadow:0 2px 10px rgba(0,0,0,.08); }
-  .prog-stripe { width:5px; flex-shrink:0; }
-  .prog-main { flex:1; padding:12px 14px; min-width:0; }
-  .prog-time  { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
-  .prog-name  { font-size:14px; font-weight:700; margin-bottom:5px; line-height:1.3; }
-  .prog-meta  { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .prog-action { display:flex; align-items:center; padding:0 14px; flex-shrink:0; }
+  .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--tc); flex:1; }
+  .type-section-count { font-size:11px; font-weight:700; background:var(--tc); color:#fff; border-radius:20px; padding:1px 8px; }
+
+  /* ── GRILLE CARTES — 5 colonnes fixes, largeur identique quelle que soit la quantité ── */
+  .ateliers-grid {
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:10px;
+  }
+  @media(max-width:900px)  { .ateliers-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media(max-width:580px)  { .ateliers-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media(max-width:380px)  { .ateliers-grid { grid-template-columns: 1fr; } }
+
+  /* ── CARTE ATELIER ── */
+  .prog-card {
+    display:flex; flex-direction:column;
+    border:1.5px solid var(--tbd); border-radius:10px;
+    background:#fff; overflow:hidden;
+    transition:box-shadow .15s, transform .1s;
+    /* hauteur uniforme : toutes les cartes d'une même section ont la même hauteur */
+    height:100%;
+  }
+  .dark .prog-card { background:var(--surface); }
+  .prog-card:hover { box-shadow:0 3px 12px rgba(0,0,0,.1); transform:translateY(-1px); }
+  .prog-card-top { display:flex; align-items:stretch; flex:1; }
+  .prog-stripe { width:5px; flex-shrink:0; background:var(--tc); }
+  .prog-main { flex:1; padding:10px 10px 8px; min-width:0; }
+  .prog-time  { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
+  .prog-name  { font-size:12px; font-weight:700; margin-bottom:5px; line-height:1.3; color:var(--text); }
+  .prog-meta  { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+  .prog-card-footer {
+    display:flex; align-items:center; justify-content:flex-end;
+    padding:5px 8px;
+    border-top:1px solid var(--tbd);
+    background:var(--tbg);
+    flex-shrink:0;
+  }
   .detail-btn {
-    cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:8px;
-    width:34px; height:34px; font-size:16px; display:flex; align-items:center; justify-content:center;
-    transition:background .15s; flex-shrink:0;
+    cursor:pointer; background:transparent; border:1px solid var(--tbd); border-radius:6px;
+    padding:3px 8px; font-size:11px; color:var(--tc); font-family:inherit;
+    font-weight:600; transition:background .15s; white-space:nowrap;
   }
-  .detail-btn:hover { background:var(--border); }
+  .detail-btn:hover { background:var(--tbd); }
 
   /* Badges */
   .badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; white-space:nowrap; }
@@ -150,12 +189,25 @@
     padding:20px 24px 16px; border-bottom:1px solid var(--border);
     gap:12px;
   }
+  .modal-header-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
   .modal-close {
     cursor:pointer; background:var(--surface); border:1px solid var(--border);
     border-radius:6px; width:32px; height:32px; font-size:16px; flex-shrink:0;
     display:flex; align-items:center; justify-content:center; transition:background .15s;
   }
   .modal-close:hover { background:var(--border); }
+
+  /* Toggle FR / ENG dans la popup */
+  .modal-lang-toggle { display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+  .modal-lang-btn {
+    cursor:pointer; background:var(--surface); border:none; padding:5px 11px;
+    font-size:12px; font-weight:700; color:var(--muted); font-family:inherit;
+    transition:background .15s, color .15s; line-height:1;
+  }
+  .modal-lang-btn:not(:last-child) { border-right:1px solid var(--border); }
+  .modal-lang-btn.active { background:var(--accent); color:#fff; }
+  .modal-lang-btn:hover:not(.active) { background:var(--border); color:var(--text); }
+
   .modal-body { padding:20px 24px 24px; }
   .modal-type-badge { font-size:11px; font-weight:700; margin-bottom:8px; }
   .modal-title { font-size:20px; font-weight:800; margin-bottom:4px; line-height:1.3; }
@@ -233,13 +285,18 @@
         <div class="modal-title" id="mTitle">—</div>
         <div class="modal-subtitle" id="mSubtitle"></div>
       </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div class="modal-header-right">
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+        <div class="modal-lang-toggle" id="modalLangToggle">
+          <button class="modal-lang-btn active" id="mlBtnFr" onclick="setModalLang('fr')">FR</button>
+          <button class="modal-lang-btn" id="mlBtnEn" onclick="setModalLang('en')">ENG</button>
+        </div>
+      </div>
     </div>
     <div class="modal-body">
       <div class="modal-grid" id="mGrid"></div>
       <div id="mConsigne"></div>
-      <div id="mDescFr"></div>
-      <div id="mDescEn"></div>
+      <div id="mDesc"></div>
     </div>
   </div>
 </div>
@@ -248,6 +305,7 @@
 
 <script src="loader.js"></script>
 <script src="ref_piment.js"></script>
+<script src="ref_notes.js"></script>
 <script>
 loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js'], function() {
 
@@ -255,6 +313,16 @@ loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js'], function() {
 // CONFIG
 // ════════════════════════════════════════════
 // Set des noms de facilitateurs bilingues (FR + EN)
+// Résout le libellé d'une note selon la langue donnée (fallback sur value FR)
+function noteLabel(noteVal, lang) {
+  if (!noteVal) return '';
+  if (typeof REF_NOTES !== 'undefined') {
+    var entry = REF_NOTES.find(function(n) { return n.value === noteVal; });
+    if (entry) return (lang === 'en' && entry.valueEn) ? entry.valueEn : entry.value;
+  }
+  return noteVal;
+}
+
 var BILINGUES = new Set(
   (typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES : [])
     .filter(function(r) {
@@ -285,18 +353,64 @@ function jourLabel(jour) {
 
 // Types affichés au festivalier
 var TYPES_PUBLICS = [
-  'MEDITATION / YOGA',
-  'ATELIER ARTISTIQUE (Matin)',
-  'ATELIER ARTISTIQUE (Apres-Midi)',
-  'ATELIERS TANTRA (Matin)',
-  'ATELIERS TANTRA (Apres-Midi)',
-  'CEREMONIE & CONCERT',
-  'DJ Set & POOL PARTY',
-  'LOVE TEMPLE',
-  'SUPPORT EMOTIONNEL',
-  'TANTRA CAFE & CONFERENCE',
-  'RASSEMBLEMENT',
+  'MEDITATION / YOGA',               // 1
+  'RASSEMBLEMENT',                   // 2
+  'ATELIERS TANTRA (Matin)',         // 3
+  'ATELIER ARTISTIQUE (Matin)',      // 4
+  // TANTRA CAFE & CONFERENCE : position dynamique selon heure (voir typeOrder())
+  'SUPPORT EMOTIONNEL',              // 5
+  'POOL PARTY',                      // 6 (après-midi)
+  'DJ Set',                          // 6b
+  'ATELIERS TANTRA (Apres-Midi)',    // 7
+  'ATELIER ARTISTIQUE (Apres-Midi)', // 8
+  'CEREMONIE & CONCERT',             // 9
+  'LOVE TEMPLE',                     // 10
 ];
+
+// Ordre dynamique des types pour un jour donné.
+// TANTRA CAFE & CONFERENCE est inséré :
+//   - après ATELIER ARTISTIQUE (Matin)  si son premier atelier commence ≥ 11h00
+//   - avant SUPPORT EMOTIONNEL          si son premier atelier commence ≥ 13h30
+// Dans tous les autres cas il est placé après ATELIER ARTISTIQUE (Matin).
+function typeOrder(ateliers) {
+  // Heure de début du premier atelier TANTRA CAFE ce jour
+  var cafeItems = ateliers.filter(function(e) { return e.type === 'TANTRA CAFE & CONFERENCE'; });
+  var cafeMin   = cafeItems.length
+    ? Math.min.apply(null, cafeItems.map(function(e) { return heureMin(e.heure); }))
+    : 9999;
+
+  // Positions de référence dans TYPES_PUBLICS
+  var idxArtAm  = TYPES_PUBLICS.indexOf('ATELIER ARTISTIQUE (Matin)');   // 3
+  var idxSupport = TYPES_PUBLICS.indexOf('SUPPORT EMOTIONNEL');           // 4
+
+  // Construire l'ordre complet en insérant TANTRA CAFE à la bonne position
+  var ordre = [];
+  TYPES_PUBLICS.forEach(function(t, i) {
+    // Insérer TANTRA CAFE juste après ATELIER ARTISTIQUE (Matin) si heure ≥ 11h00
+    if (i === idxArtAm + 1 && cafeMin >= 11 * 60) {
+      ordre.push('TANTRA CAFE & CONFERENCE');
+    }
+    // Insérer TANTRA CAFE juste avant SUPPORT EMOTIONNEL si heure ≥ 13h30
+    // (ce cas remplace le précédent si l'heure est encore plus tardive)
+    if (t === 'SUPPORT EMOTIONNEL' && cafeMin >= 13 * 60 + 30) {
+      // retirer TANTRA CAFE s'il a déjà été inséré plus tôt
+      ordre = ordre.filter(function(x) { return x !== 'TANTRA CAFE & CONFERENCE'; });
+      ordre.push('TANTRA CAFE & CONFERENCE');
+    }
+    ordre.push(t);
+  });
+  // Si TANTRA CAFE n'a pas encore été inséré (heure < 11h00 ou pas d'atelier ce jour)
+  // on le place après ATELIER ARTISTIQUE (Matin) par défaut
+  if (ordre.indexOf('TANTRA CAFE & CONFERENCE') === -1) {
+    var pos = ordre.indexOf('ATELIER ARTISTIQUE (Matin)');
+    if (pos !== -1) {
+      ordre.splice(pos + 1, 0, 'TANTRA CAFE & CONFERENCE');
+    } else {
+      ordre.push('TANTRA CAFE & CONFERENCE');
+    }
+  }
+  return ordre;
+}
 
 // Couleur CSS par type
 var TYPE_CSS = {
@@ -306,7 +420,8 @@ var TYPE_CSS = {
   'ATELIER ARTISTIQUE (Apres-Midi)':'t-art',
   'MEDITATION / YOGA':              't-yoga',
   'CEREMONIE & CONCERT':            't-cere',
-  'DJ Set & POOL PARTY':            't-pool',
+  'DJ Set':                         't-pool',
+  'POOL PARTY':                     't-pool',
   'LOVE TEMPLE':                    't-love',
   'SUPPORT EMOTIONNEL':             't-support',
   'TANTRA CAFE & CONFERENCE':       't-cafe',
@@ -321,7 +436,8 @@ var TYPE_I18N_KEY = {
   'ATELIER ARTISTIQUE (Apres-Midi)':'rp_type_art_pm',
   'MEDITATION / YOGA':              'rp_type_yoga',
   'CEREMONIE & CONCERT':            'rp_type_cere',
-  'DJ Set & POOL PARTY':            'rp_type_pool',
+  'DJ Set':                         'rp_type_dj',
+  'POOL PARTY':                     'rp_type_pool_party',
   'LOVE TEMPLE':                    'rp_type_love',
   'SUPPORT EMOTIONNEL':             'rp_type_support',
   'TANTRA CAFE & CONFERENCE':       'rp_type_cafe',
@@ -410,13 +526,16 @@ function buildProgScreen(jour) {
   ateliers.forEach(function(e) {
     if (!seenTypes.has(e.type)) { seenTypes.add(e.type); typesDuJour.push(e.type); }
   });
-  // Tri selon l'ordre de TYPES_PUBLICS
-  typesDuJour.sort(function(a,b) { return TYPES_PUBLICS.indexOf(a) - TYPES_PUBLICS.indexOf(b); });
+  // Tri dynamique : TANTRA CAFE positionné selon son heure de début
+  var ordreJour = typeOrder(ateliers);
+  typesDuJour.sort(function(a,b) { return ordreJour.indexOf(a) - ordreJour.indexOf(b); });
 
+  // Chips de filtre — "Tous" toujours en accent, les types avec leur propre couleur
   var filterHtml = '<div class="type-chip active" data-type="" onclick="setTypeFilter(this, \'\')">' + I18n.t('rp_tous') + '</div>';
   typesDuJour.forEach(function(t) {
+    var css   = TYPE_CSS[t] || '';
     var label = typeLabel(t);
-    filterHtml += '<div class="type-chip" data-type="' + escAttr(t) + '" onclick="setTypeFilter(this, \'' + escAttr(t) + '\')">' + esc(label) + '</div>';
+    filterHtml += '<div class="type-chip ' + css + '" data-type="' + escAttr(t) + '" onclick="setTypeFilter(this, \'' + escAttr(t) + '\')">' + esc(label) + '</div>';
   });
   document.getElementById('typeFilter').innerHTML = filterHtml;
 
@@ -426,68 +545,194 @@ function buildProgScreen(jour) {
 window.setTypeFilter = function(el, type) {
   activeTypeFilter = type;
   document.querySelectorAll('#typeFilter .type-chip').forEach(function(c) {
-    c.classList.toggle('active', c.getAttribute('data-type') === type);
+    var isActive = c.getAttribute('data-type') === type;
+    c.classList.remove('active', 'active-colored');
+    if (isActive) {
+      c.classList.add(type === '' ? 'active' : 'active-colored');
+    }
   });
   var all = getAteliersPublics(currentJour);
   var filtered = type ? all.filter(function(e) { return e.type === type; }) : all;
   renderProgList(filtered);
 };
 
-function renderProgList(ateliers) {
-  var count = document.getElementById('progCount');
-  count.textContent = ateliers.length;
+function cardHtml(e, globalIdx) {
+  var css       = TYPE_CSS[e.type] || '';
+  var facs      = [e.fac1, e.fac2].filter(Boolean);
+  var pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '';
+  var desc      = findDesc(e.atelier);
 
-  var list = document.getElementById('progList');
-  if (!ateliers.length) {
-    list.innerHTML = '<div class="empty-prog">' + I18n.t('rp_aucun_filtre') + '</div>';
-    return;
-  }
-
-  list.innerHTML = ateliers.map(function(e, idx) {
-    var css   = TYPE_CSS[e.type] || '';
-    var facs  = [e.fac1, e.fac2].filter(Boolean);
-    var pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '';
-
-    return '<div class="prog-row ' + css + '">' +
-      '<div class="prog-stripe prog-stripe-c"></div>' +
+  return '<div class="prog-card ' + css + '">' +
+    '<div class="prog-card-top">' +
+      '<div class="prog-stripe"></div>' +
       '<div class="prog-main">' +
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
           (heureDuree(e.heure) ? ' <span style="font-weight:400;color:var(--muted)">(' + heureDuree(e.heure) + ')</span>' : '') +
-          (e.lieu  ? ' &nbsp;·&nbsp; ' + I18n.t('col_lieu') + '&nbsp;: ' + esc(e.lieu) : '') +
+          (e.lieu  ? ' &nbsp;·&nbsp; ' + esc(e.lieu) : '') +
         '</div>' +
-        '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:13px">' + pimentStr + '</span>' : '') + '</div>' +
+        '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
         '<div class="prog-meta">' +
-          '<span class="badge badge-type badge-type-c">' + esc(typeLabel(e.type)) + '</span>' +
           facs.map(function(f) { return '<span class="badge badge-fac">🎓 ' + esc(f) + '</span>'; }).join('') +
           (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2)
             ? '<span class="badge badge-trad" title="' + (e.traduction ? esc(e.traduction) : 'FR / ENG') + '">FR / ENG</span>'
             : '<span class="badge badge-trad" title="Atelier en français" style="background:#f0fdf4;color:#166534;border-color:#86efac">FR</span>') +
-          (findDesc(e.atelier) && findDesc(e.atelier).consigne && findDesc(e.atelier).consigne.trim()
-            ? '<span class="badge" style="background:#dc2626;color:#fff;border:1px solid #b91c1c" title="' + esc(findDesc(e.atelier).consigne) + '">⚠️ Consigne</span>'
+          (desc && desc.consigne && desc.consigne.trim()
+            ? '<span class="badge" style="background:#dc2626;color:#fff;border:1px solid #b91c1c">⚠️ ' + (I18n.getLang() === 'en' ? 'Instruction' : 'Consigne') + '</span>'
             : '') +
-          (e.note ? '<span class="badge badge-note">🏷 ' + esc(e.note) + '</span>' : '') +
+          (e.note ? '<span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, I18n.getLang())) + '</span>' : '') +
         '</div>' +
       '</div>' +
-      '<div class="prog-action">' +
-        '<button class="detail-btn" onclick="openDetail(' + idx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️</button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+    '</div>' +
+    '<div class="prog-card-footer">' +
+      '<button class="detail-btn" onclick="openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (I18n.getLang() === 'en' ? 'Details' : 'Détails') + '</button>' +
+    '</div>' +
+  '</div>';
+}
 
-  // Stocker pour openDetail
+function renderProgList(ateliers) {
+  document.getElementById('progCount').textContent = ateliers.length;
+
+  var list = document.getElementById('progList');
+  if (!ateliers.length) {
+    list.innerHTML = '<div class="empty-prog">' + I18n.t('rp_aucun_filtre') + '</div>';
+    window._progRows = [];
+    return;
+  }
+
+  // Stocker la liste complète pour openDetail (index global stable)
   window._progRows = ateliers;
+
+  // Grouper par type — ordre dynamique (TANTRA CAFE positionné selon son heure)
+  var typesDuJour = [];
+  var seenTypes   = new Set();
+  ateliers.forEach(function(e) {
+    if (!seenTypes.has(e.type)) { seenTypes.add(e.type); typesDuJour.push(e.type); }
+  });
+  var ordreJour = typeOrder(ateliers);
+  typesDuJour.sort(function(a,b) { return ordreJour.indexOf(a) - ordreJour.indexOf(b); });
+
+  var html = '';
+  typesDuJour.forEach(function(type) {
+    var css      = TYPE_CSS[type] || '';
+    var groupe   = ateliers.filter(function(e) { return e.type === type; });
+    var nbG      = groupe.length;
+    var wordG    = nbG > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
+
+    html += '<div class="type-section ' + css + '">' +
+      '<div class="type-section-header">' +
+        '<span class="type-section-label">' + esc(typeLabel(type)) + '</span>' +
+        '<span class="type-section-count">' + nbG + ' ' + wordG + '</span>' +
+      '</div>' +
+      '<div class="ateliers-grid">';
+
+    groupe.forEach(function(e) {
+      var globalIdx = ateliers.indexOf(e);
+      html += cardHtml(e, globalIdx);
+    });
+
+    html += '</div></div>';
+  });
+
+  list.innerHTML = html;
 }
 
 // ════════════════════════════════════════════
 // MODALE DÉTAIL
 // ════════════════════════════════════════════
+
+// Langue active dans la popup (indépendante de la langue de l'interface)
+var _modalLang  = 'fr';
+// Données de l'atelier courant pour pouvoir re-rendre sans re-ouvrir
+var _modalDesc  = null;
+var _modalEntry = null;  // entrée agenda complète
+
+window.setModalLang = function(lang) {
+  _modalLang = lang;
+  document.getElementById('mlBtnFr').classList.toggle('active', lang === 'fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', lang === 'en');
+  renderModalContent();
+};
+
+function tModal(key) {
+  // Traduit selon la langue de la popup (_modalLang), indépendamment de l'interface
+  // On force temporairement la langue, on lit, puis on remet — propre et sans effet de bord
+  var entry = (REF_TRANSLATIONS || []).find(function(r) { return r.key === key; });
+  if (!entry) return key;
+  return (_modalLang === 'en' ? entry.en : entry.fr) || entry.fr || key;
+}
+
+function renderModalContent() {
+  var d    = _modalDesc;
+  var e    = _modalEntry;
+  var lang = _modalLang;
+
+  // ── Grille info (horaire, lieu, facilitateur, traducteur, piment) ──
+  if (e) {
+    var rows = [];
+    if (e.heure) {
+      var duree = heureDuree(e.heure);
+      rows.push([tModal('rp_horaire'), esc(e.heure) + (duree ? ' <span style="color:var(--muted);font-weight:400">(' + duree + ')</span>' : '')]);
+    }
+    if (e.lieu)  rows.push([tModal('rp_lieu'), esc(e.lieu)]);
+    var facs = [e.fac1, e.fac2].filter(Boolean);
+    if (facs.length) rows.push([facs.length > 1 ? tModal('rp_facilitateurs') : tModal('rp_facilitateur'), facs.map(esc).join(' &amp; ')]);
+    var tradLabel = lang === 'en' ? 'Translator' : 'Traducteur';
+    var tradVal   = e.traduction
+      ? esc(e.traduction)
+      : (isBilingue(e.fac1) || isBilingue(e.fac2)
+          ? (lang === 'en' ? 'Bilingual facilitator' : 'Animateur bilingue')
+          : '<span class="no-desc">' + (lang === 'en' ? 'None' : 'Aucun') + '</span>');
+    rows.push([tradLabel, tradVal]);
+    if (e.piment > 0) rows.push([tModal('rp_piment'), '🌶️'.repeat(e.piment)]);
+
+    var noteHtml = e.note
+      ? '<div style="grid-column:1/-1"><span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, lang)) + '</span></div>'
+      : '';
+
+    document.getElementById('mGrid').innerHTML = rows.map(function(r) {
+      return '<div class="modal-grid-lbl">' + r[0] + '</div><div class="modal-grid-val">' + r[1] + '</div>';
+    }).join('') + noteHtml;
+  }
+
+  // ── Consigne festivalier (toujours affiché, même si vide) ──
+  var consigneEl  = document.getElementById('mConsigne');
+  var consigneTxt = (lang === 'en' && d && d.consigneEn && d.consigneEn.trim())
+    ? d.consigneEn
+    : (d && d.consigne && d.consigne.trim() ? d.consigne : '');
+  var consigneLabel = lang === 'en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
+  var noInfoTxt     = lang === 'en' ? 'No specific instructions.' : 'Aucune instruction spécifique.';
+  consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#fcd34d;background:#fffbeb">' +
+    '<div class="modal-desc-label" style="color:#92400e">' + consigneLabel + '</div>' +
+    '<div>' + (consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noInfoTxt + '</span>') + '</div>' +
+  '</div>';
+
+  // ── Description (toujours affiché, même si vide) ──
+  var descEl  = document.getElementById('mDesc');
+  var descTxt = (lang === 'en' && d && d.descEn && d.descEn.trim())
+    ? d.descEn
+    : (d && d.descFr && d.descFr.trim() ? d.descFr : '');
+  var descLabel = lang === 'en' ? 'ENG — Description' : 'FR — Description';
+  var noDescTxt = lang === 'en' ? 'No description available.' : 'Aucune description disponible.';
+  descEl.innerHTML = '<div class="modal-desc-box">' +
+    '<div class="modal-desc-label">' + descLabel + '</div>' +
+    '<div>' + (descTxt ? esc(descTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noDescTxt + '</span>') + '</div>' +
+  '</div>';
+}
+
 window.openDetail = function(idx) {
   var e   = (window._progRows || [])[idx];
   if (!e) return;
-  var d   = findDesc(e.atelier);
-  var css = TYPE_CSS[e.type] || '';
+  _modalEntry = e;
+  _modalDesc  = findDesc(e.atelier);
+  var css  = TYPE_CSS[e.type] || '';
   var meta = JOUR_META[e.jour] || {};
+
+  // Initialiser la langue du popup sur la langue de l'interface
+  _modalLang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  document.getElementById('mlBtnFr').classList.toggle('active', _modalLang === 'fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', _modalLang === 'en');
+  document.getElementById('modalLangToggle').style.display = 'flex';
 
   // Badge type coloré
   var badgeEl = document.getElementById('mTypeBadge');
@@ -497,62 +742,8 @@ window.openDetail = function(idx) {
   document.getElementById('mTitle').textContent    = e.atelier || '—';
   document.getElementById('mSubtitle').textContent = jourLabel(e.jour) + (meta.date ? ' — ' + jourDate(meta) : '');
 
-  // Grille info
-  var rows = [];
-  if (e.heure) {
-    var duree = heureDuree(e.heure);
-    rows.push([I18n.t('rp_horaire'), esc(e.heure) + (duree ? ' <span style="color:var(--muted);font-weight:400">(' + duree + ')</span>' : '')]);
-  }
-  if (e.lieu)  rows.push([I18n.t('rp_lieu'),         esc(e.lieu)]);
-  var facs = [e.fac1, e.fac2].filter(Boolean);
-  if (facs.length) rows.push([facs.length > 1 ? I18n.t('rp_facilitateurs') : I18n.t('rp_facilitateur'), facs.map(esc).join(' &amp; ')]);
-  if (e.traduction)
-    rows.push([I18n.getLang() === 'en' ? 'Translator' : 'Traducteur', esc(e.traduction)]);
-  else if (isBilingue(e.fac1) || isBilingue(e.fac2))
-    rows.push(['FR / ENG', I18n.getLang() === 'en' ? 'Bilingual facilitator' : 'Animateur bilingue']);
-  if (e.piment > 0) rows.push([I18n.t('rp_piment'),  '🌶️'.repeat(e.piment)]);
-
-  var noteHtml = e.note
-    ? '<div style="grid-column:1/-1"><span class="badge badge-note">🏷 ' + esc(e.note) + '</span></div>'
-    : '';
-
-  document.getElementById('mGrid').innerHTML = rows.map(function(r) {
-    return '<div class="modal-grid-lbl">' + r[0] + '</div><div class="modal-grid-val">' + r[1] + '</div>';
-  }).join('') + noteHtml;
-
-  // Descriptions
-  var descFrEl = document.getElementById('mDescFr');
-  var descEnEl = document.getElementById('mDescEn');
-  if (d && d.descFr && d.descFr.trim()) {
-    descFrEl.innerHTML = '<div class="modal-desc-box">' +
-      '<div class="modal-desc-label">FR — Description</div>' +
-      '<div>' + esc(d.descFr).replace(/\n/g,'<br>') + '</div>' +
-    '</div>';
-  } else {
-    descFrEl.innerHTML = '';
-  }
-  if (d && d.descEn && d.descEn.trim()) {
-    descEnEl.innerHTML = '<div class="modal-desc-box">' +
-      '<div class="modal-desc-label">ENG — Description</div>' +
-      '<div>' + esc(d.descEn).replace(/\n/g,'<br>') + '</div>' +
-    '</div>';
-  } else {
-    descEnEl.innerHTML = '';
-  }
-  // Consigne pour festivalier
-  var consigneEl = document.getElementById('mConsigne');
-  if (d && d.consigne && d.consigne.trim()) {
-    consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#fcd34d;background:#fffbeb">' +
-      '<div class="modal-desc-label" style="color:#92400e">⚠️ Consigne pour festivalier</div>' +
-      '<div>' + esc(d.consigne).replace(/\n/g,'<br>') + '</div>' +
-    '</div>';
-  } else {
-    consigneEl.innerHTML = '';
-  }
-
-  if (!descFrEl.innerHTML && !descEnEl.innerHTML) {
-    descFrEl.innerHTML = '<p class="no-desc">' + I18n.t('rp_no_desc') + '</p>';
-  }
+  // Rendre la grille + consigne + description selon la langue active
+  renderModalContent();
 
   document.getElementById('detailModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -646,7 +837,9 @@ document.addEventListener('tm_lang_changed', function() {
     if (activeTypeFilter) {
       var chips = document.querySelectorAll('#typeFilter .type-chip');
       chips.forEach(function(c) {
-        c.classList.toggle('active', c.getAttribute('data-type') === activeTypeFilter);
+        var isActive = c.getAttribute('data-type') === activeTypeFilter;
+        c.classList.remove('active', 'active-colored');
+        if (isActive) c.classList.add('active-colored');
       });
       var all = getAteliersPublics(currentJour);
       var filtered = all.filter(function(e) { return e.type === activeTypeFilter; });

@@ -20,6 +20,7 @@ ALLOWED = {
     'data.js',
     'logistics.js',
     'logistics.special.js',
+    'logistics.helpers.js',
     'ref_descriptions.js',
     'ref_ressources.js',
     'ref_resource_types.js',

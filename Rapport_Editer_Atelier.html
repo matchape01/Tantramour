@@ -115,6 +115,24 @@
   .spinner { width:15px; height:15px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
 
   /* ── PANNEAU LOGISTIQUE ── */
+  /* ── Blocs section dans l'éditeur ── */
+  .section-block { margin-top:28px; padding-top:22px; border-top:2px solid var(--border); }
+  .section-block-title { font-size:15px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .section-block-sub { font-size:12px; color:var(--muted); margin-bottom:16px; }
+  .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px 24px; }
+  @media(max-width:640px) { .form-grid-2 { grid-template-columns:1fr; } }
+  .desc-area { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:13px; color:var(--text); font-family:inherit; width:100%; resize:vertical; min-height:80px; outline:none; line-height:1.6; }
+  .desc-area:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(59,130,212,.12); }
+  .res-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:6px; margin-bottom:8px; }
+  .res-row label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); white-space:nowrap; min-width:110px; }
+  .res-row input[type="number"] { width:64px; padding:5px 8px; border:1px solid var(--border); border-radius:5px; font-size:13px; background:var(--bg); color:var(--text); font-family:inherit; }
+  .res-row .res-hint { font-size:11px; color:var(--muted); flex:1; }
+  .validated-badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:6px; }
+  .validated-badge.yes { background:#dcfce7; color:#16a34a; border:1px solid #86efac; }
+  .validated-badge.no  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+  .helper-sub-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); padding:8px 0 4px; }
+  .updated-stamp { font-size:11px; color:var(--muted); font-style:italic; padding-top:6px; }
+
   .logistics-panel { margin-top:40px; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
   .logistics-header { background:var(--header-bg); padding:16px 22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border-bottom:1px solid var(--border); }
   .logistics-header-title { font-size:15px; font-weight:700; }
@@ -249,7 +267,9 @@
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['data.js', 'logistics.js', 'logistics.special.js'], function() {
+// Initialisation par défaut — écrasée si logistics.helpers.js se charge correctement
+if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
+loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.js', 'logistics.helpers.js'], function() {
 
 // ══════════════════════════════════════════════
 // ÉTAT
@@ -482,10 +502,48 @@ function buildPersonSelect(id, refArr, val) {
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
 
+function findDesc(atelierName) {
+  if (typeof REF_DESCRIPTIONS === 'undefined') return null;
+  return REF_DESCRIPTIONS.find(d => (d.atelier||'').trim() === (atelierName||'').trim()) || null;
+}
+
+function rteToolbar(id) {
+  return `<div class="rte-toolbar">
+    <button class="rte-btn" onclick="rteCmd('${id}','bold')"><b>B</b></button>
+    <button class="rte-btn" onclick="rteCmd('${id}','italic')"><i>I</i></button>
+    <button class="rte-btn" onclick="rteCmd('${id}','underline')"><u>U</u></button>
+    <div class="rte-sep"></div>
+    <button class="rte-btn" onclick="rteCmd('${id}','insertUnorderedList')">• Liste</button>
+    <button class="rte-btn" onclick="rteCmd('${id}','insertOrderedList')">1. Liste</button>
+    <div class="rte-sep"></div>
+    <button class="rte-btn" onclick="rteCmd('${id}','removeFormat')">✖</button>
+  </div>`;
+}
+
 function renderEditor() {
-  const e = editedData;
+  const e    = editedData;
   const panel = document.getElementById('editorPanel');
   const isNew = (selectedIdx === -1);
+
+  // Description / consignes depuis REF_DESCRIPTIONS
+  const desc = !isNew ? findDesc(e.atelier) : null;
+
+  // Règles ressources : custom sur l'atelier, sinon depuis REF_TYPES
+  const typeRule = (REF_TYPES||[]).find(t => t.value === e.type) || {};
+  const customMinRes      = e._minRes      !== undefined ? e._minRes      : (typeRule.minRes      || 0);
+  const customMinHelpers  = e._minHelpers  !== undefined ? e._minHelpers  : (typeRule.minHelpers  || 0);
+  const customMinTrad     = e._minTrad     !== undefined ? e._minTrad     : (typeRule.minTrad     || 0);
+  const customTradCounts  = e._tradCounts  !== undefined ? e._tradCounts  : (typeRule.tradCounts  || 0);
+
+  // Logistique existante
+  const logId    = e.logisticId || '';
+  const logEntry = logId && LOG[logId]         ? LOG[logId]         : null;
+  const logSpec  = logId && LOG_SPECIAL[logId] ? LOG_SPECIAL[logId] : null;
+  const logHelp  = logId && typeof LOGISTICS_HELPERS !== 'undefined' && LOGISTICS_HELPERS[logId] ? LOGISTICS_HELPERS[logId] : null;
+
+  // Validation & horodatage
+  const isValidated = !!(desc && desc.validatedByFac) || !!(logEntry && logEntry.validatedByFac);
+  const updatedAt   = [desc && desc.updatedAt, logEntry && logEntry.updatedAt].filter(Boolean).sort().pop() || '';
 
   // Boutons piment
   const pimentBtns = REF_PIMENT.map(p =>
@@ -500,6 +558,7 @@ function renderEditor() {
       <span class="badge-idx${isNew ? ' badge-new' : ''}">${isNew ? 'NOUVEAU' : '#' + selectedIdx + ' — ' + AGENDA[selectedIdx].jour}</span>
     </div>
 
+    <!-- ══ BLOC 1 — INFOS PLANNING ══ -->
     <div class="form-grid">
 
       <div class="form-group">
@@ -520,16 +579,6 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label>Note logistique</label>
-        ${buildPersonSelect('f-note', REF_NOTES, e.note||'')}
-      </div>
-
-      <div class="form-group full">
-        <label>Nom de l'atelier</label>
-        <input type="text" id="f-atelier" value="${esc(e.atelier||'')}" oninput="fieldChange('f-atelier')">
-      </div>
-
-      <div class="form-group">
         <label>Type</label>
         ${buildSelect('f-type', REF_TYPES, e.type, false)}
       </div>
@@ -540,65 +589,143 @@ function renderEditor() {
       </div>
 
       <div class="form-group">
-        <label>Facilitateur principal</label>
-        ${buildPersonSelect('f-fac1', REF_FACILITATEURS, e.fac1||'')}
+        <label>Note logistique</label>
+        ${buildPersonSelect('f-note', REF_NOTES, e.note||'')}
       </div>
 
       <div class="form-group">
-        <label>Facilitateur secondaire</label>
-        ${buildPersonSelect('f-fac2', REF_FACILITATEURS, e.fac2||'')}
-      </div>
-
-      <div class="form-group">
-        <label data-i18n="filter_traducteur">Traducteur</label>
-        ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'')}
-      </div>
-
-      <div class="form-group">
-        <label>Helper 1</label>
-        ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'')}
-      </div>
-
-      <div class="form-group">
-        <label>Helper 2</label>
-        ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'')}
-      </div>
-
-      <div class="form-group">
-        <label>Helper 3</label>
-        ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'')}
-      </div>
-
-      <div class="form-group">
-        <label>Helper 4</label>
-        ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'')}
-      </div>
-
-      <div class="form-group">
-        <label data-i18n="col_angel">Angel${e.type !== 'SHIFT ANGEL' ? `<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">(calculé automatiquement)</span>` : ''}</label>
-        ${e.type === 'SHIFT ANGEL'
-          ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')
-          : `<div style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:13px;min-height:34px">${(()=>{const a=resolveAngelEdit(e.jour,e.heure)||e.angel||'';return a?`<span class="pill pill-a" style="font-size:12px">${a}</span>`:'<em>Aucun shift Angel sur cette période</em>';})()}</div>`
-        }
-      </div>
-
-      <div class="form-group full">
         <label>Niveau Piment</label>
         <div class="piment-btns" id="piment-btns">${pimentBtns}</div>
       </div>
 
-      <div class="form-group">
-        <label>Options</label>
-        <div class="checkbox-row">
-          <input type="checkbox" id="f-colibri" ${e.colibri ? 'checked' : ''} onchange="toggleColibri(this.checked)">
-          <label class="cb-label" for="f-colibri">🐦 Shift Colibri</label>
-          <span class="cb-hint">Cocher si un colibri est requis pour cet atelier</span>
-        </div>
-      </div>
-
     </div>
 
-    <div class="editor-actions">
+    <!-- ══ BLOC 2 — NOM ATELIER FR + EN côte à côte ══ -->
+    <div class="section-block">
+      <div class="section-block-title">📝 Nom de l'atelier</div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>🇫🇷 Nom (FR)</label>
+          <input type="text" id="f-atelier" value="${esc(e.atelier||'')}" oninput="fieldChange('f-atelier')">
+        </div>
+        <div class="form-group">
+          <label>🇬🇧 Nom (EN)</label>
+          <input type="text" id="f-atelierEn" value="${esc(desc && desc.nomEn ? desc.nomEn : '')}" oninput="fieldChange('f-atelierEn')">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ BLOC 3 — ÉQUIPE ══ -->
+    <div class="section-block">
+      <div class="section-block-title">👥 Équipe</div>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Facilitateur principal</label>
+          ${buildPersonSelect('f-fac1', REF_FACILITATEURS, e.fac1||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Facilitateur secondaire</label>
+          ${buildPersonSelect('f-fac2', REF_FACILITATEURS, e.fac2||'')}
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="filter_traducteur">Traducteur</label>
+          ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Helper 1</label>
+          ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Helper 2</label>
+          ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Helper 3</label>
+          ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Helper 4</label>
+          ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'')}
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="col_angel">Angel${e.type !== 'SHIFT ANGEL' ? `<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">(calculé automatiquement)</span>` : ''}</label>
+          ${e.type === 'SHIFT ANGEL'
+            ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')
+            : `<div style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:13px;min-height:34px">${(()=>{const a=resolveAngelEdit(e.jour,e.heure)||e.angel||'';return a?`<span class="pill pill-a" style="font-size:12px">${a}</span>`:'<em>Aucun shift Angel sur cette période</em>';})()}</div>`
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Options</label>
+          <div class="checkbox-row">
+            <input type="checkbox" id="f-colibri" ${e.colibri ? 'checked' : ''} onchange="toggleColibri(this.checked)">
+            <label class="cb-label" for="f-colibri">🐦 Shift Colibri</label>
+            <span class="cb-hint">Cocher si un colibri est requis pour cet atelier</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ BLOC 4 — RÈGLES RESSOURCES (modifiables par atelier) ══ -->
+    <div class="section-block">
+      <div class="section-block-title">⚙️ Règles de ressources
+        <span style="font-size:11px;font-weight:400;color:var(--muted)">Par défaut issues du type — modifiables pour cet atelier uniquement</span>
+      </div>
+      <div class="section-block-sub">Ces valeurs sont utilisées par le rapport « Problèmes de planning » pour détecter les ressources insuffisantes.</div>
+      <div class="res-row">
+        <label>Min. ressources total</label>
+        <input type="number" min="0" max="9" id="f-minRes" value="${customMinRes}" oninput="fieldChange('f-minRes')">
+        <span class="res-hint">Nombre total minimum de ressources (helpers + traducteur si applicable)</span>
+      </div>
+      <div class="res-row">
+        <label>Min. helpers</label>
+        <input type="number" min="0" max="9" id="f-minHelpers" value="${customMinHelpers}" oninput="fieldChange('f-minHelpers')">
+        <span class="res-hint">Nombre minimum de helpers requis</span>
+      </div>
+      <div class="res-row">
+        <label>Trad. requis</label>
+        <input type="number" min="0" max="1" id="f-minTrad" value="${customMinTrad}" oninput="fieldChange('f-minTrad')">
+        <span class="res-hint">1 = traducteur obligatoire si facilitateur anglophone · 0 = non requis</span>
+      </div>
+      <div class="res-row">
+        <label>Trad. compte</label>
+        <input type="number" min="0" max="1" id="f-tradCounts" value="${customTradCounts}" oninput="fieldChange('f-tradCounts')">
+        <span class="res-hint">1 = le traducteur compte dans le total Min. ressources · 0 = non</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">
+        Valeurs par défaut du type : Min total = ${typeRule.minRes||0} · Min helpers = ${typeRule.minHelpers||0} · Trad requis = ${typeRule.minTrad||0} · Trad compte = ${typeRule.tradCounts||0}
+        ${(customMinRes !== (typeRule.minRes||0) || customMinHelpers !== (typeRule.minHelpers||0) || customMinTrad !== (typeRule.minTrad||0) || customTradCounts !== (typeRule.tradCounts||0))
+          ? ' <strong style="color:var(--accent)">(valeurs personnalisées actives)</strong>' : ''}
+        &nbsp;—&nbsp;<button type="button" style="font-size:11px;background:none;border:none;color:var(--accent);cursor:pointer;padding:0;text-decoration:underline;" onclick="resetResRules()">Réinitialiser aux valeurs du type</button>
+      </div>
+    </div>
+
+    <!-- ══ BLOC 5 — INSTRUCTIONS PARTICIPANTS FR + EN côte à côte ══ -->
+    <div class="section-block">
+      <div class="section-block-title">⚠️ Instructions participants</div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>🇫🇷 Instructions (FR)</label>
+          <textarea class="desc-area" id="f-consigneFr" oninput="fieldChange('f-consigneFr')">${esc(desc && desc.consigne ? desc.consigne : '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label>🇬🇧 Instructions (EN)</label>
+          <textarea class="desc-area" id="f-consigneEn" oninput="fieldChange('f-consigneEn')">${esc(desc && desc.consigneEn ? desc.consigneEn : '')}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ACTIONS PRINCIPALES ══ -->
+    <div class="editor-actions" style="margin-top:28px;">
       <button class="btn-primary" id="btnUpdate" onclick="saveUpdate()">${isNew ? '✅ Créer l\'atelier' : '✅ Update'}</button>
       <button class="btn-secondary" onclick="resetEdit()">↩ Annuler</button>
       ${isNew ? '' : `<button class="btn-secondary" onclick="duplicateAtelier()">📋 Dupliquer</button>`}
@@ -606,39 +733,71 @@ function renderEditor() {
       ${isNew ? '' : `<button class="btn-danger" onclick="deleteAtelier()">🗑 Supprimer cet atelier</button>`}
     </div>
 
-    <!-- ── SECTION LOGISTIQUE liée à l'atelier ── -->
-    <div style="margin-top:32px;padding-top:24px;border-top:2px solid var(--border)">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-        <div>
-          <div style="font-size:15px;font-weight:700;">📦 Informations Logistiques</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Contenu affiché dans le rapport logistique pour cet atelier</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div class="logistics-saving" id="logSaving"><div class="spinner"></div> Sauvegarde…</div>
+    <!-- ══ BLOC 6 — INFORMATIONS LOGISTIQUES (unifié) ══ -->
+    ${isNew ? '' : `
+    <div class="section-block">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:4px;">
+        <div class="section-block-title">📦 Informations Logistiques</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${isValidated
+            ? '<span class="validated-badge yes">✅ Validé par le facilitateur</span>'
+            : '<span class="validated-badge no">⏳ Non validé par le facilitateur</span>'}
+          ${updatedAt ? `<span class="updated-stamp">Dernière modification : ${updatedAt}</span>` : ''}
         </div>
       </div>
-      <div id="logSection"></div>
-    </div>
+      <div class="section-block-sub">Durée de préparation, besoins logistiques, besoins spécifiques et consignes helpers</div>
 
-    <!-- ── SECTION LOGISTIQUE SPÉCIALE liée à l'atelier ── -->
-    <div style="margin-top:24px;padding-top:24px;border-top:2px solid #c4b5fd">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-        <div>
-          <div style="font-size:15px;font-weight:700;color:#7c5cd8;">⭐ Informations Logistiques Spéciales</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Informations logistiques supplémentaires pour cet atelier</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div class="logistics-saving" id="logSpecialSaving"><div class="spinner"></div> Sauvegarde…</div>
-        </div>
+      <!-- Durée préparation -->
+      <div class="res-row" style="margin-bottom:14px;">
+        <label>⏱ Durée préparation</label>
+        <select id="f-prepDuration" style="width:90px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;">
+          ${[0,15,30,45,60].map(v => `<option value="${v}"${(logEntry && logEntry.prepDuration===v)?'  selected':''}>${v} min</option>`).join('')}
+        </select>
+        <span class="res-hint">Temps estimé de mise en place avant l'atelier</span>
       </div>
-      <div id="logSpecialSection"></div>
+
+      <!-- Informations logistiques (RTE) -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>📝 Informations logistiques</label>
+        ${rteToolbar('log-rte')}
+        <div class="rte-editor" id="log-rte" contenteditable="true">${logEntry ? (logEntry.html||'') : ''}</div>
+      </div>
+
+      <!-- Besoins spécifiques (logistique spéciale) -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label style="color:#7c5cd8;">⭐ Besoins logistiques spécifiques</label>
+        ${rteToolbar('log-special-rte').replace(/border-radius:6px 6px/g,'border-color:#c4b5fd;border-radius:6px 6px')}
+        <div class="rte-editor" id="log-special-rte" contenteditable="true" style="border-color:#c4b5fd;">${logSpec ? (logSpec.html||'') : ''}</div>
+      </div>
+
+      <!-- Consignes helpers -->
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>🤝 Consignes pour Helpers</label>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;">
+        <div style="background:var(--surface);padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);">🔧 Avant l'atelier — Préparation / Installation</div>
+        ${rteToolbar('log-helpers-avant')}
+        <div class="rte-editor" id="log-helpers-avant" contenteditable="true" style="border-radius:0;border-top:none;">${logHelp ? (logHelp.avant||'') : ''}</div>
+        <div style="background:var(--surface);padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">▶️ Pendant l'atelier</div>
+        ${rteToolbar('log-helpers-pendant')}
+        <div class="rte-editor" id="log-helpers-pendant" contenteditable="true" style="border-radius:0;border-top:none;">${logHelp ? (logHelp.pendant||'') : ''}</div>
+        <div style="background:var(--surface);padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">🧹 Après l'atelier — Désinstallation / Rangement</div>
+        ${rteToolbar('log-helpers-apres')}
+        <div class="rte-editor" id="log-helpers-apres" contenteditable="true" style="border-radius:0;border-top:none;border-bottom:none;">${logHelp ? (logHelp.apres||'') : ''}</div>
+      </div>
+
+      <!-- Actions logistique -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px;">
+        <button class="btn-primary" style="font-size:13px;padding:8px 18px" onclick="saveLogistique()">💾 Sauvegarder les infos logistiques</button>
+        <div class="logistics-saving" id="logSaving"><div class="spinner"></div> Sauvegarde…</div>
+      </div>
     </div>
+    `}
   `;
 
   // Les sections logistiques ne sont disponibles que pour les ateliers existants
   if (!isNew) {
-    logRenderForAtelier(e.logisticId || '');
-    logSpecialRenderForAtelier(e.logisticId || '');
+    // Le nouveau renderEditor intègre le bloc logistique directement — pas besoin des sections séparées
   }
 }
 
@@ -650,16 +809,25 @@ function fieldChange(id) {
   if (!el) return;
   const field = id.replace('f-', '');
   const val = el.value;
-  // Mapping id → clé AGENDA
+  // Mapping id → clé AGENDA (champs standard)
   const map = {
     'jour':'jour','atelier':'atelier','type':'type','lieu':'lieu',
     'fac1':'fac1','fac2':'fac2','traduction':'traduction',
     'helper1':'helper1','helper2':'helper2','helper3':'helper3','helper4':'helper4',
     'angel':'angel','note':'note'
-    // 'heure' et 'colibri' sont gérés séparément
   };
   const key = map[field];
   if (key) editedData[key] = val;
+
+  // Champs personnalisés (stockés sur editedData avec préfixe _)
+  if (field === 'minRes')      { editedData._minRes      = parseInt(val,10)||0; }
+  if (field === 'minHelpers')  { editedData._minHelpers  = parseInt(val,10)||0; }
+  if (field === 'minTrad')     { editedData._minTrad     = parseInt(val,10)||0; }
+  if (field === 'tradCounts')  { editedData._tradCounts  = parseInt(val,10)||0; }
+  // Champs description (stockés temporairement sur editedData)
+  if (field === 'atelierEn')   { editedData._nomEn       = val; }
+  if (field === 'consigneFr')  { editedData._consigneFr  = val; }
+  if (field === 'consigneEn')  { editedData._consigneEn  = val; }
 
   // Synchroniser la date si le jour change
   if (field === 'jour') {
@@ -668,6 +836,18 @@ function fieldChange(id) {
   }
 }
 window.fieldChange = fieldChange;
+
+// Réinitialiser les règles ressources aux valeurs du type
+function resetResRules() {
+  const typeRule = (REF_TYPES||[]).find(t => t.value === editedData.type) || {};
+  delete editedData._minRes;
+  delete editedData._minHelpers;
+  delete editedData._minTrad;
+  delete editedData._tradCounts;
+  renderEditor();
+  showToast('↩ Règles réinitialisées aux valeurs du type');
+}
+window.resetResRules = resetResRules;
 
 function setPiment(val) {
   editedData.piment = val;
@@ -725,6 +905,86 @@ async function sauvegarder(content) {
   await githubSaveFile('data.js', content);
 }
 
+// Fonction générique de sauvegarde d'un fichier quelconque
+async function saveFile(filename, content) {
+  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
+  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) {
+    const res = await fetch('http://localhost:3000/save', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename, content })
+    });
+    if (!res.ok) { const e = await res.json().catch(()=>{}); throw new Error(e && e.error ? e.error : 'Erreur ' + res.status); }
+    return;
+  }
+  await githubSaveFile(filename, content);
+}
+
+// ══════════════════════════════════════════════
+// SAUVEGARDE LOGISTIQUE (bouton dédié dans le bloc 6)
+// ══════════════════════════════════════════════
+async function saveLogistique() {
+  if (selectedIdx === null || selectedIdx === -1) return;
+  const a = AGENDA[selectedIdx];
+  const ind = document.getElementById('logSaving');
+  if (ind) ind.classList.add('show');
+
+  const today = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
+
+  // Générer logisticId si nécessaire
+  let logId = editedData.logisticId || a.logisticId;
+  if (!logId) {
+    const safeName = (a.atelier||'NEW').replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase();
+    const jourKey  = (a.jour||'').replace(/\s+/g,'').toUpperCase();
+    logId = jourKey + '_' + safeName;
+    editedData.logisticId = logId;
+    a.logisticId = logId;
+  }
+
+  // Lire les RTEs
+  const logRte     = document.getElementById('log-rte');
+  const logSpecRte = document.getElementById('log-special-rte');
+  const avantRte   = document.getElementById('log-helpers-avant');
+  const pendantRte = document.getElementById('log-helpers-pendant');
+  const apresRte   = document.getElementById('log-helpers-apres');
+  const prepEl     = document.getElementById('f-prepDuration');
+
+  const logHtml  = logRte     ? logRte.innerHTML.trim()     : '';
+  const specHtml = logSpecRte ? logSpecRte.innerHTML.trim() : '';
+  const prepDur  = prepEl     ? parseInt(prepEl.value, 10) || 0 : 0;
+
+  if (typeof LOG === 'undefined') window.LOG = {};
+  LOG[logId] = { html: logHtml, text: logRte ? (logRte.innerText||'').trim() : '',
+    validatedByFac: !!(REF_DESCRIPTIONS && findDesc(a.atelier) && findDesc(a.atelier).validatedByFac),
+    prepDuration: prepDur, updatedAt: today };
+
+  if (typeof LOG_SPECIAL === 'undefined') window.LOG_SPECIAL = {};
+  LOG_SPECIAL[logId] = { html: specHtml, text: logSpecRte ? (logSpecRte.innerText||'').trim() : '', updatedAt: today };
+
+  if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
+  LOGISTICS_HELPERS[logId] = {
+    avant:   avantRte   ? avantRte.innerHTML.trim()   : '',
+    pendant: pendantRte ? pendantRte.innerHTML.trim()  : '',
+    apres:   apresRte   ? apresRte.innerHTML.trim()    : '',
+    updatedAt: today
+  };
+
+  try {
+    await Promise.all([
+      saveFile('logistics.js',         genererLogisticsJs()),
+      saveFile('logistics.special.js', genererLogisticsSpecialJs()),
+      saveFile('logistics.helpers.js', genererLogisticsHelpersJs()),
+      saveFile('data.js',              genererDataJs()),
+    ]);
+    showToast('✅ Informations logistiques sauvegardées !');
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  } finally {
+    if (ind) ind.classList.remove('show');
+  }
+}
+window.saveLogistique = saveLogistique;
+
 async function saveUpdate() {
   if (selectedIdx === null) return;
   const isNew = (selectedIdx === -1);
@@ -744,11 +1004,11 @@ async function saveUpdate() {
 
   // Types d'ateliers dont le champ angel est piloté par les shifts
   const TYPES_ANGEL_PILOTES = new Set([
-    'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
-    'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
-    'LOVE TEMPLE', 'TANTRA CAFE & CONFERENCE', 'TANTRA CAFÉ & CONFERENCE',
+    'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
+    'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
+    'LOVE TEMPLE', 'TANTRA CAFE & CONFERENCE',
     'SUPPORT EMOTIONNEL', 'CEREMONIE & CONCERT',
-    'DJ Set & POOL PARTY', 'DJ SET & POOL PARTY', 'POOL PARTY & DJ Set',
+    'DJ Set', 'POOL PARTY',
   ]);
 
   // Pour les ateliers non-SHIFT ANGEL, calculer l'angel depuis le shift ANGEL correspondant
@@ -791,6 +1051,27 @@ async function saveUpdate() {
     return count;
   }
 
+  // ── Sauvegarder nomEn / consignes dans REF_DESCRIPTIONS si modifiés ─────────
+  async function saveDescIfNeeded() {
+    const hasDescChange = editedData._nomEn !== undefined || editedData._consigneFr !== undefined || editedData._consigneEn !== undefined;
+    if (!hasDescChange) return;
+    const atelierName = newEntry.atelier || '';
+    let d = findDesc(atelierName);
+    if (!d) {
+      // Créer une entrée minimale
+      const key = atelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
+      d = { key, atelier: atelierName, nomEn:'', type: newEntry.type||'', piment: newEntry.piment||0,
+            fac1: newEntry.fac1||'', fac2: newEntry.fac2||'', descFr:'', descEn:'',
+            consigne:'', consigneEn:'', validatedByFac:false, updatedAt:'' };
+      REF_DESCRIPTIONS.push(d);
+    }
+    if (editedData._nomEn      !== undefined) d.nomEn      = editedData._nomEn;
+    if (editedData._consigneFr !== undefined) d.consigne   = editedData._consigneFr;
+    if (editedData._consigneEn !== undefined) d.consigneEn = editedData._consigneEn;
+    d.updatedAt = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
+    await saveFile('ref_descriptions.js', genererRefDescJs());
+  }
+
   if (isNew) {
     // Ajouter en fin de tableau
     AGENDA.push(newEntry);
@@ -798,6 +1079,7 @@ async function saveUpdate() {
     try {
       const content = genererDataJs();
       await sauvegarder(content);
+      await saveDescIfNeeded();
       selectedIdx = newIdx;
       editedData  = Object.assign({}, newEntry);
       renderList();
@@ -835,6 +1117,7 @@ async function saveUpdate() {
     try {
       const content = genererDataJs();
       await sauvegarder(content);
+      await saveDescIfNeeded();
       renderList();
       const msg = propagated > 0
         ? `✅ data.js mis à jour — ${propagated} atelier(s) mis à jour avec angel : ${newEntry.angel}`
@@ -952,8 +1235,19 @@ var AGENDA = [`;
       const dateLabel = ref ? ref.date : e.date;
       section = `\n  // ─── ${e.jour} — ${dateLabel} ${'─'.repeat(Math.max(0, 60 - e.jour.length - dateLabel.length))}\n`;
     }
-    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"},`;
-    return section + line;
+    // Champs règles custom uniquement si différents du type
+    const typeRule2 = (typeof REF_TYPES !== 'undefined') ? (REF_TYPES.find(t => t.value === e.type) || {}) : {};
+    const customParts = [];
+    if (e._minRes      !== undefined && e._minRes      !== (typeRule2.minRes||0))     customParts.push(`_minRes:${e._minRes}`);
+    if (e._minHelpers  !== undefined && e._minHelpers  !== (typeRule2.minHelpers||0)) customParts.push(`_minHelpers:${e._minHelpers}`);
+    if (e._minTrad     !== undefined && e._minTrad     !== (typeRule2.minTrad||0))    customParts.push(`_minTrad:${e._minTrad}`);
+    if (e._tradCounts  !== undefined && e._tradCounts  !== (typeRule2.tradCounts||0)) customParts.push(`_tradCounts:${e._tradCounts}`);
+    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"}`,
+    const lineWithCustom = customParts.length
+      ? line.slice(0, -1) + ',' + customParts.join(',') + '}'
+      : line;
+    const finalLine = lineWithCustom + ',';
+    return section + finalLine;
   }).join('\n');
 
   return header + '\n' + lines + `
@@ -974,6 +1268,60 @@ function agendaToRaw(entries) {
     e.angel, e.note, e.logisticId || '', e.piment || 0
   ]);
 }`;
+}
+
+// ══════════════════════════════════════════════
+// GÉNÉRATION REF_DESCRIPTIONS.JS
+// ══════════════════════════════════════════════
+function genererRefDescJs() {
+  const lines = (REF_DESCRIPTIONS||[]).map(d => {
+    return '  { key:"'           + escJs(d.key||'') +
+      '", atelier:"'             + escJs(d.atelier||'') +
+      '", nomEn:"'               + escJs(d.nomEn||'') +
+      '", type:"'                + escJs(d.type||'') +
+      '", piment:'               + (d.piment||0) +
+      ', fac1:"'                 + escJs(d.fac1||'') +
+      '", fac2:"'                + escJs(d.fac2||'') +
+      '", descFr:"'              + escJs(d.descFr||'') +
+      '", descEn:"'              + escJs(d.descEn||'') +
+      '", consigne:"'            + escJs(d.consigne||'') +
+      '", consigneEn:"'          + escJs(d.consigneEn||'') +
+      '", validatedByFac:'       + (d.validatedByFac ? 'true' : 'false') +
+      ', updatedAt:"'            + escJs(d.updatedAt||'') + '" }';
+  }).join(',\n');
+  return '/**\n * TANTRAMOUR 2026 — Descriptions des Ateliers (FR / EN)\n' +
+    ' * Géré automatiquement\n */\n\nvar REF_DESCRIPTIONS = [\n\n' + lines + '\n\n];\n';
+}
+
+// ══════════════════════════════════════════════
+// GÉNÉRATION LOGISTICS.JS / SPECIAL / HELPERS
+// ══════════════════════════════════════════════
+function genererLogisticsJs() {
+  const src = (typeof LOG !== 'undefined') ? LOG : {};
+  const entries = Object.keys(src).map(k => {
+    const v = src[k];
+    const prep = (typeof v.prepDuration === 'number') ? v.prepDuration : 15;
+    return `  "${escJs(k)}": {\n    html: "${escJs(v.html||'')}",\n    text: "${escJs(v.text||'')}",\n    validatedByFac: ${v.validatedByFac?'true':'false'},\n    prepDuration: ${prep},\n    updatedAt: "${escJs(v.updatedAt||'')}"\n  }`;
+  }).join(',\n\n');
+  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques\n */\n\nvar LOGISTICS = {\n\n' + entries + (entries?'\n\n':'') + '};\n';
+}
+
+function genererLogisticsSpecialJs() {
+  const src = (typeof LOG_SPECIAL !== 'undefined') ? LOG_SPECIAL : {};
+  const entries = Object.keys(src).map(k => {
+    const v = src[k];
+    return `  "${escJs(k)}": {\n    html: "${escJs(v.html||'')}",\n    text: "${escJs(v.text||'')}",\n    updatedAt: "${escJs(v.updatedAt||'')}"\n  }`;
+  }).join(',\n\n');
+  return '/**\n * TANTRAMOUR 2026 — Informations Logistiques Spéciales\n */\n\nvar LOGISTICS_SPECIAL = {\n\n' + entries + (entries?'\n\n':'') + '};\n';
+}
+
+function genererLogisticsHelpersJs() {
+  const src = (typeof LOGISTICS_HELPERS !== 'undefined') ? LOGISTICS_HELPERS : {};
+  const entries = Object.keys(src).map(k => {
+    const v = src[k];
+    return `  "${escJs(k)}": {\n    avant: "${escJs(v.avant||'')}",\n    pendant: "${escJs(v.pendant||'')}",\n    apres: "${escJs(v.apres||'')}",\n    updatedAt: "${escJs(v.updatedAt||'')}"\n  }`;
+  }).join(',\n\n');
+  return '/**\n * TANTRAMOUR 2026 — Consignes Helpers par Atelier\n * Structure : { avant, pendant, apres, updatedAt }\n */\n\nvar LOGISTICS_HELPERS = {\n\n' + entries + (entries?'\n\n':'') + '};\n';
 }
 
 // ══════════════════════════════════════════════
@@ -1004,12 +1352,8 @@ function toggleMode() {
 }
 window.toggleMode = toggleMode;
 
-// Auto-refresh si ouvert depuis Home (uniquement sans paramètre idx pour éviter de perdre la pré-sélection)
-const _params0 = new URLSearchParams(location.search);
-if (location.search.includes('v=') && !_params0.has('idx') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
-  sessionStorage.setItem('_refreshed_' + location.pathname, '1');
-  hardReload();
-}
+// Note : loader.js ajoute déjà ?_=timestamp sur chaque script → cache toujours contourné.
+// Le hardReload() automatique est supprimé car il interrompait loadData avant renderList().
 
 renderList();
 

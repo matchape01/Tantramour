@@ -64,6 +64,47 @@
   .main-btn-desc  { font-size:12px; font-weight:400; opacity:.85; margin-top:2px; }
   .main-btn-arrow { font-size:22px; opacity:.7; flex-shrink:0; }
 
+  /* ── PLAN HAMEAU ── */
+  .plan-section {
+    margin-top:28px; text-align:center;
+  }
+  .plan-label {
+    font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1.5px; color:var(--muted); margin-bottom:10px;
+  }
+  .plan-thumb {
+    max-width:400px; width:100%; border-radius:10px;
+    border:1px solid var(--border); cursor:zoom-in;
+    transition:transform .15s, box-shadow .15s;
+    display:block; margin:0 auto;
+  }
+  .plan-thumb:hover { transform:scale(1.01); box-shadow:0 4px 20px rgba(0,0,0,.12); }
+
+  /* ── LIGHTBOX PLAN ── */
+  .lightbox {
+    display:none; position:fixed; inset:0; z-index:9990;
+    background:rgba(0,0,0,.88);
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .lightbox.open { display:flex; }
+  .lightbox-img {
+    max-width:100%; max-height:100%;
+    border-radius:8px; object-fit:contain;
+    cursor:default;
+  }
+  .lightbox-close {
+    position:fixed; top:16px; right:20px;
+    background:#fff; color:#1f2328;
+    border:none; border-radius:8px;
+    padding:8px 18px; font-size:14px; font-weight:700;
+    cursor:pointer; font-family:inherit;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+    transition:background .15s;
+    z-index:9991;
+  }
+  .lightbox-close:hover { background:#f0f4ff; }
+
   /* ── FOOTER DREAMTEAM ── */
   footer {
     padding:24px; text-align:center;
@@ -145,7 +186,28 @@
     <div class="main-btn-arrow">›</div>
   </a>
 
+  <!-- ── PLAN HAMEAU ── -->
+  <div class="plan-section">
+    <div class="plan-label">🗺 Plan du Hameau</div>
+    <img
+      class="plan-thumb"
+      src="TAF%202026%20_%20PLAN%20HAMEAU%20V1.jpg"
+      alt="Plan du Hameau Tantramour 2026"
+      onclick="openLightbox()"
+    />
+  </div>
+
 </main>
+
+<!-- ── LIGHTBOX PLAN ── -->
+<div class="lightbox" id="planLightbox" onclick="closeLightboxOnOverlay(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕ Fermer</button>
+  <img
+    class="lightbox-img"
+    src="TAF%202026%20_%20PLAN%20HAMEAU%20V1.jpg"
+    alt="Plan du Hameau Tantramour 2026 — plein écran"
+  />
+</div>
 
 <!-- ── FOOTER DREAMTEAM ── -->
 <footer>
@@ -239,8 +301,24 @@ function checkPw() {
 }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closePw();
+  if (e.key === 'Escape') {
+    closePw();
+    closeLightbox();
+  }
 });
+
+// ── Lightbox Plan Hameau ─────────────────────────────────────────────────────
+function openLightbox() {
+  document.getElementById('planLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('planLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeLightboxOnOverlay(e) {
+  if (e.target === document.getElementById('planLightbox')) closeLightbox();
+}
 </script>
 </body>
 </html>

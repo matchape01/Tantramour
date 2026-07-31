@@ -728,6 +728,7 @@ function buildRefDescJs() {
   var lines = merged.map(function(d) {
     return '  { key:"' + escJs(d.key||'') +
       '", atelier:"'        + escJs(d.atelier||'') +
+      '", nomEn:"'          + escJs(d.nomEn||'') +
       '", type:"'           + escJs(d.type||'') +
       '", piment:'          + (d.piment||0) +
       ', fac1:"'            + escJs(d.fac1||'') +
@@ -735,6 +736,7 @@ function buildRefDescJs() {
       '", descFr:"'         + escJs(d.descFr||'') +
       '", descEn:"'         + escJs(d.descEn||'') +
       '", consigne:"'       + escJs(d.consigne||'') +
+      '", consigneEn:"'     + escJs(d.consigneEn||'') +
       '", validatedByFac:'  + (d.validatedByFac ? 'true' : 'false') +
       ', updatedAt:"'       + escJs(d.updatedAt||'') + '" }';
   }).join(',\n');

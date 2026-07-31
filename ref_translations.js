@@ -27,13 +27,13 @@ var REF_TRANSLATIONS = [
 
   // ── PAGE ACCUEIL ─────────────────────────────────────────────────────────────
   { key: "home_subtitle",      fr: "Portail des rapports — 29 août › 4 septembre 2026", en: "Reports Portal — Aug 29 › Sep 4, 2026" },
-  { key: "home_group_general", fr: "Général",                    en: "General" },
+  { key: "home_group_general", fr: "DreamTeam",                  en: "DreamTeam" },
   { key: "home_group_planning",fr: "Gestion planning",           en: "Schedule Management" },
 
   // Cartes index
-  { key: "card_agenda_jour_title",    fr: "Agenda par Jour",                        en: "Agenda by Day" },
+  { key: "card_agenda_jour_title",    fr: "Planning par Jour",                       en: "Planning by Day" },
   { key: "card_agenda_jour_desc",     fr: "Tous les ateliers — filtres jour, lieu, rôle", en: "All workshops — filters by day, venue, role" },
-  { key: "card_agenda_personne_title",fr: "Agenda par Personne",                    en: "Agenda by Person" },
+  { key: "card_agenda_personne_title",fr: "Planning par Personne",                   en: "Planning by Person" },
   { key: "card_agenda_personne_desc", fr: "Planning individuel par facilitateur, helper ou angel", en: "Individual schedule by facilitator, helper or angel" },
   { key: "card_mon_planning_title",   fr: "Mon Planning",                           en: "My Planning" },
   { key: "card_mon_planning_desc",    fr: "Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels", en: "Combined view or by role — Facilitators, Helpers, Translators, Angels" },
@@ -106,11 +106,11 @@ var REF_TRANSLATIONS = [
   { key: "stats_conflits",     fr: "conflit(s) détecté(s)",      en: "conflict(s) detected" },
 
   // ── RAPPORT AGENDA PAR JOUR ─────────────────────────────────────────────────
-  { key: "r1_title",           fr: "Agenda par Jour",            en: "Agenda by Day" },
+  { key: "r1_title",           fr: "Planning par Jour",          en: "Planning by Day" },
   { key: "r1_empty",           fr: "Aucun résultat",             en: "No results" },
 
   // ── RAPPORT AGENDA PAR PERSONNE ─────────────────────────────────────────────
-  { key: "r2_title",           fr: "Agenda par Personne",        en: "Agenda by Person" },
+  { key: "r2_title",           fr: "Planning par Personne",        en: "Planning by Person" },
 
   // ── RAPPORT MON PLANNING ────────────────────────────────────────────────────
   { key: "r3_title",           fr: "Mon Planning",               en: "My Planning" },
@@ -344,7 +344,9 @@ var REF_TRANSLATIONS = [
   { key: "rp_type_art_pm",     fr: "Artistique Après-Midi",                   en: "Arts Afternoon" },
   { key: "rp_type_yoga",       fr: "Méditation / Yoga",                       en: "Meditation / Yoga" },
   { key: "rp_type_cere",       fr: "Cérémonie & Concert",                     en: "Ceremony & Concert" },
-  { key: "rp_type_pool",       fr: "DJ Set & Pool Party",                     en: "DJ Set & Pool Party" },
+  { key: "rp_type_pool",       fr: "DJ Set & Pool Party",                     en: "DJ Set & Pool Party" },  // ancienne clé conservée pour rétrocompat
+  { key: "rp_type_dj",         fr: "DJ Set",                                  en: "DJ Set" },
+  { key: "rp_type_pool_party", fr: "Pool Party",                              en: "Pool Party" },
   { key: "rp_type_love",       fr: "Love Temple",                             en: "Love Temple" },
   { key: "rp_type_support",    fr: "Support Émotionnel",                      en: "Emotional Support" },
   { key: "rp_type_cafe",       fr: "Tantra Café",                             en: "Tantra Café" },
@@ -440,4 +442,68 @@ var REF_TRANSLATIONS = [
 
   // ── FOOTER ──────────────────────────────────────────────────────────────────
   { key: "footer_tantramour",  fr: "Tantramour 2026",            en: "Tantramour 2026" },
+
+  // ── RAPPORT INFORMATIONS ATELIERS ───────────────────────────────────────────
+  { key: "card_ria_title",         fr: "Informations Ateliers",                       en: "Workshop Information" },
+  { key: "card_ria_desc",          fr: "Consignes, besoins logistiques et infos pour helpers et intervenants", en: "Instructions, logistics needs and info for helpers and facilitators" },
+  { key: "ria_title",              fr: "Informations Ateliers",                       en: "Workshop Information" },
+  { key: "ria_footer",             fr: "Tantramour 2026 — Informations Ateliers",     en: "Tantramour 2026 — Workshop Information" },
+  { key: "ria_filter_helper",      fr: "🤝 Helper",                                  en: "🤝 Helper" },
+  { key: "ria_filter_all_helpers", fr: "Tous les helpers",                            en: "All helpers" },
+  { key: "ria_filter_all_trad",    fr: "Tous les traducteurs",                        en: "All translators" },
+  { key: "ria_filter_all_angels",  fr: "Tous les angels",                             en: "All angels" },
+  { key: "ria_not_validated",      fr: "Non validée par le facilitateur",             en: "Not validated by facilitator" },
+
+  // ── CARTES INDEX — 4 rapports DreamTeam ─────────────────────────────────────
+  { key: "card_programme_title",        fr: "Programme (Festivaliers)",                                          en: "Programme (Attendees)" },
+  { key: "card_programme_desc",         fr: "Ateliers publics par jour — descriptions & détails",               en: "Public workshops by day — descriptions & details" },
+  { key: "card_saisie_ateliers_title",  fr: "FACILITATEUR : Saisie des informations Ateliers (Descriptions & Logistiques)", en: "FACILITATOR: Workshop Information Input (Descriptions & Logistics)" },
+  { key: "card_saisie_ateliers_desc",   fr: "Saisir les descriptions FR/EN, le niveau piment, les consignes et les besoins logistiques — tout en un", en: "Enter FR/EN descriptions, spice level, instructions and logistics needs — all in one" },
+  { key: "card_mon_planning_v2_title",  fr: "Mon Planning V2",                                                  en: "My Schedule V2" },
+  { key: "card_mon_planning_v2_desc",   fr: "Vue par ressource — détails ateliers, logistique, popup FR/EN",    en: "Resource view — workshop details, logistics, FR/EN popup" },
+  { key: "card_angel_title",            fr: "Planning Angel",                                                   en: "Angel Schedule" },
+  { key: "card_angel_desc",             fr: "Vue du planning des Angels ainsi que leur contact",                 en: "Angel schedule overview with contact details" },
+
+  // ── RAPPORT SAISIE ATELIERS (Descriptions & Logistique) ─────────────────────
+  { key: "rsa_title",              fr: "Saisie Ateliers — Descriptions & Logistique", en: "Workshop Input — Descriptions & Logistics" },
+  { key: "rsa_back",               fr: "← Retour à la liste",                         en: "← Back to list" },
+  { key: "rsa_breadcrumb",         fr: "Ateliers",                                    en: "Workshops" },
+
+  // Section 1 — Description
+  { key: "rsa_sec1_title",         fr: "1 — Description de l'Atelier",                en: "1 — Workshop Description" },
+  { key: "rsa_nom_fr_label",       fr: "🇫🇷 Nom de l'atelier (FR)",                   en: "🇫🇷 Workshop name (FR)" },
+  { key: "rsa_nom_fr_ph",          fr: "Nom en français…",                             en: "Name in French…" },
+  { key: "rsa_nom_en_label",       fr: "🇬🇧 Nom de l'atelier (EN)",                   en: "🇬🇧 Workshop name (EN)" },
+  { key: "rsa_nom_en_ph",          fr: "Nom en anglais…",                              en: "Workshop name in English…" },
+  { key: "rsa_consigne_fr_label",  fr: "Instructions participants",                    en: "Participant instructions" },
+  { key: "rsa_consigne_fr_ph",     fr: "Instructions pour les participants (FR)…",     en: "Participant instructions (FR)…" },
+  { key: "rsa_consigne_en_label",  fr: "Instructions participants (EN)",               en: "Participant instructions (EN)" },
+  { key: "rsa_consigne_en_ph",     fr: "Instructions pour les participants (EN)…",     en: "Participant instructions (EN)…" },
+
+  // Section 2 — Logistique
+  { key: "rsa_sec2_title",         fr: "2 — Informations Logistiques",                en: "2 — Logistics Information" },
+  { key: "rsa_prep_label",         fr: "⏱ Estimation durée de préparation",           en: "⏱ Estimated preparation time" },
+  { key: "rsa_prep_0",             fr: "0 min — Aucune préparation",                  en: "0 min — No preparation" },
+  { key: "rsa_log_label",          fr: "📦 Informations logistiques",                 en: "📦 Logistics information" },
+  { key: "rsa_log_hint",           fr: "Décrivez vos besoins en matériel (tables, chaises, tapis yoga, matelas, coussins, etc…), technique (lumière, micros, câbles, etc…) ou autres. S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.", en: "Describe your material needs (tables, chairs, yoga mats, mattresses, cushions, etc.), technical needs (lighting, microphones, cables, etc.) or others. If nothing is needed, write \"N/A\". Use bullet points for clarity." },
+  { key: "rsa_special_label",      fr: "⭐ Besoins logistiques spécifiques",          en: "⭐ Specific logistics needs" },
+  { key: "rsa_special_hint",       fr: "Décrivez les besoins complémentaires en matériel spécial, achats à faire… S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.", en: "Describe any additional needs for special equipment, purchases, etc. If nothing is needed, write \"N/A\". Use bullet points for clarity." },
+  { key: "rsa_helpers_label",      fr: "🤝 Consignes pour Helpers",                   en: "🤝 Helper Instructions" },
+  { key: "rsa_helpers_hint",       fr: "Décrivez tout ce que les helpers auront à faire pour cet atelier. S'il n'y a rien à faire, indiquez « RAS » ou « N/A » à chaque étape. Utilisez la liste à puces pour plus de clarté.", en: "Describe everything helpers will need to do for this workshop. If nothing is needed, write \"N/A\" for each step. Use bullet points for clarity." },
+  { key: "rsa_helper_avant",       fr: "🔧 Avant l'atelier — Préparation - Installation", en: "🔧 Before the workshop — Setup & Installation" },
+  { key: "rsa_helper_pendant",     fr: "▶️ Pendant l'atelier",                        en: "▶️ During the workshop" },
+  { key: "rsa_helper_apres",       fr: "🧹 Après l'atelier — Désinstallation – Rangement – Nettoyage", en: "🧹 After the workshop — Breakdown, Storage & Cleaning" },
+
+  // Pills & validation
+  { key: "rsa_validee",            fr: "✅ Validée par Facilitateur",                 en: "✅ Validated by Facilitator" },
+  { key: "rsa_pill_desc_both",     fr: "Desc FR+EN ✓",                               en: "Desc FR+EN ✓" },
+  { key: "rsa_pill_desc_fr",       fr: "Desc FR",                                    en: "Desc FR only" },
+  { key: "rsa_pill_desc_en",       fr: "Desc EN",                                    en: "Desc EN only" },
+  { key: "rsa_pill_desc_empty",    fr: "Desc vide",                                  en: "No desc" },
+  { key: "rsa_pill_log_ok",        fr: "Log ✓",                                      en: "Log ✓" },
+  { key: "rsa_pill_log_empty",     fr: "Log vide",                                   en: "No log" },
+  { key: "rsa_pill_validee",       fr: "✔ Validé Fac",                               en: "✔ Fac Validated" },
+
+  // Footer
+  { key: "rsa_footer",             fr: "Tantramour 2026 — Saisie Ateliers (Descriptions & Logistique)", en: "Tantramour 2026 — Workshop Input (Descriptions & Logistics)" },
 ];

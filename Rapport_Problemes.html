@@ -217,45 +217,20 @@ loadData(['data.js'], function() {
 // ════════════════════════════════════════════════════════════════
 const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 
-// Types d'ateliers exclus de la vérification (logistique interne, repas, etc.)
-const TYPES_EXCLUS = new Set([
-  'REPAS & PAUSE', 'PREPA & LOGITICS', 'PREPA & LOGISTICS', "REUNION D'EQUIPE",
-  'TEST', 'LOVE TEMPLE', 'SHIFT ANGEL', 'RASSEMBLEMENT', 'SUPPORT EMOTIONNEL'
-]);
+// ── Règles de ressources lues depuis REF_TYPES ───────────────────────────────
+// Un type est "exclu" (pas de vérification) si minRes === 0 ET minHelpers === 0
+// Un type est soumis à vérification si minRes > 0 ou minHelpers > 0
+function getTypeRule(type) {
+  if (typeof REF_TYPES === 'undefined') return null;
+  return REF_TYPES.find(function(t) { return t.value === type; }) || null;
+}
 
-// ── Minimums de ressources par type ─────────────────────────────────────────
-// Règle métier :
-//   min 2 → Tantra, Artistique, Cérémonie & Concert, Tantra Café & Conférence
-//   min 1 → DJ Set & Pool Party, Méditation / Yoga
-//   (les autres types sont exclus ou ont min 2 par défaut)
-const TYPE_MIN = {
-  // min 2
-  'ATELIERS TANTRA (AM)'         : 2,
-  'ATELIERS TANTRA (PM)'         : 2,
-  'ATELIER ARTISTIQUE (AM)'      : 2,
-  'ATELIER ARTISTIQUE (PM)'      : 2,
-  'CEREMONIE & CONCERT'          : 2,
-  'TANTRA CAFE & CONFERENCE'     : 2,
-  'TANTRA CAFÉ & CONFERENCE'     : 2,   // variante avec accent
-  // min 1
-  'MEDITATION / YOGA'            : 1,
-  'DJ Set & POOL PARTY'          : 1,
-  'POOL PARTY & DJ Set'          : 1,   // variante
-};
-
-// Types pour lesquels le traducteur n'est PAS requis (même si le fac est anglophone)
-const TYPES_NO_TRAD = new Set([
-  'DJ Set & POOL PARTY', 'POOL PARTY & DJ Set', 'MEDITATION / YOGA'
-]);
-
-// Types pour lesquels le traducteur compte comme ressource d'accompagnement
-// même si le facilitateur n'est PAS anglophone
-// Règle : 1 traducteur + 1 helper = 2 ressources → pas de conflit
-// (uniquement Tantra et Artistique — pas Cérémonie ni Tantra Café)
-const TYPES_TRAD_COUNTS = new Set([
-  'ATELIERS TANTRA (AM)', 'ATELIERS TANTRA (PM)',
-  'ATELIER ARTISTIQUE (AM)', 'ATELIER ARTISTIQUE (PM)',
-]);
+// Types d'ateliers exclus de la vérification (minRes = 0 dans REF_TYPES)
+const TYPES_EXCLUS = new Set(
+  (typeof REF_TYPES !== 'undefined' ? REF_TYPES : [])
+    .filter(function(t) { return !t.minRes && !t.minHelpers; })
+    .map(function(t) { return t.value; })
+);
 
 // Index des ressources par nom
 const RES_MAP = {};
@@ -272,21 +247,11 @@ function isTraducteur(nom) { return hasRole(nom, 'traducteur'); }
 // RÈGLES DE DÉTECTION
 // ════════════════════════════════════════════════════════════════
 
-// Règle : nombre minimum de ressources helpers+traducteur
-// Retourne null si le type n'est pas soumis à vérification (pas dans TYPE_MIN)
-function minRessources(type) {
-  const v = TYPE_MIN[type];
-  return v !== undefined ? v : null;
-}
-
-// Compte les ressources d'accompagnement d'un atelier.
-// Pour un atelier NON-anglophone : seuls les helpers comptent en général.
-//   Exception : pour les types TANTRA et ARTISTIQUE, le traducteur compte aussi
-//   (1 traducteur + 1 helper = 2 ressources → pas de conflit)
-// Pour un atelier anglophone : helpers + traducteur comptent tous
-function compterRessources(e, isAnglo) {
+// Compte les ressources d'accompagnement d'un atelier selon les règles du type.
+function compterRessources(e, rule, isAnglo) {
   const slots = [e.helper1, e.helper2, e.helper3, e.helper4];
-  if (isAnglo || TYPES_TRAD_COUNTS.has(e.type)) slots.push(e.traduction);
+  // Le traducteur compte dans le total si : type tradCounts=1 OU facilitateur anglophone
+  if (isAnglo || (rule && rule.tradCounts)) slots.push(e.traduction);
   return slots.filter(v => v && v.trim() !== '').length;
 }
 
@@ -294,22 +259,32 @@ function analyserAtelier(e, idx) {
   if (TYPES_EXCLUS.has(e.type)) return null;
   // Ignorer les ateliers sans facilitateur (ateliers fantômes / angel-only)
   if (!e.fac1 && !e.fac2) return null;
-  // Ignorer les types non soumis à vérification
-  const minRes = minRessources(e.type);
-  if (minRes === null) return null;
+
+  const rule = getTypeRule(e.type);
+  // Ignorer si pas de règle ou minRes = 0 et minHelpers = 0
+  if (!rule || (!rule.minRes && !rule.minHelpers)) return null;
+
+  // Règles custom par atelier (éditées dans Rapport_Editer_Atelier) prennent le dessus
+  const minRes    = (e._minRes     !== undefined) ? e._minRes     : (rule.minRes     || 0);
+  const minHelpers= (e._minHelpers !== undefined) ? e._minHelpers : (rule.minHelpers || 0);
+  const minTradRule = (e._minTrad  !== undefined) ? e._minTrad    : (rule.minTrad    || 0);
+  const tradCountsRule = (e._tradCounts !== undefined) ? e._tradCounts : (rule.tradCounts || 0);
 
   const angloFacs    = [e.fac1, e.fac2].filter(isAnglophone);
   const isAnglo      = angloFacs.length > 0;
-  const tradRequired = isAnglo && !TYPES_NO_TRAD.has(e.type); // traducteur requis seulement si anglophone ET type non exclu
+  const tradRequired = isAnglo && !!minTradRule;
   const hasTrad      = !!(e.traduction && e.traduction.trim());
-  const nbRes        = compterRessources(e, tradRequired);
+  // Passer une règle synthétique avec les valeurs effectives
+  const effectiveRule = Object.assign({}, rule, { tradCounts: tradCountsRule });
+  const nbRes        = compterRessources(e, effectiveRule, tradRequired);
+  const nbHelpers    = [e.helper1, e.helper2, e.helper3, e.helper4].filter(v => v && v.trim()).length;
 
-  const cas1 = tradRequired && !hasTrad;  // Anglophone sans traducteur (si requis)
-  const cas2 = nbRes < minRes;            // Ressources insuffisantes
+  const cas1 = tradRequired && !hasTrad;                                  // Anglophone sans traducteur
+  const cas2 = (minRes > 0 && nbRes < minRes) || (minHelpers > 0 && nbHelpers < minHelpers); // Ressources insuffisantes
 
   if (!cas1 && !cas2) return null;
 
-  return { idx, entry: e, angloFacs, isAnglo, tradRequired, hasTrad, nbRes, minRes, cas1, cas2 };
+  return { idx, entry: e, angloFacs, isAnglo, tradRequired, hasTrad, nbRes, minRes, nbHelpers, minHelpers, rule, cas1, cas2 };
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -439,8 +414,10 @@ function renderCard(p) {
   let issues = '';
   if (p.cas1) issues += `<div class="problem-item"><span class="problem-icon">🌐</span><span>Atelier animé par un facilitateur anglophone (${p.angloFacs.map(esc).join(', ')}) — aucun traducteur assigné dans le champ <strong>Traduction</strong>.</span></div>`;
   if (p.cas2) {
-    const resLabel = p.tradRequired ? 'helper(s) + traducteur' : 'helper(s)';
-    issues += `<div class="problem-item"><span class="problem-icon">⚠️</span><span>${p.nbRes} ressource${p.nbRes>1?'s':''} présente${p.nbRes>1?'s':''} (${resLabel}) — minimum requis : <strong>${p.minRes}</strong> pour ce type d'atelier.</span></div>`;
+    const parts = [];
+    if (p.minRes   > 0) parts.push(`total min : <strong>${p.minRes}</strong> (actuellement ${p.nbRes})`);
+    if (p.minHelpers > 0) parts.push(`helpers min : <strong>${p.minHelpers}</strong> (actuellement ${p.nbHelpers})`);
+    issues += `<div class="problem-item"><span class="problem-icon">⚠️</span><span>Ressources insuffisantes — ${parts.join(' · ')} pour ce type d'atelier.</span></div>`;
   }
 
   return `<div class="pb-card ${casCls}" id="pbcard_${p.idx}">

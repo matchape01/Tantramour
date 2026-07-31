@@ -165,14 +165,14 @@
 
   <!-- ════════════════════════════════════════════════
        SECTION : LIEUX
-       Fichier : ref_lieux.js  |  { id, value, label }
+       Fichier : ref_lieux.js  |  { id, value, label, nomOfficiel, description }
   ════════════════════════════════════════════════ -->
   <div class="section visible" id="sec-lieux">
     <div class="sec-title">📍 <span data-i18n="md_sec_lieux">Lieux / Salles</span></div>
-    <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label</div>
+    <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label, nomOfficiel, description</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th>Nom officiel</th><th>Description</th><th></th></tr></thead>
         <tbody id="tbody-lieux"></tbody>
       </table>
     </div>
@@ -192,10 +192,10 @@
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-types">
     <div class="sec-title">🏷️ <span data-i18n="md_sec_types">Types d'ateliers</span></div>
-    <div class="sec-meta">ref_types.js — REF_TYPES — colonnes : id, value, label</div>
+    <div class="sec-meta">ref_types.js — REF_TYPES — colonnes : id, value, label, minRes, minHelpers, minTrad, tradCounts</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th title="Nb total minimum de ressources">Min total</th><th title="Nb minimum de helpers">Min helpers</th><th title="Traducteur requis si anglophone">Trad requis</th><th title="Traducteur compte dans le total">Trad compte</th><th></th></tr></thead>
         <tbody id="tbody-types"></tbody>
       </table>
     </div>
@@ -215,10 +215,10 @@
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-notes">
     <div class="sec-title">📝 <span data-i18n="md_sec_notes">Notes</span></div>
-    <div class="sec-meta">ref_notes.js — REF_NOTES — colonnes : id, value</div>
+    <div class="sec-meta">ref_notes.js — REF_NOTES — colonnes : id, value, valueEn</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value (FR)</th><th data-i18n="md_col_en">Value (EN)</th><th></th></tr></thead>
         <tbody id="tbody-notes"></tbody>
       </table>
     </div>
@@ -407,24 +407,26 @@ loadData(['data.js'], function() {
 // ════════════════════════════════════════════════════════════
 var CFG = {
   lieux: {
-    varName:  'REF_LIEUX',
-    fileName: 'ref_lieux.js',
-    prefix:   'L_',
-    cols:     ['id','value','label'],
+    varName:   'REF_LIEUX',
+    fileName:  'ref_lieux.js',
+    prefix:    'L_',
+    cols:      ['id','value','label','nomOfficiel','description'],
+    textareaCols: ['description'],
     dataField: ['lieu'],
   },
   types: {
     varName:  'REF_TYPES',
     fileName: 'ref_types.js',
     prefix:   'T_',
-    cols:     ['id','value','label'],
+    cols:     ['id','value','label','minRes','minHelpers','minTrad','tradCounts'],
+    numericCols: ['minRes','minHelpers','minTrad','tradCounts'],
     dataField: ['type'],
   },
   notes: {
     varName:  'REF_NOTES',
     fileName: 'ref_notes.js',
     prefix:   'N_',
-    cols:     ['id','value'],
+    cols:     ['id','value','valueEn'],
     dataField: ['note'],
   },
   jours: {
@@ -506,7 +508,13 @@ function renderTable(key) {
     // Cellules de données (toutes les colonnes sauf 'id' qui est en première)
     var cells = cfg.cols.map(function(col) {
       if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
-      return '<td class="td-val">' + esc(item[col] !== undefined ? item[col] : '') + '</td>';
+      var v = item[col] !== undefined ? item[col] : '';
+      // Colonnes textarea : tronquer l'affichage en lecture
+      if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
+        var short = String(v).length > 60 ? String(v).slice(0, 60) + '…' : v;
+        return '<td class="td-val" style="max-width:200px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + esc(v) + '">' + esc(short) + '</td>';
+      }
+      return '<td class="td-val">' + esc(v) + '</td>';
     }).join('');
 
     return '<tr id="row-' + key + '-' + i + '">' +
@@ -536,10 +544,13 @@ function editRow(key, i) {
   var item = STORE[key][i];
   var row  = document.getElementById('row-' + key + '-' + i);
 
-  // Remplace chaque cellule par un input (sauf id)
+  // Remplace chaque cellule par un input ou textarea (sauf id)
   var cells = cfg.cols.map(function(col) {
     if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
     var v = item[col] !== undefined ? item[col] : '';
+    if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
+      return '<td style="min-width:220px"><textarea class="inp" id="inp-' + key + '-' + i + '-' + col + '" rows="3" style="width:100%;resize:vertical;font-family:inherit;font-size:12px;">' + esc(v) + '</textarea></td>';
+    }
     return '<td><input class="inp" id="inp-' + key + '-' + i + '-' + col + '" value="' + esc(v) + '" ' +
       'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"></td>';
   }).join('');
@@ -573,7 +584,9 @@ function saveEdit(key, i) {
     if (col === 'id') return;
     var el = document.getElementById('inp-' + key + '-' + i + '-' + col);
     if (!el) return;
-    var newVal = el.value.trim();
+    // textarea : ne pas trim les retours à la ligne
+    var isTA = cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1;
+    var newVal = isTA ? el.value : el.value.trim();
 
     // Pour la colonne value, enregistre le renommage
     if (col === 'value' && newVal !== String(item.value)) {
@@ -581,7 +594,8 @@ function saveEdit(key, i) {
     }
 
     // Conversion numérique si nécessaire
-    item[col] = (col === 'value' && cfg.numericValue) ? Number(newVal) : newVal;
+    var isNum = (col === 'value' && cfg.numericValue) || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1);
+    item[col] = isNum ? Number(newVal) : newVal;
   });
 
   markDirty(key);
@@ -668,9 +682,9 @@ function markDirty(key) {
 function escJs(v) { return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"'); }
 
 var FILE_COMMENTS = {
-  lieux:          'Référentiel : Lieux / Salles\n * Chaque entrée : { id, value, label }',
-  types:          'Référentiel : Types d\'ateliers\n * Chaque entrée : { id, value, label }',
-  notes:          'Référentiel : Notes\n * Chaque entrée : { id, value }',
+  lieux:          'Référentiel : Lieux / Salles\n * Chaque entrée : { id, value, label, nomOfficiel, description }\n *   value       : identifiant technique utilisé dans data.js\n *   label       : libellé court affiché dans les rapports\n *   nomOfficiel : nom complet / officiel du lieu\n *   description : description du lieu (capacité, équipements, usage...)',
+  types:          'Référentiel : Types d\'ateliers\n * Chaque entrée : { id, value, label, minRes, minHelpers, minTrad, tradCounts }\n *   minRes     : nb total minimum de ressources\n *   minHelpers : nb minimum de helpers\n *   minTrad    : 1 = traducteur requis si anglophone\n *   tradCounts : 1 = le traducteur compte dans minRes',
+  notes:          'Référentiel : Notes\n * Chaque entrée : { id, value, valueEn }\n *   value   : libellé français (référence)\n *   valueEn : traduction anglaise',
   jours:          'Référentiel : Jours\n * Chaque entrée : { id, value, label, date }',
   piment:         'Référentiel : Piment\n * Chaque entrée : { id, value (number), label }',
   resource_types: 'Référentiel : Types de ressource\n * Chaque entrée : { id, value, label, icon }',
@@ -683,7 +697,8 @@ function genRefFile(key) {
   var lines = items.map(function(item) {
     var parts = cfg.cols.map(function(col) {
       var v = item[col] !== undefined ? item[col] : '';
-      if (col === 'value' && cfg.numericValue) return 'value: ' + Number(v);
+      var isNum = (col === 'value' && cfg.numericValue) || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1);
+      if (isNum) return col + ': ' + Number(v);
       return col + ': "' + escJs(v) + '"';
     });
     return '  { ' + parts.join(', ') + ' },';

@@ -164,10 +164,13 @@ loadData(['data.js', 'ref_descriptions.js'], function() {
 // CONFIG — types publics uniquement
 // ══════════════════════════════════════
 var TYPES_PUBLICS = [
-  'MEDITATION / YOGA','ATELIER ARTISTIQUE (AM)','ATELIER ARTISTIQUE (PM)',
-  'ATELIERS TANTRA (AM)','ATELIERS TANTRA (PM)','CEREMONIE & CONCERT',
-  'POOL PARTY & DJ Set','LOVE TEMPLE','SUPPORT EMOTIONNEL',
-  'TANTRA CAFE & CONFERENCE','RASSEMBLEMENT',
+  'MEDITATION / YOGA',
+  'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
+  'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
+  'CEREMONIE & CONCERT',
+  'DJ Set', 'POOL PARTY',
+  'LOVE TEMPLE', 'SUPPORT EMOTIONNEL',
+  'TANTRA CAFE & CONFERENCE', 'RASSEMBLEMENT',
 ];
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 var JOUR_META = {
@@ -351,7 +354,7 @@ function renderCard(e) {
     pills += '<span class="pill pill-validee">✔ ' + I18n.t('r_desc_validee_fac') + '</span>';
 
   // URL vers Rapport_Descriptions_Ateliers pour édition directe
-  var editUrl = 'Rapport_Descriptions_Ateliers.html';
+  var editUrl = 'Rapport_Saisie_Ateliers.html';
 
   return '<div class="ws-card' + (cls ? ' ' + cls : '') + '">' +
     '<div class="ws-header">' +

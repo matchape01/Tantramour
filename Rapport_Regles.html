@@ -217,7 +217,7 @@ var REPORTS = [
     rules: [
       { type: 'info',  text: 'Accessible depuis index.html (page d\'accueil publique) sans mot de passe — conçu pour les festivaliers.' },
       { type: 'info',  text: 'Écran 1 — Grille des jours : affiche uniquement les jours ayant au moins un atelier de type public. Cliquer sur un jour ouvre l\'écran 2.' },
-      { type: 'block', text: 'Seuls les types publics sont affichés : MEDITATION/YOGA, ATELIER ARTISTIQUE, ATELIERS TANTRA, CEREMONIE & CONCERT, POOL PARTY & DJ Set, LOVE TEMPLE, SUPPORT EMOTIONNEL, TANTRA CAFE & CONFERENCE, RASSEMBLEMENT. Les types internes (REPAS, PREPA, REUNION, TEST) sont exclus.' },
+      { type: 'block', text: 'Seuls les types publics sont affichés : MEDITATION/YOGA, ATELIER ARTISTIQUE, ATELIERS TANTRA, CEREMONIE & CONCERT, DJ Set, POOL PARTY, LOVE TEMPLE, SUPPORT EMOTIONNEL, TANTRA CAFE & CONFERENCE, RASSEMBLEMENT. Les types internes (REPAS, PREPA, REUNION, TEST) sont exclus.' },
       { type: 'info',  text: 'Écran 2 — Programme du jour : liste des ateliers triée par heure, avec chips de filtre par type (uniquement les types présents ce jour-là).' },
       { type: 'info',  text: 'Bouton ℹ️ sur chaque atelier : ouvre une modale de détail avec horaire, lieu, facilitateur(s), niveau piment, traduction, et les descriptions FR et EN si disponibles.' },
       { type: 'check', text: 'Les descriptions proviennent de ref_descriptions.js — chargé via loadData(). Si aucune description n\'est disponible, un message "Aucune description disponible" s\'affiche.' },
@@ -353,7 +353,7 @@ var REPORTS = [
     type: 'algo',
     description: 'Analyse de la répartition de charge pour Helpers, Angels et Traducteurs.',
     rules: [
-      { type: 'block', text: 'Types exclus du calcul de charge : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST. Tous les autres types (ATELIERS TANTRA, MEDITATION, CEREMONIE, LOVE TEMPLE, POOL PARTY & DJ Set, etc.) sont inclus.' },
+      { type: 'block', text: 'Types exclus du calcul de charge : REPAS & PAUSE, PREPA & LOGISTICS, REUNION D\'EQUIPE, TEST. Tous les autres types (ATELIERS TANTRA, MEDITATION, CEREMONIE, LOVE TEMPLE, DJ Set, POOL PARTY, etc.) sont inclus.' },
       { type: 'algo',  text: 'La durée de chaque atelier est calculée depuis le champ heure (format HH:MM - HH:MM ou HH.MM - HH.MM).' },
       { type: 'algo',  text: 'Pour les Angels : fusion des intervalles qui se chevauchent sur le même jour (interval merging) — on ne compte que la durée nette couverte.' },
       { type: 'info',  text: 'Barre de charge par journée : vert < 2h · orange 2–4h · rouge > 4h.' },
@@ -510,11 +510,11 @@ var REPORTS = [
     description: 'Détection des ateliers avec ressources insuffisantes ou traducteur manquant.',
     rules: [
       { type: 'block', text: 'Cas 1 — Atelier anglophone sans traducteur : fac1 ou fac2 a le rôle "anglophone" ET le champ traduction est vide.' },
-      { type: 'block', text: 'Exception Cas 1 : le type POOL PARTY & DJ Set est exclu du contrôle traducteur, même si le facilitateur est anglophone.' },
+      { type: 'block', text: 'Exception Cas 1 : les types DJ Set et POOL PARTY sont exclus du contrôle traducteur, même si le facilitateur est anglophone.' },
       { type: 'block', text: 'Cas 2 — Ressources insuffisantes : nombre de helpers + traducteur < minimum requis.' },
       { type: 'algo',  text: 'Règle générale : chaque atelier doit avoir au moins 2 ressources (helpers + traducteur cumulés).' },
       { type: 'info',  text: 'Exception MEDITATION / YOGA : 1 seule ressource suffit (helper ou traducteur).' },
-      { type: 'block', text: 'Types exclus de la vérification : REPAS & PAUSE, PREPA & LOGITICS, REUNION D\'EQUIPE, TEST, LOVE TEMPLE, POOL PARTY & DJ Set.' },
+      { type: 'block', text: 'Types exclus de la vérification : REPAS & PAUSE, PREPA & LOGISTICS, REUNION D\'EQUIPE, TEST, LOVE TEMPLE, DJ Set, POOL PARTY.' },
       { type: 'block', text: 'Ateliers sans facilitateur (fac1 et fac2 vides) sont également exclus.' },
       { type: 'check', text: 'Édition inline : Traducteur, Helper 1/2/3 modifiables directement depuis la carte problème.' },
       { type: 'warn',  text: 'La sauvegarde écrit data.js via serveur local (localhost) ou GitHub API selon l\'environnement.' },

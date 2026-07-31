@@ -95,11 +95,11 @@ var LOGISTICS = {
   },
 
   "LOG_Jour1_TEST_MATT_3": {
-    html: "test logistique",
-    text: "test logistique",
-    validatedByFac: false,
-    prepDuration: 15,
-    updatedAt: "2026-07-21"
+    html: "test logistique V4",
+    text: "test logistique V4",
+    validatedByFac: true,
+    prepDuration: 45,
+    updatedAt: "2026-07-30 18:09"
   },
 
   "JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_": {

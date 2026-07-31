@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tantramour 2026 — Agenda par Jour</title>
+<title>Tantramour 2026 — Planning par Jour</title>
 <style>
   :root {
     --bg: #ffffff; --surface: #f7f8fa; --border: #e5e7eb;
@@ -77,21 +77,32 @@
   /* ── CARD VIEW ── */
   .card-list { display: none; flex-direction: column; gap: 20px; }
   /* Groupe jour */
-  .card-day-group { display: flex; flex-direction: column; gap: 0; }
-  .card-day-header { font-size: 15px; font-weight: 700; color: var(--text); padding: 10px 14px; background: var(--header-bg); border: 1px solid var(--border); border-radius: 10px 10px 0 0; border-bottom: none; }
-  .card-day-sub { font-size: 15px; font-weight: 700; color: var(--muted); margin-left: 6px; }
-  .card-day-body { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 0 0 10px 10px; overflow: hidden; }
-  /* Carte individuelle */
-  .card { background: var(--bg); padding: 12px 14px; border-bottom: 1px solid var(--border); }
-  .card:last-child { border-bottom: none; }
-  .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
-  .card-heure { font-size: 12px; color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 700; min-width: 80px; padding-top: 2px; }
-  .card-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; }
-  .card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; padding-left: 90px; }
-  .card-rows { display: flex; flex-direction: column; gap: 5px; padding-left: 90px; }
-  .card-row { display: flex; gap: 8px; align-items: flex-start; }
-  .card-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 600; min-width: 80px; padding-top: 2px; }
-  .card-value { font-size: 13px; color: var(--text); flex: 1; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .card-day-group { display: flex; flex-direction: column; gap: 8px; }
+  .card-day-header { font-size: 15px; font-weight: 700; color: var(--text); padding: 10px 14px; background: var(--header-bg); border: 1px solid var(--border); border-radius: 10px; }
+  .card-day-sub { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 6px; }
+  /* Bloc de groupe visuel (par type) */
+  .vg-block { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .vg-header { display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .vg-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); flex: 1; }
+  .vg-angel { font-size: 11px; font-weight: 600; color: var(--badge-at); background: var(--badge-a); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+  .vg-angel-tel { font-size: 10px; font-weight: 400; opacity: .8; }
+  /* Rangée de mini-cartes */
+  .vg-cards { display: flex; flex-direction: row; }
+  .vg-cards .mini-card:not(:last-child) { border-right: 1px solid var(--border); }
+  /* Mini-carte individuelle */
+  .mini-card { flex: 1; min-width: 0; background: var(--bg); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .mini-card-heure { font-size: 11px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .mini-card-prep { font-size: 10px; color: var(--muted); }
+  .mini-card-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .mini-card-meta { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+  .mini-card-rows { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; }
+  .mini-card-row { display: flex; gap: 5px; align-items: flex-start; }
+  .mini-card-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--muted); font-weight: 600; min-width: 58px; padding-top: 2px; flex-shrink: 0; }
+  .mini-card-val { font-size: 11px; color: var(--text); flex: 1; display: flex; flex-wrap: wrap; gap: 3px; align-items: center; line-height: 1.4; }
+  /* Ligne discrète (repas, réunion, prépa) */
+  .vg-small { padding: 4px 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+  .vg-small-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+  .vg-small-items { font-size: 11px; color: var(--muted); }
   /* ── SHARED ── */
   .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 600; margin: 1px 2px; white-space: nowrap; }
@@ -134,7 +145,7 @@
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p data-i18n="r1_title">Agenda par Jour</p>
+      <p data-i18n="r1_title">Planning par Jour</p>
     </div>
     <div class="header-actions">
       <a class="mode-btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
@@ -524,52 +535,169 @@ function parseHeure(h) {
   return m ? parseInt(m[1])*60 + parseInt(m[2]) : 9999;
 }
 
+// Convertit une heure texte "H:MM" en minutes depuis minuit pour les calculs
+function heureMinutes(h) {
+  if (!h) return null;
+  const m = String(h).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
+  return m ? parseInt(m[1])*60 + parseInt(m[2]) : null;
+}
+// Formate un nombre de minutes en "H:MM"
+function minutesToHeure(mins) {
+  if (mins == null || mins < 0) return '';
+  const h = Math.floor(mins / 60) % 24;
+  const m = mins % 60;
+  return h + ':' + (m < 10 ? '0' : '') + m;
+}
+
+// ── Lookup téléphone d'un angel depuis REF_RESSOURCES ──────────────────────
+function angelTel(nom) {
+  if (!nom || typeof REF_RESSOURCES === 'undefined') return '';
+  const r = REF_RESSOURCES.find(x => x.value === nom);
+  return (r && r.tel) ? r.tel : '';
+}
+
+// ── Construit une mini-carte atelier ───────────────────────────────────────
+function buildMiniCard(r) {
+  const enBadge = hasAnglophoneFac(r) ? ' <span title="Anglophone" style="font-size:11px">🇬🇧</span>' : '';
+  const lieu    = r[5] ? `<span class="tag" style="font-size:10px">${r[5]}</span>` : '';
+  const facs    = pills([r[6],r[7]],'pill-f');
+  const trad    = r[8]  ? `<span class="pill pill-t">${r[8]}</span>` : '';
+  const helpers = pills([r[9],r[10],r[11],r[12]],'pill-h');
+
+  // Heure + prep
+  const logId  = r[15];
+  const logE   = logId && typeof LOGISTICS !== 'undefined' ? LOGISTICS[logId] : null;
+  const prepMin = logE && logE.prepDuration != null ? logE.prepDuration : null;
+  const debut   = heureMinutes(r[2]);
+  const arrivee = (debut !== null && prepMin !== null) ? minutesToHeure(debut - prepMin) : '';
+  const heureHtml = r[2] ? `<div class="mini-card-heure">${r[2]}${prepMin !== null ? `<span class="mini-card-prep"> ⏱${prepMin}mn${arrivee?' ↑'+arrivee:''}</span>` : ''}</div>` : '';
+
+  const rows = [];
+  if (facs)    rows.push(`<div class="mini-card-row"><span class="mini-card-lbl">Fac.</span><span class="mini-card-val">${facs}</span></div>`);
+  if (trad)    rows.push(`<div class="mini-card-row"><span class="mini-card-lbl">Trad.</span><span class="mini-card-val">${trad}</span></div>`);
+  if (helpers) rows.push(`<div class="mini-card-row"><span class="mini-card-lbl">Helpers</span><span class="mini-card-val">${helpers}</span></div>`);
+  if (r[14])   rows.push(`<div class="mini-card-row"><span class="mini-card-lbl">Note</span><span class="mini-card-val" style="color:#e53e3e;font-size:10px">${r[14]}</span></div>`);
+
+  return `<div class="mini-card">
+    ${heureHtml}
+    <div class="mini-card-title">${r[4]||'—'}${enBadge}</div>
+    <div class="mini-card-meta">${lieu}</div>
+    ${rows.length ? `<div class="mini-card-rows">${rows.join('')}</div>` : ''}
+  </div>`;
+}
+
+// ── Construit un bloc visuel (header + rangée de mini-cartes) ──────────────
+function buildVgBlock(title, items, angelRow) {
+  const angelHtml = angelRow
+    ? `<span class="vg-angel">👼 ${angelRow.nom}${angelRow.tel ? `<span class="vg-angel-tel"> · ${angelRow.tel}</span>` : ''}</span>`
+    : '';
+  return `<div class="vg-block">
+    <div class="vg-header"><span class="vg-title">${title}</span>${angelHtml}</div>
+    <div class="vg-cards">${items.map(buildMiniCard).join('')}</div>
+  </div>`;
+}
+
+// ── Construit une ligne discrète (repas, réunion d'équipe, prépa) ──────────
+function buildSmallLine(emoji, label, items) {
+  const txt = items.map(r => r[4]).filter(Boolean).join(' · ');
+  return `<div class="vg-small"><span class="vg-small-lbl">${emoji} ${label}</span><span class="vg-small-items">${txt||'—'}</span></div>`;
+}
+
 function renderCards(data) {
   const cv = document.getElementById('cardView');
   if (!data.length) { cv.innerHTML=`<div class="empty">Aucun résultat</div>`; return; }
 
-  // Grouper par jour dans l'ordre chronologique
   const DAY_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
+
+  // Grouper par jour
   const dayMap = new Map();
   data.forEach(r => {
-    const k = r[0];
-    if (!dayMap.has(k)) dayMap.set(k, { jour: r[0], date: r[1], items: [] });
-    dayMap.get(k).items.push(r);
+    if (!dayMap.has(r[0])) dayMap.set(r[0], { jour: r[0], date: r[1], items: [] });
+    dayMap.get(r[0]).items.push(r);
   });
-
-  // Trier les ateliers de chaque jour du plus tôt au plus tard
   dayMap.forEach(g => g.items.sort((a,b) => parseHeure(a[2]) - parseHeure(b[2])));
-
   const groups = DAY_ORDER.filter(j => dayMap.has(j)).map(j => dayMap.get(j));
 
+  // ── Ordre des groupes visuels ────────────────────────────────────────────
+  // Chaque entrée : { key, types[], label, mode }
+  //   mode = 'cards'  → mini-cartes côte à côte (avec angel)
+  //   mode = 'small'  → ligne discrète
+  //   mode = 'group'  → regroupe plusieurs types en petite ligne (prepa+rassemblement)
+  const VG_ORDER = [
+    { key:'yoga',        types:['MEDITATION / YOGA'],                                    label:'🧘 Méditation / Yoga',          mode:'cards'  },
+    { key:'ptdej',       types:['REPAS & PAUSE'],         heureMax: 11*60,               label:'Petit déjeuner',                mode:'small'  },
+    { key:'reunion_am',  types:["REUNION D'EQUIPE"],      heureMax: 11*60,               label:'Réunion d\'équipe',             mode:'small'  },
+    { key:'prepa_rass',  types:['PREPA & LOGISTICS','RASSEMBLEMENT'], heureMax: 12*60,   label:'🎯 Préparation & Rassemblement', mode:'cards'  },
+    { key:'tantra_am',   types:['ATELIERS TANTRA (Matin)','TANTRA CAFE & CONFERENCE'],   label:'🌀 Ateliers Tantra – Matin',    mode:'cards', withAngel:'AM' },
+    { key:'art_am',      types:['ATELIER ARTISTIQUE (Matin)','TANTRA CAFE & CONFERENCE'],label:'🎨 Ateliers Artistiques – Matin',mode:'cards', withAngel:'AM' },
+    { key:'dejeuner',    types:['REPAS & PAUSE'],         heureMin: 11*60, heureMax:15*60,label:'Déjeuner',                     mode:'small'  },
+    { key:'support',     types:['SUPPORT EMOTIONNEL'],                                   label:'💙 Support Émotionnel',         mode:'cards'  },
+    { key:'pool_cafe_am',types:['DJ Set','POOL PARTY','TANTRA CAFE & CONFERENCE'], heureMin:12*60, heureMax:16*60, label:'Pool Party / Tantra Café', mode:'cards' },
+    { key:'tantra_pm',   types:['ATELIERS TANTRA (Apres-Midi)','TANTRA CAFE & CONFERENCE'], heureMin:14*60, label:'🌀 Ateliers Tantra – Après-midi', mode:'cards', withAngel:'PM' },
+    { key:'art_pm',      types:['ATELIER ARTISTIQUE (Apres-Midi)','TANTRA CAFE & CONFERENCE'], heureMin:14*60, label:'🎨 Ateliers Artistiques – Après-midi', mode:'cards', withAngel:'PM' },
+    { key:'gouter_dinner',types:['REPAS & PAUSE'],        heureMin: 15*60,               label:'Dîner / Goûter',               mode:'small'  },
+    { key:'prepa_soir',  types:['PREPA & LOGISTICS'],     heureMin: 18*60,               label:'Prépa & Logistique – Soir',    mode:'small'  },
+    { key:'reunion_pm',  types:["REUNION D'EQUIPE"],      heureMin: 11*60,               label:'Réunion d\'équipe',            mode:'small'  },
+    { key:'soir',        types:['CEREMONIE & CONCERT','LOVE TEMPLE','DJ Set','POOL PARTY'], heureMin:18*60, label:'🌙 Soirée', mode:'cards'  },
+  ];
+
   cv.innerHTML = groups.map(g => {
-    const cards = g.items.map(r => {
-      const facs = pills([r[6],r[7]],'pill-f');
-      const helpers = pills([r[9],r[10],r[11],r[12]],'pill-h');
-      const angel = r[13] ? `<span class="pill pill-a">${r[13]}</span>` : '';
-      const trad = r[8] ? `<span class="pill pill-t">${r[8]}</span>` : '';
-      const lieu = r[5] ? `<span class="tag">${r[5]}</span>` : '';
-      const enBadgeCard = hasAnglophoneFac(r) ? ' <span title="Atelier anglophone" style="font-size:13px">🇬🇧</span>' : '';
-      return `<div class="card">
-        <div class="card-header">
-          <div class="card-heure">${r[2]||''}</div>
-          <div class="card-title">${r[4]||'—'}${enBadgeCard}</div>
-        </div>
-        <div class="card-meta">
-          <span class="tag">${r[3]||''}</span>${lieu ? ' '+lieu : ''}
-        </div>
-        <div class="card-rows">
-          ${facs ? `<div class="card-row"><span class="card-label">${I18n.t('role_facilitateur')}</span><span class="card-value">${facs}</span></div>` : ''}
-          ${trad ? `<div class="card-row"><span class="card-label">${I18n.t('role_traducteur')}</span><span class="card-value">${trad}</span></div>` : ''}
-          ${helpers||r[14] ? `<div class="card-row"><span class="card-label">${I18n.t('col_helpers')}</span><span class="card-value">${helpers}${r[14]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:6px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[14]}</span>`:''}</span></div>` : ''}
-          ${(()=>{ const logId=r[15]; const logE=logId&&typeof LOGISTICS!=='undefined'?LOGISTICS[logId]:null; const pd=logE&&logE.prepDuration!==undefined?logE.prepDuration:null; return pd!==null?`<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value" style="font-size:12px;color:var(--muted)">${pd} min</span></div>`:''; })()}
-          ${angel ? `<div class="card-row"><span class="card-label">${I18n.t('col_angel')}</span><span class="card-value">${angel}</span></div>` : ''}
-        </div>
-      </div>`;
-    }).join('');
+    const items = g.items;
+
+    // Index les SHIFT ANGEL par shift (AM / PM / Soir)
+    const angelByShift = {};
+    items.filter(r => r[3] === 'SHIFT ANGEL').forEach(r => {
+      const atName = (r[4]||'').toLowerCase();
+      const shift  = atName.includes('matin') || atName.includes('am')  ? 'AM'
+                   : atName.includes('pm')    || atName.includes('midi') || atName.includes('apr') ? 'PM'
+                   : 'Soir';
+      if (!angelByShift[shift] && r[13]) {
+        angelByShift[shift] = { nom: r[13], tel: angelTel(r[13]) };
+      }
+    });
+
+    // Tracker pour ne pas afficher deux fois le même atelier
+    const used = new Set();
+    const markUsed = arr => arr.forEach(r => used.add(r));
+
+    // Filtre selon types + fenêtre horaire + non-déjà-utilisé
+    const pick = (types, opts) => {
+      opts = opts || {};
+      return items.filter(r => {
+        if (used.has(r)) return false;
+        if (!types.includes(r[3])) return false;
+        const hm = heureMinutes(r[2]) ?? 9999;
+        if (opts.heureMin !== undefined && hm < opts.heureMin) return false;
+        if (opts.heureMax !== undefined && hm >= opts.heureMax) return false;
+        return true;
+      });
+    };
+
+    const blocks = [];
+
+    VG_ORDER.forEach(vg => {
+      const rows = pick(vg.types, vg);
+      if (!rows.length) return;
+      markUsed(rows);
+
+      if (vg.mode === 'small') {
+        blocks.push(buildSmallLine('', vg.label, rows));
+      } else {
+        const angel = vg.withAngel ? (angelByShift[vg.withAngel] || null) : null;
+        blocks.push(buildVgBlock(vg.label, rows, angel));
+      }
+    });
+
+    // Résidus non capturés → un bloc générique
+    const leftover = items.filter(r => !used.has(r) && r[3] !== 'SHIFT ANGEL');
+    if (leftover.length) {
+      blocks.push(buildVgBlock('Autres', leftover, null));
+    }
+
+    const nb = items.filter(r => r[3] !== 'SHIFT ANGEL').length;
     return `<div class="card-day-group">
-      <div class="card-day-header">${g.jour}<span class="card-day-sub">${g.date}</span><span class="card-day-sub">(${g.items.length} atelier${g.items.length>1?'s':''})</span></div>
-      <div class="card-day-body">${cards}</div>
+      <div class="card-day-header">${g.jour}<span class="card-day-sub"> — ${g.date}</span><span class="card-day-sub"> (${nb} atelier${nb>1?'s':''})</span></div>
+      ${blocks.join('')}
     </div>`;
   }).join('');
 }

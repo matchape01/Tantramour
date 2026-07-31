@@ -10,10 +10,12 @@ cd /d "%~dp0"
 where python >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
   echo  Serveur Python demarre sur http://localhost:3000
+  echo  Backup automatique toutes les 30 minutes
   echo  Ouvre ton navigateur sur : http://localhost:3000
   echo  Appuie sur Ctrl+C pour arreter.
   echo.
   start "" http://localhost:3000
+  start "Tantramour Backup" /min python backup.py --interval 30
   python server.py
   pause
   exit /b 0
@@ -23,6 +25,7 @@ if %ERRORLEVEL% EQU 0 (
 where python3 >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
   start "" http://localhost:3000
+  start "Tantramour Backup" /min python3 backup.py --interval 30
   python3 server.py
   pause
   exit /b 0

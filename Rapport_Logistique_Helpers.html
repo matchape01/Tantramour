@@ -197,7 +197,7 @@
 <script src="ref_ressources.js"></script>
 <script src="loader.js"></script>
 <script>
-loadData(['logistics.js','logistics.special.js','data.js'], function() {
+loadData(['logistics.js','logistics.special.js','logistics.helpers.js','data.js'], function() {
 
 // ════════════════════════════════════════════════
 // UTILITAIRES
@@ -302,6 +302,23 @@ function renderAtelier(e) {
     ? `<div class="box box-log"><div class="box-label">🔧 Informations logistiques</div>${logEntry.html || logEntry.text.replace(/\n/g,'<br>')}</div>`
     : '';
 
+  // Consignes Helpers (avant / pendant / après)
+  const helpEntry = (e.logisticId && typeof LOGISTICS_HELPERS !== 'undefined') ? (LOGISTICS_HELPERS[e.logisticId] || null) : null;
+  const hasHelper = helpEntry && ((helpEntry.avant && helpEntry.avant.replace(/<[^>]*>/g,'').trim()) ||
+    (helpEntry.pendant && helpEntry.pendant.replace(/<[^>]*>/g,'').trim()) ||
+    (helpEntry.apres && helpEntry.apres.replace(/<[^>]*>/g,'').trim()));
+  const boxHelpers = hasHelper
+    ? `<div class="box" style="border-color:#c4b5fd;background:#f5f3ff;">
+        <div class="box-label" style="color:#7c3aed;">🤝 Consignes Helpers</div>
+        ${helpEntry.avant && helpEntry.avant.replace(/<[^>]*>/g,'').trim()
+          ? `<div style="margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">🔧 Avant — Préparation & Installation</div>${helpEntry.avant}</div>` : ''}
+        ${helpEntry.pendant && helpEntry.pendant.replace(/<[^>]*>/g,'').trim()
+          ? `<div style="margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">▶️ Pendant l'atelier</div>${helpEntry.pendant}</div>` : ''}
+        ${helpEntry.apres && helpEntry.apres.replace(/<[^>]*>/g,'').trim()
+          ? `<div><div style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">🧹 Après — Désinstallation & Rangement</div>${helpEntry.apres}</div>` : ''}
+      </div>`
+    : '';
+
   return `<div class="atelier-card">
     <div class="atelier-top">
       <div class="atelier-heure">${e.heure || '—'}</div>
@@ -325,7 +342,7 @@ function renderAtelier(e) {
         <div class="info-value">${angel}</div>
       </div>` : ''}
     </div>
-    ${boxNote || boxLog || boxLogSpecial ? `<div class="boxes">${boxNote}${boxLog}${boxLogSpecial}</div>` : ''}
+    ${boxNote || boxHelpers || boxLog || boxLogSpecial ? `<div class="boxes">${boxNote}${boxHelpers}${boxLog}${boxLogSpecial}</div>` : ''}
   </div>`;
 }
 
