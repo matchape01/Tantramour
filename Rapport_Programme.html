@@ -56,28 +56,48 @@
   #screenDays { }
   .day-intro { font-size:16px; font-weight:700; margin-bottom:6px; }
   .day-intro-sub { font-size:13px; color:var(--muted); margin-bottom:22px; }
-  .days-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  @media(max-width:520px) { .days-grid { grid-template-columns:1fr; } }
-  .day-card {
-    display:flex; align-items:center; gap:14px;
-    border:1px solid var(--border); border-radius:12px; padding:16px 18px;
-    cursor:pointer; transition:border-color .15s, background .15s, transform .1s;
-    background:var(--bg);
+  /* Responsive : 4 colonnes par défaut, 3 medium, 2 petits, 1 très petit */
+  .days-grid {
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
   }
-  .day-card:hover { border-color:var(--accent); background:#f0f7ff; transform:translateY(-1px); }
-  .dark .day-card:hover { background:#0c2d48; }
-  .day-card-emoji { font-size:26px; flex-shrink:0; }
-  .day-card-body  { flex:1; min-width:0; }
-  .day-card-jour  { font-size:15px; font-weight:800; }
-  .day-card-date  { font-size:12px; color:var(--muted); margin-top:1px; }
-  .day-card-count { font-size:11px; font-weight:600; color:var(--accent); margin-top:3px; }
-  .day-card-arrow { font-size:20px; color:var(--muted); }
+  @media(max-width:900px) { .days-grid { grid-template-columns:repeat(3, 1fr); } }
+  @media(max-width:640px) { .days-grid { grid-template-columns:repeat(2, 1fr); } }
+  @media(max-width:380px) { .days-grid { grid-template-columns:1fr; } }
+
+  /* Étiquette compacte, fond bleu clair */
+  .day-card {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px; text-align:center;
+    border:1.5px solid #bfdbfe; border-radius:12px; padding:14px 10px;
+    cursor:pointer; transition:border-color .15s, background .15s, transform .1s;
+    background:#eff6ff;
+  }
+  .day-card:hover { border-color:var(--accent); background:#dbeafe; transform:translateY(-2px); }
+  .dark .day-card { background:#0d2240; border-color:#1e3a5f; }
+  .dark .day-card:hover { background:#0c2d48; border-color:#3b82f6; }
+  .day-card-emoji { font-size:22px; }
+  .day-card-body  { min-width:0; }
+  .day-card-jour  { font-size:14px; font-weight:800; color:var(--accent); }
+  .day-card-date  { font-size:11px; color:var(--muted); margin-top:1px; }
+  .day-card-count { font-size:10px; font-weight:600; color:var(--accent); margin-top:2px; }
+  .day-card-arrow { display:none; }
 
   /* ── ÉCRAN 2 — PROGRAMME DU JOUR ── */
   #screenProg { display:none; }
   .prog-header { margin-bottom:22px; }
-  .back-btn { display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:var(--accent); background:none; border:none; font-family:inherit; padding:0; margin-bottom:14px; }
-  .back-btn:hover { text-decoration:underline; }
+  .back-btn {
+    display:inline-flex; align-items:center; gap:8px;
+    cursor:pointer; font-size:16px; font-weight:700;
+    color:#fff; background:var(--accent);
+    border:none; border-radius:8px;
+    font-family:inherit; padding:9px 18px; margin-bottom:16px;
+    transition:background .15s;
+  }
+  .back-btn:hover { background:#2563eb; text-decoration:none; }
+  .dark .back-btn { background:#1d4ed8; }
+  .dark .back-btn:hover { background:#1e40af; }
   .prog-title { font-size:22px; font-weight:800; }
   .prog-sub   { font-size:13px; color:var(--muted); margin-top:2px; }
   .prog-count { display:inline-block; font-size:12px; font-weight:700; background:var(--accent); color:#fff; border-radius:20px; padding:2px 10px; margin-left:8px; vertical-align:middle; }
@@ -146,17 +166,42 @@
     border:1.5px solid var(--tbd); border-radius:10px;
     background:#fff; overflow:hidden;
     transition:box-shadow .15s, transform .1s;
-    /* hauteur uniforme : toutes les cartes d'une même section ont la même hauteur */
     height:100%;
+    cursor:pointer;
   }
   .dark .prog-card { background:var(--surface); }
   .prog-card:hover { box-shadow:0 3px 12px rgba(0,0,0,.1); transform:translateY(-1px); }
+
+  /* ── SOUS-GROUPE PAR TYPE dans Matin/APM ── */
+  .type-subgroup { margin-bottom:14px; }
+  .type-subgroup:last-child { margin-bottom:0; }
+  .type-subgroup-header {
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:8px; padding:4px 0 4px 2px;
+    border-bottom:1px solid var(--border);
+  }
+  .type-subgroup-label {
+    font-size:11px; font-weight:800; text-transform:uppercase;
+    letter-spacing:.5px; color:var(--tc);
+  }
+  .type-subgroup-count {
+    font-size:10px; font-weight:700;
+    background:var(--tbg); color:var(--tc);
+    border:1px solid var(--tbd); border-radius:20px; padding:1px 7px;
+  }
   .prog-card-top { display:flex; align-items:stretch; flex:1; }
   .prog-stripe { width:5px; flex-shrink:0; background:var(--tc); }
-  .prog-main { flex:1; padding:10px 10px 8px; min-width:0; }
-  .prog-time  { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
-  .prog-name  { font-size:12px; font-weight:700; margin-bottom:5px; line-height:1.3; color:var(--text); }
-  .prog-meta  { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+  .prog-main { flex:1; padding:8px 9px 6px; min-width:0; display:flex; flex-direction:column; gap:4px; }
+  /* Ligne heure + durée */
+  .prog-time  { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+  /* Nom atelier + piment */
+  .prog-name  { font-size:12px; font-weight:700; line-height:1.3; color:var(--text); }
+  /* Lieu + FR/ENG sur la même ligne */
+  .prog-lieu-lang { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+  /* Animateurs */
+  .prog-facs  { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+  /* Consigne + note */
+  .prog-extras { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
   .prog-card-footer {
     display:flex; align-items:center; justify-content:space-between;
     padding:5px 8px;
@@ -176,9 +221,10 @@
   .badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; white-space:nowrap; }
   .badge-type { border:1px solid; }
   .badge-lieu { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
-  .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; }
+  .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; font-size:11px; }
   .badge-note  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
-  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:13px; padding:1px 6px; }
+  /* FR/ENG — même taille que animateurs (11px) */
+  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; padding:2px 7px; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }
@@ -624,41 +670,63 @@ window.setTypeFilter = function(el, type) {
   renderProgList(filtered);
 };
 
-function cardHtml(e, globalIdx) {
+function cardHtml(e, globalIdx, opts) {
+  /* opts.noHeader = true  → masquer le bandeau TYPE/Détails (déjà affiché en sous-titre de groupe) */
+  var noHeader = opts && opts.noHeader;
   var css       = TYPE_CSS[e.type] || '';
   var facs      = [e.fac1, e.fac2].filter(Boolean);
   var pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '';
   var desc      = findDesc(e.atelier);
+  var lang      = I18n.getLang();
 
-  return '<div class="prog-card ' + css + '">' +
+  // Ligne Lieu + FR/ENG
+  var lieuLangHtml =
+    (e.lieu ? '<span class="badge badge-lieu">📍 ' + esc(e.lieu) + '</span>' : '') +
+    (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2)
+      ? '<span class="badge badge-trad" title="' + (e.traduction ? esc(e.traduction) : 'FR / ENG') + '">FR / ENG</span>'
+      : '<span class="badge badge-trad" title="Atelier en français" style="background:#f0fdf4;color:#166534;border-color:#86efac">FR</span>');
+
+  // Animateurs
+  var facsHtml = facs.map(function(f) { return '<span class="badge badge-fac">🎓 ' + esc(f) + '</span>'; }).join('');
+
+  // Consigne + note
+  var extrasHtml =
+    (desc && desc.consigne && desc.consigne.trim()
+      ? '<span class="badge" style="background:#dc2626;color:#fff;border:1px solid #b91c1c">⚠️ ' + (lang === 'en' ? 'Instruction' : 'Consigne') + '</span>'
+      : '') +
+    (e.note ? '<span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, lang)) + '</span>' : '');
+
+  return '<div class="prog-card ' + css + '" onclick="openDetail(' + globalIdx + ')">' +
+    /* ── En-tête coloré TYPE + bouton Détails (masqué si sous-groupe) ── */
+    (noHeader ? '' :
+      '<div class="prog-card-footer" style="border-top:none;border-bottom:1px solid var(--tbd);border-radius:0">' +
+        '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
+        '<button class="detail-btn" onclick="event.stopPropagation();openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (lang === 'en' ? 'Details' : 'Détails') + '</button>' +
+      '</div>'
+    ) +
+    /* ── Corps de la carte ── */
     '<div class="prog-card-top">' +
       '<div class="prog-stripe"></div>' +
       '<div class="prog-main">' +
+        /* 1. Nom + piment */
+        '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
+        /* 2. Heure – durée */
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
           (heureDuree(e.heure) ? ' <span style="font-weight:400;color:var(--muted)">(' + heureDuree(e.heure) + ')</span>' : '') +
-          (e.lieu  ? ' &nbsp;·&nbsp; ' + I18n.t('rp_lieu') + ' : ' + esc(e.lieu) : '') +
         '</div>' +
-        '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
-        '<div class="prog-meta">' +
-          facs.map(function(f) { return '<span class="badge badge-fac">🎓 ' + esc(f) + '</span>'; }).join('') +
-          (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2)
-            ? '<span class="badge badge-trad" title="' + (e.traduction ? esc(e.traduction) : 'FR / ENG') + '">FR / ENG</span>'
-            : '<span class="badge badge-trad" title="Atelier en français" style="background:#f0fdf4;color:#166534;border-color:#86efac">FR</span>') +
-          (desc && desc.consigne && desc.consigne.trim()
-            ? '<span class="badge" style="background:#dc2626;color:#fff;border:1px solid #b91c1c">⚠️ ' + (I18n.getLang() === 'en' ? 'Instruction' : 'Consigne') + '</span>'
-            : '') +
-          (e.note ? '<span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, I18n.getLang())) + '</span>' : '') +
-        '</div>' +
+        /* 3. Lieu + FR/ENG */
+        (lieuLangHtml ? '<div class="prog-lieu-lang">' + lieuLangHtml + '</div>' : '') +
+        /* 4. Animateurs */
+        (facsHtml ? '<div class="prog-facs">' + facsHtml + '</div>' : '') +
+        /* 5. Consigne + note */
+        (extrasHtml ? '<div class="prog-extras">' + extrasHtml + '</div>' : '') +
       '</div>' +
-    '</div>' +
-    '<div class="prog-card-footer">' +
-      '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
-      '<button class="detail-btn" onclick="openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (I18n.getLang() === 'en' ? 'Details' : 'Détails') + '</button>' +
     '</div>' +
   '</div>';
 }
 
+/* Rendu d'une section simple (yoga, rassemblement, soirée) — pas de regroupement par type */
 function renderSection(label, css, items, allAteliers, sectionClass) {
   if (!items.length) return '';
   var word = items.length > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
@@ -673,6 +741,58 @@ function renderSection(label, css, items, allAteliers, sectionClass) {
     html += cardHtml(e, allAteliers.indexOf(e));
   });
   html += '</div></div>';
+  return html;
+}
+
+/* Rendu d'une section avec sous-groupes par type (Matin, Après-midi)
+   – chaque type est affiché sur sa propre rangée
+   – les types sont triés par heure du premier atelier du type (le plus tôt en premier) */
+function renderSectionGrouped(label, css, items, allAteliers, sectionClass) {
+  if (!items.length) return '';
+
+  // 1. Regrouper par type
+  var groups = {};   // type → [ateliers]
+  items.forEach(function(e) {
+    if (!groups[e.type]) groups[e.type] = [];
+    groups[e.type].push(e);
+  });
+
+  // 2. Trier les types par l'heure minimale de leur premier atelier
+  var types = Object.keys(groups);
+  types.sort(function(a, b) {
+    var minA = Math.min.apply(null, groups[a].map(function(x) { return heureMin(x.heure); }));
+    var minB = Math.min.apply(null, groups[b].map(function(x) { return heureMin(x.heure); }));
+    return minA - minB;
+  });
+
+  var totalWord = items.length > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
+  var html = '<div class="type-section ' + css + ' ' + (sectionClass || '') + '">' +
+    '<div class="type-section-header">' +
+      '<span class="type-section-label">' + esc(label) + '</span>' +
+      '<span class="type-section-count">' + items.length + ' ' + totalWord + '</span>' +
+    '</div>' +
+    '<div class="type-section-divider"></div>';
+
+  types.forEach(function(type) {
+    var group   = groups[type];
+    var typeCss = TYPE_CSS[type] || css;
+    // Trier les ateliers du groupe par heure
+    group.sort(function(a, b) { return heureMin(a.heure) - heureMin(b.heure); });
+    var gWord = group.length > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
+
+    html += '<div class="type-subgroup ' + typeCss + '">' +
+      '<div class="type-subgroup-header">' +
+        '<span class="type-subgroup-label">' + esc(typeLabel(type)) + '</span>' +
+        '<span class="type-subgroup-count">' + group.length + ' ' + gWord + '</span>' +
+      '</div>' +
+      '<div class="ateliers-grid">';
+    group.forEach(function(e) {
+      html += cardHtml(e, allAteliers.indexOf(e), { noHeader: true });
+    });
+    html += '</div></div>';
+  });
+
+  html += '</div>';
   return html;
 }
 
@@ -711,8 +831,8 @@ function renderProgList(ateliers) {
   var html = '';
   html += renderSection(I18n.t('rp_sec_yoga'), 't-yoga', yogaMeditation, ateliers, 'section-yoga');
   html += renderSection(I18n.t('rp_sec_rass'), 't-rass', rassemblement, ateliers, 'section-rass');
-  html += renderSection(I18n.t('rp_sec_matin'), 't-tantra', matin, ateliers, 'section-matin');
-  html += renderSection(I18n.t('rp_sec_apm'), 't-cafe', apresMidi, ateliers, 'section-apm');
+  html += renderSectionGrouped(I18n.t('rp_sec_matin'), 't-tantra', matin, ateliers, 'section-matin');
+  html += renderSectionGrouped(I18n.t('rp_sec_apm'), 't-cafe', apresMidi, ateliers, 'section-apm');
   html += renderSection(I18n.t('rp_sec_soiree'), 't-cere', soiree, ateliers, 'section-soir');
 
   list.innerHTML = html || '<div class="empty-prog">' + I18n.t('rp_aucun_filtre') + '</div>';
