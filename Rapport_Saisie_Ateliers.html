@@ -94,10 +94,12 @@
     }
     .ws-header-jour  { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--ws-hdr-text); margin-bottom:4px; }
     .ws-header-title { font-size:20px; font-weight:800; color:var(--ws-hdr-text); margin-bottom:10px; }
-    .ws-header-grid  { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px 20px; }
-    .ws-hdr-field    { display:flex; flex-direction:column; }
-    .ws-hdr-label    { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--ws-hdr-text); opacity:.7; }
-    .ws-hdr-value    { font-size:13px; color:var(--ws-hdr-text); font-weight:500; }
+    /* 2 colonnes sur ordi, 2 sur tablette, 1 sur mobile */
+    .ws-header-grid  { display:grid; grid-template-columns:1fr 1fr; gap:6px 32px; }
+    @media(max-width:640px) { .ws-header-grid { grid-template-columns:1fr; } }
+    .ws-hdr-field    { display:flex; flex-direction:row; align-items:baseline; gap:8px; min-width:0; }
+    .ws-hdr-label    { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--ws-hdr-text); opacity:.7; white-space:nowrap; flex-shrink:0; min-width:110px; }
+    .ws-hdr-value    { font-size:13px; color:var(--ws-hdr-text); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
     /* ── NOTICE ADMIN (fond jaune mm couleur) ── */
     .admin-notice {
@@ -113,7 +115,20 @@
     .admin-notice-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
 
     /* ── SECTIONS ── */
-    .section-block { margin-bottom:28px; }
+    /* ── BLOCS COLORÉS ── */
+    .section-block { margin-bottom:20px; border-radius:12px; padding:18px 20px; }
+    .block-orange  { background:#fff7ed; border:2px solid #f97316; }
+    .block-orange  .section-title { border-bottom-color:#f97316; color:#c2410c; }
+    .block-green   { background:#f0fdf4; border:2px solid #4ade80; }
+    .block-green   .section-title { border-bottom-color:#4ade80; color:#166534; }
+    .block-purple  { background:#faf5ff; border:2px solid #c084fc; }
+    .block-purple  .section-title { border-bottom-color:#c084fc; color:#7e22ce; }
+    .block-blue    { background:#eff6ff; border:2px solid #3b82f6; }
+    .block-blue    .section-title { border-bottom-color:#3b82f6; color:#1d4ed8; }
+    .dark .block-orange  { background:#2a1200; border-color:#c2410c; }
+    .dark .block-green   { background:#052e16; border-color:#16a34a; }
+    .dark .block-purple  { background:#1a0533; border-color:#9333ea; }
+    .dark .block-blue    { background:#0c1a40; border-color:#2563eb; }
     .section-title { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--text); border-bottom:2px solid var(--border); padding-bottom:8px; margin-bottom:18px; }
     .section-label { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:700; margin-bottom:8px; }
     .field-wrap { margin-bottom:18px; }
@@ -126,10 +141,8 @@
     @media(max-width:600px) { .names-row { grid-template-columns:1fr; } }
 
     /* ── PIMENT ── */
-    .piment-btns { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
-    .piment-btn  { cursor:pointer; padding:7px 16px; border-radius:8px; border:2px solid var(--border); background:var(--bg); font-size:14px; font-family:inherit; color:var(--text); transition:all .15s; }
-    .piment-btn.active { border-color:var(--accent); background:#eff6ff; font-weight:700; }
-    .dark .piment-btn.active { background:#0c2d48; }
+    .piment-select { width:100%; max-width:280px; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; background:var(--bg); color:var(--text); font-family:inherit; cursor:pointer; margin-bottom:18px; }
+    .piment-select:focus { border-color:var(--accent); outline:2px solid rgba(59,130,246,.15); }
 
     /* ── DESCRIPTIONS CÔTE À CÔTE ── */
     .desc-cols { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
@@ -163,7 +176,7 @@
 
     /* ── HELPERS SECTIONS ── */
     .helper-sub { margin-bottom:16px; }
-    .helper-sub-label { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; padding:6px 10px; background:var(--surface); border:1px solid var(--border); border-radius:6px 6px 0 0; border-bottom:none; margin:0; }
+    .helper-sub-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; padding:4px 10px; background:var(--surface); border:1px solid var(--border); border-radius:6px 6px 0 0; border-bottom:none; margin:0; }
     .helper-sub .rte { border-radius:0 0 6px 6px; min-height:90px; }
 
     /* ── SÉPARATEUR ── */
@@ -199,7 +212,9 @@
       <p>📋 <span data-i18n="rsa_title">Saisie Ateliers — Descriptions &amp; Logistique</span></p>
     </div>
     <div class="header-actions">
-      <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
+      <a class="btn" href="gestion_planning.html" data-i18n="nav_admin">⚙️ Admin</a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
@@ -279,7 +294,7 @@
     </div>
 
     <!-- ══ 1 — DESCRIPTION ══ -->
-    <div class="section-block">
+    <div class="section-block block-orange">
       <div class="section-title" data-i18n="rsa_sec1_title">1 — Description de l'Atelier</div>
 
       <!-- Noms (FR + EN côte à côte) -->
@@ -296,7 +311,7 @@
 
       <!-- Niveau piment -->
       <p class="section-label" style="margin-top:18px;" data-i18n="r_desc_piment_label">Niveau Piment</p>
-      <div class="piment-btns" id="ePimentBtns"></div>
+      <select class="piment-select" id="ePimentSelect" onchange="setPiment(parseInt(this.value))"></select>
 
       <!-- Descriptions FR + EN côte à côte -->
       <div class="desc-cols">
@@ -345,8 +360,8 @@
 
     <hr class="section-sep">
 
-    <!-- ══ 2 — LOGISTIQUE ══ -->
-    <div class="section-block">
+    <!-- ══ 2 — INFORMATIONS LOGISTIQUES ══ -->
+    <div class="section-block block-green">
       <div class="section-title" data-i18n="rsa_sec2_title">2 — Informations Logistiques</div>
 
       <!-- Durée de préparation -->
@@ -363,7 +378,7 @@
 
       <!-- Besoins logistiques -->
       <div class="field-wrap" style="margin-bottom:6px;">
-        <label data-i18n="rsa_log_label">📦 Informations logistiques</label>
+        <label data-i18n="rsa_log_label">Informations logistiques</label>
         <p class="editor-hint" style="margin-bottom:8px;margin-top:2px;" data-i18n="rsa_log_hint">Décrivez vos besoins en matériel (tables, chaises, tapis yoga, matelas, coussins, etc…), technique (lumière, micros, câbles, etc…) ou autres. S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.</p>
         <div class="toolbar" id="tbLog">
           <button class="tb-btn" onclick="fmt('logEditor','bold')"><strong>G</strong></button>
@@ -375,62 +390,66 @@
         </div>
         <div id="logEditor" class="rte" contenteditable="true" spellcheck="true"></div>
       </div>
-
-      <!-- Besoins logistiques spécifiques -->
-      <div class="field-wrap" style="margin-bottom:6px;margin-top:20px;">
-        <label style="color:#7c5cd8;" data-i18n="rsa_special_label">⭐ Besoins logistiques spécifiques</label>
-        <p class="editor-hint" style="margin-bottom:8px;margin-top:2px;" data-i18n="rsa_special_hint">Décrivez les besoins complémentaires en matériel spécial, achats à faire… S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.</p>
-        <div class="toolbar" style="border-bottom-color:#c4b5fd;">
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','bold')"><strong>G</strong></button>
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','italic')"><em>I</em></button>
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','underline')"><u>S</u></button>
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','insertUnorderedList')">• Liste</button>
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','insertOrderedList')">1. Liste</button>
-          <button class="tb-btn" onclick="fmt('logSpecialEditor','removeFormat')">✖ Format</button>
-        </div>
-        <div id="logSpecialEditor" class="rte" contenteditable="true" spellcheck="true"
-          style="border-color:#c4b5fd;min-height:100px;"></div>
-      </div>
-
-      <!-- Consignes pour helpers -->
-      <div class="field-wrap" style="margin-top:20px;">
-        <label data-i18n="rsa_helpers_label">🤝 Consignes pour Helpers</label>
-        <p class="editor-hint" style="margin-bottom:12px;margin-top:2px;" data-i18n="rsa_helpers_hint">Décrivez tout ce que les helpers auront à faire pour cet atelier. S'il n'y a rien à faire, indiquez « RAS » ou « N/A » à chaque étape. Utilisez la liste à puces pour plus de clarté.</p>
-
-        <!-- Avant -->
-        <div class="helper-sub">
-          <div class="helper-sub-label" data-i18n="rsa_helper_avant">🔧 Avant l'atelier — Préparation - Installation</div>
-          <div class="toolbar" style="border-radius:0;border-top:none;">
-            <button class="tb-btn" onclick="fmt('helperAvant','insertUnorderedList')">• Liste</button>
-            <button class="tb-btn" onclick="fmt('helperAvant','bold')"><strong>G</strong></button>
-            <button class="tb-btn" onclick="fmt('helperAvant','removeFormat')">✖</button>
-          </div>
-          <div id="helperAvant" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
-        </div>
-
-        <!-- Pendant -->
-        <div class="helper-sub">
-          <div class="helper-sub-label" data-i18n="rsa_helper_pendant">▶️ Pendant l'atelier</div>
-          <div class="toolbar" style="border-radius:0;border-top:none;">
-            <button class="tb-btn" onclick="fmt('helperPendant','insertUnorderedList')">• Liste</button>
-            <button class="tb-btn" onclick="fmt('helperPendant','bold')"><strong>G</strong></button>
-            <button class="tb-btn" onclick="fmt('helperPendant','removeFormat')">✖</button>
-          </div>
-          <div id="helperPendant" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
-        </div>
-
-        <!-- Après -->
-        <div class="helper-sub">
-          <div class="helper-sub-label" data-i18n="rsa_helper_apres">🧹 Après l'atelier — Désinstallation – Rangement – Nettoyage</div>
-          <div class="toolbar" style="border-radius:0;border-top:none;">
-            <button class="tb-btn" onclick="fmt('helperApres','insertUnorderedList')">• Liste</button>
-            <button class="tb-btn" onclick="fmt('helperApres','bold')"><strong>G</strong></button>
-            <button class="tb-btn" onclick="fmt('helperApres','removeFormat')">✖</button>
-          </div>
-          <div id="helperApres" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
-        </div>
-      </div>
     </div><!-- /section logistique -->
+
+    <hr class="section-sep">
+
+    <!-- ══ 3 — BESOINS SPÉCIFIQUES ══ -->
+    <div class="section-block block-purple">
+      <div class="section-title" data-i18n="rsa_special_label">⭐ Besoins logistiques spécifiques</div>
+      <p class="editor-hint" style="margin-bottom:8px;margin-top:-10px;" data-i18n="rsa_special_hint">Décrivez les besoins complémentaires en matériel spécial, achats à faire… S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.</p>
+      <div class="toolbar" style="border-bottom-color:#c4b5fd;">
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','bold')"><strong>G</strong></button>
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','italic')"><em>I</em></button>
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','underline')"><u>S</u></button>
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','insertUnorderedList')">• Liste</button>
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','insertOrderedList')">1. Liste</button>
+        <button class="tb-btn" onclick="fmt('logSpecialEditor','removeFormat')">✖ Format</button>
+      </div>
+      <div id="logSpecialEditor" class="rte" contenteditable="true" spellcheck="true"
+        style="border-color:#c4b5fd;min-height:100px;"></div>
+    </div><!-- /section besoins spécifiques -->
+
+    <hr class="section-sep">
+
+    <!-- ══ 4 — CONSIGNES HELPERS ══ -->
+    <div class="section-block block-blue">
+      <div class="section-title" data-i18n="rsa_helpers_label">🤝 Consignes pour Helpers</div>
+      <p class="editor-hint" style="margin-bottom:12px;margin-top:-10px;" data-i18n="rsa_helpers_hint">Décrivez tout ce que les helpers auront à faire pour cet atelier. S'il n'y a rien à faire, indiquez « RAS » ou « N/A » à chaque étape. Utilisez la liste à puces pour plus de clarté.</p>
+
+      <!-- Avant -->
+      <div class="helper-sub">
+        <div class="helper-sub-label" data-i18n="rsa_helper_avant">🔧 Avant l'atelier — Préparation - Installation</div>
+        <div class="toolbar" style="border-radius:0;border-top:none;">
+          <button class="tb-btn" onclick="fmt('helperAvant','insertUnorderedList')">• Liste</button>
+          <button class="tb-btn" onclick="fmt('helperAvant','bold')"><strong>G</strong></button>
+          <button class="tb-btn" onclick="fmt('helperAvant','removeFormat')">✖</button>
+        </div>
+        <div id="helperAvant" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
+      </div>
+
+      <!-- Pendant -->
+      <div class="helper-sub">
+        <div class="helper-sub-label" data-i18n="rsa_helper_pendant">▶️ Pendant l'atelier</div>
+        <div class="toolbar" style="border-radius:0;border-top:none;">
+          <button class="tb-btn" onclick="fmt('helperPendant','insertUnorderedList')">• Liste</button>
+          <button class="tb-btn" onclick="fmt('helperPendant','bold')"><strong>G</strong></button>
+          <button class="tb-btn" onclick="fmt('helperPendant','removeFormat')">✖</button>
+        </div>
+        <div id="helperPendant" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
+      </div>
+
+      <!-- Après -->
+      <div class="helper-sub">
+        <div class="helper-sub-label" data-i18n="rsa_helper_apres">🧹 Après l'atelier — Désinstallation – Rangement – Nettoyage</div>
+        <div class="toolbar" style="border-radius:0;border-top:none;">
+          <button class="tb-btn" onclick="fmt('helperApres','insertUnorderedList')">• Liste</button>
+          <button class="tb-btn" onclick="fmt('helperApres','bold')"><strong>G</strong></button>
+          <button class="tb-btn" onclick="fmt('helperApres','removeFormat')">✖</button>
+        </div>
+        <div id="helperApres" class="rte" contenteditable="true" spellcheck="true" style="border-radius:0 0 6px 6px;"></div>
+      </div>
+    </div><!-- /section helpers -->
 
     <hr class="section-sep">
 
@@ -773,14 +792,14 @@ window.goList = goList;
 // PIMENT
 // ════════════════════════════════════════════
 function buildPimentBtns(selected) {
-  document.getElementById('ePimentBtns').innerHTML = REF_PIMENT.map(function(p) {
-    return '<button class="piment-btn' + (p.value === selected ? ' active' : '') + '" ' +
-      'onclick="setPiment(' + p.value + ')">' + p.label + '</button>';
+  var sel = document.getElementById('ePimentSelect');
+  sel.innerHTML = REF_PIMENT.map(function(p) {
+    return '<option value="' + p.value + '"' + (p.value === selected ? ' selected' : '') + '>' + p.label + '</option>';
   }).join('');
+  currentPiment = selected;
 }
 function setPiment(val) {
   currentPiment = val;
-  buildPimentBtns(val);
 }
 window.setPiment = setPiment;
 

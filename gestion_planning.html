@@ -141,6 +141,7 @@
 
 <!-- ── BOUTON LANGUE + RETOUR (haut droite) ── -->
 <div class="lang-bar">
+  <a href="index.html" class="back-btn" data-i18n="nav_accueil">🏠 Accueil</a>
   <a href="index_bis.html" class="back-btn">← DreamTeam</a>
   <button class="tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
 </div>
@@ -160,19 +161,20 @@
     <div class="group-label"><span>📆</span><span data-i18n="home_group_general">DREAMTEAM</span></div>
     <div class="grid">
 
-      <!-- Ligne 1 : Programme seul (pleine largeur) -->
-      <a class="card" href="Rapport_Programme.html" style="grid-column:1/-1;background:#3b82d4;border-color:#3b82d4;color:#fff;justify-content:center;text-align:center;gap:16px;">
+      <!-- Programme Festival + Informations Ateliers sur la même ligne (2 colonnes) -->
+      <a class="card" href="Rapport_Programme.html" style="background:#3b82d4;border-color:#3b82d4;color:#fff;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">🎪</div>
-        <div class="card-body" style="flex:0 1 auto;">
+        <div class="card-body">
           <div class="card-title" style="color:#fff;" data-i18n="card_programme_title">Programme Festival</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_programme_desc">Ateliers publics par jour — descriptions &amp; détails</div>
         </div>
+        <div class="card-arrow" style="color:rgba(255,255,255,.7);">›</div>
       </a>
 
       <!-- Informations Ateliers -->
-      <a class="card" href="Rapport_Informations_Ateliers.html" style="grid-column:1/-1;background:#16a34a;border-color:#16a34a;color:#fff;justify-content:center;gap:16px;">
+      <a class="card" href="Rapport_Informations_Ateliers.html" style="background:#16a34a;border-color:#16a34a;color:#fff;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">ℹ️</div>
-        <div class="card-body" style="text-align:center;">
+        <div class="card-body">
           <div class="card-title" style="color:#fff;" data-i18n="card_ria_title">Informations Ateliers</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_ria_desc">Consignes, besoins logistiques et infos pour helpers et intervenants</div>
         </div>
@@ -228,10 +230,10 @@
     <div class="grid">
 
       <!-- Saisie Ateliers (pleine largeur) -->
-      <a class="card" href="Rapport_Saisie_Ateliers.html" style="grid-column:1/-1;background:#ca8a04;border-color:#ca8a04;color:#fff;justify-content:center;gap:16px;">
+      <a class="card" href="Rapport_Saisie_Ateliers.html" style="grid-column:1/-1;background:#ca8a04;border-color:#ca8a04;color:#fff;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">📋</div>
-        <div class="card-body" style="text-align:center;">
-          <div class="card-title" style="color:#fff;" data-i18n="card_saisie_ateliers_title">ANIMATEUR : Saisie des informations Ateliers (Descriptions &amp; Logistiques)</div>
+        <div class="card-body">
+          <div class="card-title" style="color:#fff;" data-i18n="card_saisie_ateliers_title">Saisie des informations Ateliers (Descriptions &amp; Logistiques)</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_saisie_ateliers_desc">Saisir les descriptions FR/EN, le niveau piment, les consignes et les besoins logistiques — tout en un</div>
         </div>
         <div class="card-arrow" style="color:rgba(255,255,255,.7);">›</div>

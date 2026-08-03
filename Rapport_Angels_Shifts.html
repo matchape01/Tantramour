@@ -8,12 +8,12 @@
   :root {
     --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
     --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
-    --angel-bg:#fce7f3; --angel-border:#f9a8d4; --angel-text:#9d174d;
+    --angel-bg:#fee2e2; --angel-border:#fca5a5; --angel-text:#dc2626;
   }
   .dark {
     --bg:#0d1117; --surface:#161b22; --border:#30363d;
     --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
-    --angel-bg:#3b1030; --angel-border:#9d174d; --angel-text:#f0abca;
+    --angel-bg:#2d0000; --angel-border:#991b1b; --angel-text:#f87171;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
@@ -91,7 +91,8 @@
       <small>Vue d'ensemble — Jour 1 › Jour 7</small>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index_bis.html">🏠 Home</a>
+      <a class="btn-ghost" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn-ghost" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
       <button class="btn-ghost" onclick="hardReload()">🔄 Refresh</button>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
     </div>

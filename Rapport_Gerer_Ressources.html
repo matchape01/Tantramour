@@ -13,8 +13,8 @@
     /* Badges rôles */
     --badge-f-bg:#dcfce7;  --badge-f-tx:#166534;
     --badge-h-bg:#e0f2fe;  --badge-h-tx:#0369a1;
-    --badge-t-bg:#fef9c3;  --badge-t-tx:#854d0e;
-    --badge-a-bg:#fce7f3;  --badge-a-tx:#9d174d;
+    --badge-t-bg:#f5f3ff;  --badge-t-tx:#7c3aed;
+    --badge-a-bg:#fee2e2;  --badge-a-tx:#dc2626;
     /* Badges langues */
     --badge-fr-bg:#eff6ff; --badge-fr-tx:#1d4ed8; --badge-fr-bd:#bfdbfe;
     --badge-en-bg:#f0fdf4; --badge-en-tx:#166534; --badge-en-bd:#86efac;
@@ -26,8 +26,8 @@
     --green-bg:#052e16; --green-border:#166534;
     --badge-f-bg:#0a2e1a;  --badge-f-tx:#4ade80;
     --badge-h-bg:#0c2d48;  --badge-h-tx:#58a6ff;
-    --badge-t-bg:#2d2006;  --badge-t-tx:#fbbf24;
-    --badge-a-bg:#3b1030;  --badge-a-tx:#f0abca;
+    --badge-t-bg:#1e1b4b;  --badge-t-tx:#a78bfa;
+    --badge-a-bg:#2d0000;  --badge-a-tx:#f87171;
     --badge-fr-bg:#0c2d48; --badge-fr-tx:#79a8ff; --badge-fr-bd:#1e4e7a;
     --badge-en-bg:#052e16; --badge-en-tx:#4ade80; --badge-en-bd:#166534;
   }
@@ -217,7 +217,9 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-add" onclick="openAdd()">＋ Ajouter une ressource</button>
-      <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
+      <a class="btn" href="gestion_planning.html" data-i18n="nav_admin">⚙️ Admin</a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>

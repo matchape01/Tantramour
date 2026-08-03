@@ -149,28 +149,32 @@
 
   <div class="logo">
     <h1>Tantramour 2026</h1>
-    <p data-i18n="home_subtitle">Portail pour la DreamTeam — 29 août › 4 septembre 2026</p>
+    <p data-i18n="home_subtitle">Page destinée à la DreamTeam</p>
   </div>
 
   <!-- ══════════════════════════════════
        GROUPE 1 — DREAMTEAM
   ══════════════════════════════════ -->
   <div class="group">
-    <div class="group-label"><span>📆</span><span data-i18n="home_group_general">DREAMTEAM</span></div>
+    <div class="group-label" style="display:flex;align-items:center;justify-content:space-between;">
+      <div><span>📆</span><span data-i18n="home_group_general">DREAMTEAM</span></div>
+      <a href="user-manual.html" style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;text-decoration:none;line-height:1;transition:color .15s,border-color .15s;">📖 <span data-i18n="nav_manuel">Manuel</span></a>
+    </div>
     <div class="grid">
 
-      <!-- Ligne 1 : Programme seul (pleine largeur) -->
-      <a class="card" href="Rapport_Programme.html" style="grid-column:1/-1;background:#3b82d4;border-color:#3b82d4;color:#fff;justify-content:center;text-align:center;gap:16px;">
+      <!-- Programme Festival + Informations Ateliers sur la même ligne (2 colonnes) -->
+      <a class="card" href="Rapport_Programme.html" style="background:#3b82d4;border-color:#3b82d4;color:#fff;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">🎪</div>
-        <div class="card-body" style="flex:0 1 auto;">
+        <div class="card-body">
           <div class="card-title" style="color:#fff;" data-i18n="card_programme_title">Programme Festival</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_programme_desc">Ateliers publics par jour — descriptions &amp; détails</div>
         </div>
+        <div class="card-arrow" style="color:rgba(255,255,255,.7);">›</div>
       </a>
 
-      <a class="card" href="Rapport_Informations_Ateliers.html" style="grid-column:1/-1;background:#16a34a;border-color:#16a34a;color:#fff;justify-content:center;gap:16px;">
+      <a class="card" href="Rapport_Informations_Ateliers.html" style="background:#16a34a;border-color:#16a34a;color:#fff;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">📘</div>
-        <div class="card-body" style="text-align:center;">
+        <div class="card-body">
           <div class="card-title" style="color:#fff;">Informations Ateliers</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);">Consignes, besoins logistiques et infos pour helpers et intervenants</div>
         </div>
@@ -219,9 +223,7 @@
   </div>
 
   <footer>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <a href="user-manual.html" class="footer-btn">📖 <span data-i18n="nav_manuel">Manuel</span></a>
-    </div>
+    <div></div>
     <button onclick="openPw('gestion_planning.html','Gestion Planning — Accès référents')"
       style="display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:#1f2328;border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">
       🔐 ADMIN

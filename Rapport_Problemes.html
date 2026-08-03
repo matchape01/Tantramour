@@ -14,9 +14,9 @@
     --orange:#d97706; --orange-bg:#fef3c7; --orange-border:#fcd34d;
     --red:#dc2626; --red-bg:#fee2e2; --red-border:#fca5a5;
     --badge-h:#e0f2fe; --badge-ht:#0369a1;
-    --badge-a:#fce7f3; --badge-at:#9d174d;
+    --badge-a:#fee2e2; --badge-at:#dc2626;
     --badge-f:#dcfce7; --badge-ft:#166534;
-    --badge-t:#eef2ff; --badge-tt:#3b5bdb;
+    --badge-t:#f5f3ff; --badge-tt:#7c3aed;
   }
   .dark {
     --bg:#0d1117; --surface:#161b22; --border:#30363d;
@@ -27,9 +27,9 @@
     --orange-bg:#2d1a00; --orange-border:#92400e;
     --red-bg:#2d0a0a; --red-border:#991b1b;
     --badge-h:#0c2d48; --badge-ht:#58a6ff;
-    --badge-a:#3b1030; --badge-at:#f0abca;
+    --badge-a:#2d0000; --badge-at:#f87171;
     --badge-f:#0a2e1a; --badge-ft:#4ade80;
-    --badge-t:#1c2a4a; --badge-tt:#79a8ff;
+    --badge-t:#1e1b4b; --badge-tt:#a78bfa;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
@@ -154,7 +154,9 @@
       <small>Ateliers sans traducteur (anglophone) · Ateliers sans ressource suffisante</small>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn-ghost" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
+      <a class="btn-ghost" href="gestion_planning.html" data-i18n="nav_admin">⚙️ Admin</a>
       <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>

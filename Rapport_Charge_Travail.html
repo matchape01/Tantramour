@@ -10,8 +10,8 @@
     --text: #1f2328; --muted: #57606a; --accent: #3b82d4;
     --header-bg: #f0f4fb;
     --helper-bg: #e0f2fe; --helper-border: #7dd3fc; --helper-text: #0369a1;
-    --angel-bg:  #fce7f3; --angel-border:  #f9a8d4; --angel-text:  #9d174d;
-    --trad-bg:   #fefce8; --trad-border:   #fde047; --trad-text:   #854d0e;
+    --angel-bg:  #fee2e2; --angel-border:  #fca5a5; --angel-text:  #dc2626;
+    --trad-bg:   #f5f3ff; --trad-border:   #c4b5fd; --trad-text:   #7c3aed;
     --green: #166534; --green-bg: #dcfce7; --green-border: #86efac;
     --orange: #c2410c; --orange-bg: #fff7ed; --orange-border: #fdba74;
     --red: #dc2626; --red-bg: #fef2f2; --red-border: #fca5a5;
@@ -22,8 +22,8 @@
     --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
     --header-bg: #1c2333;
     --helper-bg: #0c2d48; --helper-border: #1e4a8a; --helper-text: #7dd3fc;
-    --angel-bg:  #3b1030; --angel-border:  #9d174d; --angel-text:  #f9a8d4;
-    --trad-bg:   #1c1500; --trad-border:   #854d0e; --trad-text:   #fde047;
+    --angel-bg:  #2d0000; --angel-border:  #991b1b; --angel-text:  #f87171;
+    --trad-bg:   #1e1b4b; --trad-border:   #5b21b6; --trad-text:   #a78bfa;
     --green-bg: #052e16; --green-border: #166534;
     --orange-bg: #1c1000; --orange-border: #92400e;
     --red-bg: #2d0a0a; --red-border: #991b1b;
@@ -166,7 +166,9 @@
       <small>Workload Analysis Report</small>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn-ghost" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
+      <a class="btn-ghost" href="gestion_planning.html" data-i18n="nav_admin">⚙️ Admin</a>
       <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>

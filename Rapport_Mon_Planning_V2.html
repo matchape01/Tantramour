@@ -10,21 +10,35 @@
 :root {
   --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
   --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
-  --header-bg:#f0f4fb; --row-alt:#f7f8fa;
+  /* Ligne NOM : bleu foncé */
+  --header-bg:#1e40af; --header-tx:#ffffff;
+  /* Ligne JOUR : gris foncé */
+  --day-bg:#374151;    --day-tx:#f9fafb;
+  /* En-têtes colonnes : gris clair */
+  --th-bg:#e5e7eb;     --th-tx:#374151;
+  /* Données : blanc */
+  --td-bg:#ffffff;     --row-alt:#f7f8fa;
   --badge-f-bg:#dcfce7; --badge-f-tx:#166534;
   --badge-h-bg:#e0f2fe; --badge-h-tx:#0369a1;
-  --badge-t-bg:#fef9c3; --badge-t-tx:#854d0e;
-  --badge-a-bg:#fce7f3; --badge-a-tx:#9d174d;
+  --badge-t-bg:#f5f3ff; --badge-t-tx:#7c3aed;
+  --badge-a-bg:#fee2e2; --badge-a-tx:#dc2626;
   --badge-x-bg:#f3f4f6; --badge-x-tx:#374151;
 }
 .dark {
   --bg:#0d1117; --surface:#161b22; --border:#30363d;
   --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
-  --header-bg:#1c2333; --row-alt:#161b22;
+  /* Ligne NOM : bleu foncé mode nuit */
+  --header-bg:#1e3a8a; --header-tx:#bfdbfe;
+  /* Ligne JOUR : gris foncé mode nuit */
+  --day-bg:#1f2937;    --day-tx:#d1d5db;
+  /* En-têtes : gris mode nuit */
+  --th-bg:#374151;     --th-tx:#9ca3af;
+  /* Données */
+  --td-bg:#161b22;     --row-alt:#1c2333;
   --badge-f-bg:#0a2e1a; --badge-f-tx:#4ade80;
   --badge-h-bg:#0c2d48; --badge-h-tx:#58a6ff;
-  --badge-t-bg:#2d2006; --badge-t-tx:#fbbf24;
-  --badge-a-bg:#3b1030; --badge-a-tx:#f0abca;
+  --badge-t-bg:#1e1b4b; --badge-t-tx:#a78bfa;
+  --badge-a-bg:#2d0000; --badge-a-tx:#f87171;
   --badge-x-bg:#1f2937; --badge-x-tx:#9ca3af;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -40,7 +54,7 @@ header { display:flex; align-items:center; justify-content:space-between; margin
 .btn:hover { background:var(--border); }
 
 /* ── FILTRES ── */
-.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:flex-end; }
+.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; align-items:flex-end; }
 .filter-group { display:flex; flex-direction:column; gap:4px; }
 .filter-group label { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:600; }
 select, input[type="text"] { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; }
@@ -49,37 +63,65 @@ input[type="text"] { min-width:200px; }
 .stats { font-size:12px; color:var(--muted); margin-bottom:16px; }
 .stats span { color:var(--accent); font-weight:600; }
 
+/* ── TABS VUE ── */
+.vue-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; align-items:center; }
+.vue-tabs-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-right:4px; white-space:nowrap; }
+.vtab { cursor:pointer; padding:7px 16px; border-radius:8px; font-size:13px; font-weight:600; border:2px solid var(--border); background:var(--surface); color:var(--muted); font-family:inherit; transition:all .15s; white-space:nowrap; }
+.vtab:hover { border-color:var(--accent); color:var(--accent); }
+/* Vue Combinée : violet/purple */
+.vtab.active-combined { border-color:#7c3aed; background:#f5f3ff; color:#7c3aed; }
+.dark .vtab.active-combined { border-color:#a78bfa; background:#1e1b4b; color:#a78bfa; }
+/* Animateur : vert */
+.vtab.active-animateur { border-color:#166534; background:#dcfce7; color:#166534; }
+.dark .vtab.active-animateur { border-color:#4ade80; background:#0a2e1a; color:#4ade80; }
+/* Helper : bleu */
+.vtab.active-helper { border-color:#0369a1; background:#e0f2fe; color:#0369a1; }
+.dark .vtab.active-helper { border-color:#58a6ff; background:#0c2d48; color:#58a6ff; }
+/* Traducteur : violet */
+.vtab.active-traducteur { border-color:#7c3aed; background:#f5f3ff; color:#7c3aed; }
+.dark .vtab.active-traducteur { border-color:#a78bfa; background:#1e1b4b; color:#a78bfa; }
+/* Angel : rouge */
+.vtab.active-angel { border-color:#dc2626; background:#fee2e2; color:#dc2626; }
+.dark .vtab.active-angel { border-color:#f87171; background:#2d0000; color:#f87171; }
+/* Colibri : rose */
+.vtab.active-colibri { border-color:#db2777; background:#fce7f3; color:#db2777; }
+.dark .vtab.active-colibri { border-color:#f472b6; background:#500724; color:#f472b6; }
+
 /* ── CARTE RESSOURCE ── */
 .resource-list { display:flex; flex-direction:column; gap:16px; }
 .resource-card { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-.resource-header { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--header-bg); cursor:pointer; user-select:none; }
-.resource-header:hover { filter:brightness(.97); }
-.resource-avatar { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; flex-shrink:0; }
-.resource-name { font-size:15px; font-weight:700; flex:1; }
-.resource-badges { display:flex; gap:5px; flex-wrap:wrap; }
-.resource-stats { font-size:11px; color:var(--muted); text-align:right; white-space:nowrap; }
-.resource-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+.resource-header { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--header-bg); color:var(--header-tx); cursor:pointer; user-select:none; flex-wrap:nowrap; min-width:0; }
+.resource-header:hover { filter:brightness(1.08); }
+.resource-avatar { width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.25); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; border:2px solid rgba(255,255,255,.4); }
+/* Nom + badges rôles côte à côte, flex:1 pour prendre l'espace dispo */
+.resource-name-wrap { display:flex; align-items:center; gap:6px; flex:1; min-width:0; overflow:hidden; }
+.resource-name { font-size:14px; font-weight:700; color:var(--header-tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:1; min-width:0; }
+.resource-badges { display:flex; gap:3px; flex-shrink:0; flex-wrap:nowrap; }
+/* Badges rôles plus petits sur la ligne NOM */
+.resource-badges .badge { font-size:9px; padding:1px 5px; }
+.resource-stats { font-size:12px; font-weight:700; color:rgba(255,255,255,.9); white-space:nowrap; flex-shrink:0; }
+.resource-chevron { font-size:16px; color:rgba(255,255,255,.6); transition:transform .2s; flex-shrink:0; }
 .resource-card.open .resource-chevron { transform:rotate(90deg); }
 .resource-body { display:none; border-top:1px solid var(--border); }
 .resource-card.open .resource-body { display:block; }
 
 /* ── LIGNE JOUR ── */
-.day-row { display:flex; align-items:center; gap:10px; padding:8px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .1s; }
+.day-row { display:flex; align-items:center; gap:10px; padding:8px 16px; border-bottom:1px solid rgba(255,255,255,.1); background:var(--day-bg); cursor:pointer; transition:filter .1s; }
 .day-row:last-child { border-bottom:none; }
-.day-row:hover { background:var(--row-alt); }
-.day-label { font-size:12px; font-weight:700; color:var(--accent); min-width:56px; white-space:nowrap; }
-.day-date  { font-size:11px; color:var(--muted); min-width:110px; white-space:nowrap; }
+.day-row:hover { filter:brightness(1.1); }
+.day-label { font-size:12px; font-weight:800; color:#93c5fd; min-width:56px; white-space:nowrap; }
+.day-date  { font-size:11px; color:#9ca3af; min-width:110px; white-space:nowrap; }
 .day-roles { display:flex; gap:4px; flex-wrap:wrap; flex:1; }
-.day-meta  { display:flex; gap:12px; font-size:11px; color:var(--muted); white-space:nowrap; }
-.day-meta span { font-weight:600; color:var(--text); }
-.day-chevron { font-size:14px; color:var(--muted); transition:transform .2s; }
+.day-meta  { display:flex; gap:12px; font-size:11px; color:#9ca3af; white-space:nowrap; }
+.day-meta span { font-weight:700; color:var(--day-tx); }
+.day-chevron { font-size:14px; color:#9ca3af; transition:transform .2s; }
 .day-row.open .day-chevron { transform:rotate(90deg); }
 
 /* ── TABLE ATELIERS ── */
 .ateliers-wrap { border-top:1px solid var(--border); overflow-x:auto; }
 .ateliers-table { width:100%; border-collapse:collapse; font-size:12px; }
-.ateliers-table th { background:var(--surface); padding:6px 10px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; }
-.ateliers-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.ateliers-table th { background:var(--th-bg); padding:6px 10px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--th-tx); border-bottom:1px solid var(--border); white-space:nowrap; }
+.ateliers-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:middle; background:var(--td-bg); }
 .ateliers-table tr:last-child td { border-bottom:none; }
 .ateliers-table tr:hover td { background:var(--row-alt); }
 .at-name { font-weight:600; color:var(--text); }
@@ -118,7 +160,7 @@ input[type="text"] { min-width:200px; }
 .modal-top-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
 .modal-atelier { font-size:18px; font-weight:800; line-height:1.3; }
 .modal-sub { font-size:12px; color:var(--muted); margin-top:3px; }
-.modal-close { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:13px; font-weight:700; font-family:inherit; color:var(--text); }
+.modal-close { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:15px; font-weight:700; font-family:inherit; color:var(--text); line-height:1; }
 .modal-close:hover { background:var(--border); }
 .modal-lang-toggle { display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
 .modal-lang-btn { cursor:pointer; background:var(--surface); border:none; padding:5px 12px; font-size:12px; font-weight:700; font-family:inherit; color:var(--muted); }
@@ -154,26 +196,38 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
   <header>
     <div class="logo">
       <h1>Tantramour 2026</h1>
-      <p>📋 Mon Planning V2</p>
+      <p data-i18n="mp_title">📋 Mon Planning V2</p>
     </div>
     <div class="header-actions" id="headerActions">
-      <a class="btn" href="index_bis.html">🏠 Home</a>
+      <a class="btn" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
       <button class="btn" onclick="hardReload()">🔄 Refresh</button>
-      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+      <button class="btn" id="modeBtn" onclick="toggleMode()" data-i18n="mp_mode_nuit">🌙 Mode Nuit</button>
     </div>
   </header>
 
   <div class="filters">
     <div class="filter-group">
-      <label>Nom</label>
+      <label id="lbl-fNom" data-i18n="mp_lbl_nom">Nom</label>
       <select id="fNom" onchange="applyFilters()">
-        <option value="__NONE__">Aucun</option>
+        <option value="__NONE__" data-i18n="mp_opt_aucun">Aucun</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Recherche nom</label>
+      <label id="lbl-fSearch" data-i18n="mp_lbl_search">Recherche nom</label>
       <input type="text" id="fSearch" placeholder="Nom de la personne…" oninput="applyFilters()">
     </div>
+  </div>
+
+  <!-- ── TABS VUE ── -->
+  <div class="vue-tabs" id="vueTabs">
+    <span class="vue-tabs-lbl" data-i18n="mp_vue_label">Vue :</span>
+    <button class="vtab active-combined" data-vue="" onclick="setVue(this,'')"         data-i18n="mp_vue_combined">Vue Combinée</button>
+    <button class="vtab"                 data-vue="animateur" onclick="setVue(this,'animateur')" data-i18n="mp_vue_animateur">Animateur</button>
+    <button class="vtab"                 data-vue="helper"    onclick="setVue(this,'helper')"    data-i18n="mp_vue_helper">Helper</button>
+    <button class="vtab"                 data-vue="traducteur" onclick="setVue(this,'traducteur')" data-i18n="mp_vue_traducteur">Traducteur</button>
+    <button class="vtab"                 data-vue="angel"     onclick="setVue(this,'angel')"     data-i18n="mp_vue_angel">Angel</button>
+    <button class="vtab"                 data-vue="colibri"   onclick="setVue(this,'colibri')"   data-i18n="mp_vue_colibri">Colibri</button>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -189,7 +243,7 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
         <div class="modal-sub" id="mSub"></div>
       </div>
       <div class="modal-top-right">
-        <button class="modal-close" onclick="closeModal()">✕ Fermer</button>
+        <button class="modal-close" onclick="closeModal()" title="Fermer">✕</button>
         <div class="modal-lang-toggle">
           <button class="modal-lang-btn active" id="mlBtnFr" onclick="setModalLang('fr')">FR</button>
           <button class="modal-lang-btn" id="mlBtnEn" onclick="setModalLang('en')">ENG</button>
@@ -259,6 +313,22 @@ function isColibri(nom) {
   return r && r.roles && r.roles.indexOf('colibri')!==-1;
 }
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
+var JOUR_META = {
+  'Jour 1': { jourEn:'Day 1', date:'Samedi 29 août',   dateEn:'Saturday Aug 29'  },
+  'Jour 2': { jourEn:'Day 2', date:'Dimanche 30 août', dateEn:'Sunday Aug 30'    },
+  'Jour 3': { jourEn:'Day 3', date:'Lundi 31 août',    dateEn:'Monday Aug 31'    },
+  'Jour 4': { jourEn:'Day 4', date:'Mardi 1 sept.',    dateEn:'Tuesday Sep 1'    },
+  'Jour 5': { jourEn:'Day 5', date:'Mercredi 2 sept.', dateEn:'Wednesday Sep 2'  },
+  'Jour 6': { jourEn:'Day 6', date:'Jeudi 3 sept.',    dateEn:'Thursday Sep 3'   },
+  'Jour 7': { jourEn:'Day 7', date:'Vendredi 4 sept.', dateEn:'Friday Sep 4'     },
+};
+function jourSubtitle(jour, lang) {
+  var m = JOUR_META[jour];
+  if (!m) return jour;
+  var j = (lang === 'en' && m.jourEn) ? m.jourEn : jour;
+  var d = (lang === 'en' && m.dateEn) ? m.dateEn : m.date;
+  return j + (d ? ' — ' + d : '');
+}
 
 // Extrait les intervalles des SHIFT ANGEL (type === 'SHIFT ANGEL') parmi les entrées.
 function getAngelShiftIntervals(entries) {
@@ -354,9 +424,50 @@ allNoms.forEach(function(n) {
 });
 selNom.value = '__NONE__';
 
+// ── État de la vue active (géré par les tabs, pas par un select) ──────────
+var currentVue = '';   // '' = Vue Combinée
+
+window.setVue = function(btn, vue) {
+  // Mémoriser l'état ouvert avant de re-rendre
+  var openCards = [];
+  var openDays  = {};
+  document.querySelectorAll('.resource-card').forEach(function(card, ri) {
+    if (card.classList.contains('open')) openCards.push(ri);
+  });
+  document.querySelectorAll('[id^="tbl-"]').forEach(function(el) {
+    if (el.style.display !== 'none') openDays[el.id] = true;
+  });
+
+  currentVue = vue;
+
+  // Mettre à jour l'apparence des tabs
+  document.querySelectorAll('#vueTabs .vtab').forEach(function(b) {
+    b.className = 'vtab'; // reset
+  });
+  var activeClass = vue === '' ? 'active-combined' : 'active-' + vue;
+  btn.classList.add(activeClass);
+
+  applyFilters();
+
+  // Restaurer l'état ouvert
+  openCards.forEach(function(ri) {
+    var card = document.getElementById('rcard-'+ri);
+    if (card) card.classList.add('open');
+  });
+  Object.keys(openDays).forEach(function(id) {
+    var tbl  = document.getElementById(id);
+    var parts = id.split('-');
+    var rowId = 'drow-'+parts[1]+'-'+parts[2];
+    var row   = document.getElementById(rowId);
+    if (tbl)  tbl.style.display  = 'block';
+    if (row)  row.classList.add('open');
+  });
+};
+
 window.applyFilters = function applyFilters() {
   var fNom    = document.getElementById('fNom').value;
   var fSearch = document.getElementById('fSearch').value.trim().toLowerCase();
+  var fRole   = currentVue;   // '' = Vue Combinée
   if (fNom === '__NONE__') {
     document.getElementById('stats').innerHTML = '<span>0</span> personne(s)';
     document.getElementById('resourceList').innerHTML = '<div class="empty">Aucun résultat pour ces filtres.</div>';
@@ -371,7 +482,24 @@ window.applyFilters = function applyFilters() {
     // Filtre recherche texte libre
     if (fSearch && nom.toLowerCase().indexOf(fSearch)===-1) return;
 
-    results.push({ nom: nom, entries: entries });
+    // Vue par rôle : garder uniquement les entrées correspondant au rôle sélectionné
+    var filteredEntries;
+    if (!fRole) {
+      // Vue Combinée : toutes les entrées
+      filteredEntries = entries;
+    } else if (fRole === 'colibri') {
+      if (!isColibri(nom)) return;
+      // Colibri : entrées helper ou traducteur
+      filteredEntries = entries.filter(function(x) {
+        return x.roles.indexOf('helper') !== -1 || x.roles.indexOf('traducteur') !== -1;
+      });
+    } else {
+      // Vue Animateur / Helper / Traducteur / Angel : entrées avec CE rôle uniquement
+      filteredEntries = entries.filter(function(x) { return x.roles.indexOf(fRole) !== -1; });
+      if (!filteredEntries.length) return;
+    }
+
+    results.push({ nom: nom, entries: filteredEntries });
   });
 
   // Trier alphabétiquement
@@ -394,8 +522,10 @@ function renderList(results) {
     return;
   }
 
+  var fRole = currentVue;
+
   list.innerHTML = results.map(function(res, ri) {
-    // Grouper par jour
+    // Grouper par jour (sur les entries déjà filtrées par rôle)
     var byJour = new Map();
     res.entries.forEach(function(x) {
       var j = x.entry.jour;
@@ -406,11 +536,19 @@ function renderList(results) {
     // Trier les jours
     var jours = JOUR_ORDER.filter(function(j){ return byJour.has(j); }).map(function(j){ return byJour.get(j); });
 
-    // Total ateliers + durée totale (somme des durées par jour, respect de la logique angel)
+    // Total ateliers + durée — calculés sur les entries filtrées
+    // En vue rôle simple : somme directe des durées (pas de logique angel)
+    // En vue combinée ou angel : logique calcDurJour
     var totalAteliers = res.entries.length;
-    var totalMins = jours.reduce(function(s,g){ return s + calcDurJour(g.entries); }, 0);
+    var totalMins;
+    if (!fRole || fRole === 'angel') {
+      totalMins = jours.reduce(function(s,g){ return s + calcDurJour(g.entries); }, 0);
+    } else {
+      // Pour Helper / Animateur / Traducteur / Colibri : somme simple des durées des entries filtrées
+      totalMins = res.entries.reduce(function(s,x){ return s + (calcDuree(x.entry.heure)||0); }, 0);
+    }
 
-    // Rôles uniques de cette ressource
+    // Rôles uniques de cette ressource (parmi les entries affichées)
     var rolesSet = new Set();
     res.entries.forEach(function(x){ x.roles.forEach(function(r){ rolesSet.add(r); }); });
     var rolesBadges = [...rolesSet].map(function(r) {
@@ -447,8 +585,14 @@ function renderList(results) {
         rBadges += '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">🕊 Colibri</span>';
       }
 
-      // Durée jour via la fonction partagée calcDurJour
-      var durJour = calcDurJour(g.entries);
+      // Durée jour : même logique que pour le total
+      var durJour;
+      if (!fRole || fRole === 'angel') {
+        durJour = calcDurJour(g.entries);
+      } else {
+        durJour = g.entries.reduce(function(s,x){ return s + (calcDuree(x.entry.heure)||0); }, 0);
+      }
+      var nb = g.entries.length;
 
       // Intervalles des SHIFT ANGEL (pour le grisage des lignes couvertes)
       var angelIntervals = getAngelShiftIntervals(g.entries);
@@ -463,8 +607,6 @@ function renderList(results) {
         if (e<s) e+=1440;
         return angelIntervals.some(function(iv){ return s>=iv.s && e<=iv.e; });
       }
-
-      var nb = g.entries.length;
 
       // ── Tri et regroupement ──────────────────────────────────────────────────
       // Règle : ordre chronologique global.
@@ -551,7 +693,8 @@ function renderList(results) {
           ? '<span class="angel-shift-dur-pill">'+fmtDuree(dur)+'</span>'
           : '';
 
-        return '<tr'+rowClass+'>'+
+        return '<tr'+rowClass+' style="cursor:pointer" onclick="openDetail('+agendaIdx+',\''+ri+'\')">'+
+          '<td style="width:32px;padding:4px 6px;" onclick="event.stopPropagation()"><button class="info-btn" title="Détails" onclick="openDetail('+agendaIdx+',\''+ri+'\')">ℹ️</button></td>'+
           '<td class="at-heure">'+esc(e.heure||'—')+'</td>'+
           '<td class="at-duree">'+((!isShift && dur) ? fmtDuree(dur) : (isShift ? '' : '—'))+'</td>'+
           '<td class="at-name">'+esc(e.atelier||'—')+shiftDurPill+
@@ -563,7 +706,6 @@ function renderList(results) {
           '<td>'+esc(facs||'—')+'</td>'+
           '<td>'+langBadge+'</td>'+
           '<td>'+(e.note?'<span style="font-size:11px;color:#d97706">'+esc(e.note)+'</span>':'')+'</td>'+
-          '<td><button class="info-btn" title="Détails" onclick="openDetail('+agendaIdx+',\''+ri+'\')">ℹ️</button></td>'+
         '</tr>';
       }
 
@@ -574,14 +716,14 @@ function renderList(results) {
           '<span class="day-label">'+esc(g.jour)+'</span>' +
           '<span class="day-date">'+esc(g.date)+'</span>' +
           '<span class="day-roles">'+rBadges+'</span>' +
-          '<span class="day-meta"><span>'+fmtDuree(durJour)+'</span>&nbsp;·&nbsp;<span>'+nb+'</span>&nbsp;atelier'+(nb>1?'s':'')+'</span>' +
+          '<span class="day-meta"><span>'+fmtDuree(durJour)+'</span>&nbsp;·&nbsp;<strong>'+nb+'</strong>&nbsp;<span style="font-weight:400">'+I18n.t(nb>1?'rp_ateliers_s':'rp_atelier_s')+'</span></span>' +
           '<span class="day-chevron">›</span>' +
         '</div>' +
         '<div id="'+tableId+'" style="display:none">' +
           '<div class="ateliers-wrap">' +
             '<table class="ateliers-table">' +
               '<thead><tr>' +
-                '<th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th><th></th>' +
+                '<th></th><th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th>' +
               '</tr></thead>' +
               '<tbody>'+tableRows+'</tbody>' +
             '</table>' +
@@ -592,10 +734,11 @@ function renderList(results) {
     return '<div class="resource-card" id="rcard-'+ri+'">' +
       '<div class="resource-header" onclick="toggleResource('+ri+')">' +
         '<div class="resource-avatar">'+esc(initiale)+'</div>' +
-        '<span class="resource-name">'+esc(res.nom)+'</span>' +
-        (colibriHtml ? '<span style="margin-left:4px">'+colibriHtml+'</span>' : '') +
-        '<span class="resource-badges">'+rolesBadges+'</span>' +
-        '<span class="resource-stats">'+totalAteliers+' atelier'+(totalAteliers>1?'s':'')+' · '+fmtDuree(totalMins)+'</span>' +
+        '<span class="resource-name-wrap">' +
+          '<span class="resource-name">'+esc(res.nom)+'</span>' +
+          '<span class="resource-badges">'+rolesBadges+(colibriHtml ? colibriHtml : '')+'</span>' +
+        '</span>' +
+        '<span class="resource-stats" style="font-weight:700">'+fmtDuree(totalMins)+' · '+totalAteliers+' <span style="font-weight:400">'+I18n.t(totalAteliers>1?'rp_ateliers_s':'rp_atelier_s')+'</span></span>' +
         '<span class="resource-chevron">›</span>' +
       '</div>' +
       '<div class="resource-body">'+dayRows+'</div>' +
@@ -627,6 +770,10 @@ window.setModalLang = function(lang) {
   _modalLang = lang;
   document.getElementById('mlBtnFr').classList.toggle('active', lang==='fr');
   document.getElementById('mlBtnEn').classList.toggle('active', lang==='en');
+  // Mettre à jour le sous-titre (jour + date) selon la nouvelle langue
+  if (_modalEntry) {
+    document.getElementById('mSub').textContent = jourSubtitle(_modalEntry.jour, lang);
+  }
   renderModalBody();
 };
 
@@ -640,7 +787,7 @@ window.openDetail = function(agendaIdx, ri) {
 
   var pm = parseInt(e.piment)||0;
   document.getElementById('mTitle').innerHTML = esc(e.atelier||'—') + (pm ? ' '+pimentHtml(pm) : '');
-  document.getElementById('mSub').textContent = e.jour + (e.date ? ' — ' + e.date : '');
+  document.getElementById('mSub').textContent = jourSubtitle(e.jour, _modalLang);
 
   renderModalBody();
   document.getElementById('detailModal').classList.add('open');
@@ -687,10 +834,13 @@ function renderModalBody() {
 
   // ── Section 1 : Infos générales ─────────────────────────────────────────
   var rows1 = [];
+  // Horaire sur sa propre ligne (sans Arrivée)
   rows1.push(['🕐 '+(lang==='en'?'Schedule':'Horaire'),
     esc(e.heure||'—') +
-    (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '') +
-    (arrivee ? ' <span style="color:#dc2626;font-size:12px;font-weight:700;margin-left:8px;">⏰ '+(lang==='en'?'Arrive at':'Arrivée')+' '+arrivee+'</span>' : '')]);
+    (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '')]);
+  // Arrivée sur la ligne suivante (si disponible)
+  if (arrivee) rows1.push(['⏰ '+(lang==='en'?'Arrive at':'Arrivée'),
+    '<strong style="color:#dc2626">'+arrivee+'</strong>']);
   if (e.lieu)    rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), esc(e.lieu)]);
   if (facs.length) rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.map(esc).join(' &amp; ')]);
   if (helpers.length) rows1.push(['🙌 Helpers', helpers.map(esc).join(', ')]);
@@ -714,33 +864,68 @@ function renderModalBody() {
     ? desc.consigneEn : (desc && desc.consigne && desc.consigne.trim() ? desc.consigne : '');
   var consigneLabel = lang==='en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
 
-  var sec1 = '<div class="modal-section">'+
-    '<div class="modal-section-title">'+(lang==='en'?'General information':'Informations générales')+'</div>'+
+  // ── Palettes blocs (identiques à Saisie Ateliers) ───────────────────────
+  // Jaune  : INFO GÉNÉRAL
+  var S_INFO   = dark
+    ? 'background:#2d2500;border:2px solid #92400e;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#fefce8;border:2px solid #fde68a;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_INFO_TL  = dark ? 'color:#fcd34d' : 'color:#854d0e';
+  // Orange : DESCRIPTION ATELIER
+  var S_DESC   = dark
+    ? 'background:#2a1200;border:2px solid #c2410c;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#fff7ed;border:2px solid #f97316;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_DESC_TL  = dark ? 'color:#fb923c' : 'color:#c2410c';
+  // Vert   : LOGISTIQUE
+  var S_LOG    = dark
+    ? 'background:#052e16;border:2px solid #16a34a;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#f0fdf4;border:2px solid #4ade80;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_LOG_TL   = dark ? 'color:#4ade80' : 'color:#166534';
+  // Violet : BESOINS SPÉCIFIQUES
+  var S_SPEC   = dark
+    ? 'background:#1a0533;border:2px solid #9333ea;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#faf5ff;border:2px solid #c084fc;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_SPEC_TL  = dark ? 'color:#c084fc' : 'color:#7e22ce';
+  // Bleu   : CONSIGNES HELPERS
+  var S_HELP   = dark
+    ? 'background:#0c1a40;border:2px solid #2563eb;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#eff6ff;border:2px solid #3b82f6;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_HELP_TL  = dark ? 'color:#60a5fa' : 'color:#1d4ed8';
+
+  var titleStyle = 'font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;padding-bottom:8px;margin-bottom:14px;border-bottom:2px solid;';
+
+  // ── Bloc 1) INFORMATIONS GÉNÉRALES (jaune) — inclut description atelier ──
+  var sec1 = '<div style="'+S_INFO+'">'+
+    '<div style="'+titleStyle+S_INFO_TL+';border-bottom-color:'+(dark?'#92400e':'#fde68a')+'">'+
+      '1) '+(lang==='en'?'General information':'Informations générales')+
+    '</div>'+
     '<div class="modal-grid">'+gridHtml1+'</div>'+
     '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
-      '<div class="modal-desc-box" style="border-color:#fcd34d;background:'+(dark?'#2d2006':'#fffbeb')+'">'+
+      '<div class="modal-desc-box" style="border-color:'+(dark?'#92400e':'#fcd34d')+';background:'+(dark?'#2d2006':'#fffbeb')+'">'+
         '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
         '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
-        '<div class="modal-desc-lbl">'+(lang==='en'?'Description':'Description')+'</div>'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'Description':'Description atelier')+'</div>'+
         '<div>'+(descTxt ? esc(descTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
       '</div>'+
     '</div>'+
   '</div>';
 
-  // ── Section 2 : Logistique (tous les champs toujours affichés) ───────────
-  // prep vaut toujours un nombre (15 par défaut si non renseigné)
+  // sec_desc supprimé — description maintenant dans sec1
+  var sec_desc = '';
+
+  // ── Bloc 2) INFORMATIONS LOGISTIQUES (vert fluo) ─────────────────────────
+  // Contient uniquement : Préparation → Arrivée + Informations logistiques
   var isDefaultPrep = !(logE && logE.prepDuration != null);
   var prepVal = prep+' min'+
     (isDefaultPrep ? ' <span style="font-size:10px;color:var(--muted);font-style:italic;">('+( lang==='en'?'default':'défaut')+')</span>' : '')+
-    (arrivee ? ' → '+(lang==='en'?'Arrive at':'Arrivée')+' <strong style="color:#dc2626">'+arrivee+'</strong>' : '');
+    (arrivee ? ' &rarr; '+(lang==='en'?'arrival':'arrivée')+' <strong style="color:#dc2626">'+arrivee+'</strong>' : '');
 
   var validBadge = logE
     ? (logE.validatedByFac
-        ? '<span class="validated-badge validated-yes">✅ '+(lang==='en'?'Validated by teacher':'Validé par animateur')+'</span>'
-        : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>')
-    : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>';
+        ? '<span class="validated-badge validated-yes">&#10003; '+(lang==='en'?'Validated by teacher':'Validé par animateur')+'</span>'
+        : '<span class="validated-badge validated-no">&#8987; '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>')
+    : '<span class="validated-badge validated-no">&#8987; '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>';
 
   var updatedAt = logE && logE.updatedAt ? logE.updatedAt : (logH && logH.updatedAt ? logH.updatedAt : '');
 
@@ -750,39 +935,62 @@ function renderModalBody() {
   var logInfoTxt = logE && logE.html && logE.html.trim() ? logE.html : '';
   var logSpecTxt = logS && logS.html && logS.html.trim().replace(/<[^>]*>/g,'').trim() ? logS.html : '';
 
-  var sec2 = '<div class="modal-section">'+
-    '<div class="modal-section-title">'+(lang==='en'?'Logistics':'Logistique')+'</div>'+
-    '<div class="modal-grid">'+
-      '<div class="modal-lbl">⏱ '+(lang==='en'?'Prep time':'Temps de préparation')+'</div>'+
-      '<div class="modal-val">'+prepVal+'</div>'+
+  var sec_log = '<div style="'+S_LOG+'">'+
+    '<div style="'+titleStyle+S_LOG_TL+';border-bottom-color:'+(dark?'#16a34a':'#4ade80')+'">'+
+      '2) '+(lang==='en'?'Logistics information':'Informations logistiques')+
     '</div>'+
-    '<div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">'+
-      '<div class="modal-desc-box">'+
-        '<div class="modal-desc-lbl">▶ '+(lang==='en'?'Before':'Avant')+'</div>'+
-        '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
-      '</div>'+
-      '<div class="modal-desc-box">'+
-        '<div class="modal-desc-lbl">⏯ '+(lang==='en'?'During':'Pendant')+'</div>'+
-        '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
-      '</div>'+
-      '<div class="modal-desc-box">'+
-        '<div class="modal-desc-lbl">⏹ '+(lang==='en'?'After':'Après')+'</div>'+
-        '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
-      '</div>'+
+    '<div class="modal-grid" style="margin-bottom:10px">'+
+      '<div class="modal-lbl" style="white-space:nowrap">'+(lang==='en'?'Preparation':'Préparation')+'</div>'+
+      '<div class="modal-val" style="white-space:nowrap">'+prepVal+'</div>'+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
         '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
       '</div>'+
-      '<div class="modal-desc-box" style="border-color:#fca5a5;background:'+(dark?'#2d0a0a':'#fff5f5')+'">'+
-        '<div class="modal-desc-lbl" style="color:#dc2626">'+(lang==='en'?'Special logistics needs':'Besoins logistiques spéciaux')+'</div>'+
-        '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
-      '</div>'+
     '</div>'+
-    '<div style="margin-top:10px">'+validBadge+'</div>'+
-    '<div style="margin-top:6px;font-size:11px;color:var(--muted)">🕓 '+(lang==='en'?'Last updated':'Dernière modification')+' : '+(updatedAt ? esc(updatedAt) : '—')+'</div>'+
   '</div>';
 
-  document.getElementById('mBody').innerHTML = sec1 + sec2;
+  // ── Bloc 3) BESOINS LOGISTIQUES SPÉCIFIQUES (violet) ─────────────────────
+  var sec_spec = '<div style="'+S_SPEC+'">'+
+    '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
+      '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
+    '</div>'+
+    '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
+  '</div>';
+
+  // ── Bloc 4) CONSIGNES HELPERS (bleu foncé) ───────────────────────────────
+  var sec_help = '<div style="'+S_HELP+'">'+
+    '<div style="'+titleStyle+S_HELP_TL+';border-bottom-color:'+(dark?'#2563eb':'#3b82f6')+'">'+
+      '4) '+(lang==='en'?'Helper instructions':'Consignes helpers')+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
+        '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
+        '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
+        '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  // ── Pied de popup : Validé par animateur + Dernière modification ──────────
+  var sec_footer =
+    '<div style="padding:10px 4px 2px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:4px;">'+
+      validBadge+
+      '<div style="font-size:11px;color:var(--muted)">'+(lang==='en'?'Last updated':'Dernière modification')+' : '+(updatedAt ? esc(updatedAt) : '—')+'</div>'+
+    '</div>';
+
+  document.getElementById('mBody').innerHTML =
+    '<div style="display:flex;flex-direction:column;gap:14px">'+
+      sec1 + sec_log + sec_spec + sec_help + sec_footer +
+    '</div>';
 }
 
 // ════════════════════════════════════════════
@@ -793,16 +1001,79 @@ applyFilters();
 if (typeof I18n !== 'undefined') {
   I18n.renderToggleBtn('headerActions', 'btn');
   document.addEventListener('tm_lang_changed', function() {
+    // Traduire le label et les options du filtre Vue
+    updateVueFilterLabels();
+
+    // Mémoriser quelles cartes et quels jours sont ouverts
+    var openCards = [];
+    var openDays  = {};
+    document.querySelectorAll('.resource-card').forEach(function(card, ri) {
+      if (card.classList.contains('open')) openCards.push(ri);
+    });
+    document.querySelectorAll('[id^="tbl-"]').forEach(function(el) {
+      if (el.style.display !== 'none') openDays[el.id] = true;
+    });
+
+    // Re-rendre la liste complète
     applyFilters();
+
+    // Restaurer l'état ouvert des cartes
+    openCards.forEach(function(ri) {
+      var card = document.getElementById('rcard-'+ri);
+      if (card) card.classList.add('open');
+    });
+    // Restaurer l'état ouvert des tables jour
+    Object.keys(openDays).forEach(function(id) {
+      var tbl  = document.getElementById(id);
+      var parts = id.split('-'); // tbl-ri-gi
+      var rowId = 'drow-'+parts[1]+'-'+parts[2];
+      var row   = document.getElementById(rowId);
+      if (tbl)  tbl.style.display  = 'block';
+      if (row)  row.classList.add('open');
+    });
+
     var modeBtn = document.getElementById('modeBtn');
     if (modeBtn) modeBtn.textContent = document.body.classList.contains('dark') ? '☀️ Mode Jour' : '🌙 Mode Nuit';
   });
 }
 
+// Traduit les tabs Vue + labels filtres selon la langue active
+function updateVueFilterLabels() {
+  // Titre "Mon Planning V2"
+  var titleEl = document.querySelector('.logo p[data-i18n="mp_title"]');
+  if (titleEl) titleEl.textContent = '📋 ' + I18n.t('mp_title');
+  // Label "Nom"
+  var lblNom = document.getElementById('lbl-fNom');
+  if (lblNom) lblNom.textContent = I18n.t('mp_lbl_nom');
+  // Label "Recherche nom" + placeholder
+  var lblSearch = document.getElementById('lbl-fSearch');
+  if (lblSearch) lblSearch.textContent = I18n.t('mp_lbl_search');
+  var fSearchEl = document.getElementById('fSearch');
+  if (fSearchEl) fSearchEl.placeholder = I18n.t('mp_search_ph');
+  // Option "Aucun" du select Nom
+  var optAucun = document.querySelector('#fNom option[data-i18n="mp_opt_aucun"]');
+  if (optAucun) optAucun.textContent = I18n.t('mp_opt_aucun');
+  // Label "Vue :"
+  var tabsLbl = document.querySelector('.vue-tabs-lbl[data-i18n="mp_vue_label"]');
+  if (tabsLbl) tabsLbl.textContent = I18n.t('mp_vue_label') + ' :';
+  // Texte des boutons tabs
+  document.querySelectorAll('#vueTabs .vtab[data-i18n]').forEach(function(btn) {
+    btn.textContent = I18n.t(btn.getAttribute('data-i18n'));
+  });
+  // Bouton Mode Nuit/Jour
+  var modeBtn = document.getElementById('modeBtn');
+  if (modeBtn) {
+    var isDark = document.body.classList.contains('dark');
+    modeBtn.textContent = isDark ? I18n.t('mp_mode_jour') : I18n.t('mp_mode_nuit');
+  }
+}
+// Appel initial
+updateVueFilterLabels();
+
 function toggleMode() {
   var dark = document.body.classList.toggle('dark');
   var btn  = document.getElementById('modeBtn');
-  if (btn) btn.textContent = dark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+  if (btn) btn.textContent = dark ? I18n.t('mp_mode_jour') : I18n.t('mp_mode_nuit');
 }
 window.toggleMode = toggleMode;
 

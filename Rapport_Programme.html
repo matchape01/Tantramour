@@ -56,30 +56,28 @@
   #screenDays { }
   .day-intro { font-size:16px; font-weight:700; margin-bottom:6px; }
   .day-intro-sub { font-size:13px; color:var(--muted); margin-bottom:22px; }
-  /* Responsive : 4 colonnes par défaut, 3 medium, 2 petits, 1 très petit */
+  /* Grille fluide : au minimum 2 colonnes, s'adapte à la largeur disponible */
   .days-grid {
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap:10px;
   }
-  @media(max-width:900px) { .days-grid { grid-template-columns:repeat(3, 1fr); } }
-  @media(max-width:640px) { .days-grid { grid-template-columns:repeat(2, 1fr); } }
-  @media(max-width:380px) { .days-grid { grid-template-columns:1fr; } }
+  @media(max-width:360px) { .days-grid { grid-template-columns:repeat(2, 1fr); } }
 
   /* Étiquette compacte, fond bleu clair */
   .day-card {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:4px; text-align:center;
-    border:1.5px solid #bfdbfe; border-radius:12px; padding:14px 10px;
+    display:flex; flex-direction:row; align-items:center;
+    gap:10px; text-align:left;
+    border:1.5px solid #bfdbfe; border-radius:10px; padding:10px 14px;
     cursor:pointer; transition:border-color .15s, background .15s, transform .1s;
     background:#eff6ff;
   }
   .day-card:hover { border-color:var(--accent); background:#dbeafe; transform:translateY(-2px); }
   .dark .day-card { background:#0d2240; border-color:#1e3a5f; }
   .dark .day-card:hover { background:#0c2d48; border-color:#3b82f6; }
-  .day-card-emoji { font-size:22px; }
-  .day-card-body  { min-width:0; }
-  .day-card-jour  { font-size:14px; font-weight:800; color:var(--accent); }
+  .day-card-emoji { font-size:20px; flex-shrink:0; }
+  .day-card-body  { min-width:0; flex:1; }
+  .day-card-jour  { font-size:13px; font-weight:800; color:var(--accent); }
   .day-card-date  { font-size:11px; color:var(--muted); margin-top:1px; }
   .day-card-count { font-size:10px; font-weight:600; color:var(--accent); margin-top:2px; }
   .day-card-arrow { display:none; }
@@ -88,11 +86,11 @@
   #screenProg { display:none; }
   .prog-header { margin-bottom:22px; }
   .back-btn {
-    display:inline-flex; align-items:center; gap:8px;
-    cursor:pointer; font-size:16px; font-weight:700;
+    display:inline-flex; align-items:center; gap:10px;
+    cursor:pointer; font-size:18px; font-weight:800;
     color:#fff; background:var(--accent);
-    border:none; border-radius:8px;
-    font-family:inherit; padding:9px 18px; margin-bottom:16px;
+    border:none; border-radius:10px;
+    font-family:inherit; padding:12px 24px; margin-bottom:16px;
     transition:background .15s;
   }
   .back-btn:hover { background:#2563eb; text-decoration:none; }
@@ -223,8 +221,8 @@
   .badge-lieu { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
   .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; font-size:11px; }
   .badge-note  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
-  /* FR/ENG — même taille que animateurs (11px) */
-  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; padding:2px 7px; }
+  /* FR/ENG — même taille et poids que animateurs */
+  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; font-weight:600; padding:2px 7px; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }
@@ -312,7 +310,7 @@
       <p data-i18n="rp_title">🎪 Programme</p>
     </div>
     <div class="header-actions" id="headerActions">
-      <a class="btn" href="index.html">🏠 Home</a>
+      <a class="btn" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
       <button class="btn" onclick="hardReload()">🔄 Refresh</button>
       <button class="btn" id="modeBtn" onclick="toggleMode()" data-i18n="rp_mode_nuit">🌙 Mode Nuit</button>
     </div>
@@ -406,13 +404,13 @@ function isBilingue(nom) { return nom && BILINGUES.has(nom.trim()); }
 
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 var JOUR_META = {
-  'Jour 1': { jourEn:'Day 1', date:'Samedi 29 août',    dateEn:'Saturday Aug 29',  emoji:'🌅' },
-  'Jour 2': { jourEn:'Day 2', date:'Dimanche 30 août',  dateEn:'Sunday Aug 30',    emoji:'☀️' },
-  'Jour 3': { jourEn:'Day 3', date:'Lundi 31 août',     dateEn:'Monday Aug 31',    emoji:'🌿' },
-  'Jour 4': { jourEn:'Day 4', date:'Mardi 1 sept.',     dateEn:'Tuesday Sep 1',    emoji:'🔥' },
-  'Jour 5': { jourEn:'Day 5', date:'Mercredi 2 sept.',  dateEn:'Wednesday Sep 2',  emoji:'💧' },
-  'Jour 6': { jourEn:'Day 6', date:'Jeudi 3 sept.',     dateEn:'Thursday Sep 3',   emoji:'🌙' },
-  'Jour 7': { jourEn:'Day 7', date:'Vendredi 4 sept.',  dateEn:'Friday Sep 4',     emoji:'✨' },
+  'Jour 1': { jourEn:'Day 1', date:'Samedi 29 août',    dateEn:'Saturday Aug 29',  emoji:'🌑' },
+  'Jour 2': { jourEn:'Day 2', date:'Dimanche 30 août',  dateEn:'Sunday Aug 30',    emoji:'🌒' },
+  'Jour 3': { jourEn:'Day 3', date:'Lundi 31 août',     dateEn:'Monday Aug 31',    emoji:'🌓' },
+  'Jour 4': { jourEn:'Day 4', date:'Mardi 1 sept.',     dateEn:'Tuesday Sep 1',    emoji:'🌔' },
+  'Jour 5': { jourEn:'Day 5', date:'Mercredi 2 sept.',  dateEn:'Wednesday Sep 2',  emoji:'🌕' },
+  'Jour 6': { jourEn:'Day 6', date:'Jeudi 3 sept.',     dateEn:'Thursday Sep 3',   emoji:'🌖' },
+  'Jour 7': { jourEn:'Day 7', date:'Vendredi 4 sept.',  dateEn:'Friday Sep 4',     emoji:'🌟' },
 };
 function jourDate(meta) {
   return (I18n.getLang() === 'en' && meta.dateEn) ? meta.dateEn : meta.date;
@@ -696,14 +694,16 @@ function cardHtml(e, globalIdx, opts) {
       : '') +
     (e.note ? '<span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, lang)) + '</span>' : '');
 
+  // Bandeau TYPE + Détails — TOUJOURS en haut (même dans les sous-groupes)
+  var typeHeader =
+    '<div class="prog-card-footer" style="border-top:none;border-bottom:1px solid var(--tbd);border-radius:0">' +
+      '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
+      '<button class="detail-btn" onclick="event.stopPropagation();openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (lang === 'en' ? 'Details' : 'Détails') + '</button>' +
+    '</div>';
+
   return '<div class="prog-card ' + css + '" onclick="openDetail(' + globalIdx + ')">' +
-    /* ── En-tête coloré TYPE + bouton Détails (masqué si sous-groupe) ── */
-    (noHeader ? '' :
-      '<div class="prog-card-footer" style="border-top:none;border-bottom:1px solid var(--tbd);border-radius:0">' +
-        '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
-        '<button class="detail-btn" onclick="event.stopPropagation();openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (lang === 'en' ? 'Details' : 'Détails') + '</button>' +
-      '</div>'
-    ) +
+    /* ── En-tête coloré TYPE + bouton Détails — toujours affiché ── */
+    typeHeader +
     /* ── Corps de la carte ── */
     '<div class="prog-card-top">' +
       '<div class="prog-stripe"></div>' +

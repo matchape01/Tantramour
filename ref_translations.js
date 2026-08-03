@@ -13,9 +13,11 @@ var REF_TRANSLATIONS = [
 
   // ── NAVIGATION / COMMUN ─────────────────────────────────────────────────────
   { key: "nav_home",           fr: "Home",                       en: "Home" },
+  { key: "nav_accueil",        fr: "🏠 Accueil",                 en: "🏠 Home" },
+  { key: "nav_dreamteam",      fr: "🌀 DreamTeam",               en: "🌀 DreamTeam" },
+  { key: "nav_admin",          fr: "⚙️ Admin",                   en: "⚙️ Admin" },
   { key: "nav_manuel",         fr: "Manuel",                     en: "Manual" },
   { key: "nav_regles",         fr: "Règles",                     en: "Rules" },
-  { key: "nav_admin",          fr: "Admin",                      en: "Admin" },
   { key: "nav_masterdata",     fr: "Master Data",                en: "Master Data" },
   { key: "nav_refresh",        fr: "Refresh",                    en: "Refresh" },
   { key: "nav_mode_nuit",      fr: "Mode Nuit",                  en: "Dark Mode" },
@@ -27,6 +29,7 @@ var REF_TRANSLATIONS = [
 
   // ── PAGE ACCUEIL ─────────────────────────────────────────────────────────────
   { key: "home_festival_dates", fr: "Festival · 29 août – 4 septembre 2026", en: "Festival · August 29 – September 4, 2026" },
+  { key: "home_subtitle",      fr: "Page destinée à la DreamTeam", en: "Page for the DreamTeam" },
   { key: "home_group_general", fr: "DreamTeam",                  en: "DreamTeam" },
   { key: "home_group_planning",fr: "Gestion planning",           en: "Schedule Management" },
 
@@ -75,6 +78,7 @@ var REF_TRANSLATIONS = [
   { key: "col_atelier",        fr: "Atelier",                    en: "Workshop" },
   { key: "col_lieu",           fr: "Lieu",                       en: "Venue" },
   { key: "col_facilitateur",   fr: "Animateur(s)",            en: "Teacher(s)" },
+  { key: "filter_animateur",   fr: "Animateur",               en: "Teacher" },
   { key: "col_traducteur",     fr: "Trad.",                      en: "Trans." },
   { key: "col_traducteur_long",fr: "Traducteur",                 en: "Translator" },
   { key: "col_helpers",        fr: "Helper(s)",                  en: "Helper(s)" },
@@ -465,7 +469,7 @@ var REF_TRANSLATIONS = [
   // ── CARTES INDEX — 4 rapports DreamTeam ─────────────────────────────────────
   { key: "card_programme_title",        fr: "Programme Festival",                                               en: "Festival Schedule" },
   { key: "card_programme_desc",         fr: "Ateliers publics par jour — descriptions & détails",               en: "Public workshops by day — descriptions & details" },
-  { key: "card_saisie_ateliers_title",  fr: "ANIMATEUR : Saisie des informations Ateliers (Descriptions & Logistiques)", en: "TEACHER: Workshop Information Input (Descriptions & Logistics)" },
+  { key: "card_saisie_ateliers_title",  fr: "Saisie des informations Ateliers (Descriptions & Logistiques)", en: "Workshop Information Input (Descriptions & Logistics)" },
   { key: "card_saisie_ateliers_desc",   fr: "Saisir les descriptions FR/EN, le niveau piment, les consignes et les besoins logistiques — tout en un", en: "Enter FR/EN descriptions, spice level, instructions and logistics needs — all in one" },
   { key: "card_mon_planning_v2_title",  fr: "Mon Planning V2",                                                  en: "My Schedule V2" },
   { key: "card_mon_planning_v2_desc",   fr: "Vue par ressource — détails ateliers, logistique, popup FR/EN",    en: "Resource view — workshop details, logistics, FR/EN popup" },
@@ -490,20 +494,20 @@ var REF_TRANSLATIONS = [
 
   // Section 2 — Logistique
   { key: "rsa_sec2_title",         fr: "2 — Informations Logistiques",                en: "2 — Logistics Information" },
-  { key: "rsa_prep_label",         fr: "⏱ Estimation durée de préparation",           en: "⏱ Estimated preparation time" },
+  { key: "rsa_prep_label",         fr: "⏱ Préparation",                               en: "⏱ Preparation" },
   { key: "rsa_prep_0",             fr: "0 min — Aucune préparation",                  en: "0 min — No preparation" },
-  { key: "rsa_log_label",          fr: "📦 Informations logistiques",                 en: "📦 Logistics information" },
+  { key: "rsa_log_label",          fr: "Informations logistiques",                    en: "Logistics information" },
   { key: "rsa_log_hint",           fr: "Décrivez vos besoins en matériel (tables, chaises, tapis yoga, matelas, coussins, etc…), technique (lumière, micros, câbles, etc…) ou autres. S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.", en: "Describe your material needs (tables, chairs, yoga mats, mattresses, cushions, etc.), technical needs (lighting, microphones, cables, etc.) or others. If nothing is needed, write \"N/A\". Use bullet points for clarity." },
-  { key: "rsa_special_label",      fr: "⭐ Besoins logistiques spécifiques",          en: "⭐ Specific logistics needs" },
+  { key: "rsa_special_label",      fr: "3 — Besoins logistiques spécifiques",         en: "3 — Specific logistics needs" },
   { key: "rsa_special_hint",       fr: "Décrivez les besoins complémentaires en matériel spécial, achats à faire… S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.", en: "Describe any additional needs for special equipment, purchases, etc. If nothing is needed, write \"N/A\". Use bullet points for clarity." },
-  { key: "rsa_helpers_label",      fr: "🤝 Consignes pour Helpers",                   en: "🤝 Helper Instructions" },
+  { key: "rsa_helpers_label",      fr: "4 — Consignes pour Helpers",                  en: "4 — Helper Instructions" },
   { key: "rsa_helpers_hint",       fr: "Décrivez tout ce que les helpers auront à faire pour cet atelier. S'il n'y a rien à faire, indiquez « RAS » ou « N/A » à chaque étape. Utilisez la liste à puces pour plus de clarté.", en: "Describe everything helpers will need to do for this workshop. If nothing is needed, write \"N/A\" for each step. Use bullet points for clarity." },
   { key: "rsa_helper_avant",       fr: "🔧 Avant l'atelier — Préparation - Installation", en: "🔧 Before the workshop — Setup & Installation" },
   { key: "rsa_helper_pendant",     fr: "▶️ Pendant l'atelier",                        en: "▶️ During the workshop" },
   { key: "rsa_helper_apres",       fr: "🧹 Après l'atelier — Désinstallation – Rangement – Nettoyage", en: "🧹 After the workshop — Breakdown, Storage & Cleaning" },
 
   // Pills & validation
-  { key: "rsa_validee",            fr: "✅ Validée par Animateur",                 en: "✅ Validated by Teacher" },
+  { key: "rsa_validee",            fr: "Validée par Animateur",                   en: "Validated by Teacher" },
   { key: "rsa_pill_desc_both",     fr: "Desc FR+EN ✓",                               en: "Desc FR+EN ✓" },
   { key: "rsa_pill_desc_fr",       fr: "Desc FR",                                    en: "Desc FR only" },
   { key: "rsa_pill_desc_en",       fr: "Desc EN",                                    en: "Desc EN only" },
@@ -514,4 +518,21 @@ var REF_TRANSLATIONS = [
 
   // Footer
   { key: "rsa_footer",             fr: "Tantramour 2026 — Saisie Ateliers (Descriptions & Logistique)", en: "Tantramour 2026 — Workshop Input (Descriptions & Logistics)" },
+
+  // ── MON PLANNING V2 — interface ─────────────────────────────────────────────
+  { key: "mp_title",           fr: "Mon Planning V2",      en: "My Schedule V2" },
+  { key: "mp_mode_nuit",       fr: "🌙 Mode Nuit",         en: "🌙 Dark Mode" },
+  { key: "mp_mode_jour",       fr: "☀️ Mode Jour",         en: "☀️ Light Mode" },
+  { key: "mp_lbl_nom",         fr: "Nom",                  en: "Name" },
+  { key: "mp_lbl_search",      fr: "Recherche nom",        en: "Search name" },
+  { key: "mp_search_ph",       fr: "Nom de la personne…",  en: "Person name…" },
+  { key: "mp_opt_aucun",       fr: "Aucun",                en: "None" },
+  // ── MON PLANNING V2 — filtre Vue ────────────────────────────────────────────
+  { key: "mp_vue_label",       fr: "Vue",                  en: "View" },
+  { key: "mp_vue_combined",    fr: "Vue Combinée",         en: "Combined View" },
+  { key: "mp_vue_animateur",   fr: "Animateur",            en: "Teacher" },
+  { key: "mp_vue_helper",      fr: "Helper",               en: "Helper" },
+  { key: "mp_vue_traducteur",  fr: "Traducteur",           en: "Translator" },
+  { key: "mp_vue_angel",       fr: "Angel",                en: "Angel" },
+  { key: "mp_vue_colibri",     fr: "Colibri",              en: "Colibri" },
 ];

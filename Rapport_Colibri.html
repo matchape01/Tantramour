@@ -11,11 +11,11 @@
     --header-bg:#f0f4fb; --row-alt:#f7f8fa;
     --green:#16a34a; --green-bg:#dcfce7; --green-border:#86efac;
     --red:#dc2626; --red-bg:#fee2e2; --red-border:#fca5a5;
-    --colibri:#7c3aed; --colibri-bg:#f5f3ff; --colibri-border:#c4b5fd;
+    --colibri:#db2777; --colibri-bg:#fce7f3; --colibri-border:#f9a8d4;
     --badge-f-bg:#dcfce7; --badge-f-tx:#166534;
     --badge-h-bg:#e0f2fe; --badge-h-tx:#0369a1;
-    --badge-t-bg:#fef9c3; --badge-t-tx:#854d0e;
-    --badge-a-bg:#fce7f3; --badge-a-tx:#9d174d;
+    --badge-t-bg:#f5f3ff; --badge-t-tx:#7c3aed;
+    --badge-a-bg:#fee2e2; --badge-a-tx:#dc2626;
     --tag-bg:#eef2ff; --tag-text:#3b5bdb;
   }
   .dark {
@@ -24,11 +24,11 @@
     --header-bg:#1c2333; --row-alt:#161b22;
     --green-bg:#052e16; --green-border:#166534;
     --red-bg:#2d0a0a; --red-border:#991b1b;
-    --colibri:#a78bfa; --colibri-bg:#1e1b4b; --colibri-border:#5b21b6;
+    --colibri:#f472b6; --colibri-bg:#500724; --colibri-border:#9d174d;
     --badge-f-bg:#0a2e1a; --badge-f-tx:#4ade80;
     --badge-h-bg:#0c2d48; --badge-h-tx:#58a6ff;
-    --badge-t-bg:#2d2006; --badge-t-tx:#fbbf24;
-    --badge-a-bg:#3b1030; --badge-a-tx:#f0abca;
+    --badge-t-bg:#1e1b4b; --badge-t-tx:#a78bfa;
+    --badge-a-bg:#2d0000; --badge-a-tx:#f87171;
     --tag-bg:#1c2a4a; --tag-text:#79a8ff;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -132,7 +132,8 @@
       <small>Ateliers avec un helper ou traducteur ayant le rôle Colibri</small>
     </div>
     <div class="header-actions">
-      <a class="btn-ghost" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
+      <a class="btn-ghost" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
+      <a class="btn-ghost" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
       <button class="btn-ghost" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn-ghost" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
