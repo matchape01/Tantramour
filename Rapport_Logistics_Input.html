@@ -230,7 +230,7 @@
       <span class="admin-notice-icon">ℹ️</span>
       <div>
         <strong data-i18n="r14_admin_title">Informations gérées par l'Administrateur</strong><br>
-        <span data-i18n="r14_admin_body">Le jour, les horaires, le lieu, le type, les facilitateurs, les helpers, le traducteur et l'angel ne peuvent pas être modifiés ici. Pour toute correction, contactez un</span>
+        <span data-i18n="r14_admin_body">Le jour, les horaires, le lieu, le type, les animateurs, les helpers, le traducteur et l'angel ne peuvent pas être modifiés ici. Pour toute correction, contactez un</span>
         <strong data-i18n="r14_admin_role">Administrateur</strong>.
       </div>
     </div>
@@ -299,7 +299,7 @@
 
     <div class="validee-row" id="valideeRow">
       <input type="checkbox" id="s3ValidatedByFac" onchange="toggleValideeStyle()">
-      <label class="validee-label" for="s3ValidatedByFac" data-i18n="r14_validee_fac">Validée par le facilitateur</label>
+      <label class="validee-label" for="s3ValidatedByFac" data-i18n="r14_validee_fac">Validée par le animateur</label>
     </div>
 
     <div class="editor-actions">
@@ -349,7 +349,7 @@ const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 
     if (e.fac2) present.add(e.fac2);
   });
   var sel = document.getElementById('selFac');
-  REF_FACILITATEURS
+  REF_ANIMATEURS
     .filter(function(f) { return present.has(f.value); })
     .forEach(function(f) {
       var o = document.createElement('option');

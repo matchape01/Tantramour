@@ -236,7 +236,7 @@
           <option value="helper">🤝 Helper</option>
           <option value="angel">👼 Angel</option>
           <option value="traducteur">🌐 Traducteur</option>
-          <option value="facilitateur">🎓 Facilitateur</option>
+          <option value="animateur">🎓 Animateur</option>
         </select>
       </div>
       <div class="fg">
@@ -333,10 +333,10 @@ const ROLE_FIELDS = {
   helper:      ['helper1', 'helper2', 'helper3', 'helper4'],
   angel:       ['angel'],
   traducteur:  ['traduction'],
-  facilitateur:['fac1', 'fac2'],
+  animateur:['fac1', 'fac2'],
 };
-const ROLE_LABEL = { helper:'Helper', angel:'Angel', traducteur:'Traducteur', facilitateur:'Facilitateur' };
-const ROLE_CLS   = { helper:'rb-h', angel:'rb-a', traducteur:'rb-t', facilitateur:'rb-f' };
+const ROLE_LABEL = { helper:'Helper', angel:'Angel', traducteur:'Traducteur', animateur:'Animateur' };
+const ROLE_CLS   = { helper:'rb-h', angel:'rb-a', traducteur:'rb-t', animateur:'rb-f' };
 
 // ════════════════════════════════════════════════════════════════
 // MODE NUIT
@@ -377,8 +377,8 @@ function populateAbsentSelect(roleFilter) {
       if (!present.has(nom)) present.set(nom, new Set());
       present.get(nom).add(role);
     }
-    if (e.fac1)       addPerson(e.fac1, 'facilitateur');
-    if (e.fac2)       addPerson(e.fac2, 'facilitateur');
+    if (e.fac1)       addPerson(e.fac1, 'animateur');
+    if (e.fac2)       addPerson(e.fac2, 'animateur');
     if (e.traduction) addPerson(e.traduction, 'traducteur');
     if (e.helper1)    addPerson(e.helper1, 'helper');
     if (e.helper2)    addPerson(e.helper2, 'helper');
@@ -423,7 +423,7 @@ function runAnalysis() {
 
   // 1 — Trouver tous les créneaux où la personne est assignée
   AGENDA.forEach((e, idx) => {
-    const allRoles = ['facilitateur', 'helper', 'angel', 'traducteur'];
+    const allRoles = ['animateur', 'helper', 'angel', 'traducteur'];
     allRoles.forEach(role => {
       if (absentRole && role !== absentRole) return;
       const fields = ROLE_FIELDS[role];
@@ -477,7 +477,7 @@ function hasConflict(nom, targetEntry, targetIdx) {
   const targetIv = parseInterval(targetEntry.heure);
   if (!targetIv) return false;
 
-  const allRoles = ['facilitateur', 'helper', 'angel', 'traducteur'];
+  const allRoles = ['animateur', 'helper', 'angel', 'traducteur'];
   return AGENDA.some((e, idx) => {
     if (idx === targetIdx) return false; // ignorer l'atelier cible lui-même
     if (e.jour !== targetEntry.jour) return false;

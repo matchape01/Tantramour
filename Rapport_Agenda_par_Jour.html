@@ -184,9 +184,9 @@
       </select>
     </div>
     <div class="filter-group">
-      <label data-i18n="filter_facilitateur">Facilitateur</label>
+      <label data-i18n="filter_animateur">Animateur</label>
       <select id="filterFac" onchange="render()">
-        <option value="" data-i18n="filter_tous_fac">Tous les facilitateurs</option>
+        <option value="" data-i18n="filter_tous_fac">Tous les animateurs</option>
       </select>
     </div>
     <div class="filter-group">
@@ -228,7 +228,7 @@
           <th onclick="sortBy(4)"><span data-i18n="col_atelier">Atelier</span><span class="sort-icon" id="si4">⇅</span></th>
           <th class="th-piment" onclick="sortBy(10)" data-i18n-title="col_piment">🌶️<span class="sort-icon" id="si10">⇅</span></th>
           <th onclick="sortBy(5)"><span data-i18n="col_lieu">Lieu</span><span class="sort-icon" id="si5">⇅</span></th>
-          <th onclick="sortBy(6)"><span data-i18n="col_facilitateur">Facilitateur(s)</span><span class="sort-icon" id="si6">⇅</span></th>
+          <th onclick="sortBy(6)"><span data-i18n="col_animateur">Animateur(s)</span><span class="sort-icon" id="si6">⇅</span></th>
           <th onclick="sortBy(7)"><span data-i18n="col_traducteur">Trad.</span><span class="sort-icon" id="si7">⇅</span></th>
           <th onclick="sortBy(8)"><span data-i18n="col_helpers">Helper(s)</span><span class="sort-icon" id="si8">⇅</span></th>
           <th onclick="sortBy(9)"><span data-i18n="col_angel">Angel</span><span class="sort-icon" id="si9">⇅</span></th>
@@ -284,8 +284,8 @@ function buildConflictIndex() {
       if (!parPersonne.has(nom)) parPersonne.set(nom, []);
       parPersonne.get(nom).push({ atelier: e.atelier, jour: e.jour, heure: e.heure, iv, role, field });
     };
-    add(e.fac1,       'Facilitateur', 'fac1');
-    add(e.fac2,       'Facilitateur', 'fac2');
+    add(e.fac1,       'Animateur', 'fac1');
+    add(e.fac2,       'Animateur', 'fac2');
     add(e.traduction, 'Traducteur',   'traduction');
     add(e.helper1,    'Helper',       'helper1');
     add(e.helper2,    'Helper',       'helper2');
@@ -326,7 +326,7 @@ function buildConflictIndex() {
 
 const CONFLICT_INDEX = buildConflictIndex();
 
-// ─── Set des facilitateurs anglophones ───────────────────────────────────────
+// ─── Set des animateurs anglophones ───────────────────────────────────────
 const ANGLOPHONES = new Set(
   (typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES : [])
     .filter(r => r.roles && r.roles.indexOf('anglophone') !== -1)
@@ -353,10 +353,10 @@ REF_LIEUX.filter(l => lieuxPresents.has(l.value)).forEach(l => {
   const o=document.createElement('option'); o.value=l.value; o.text=l.label||l.value; selLieu.appendChild(o);
 });
 
-// Peupler le filtre Facilitateur depuis REF_FACILITATEURS (seulement ceux présents dans les données)
+// Peupler le filtre Animateur depuis REF_ANIMATEURS (seulement ceux présents dans les données)
 const facsPresents = new Set(RAW.flatMap(r=>[r[6],r[7]]).filter(Boolean));
 const selFac = document.getElementById('filterFac');
-REF_FACILITATEURS.filter(f => facsPresents.has(f.value)).forEach(f => {
+REF_ANIMATEURS.filter(f => facsPresents.has(f.value)).forEach(f => {
   const o=document.createElement('option'); o.value=f.value; o.text=f.value; selFac.appendChild(o);
 });
 
@@ -788,7 +788,7 @@ function exportXlsx() {
 
   // ── Colonnes ────────────────────────────────────────────────────────────
   const HEADERS = ['Jour','Date','Heure','Type','Atelier','Piment','Lieu',
-                   'Facilitateur 1','Facilitateur 2','Traducteur',
+                   'Animateur 1','Animateur 2','Traducteur',
                    'Helper 1','Helper 2','Helper 3','Helper 4','Angel','Note'];
 
   // ── Helpers XML ─────────────────────────────────────────────────────────

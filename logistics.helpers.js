@@ -9,7 +9,7 @@ var LOGISTICS_HELPERS = {
     avant: "AVANT 1<p></p>",
     pendant: "PENDANT 2<p></p>",
     apres: "APRES 3<p></p>",
-    updatedAt: "2026-07-30 18:09"
+    updatedAt: "2026-08-01 10:08"
   },
 
   "JOUR3_POOL_PARTY_____DJ_PASCAL_DE_LA": {
@@ -38,6 +38,55 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-07-31 10:10"
+  },
+
+  "JOUR1_TEST_MATT__COPIE_": {
+    avant: "sgds",
+    pendant: "sgdsd",
+    apres: "",
+    updatedAt: "2026-08-01 10:09"
+  },
+
+  "JOUR1_EXTRA_SUPPORT___OPENING_CEREMO": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:46"
+  },
+
+  "JOUR2__CALL__POUR_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:51"
+  },
+
+  "JOUR3__CALL__POUR_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:52"
+  },
+
+  "JOUR4__CALL__POUR_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR5__CALL__POUR_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR6__CALL__POUR_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-01 14:53"
   }
 
 };

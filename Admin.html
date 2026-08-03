@@ -208,13 +208,13 @@
           <input type="text" id="fAtelier" placeholder="Titre de l'atelier">
         </div>
 
-        <!-- Facilitateurs -->
+        <!-- Animateurs -->
         <div class="form-group">
-          <label>Facilitateur 1 <span class="role-f">F</span></label>
+          <label>Animateur 1 <span class="role-f">F</span></label>
           <select id="fFac1" class="form-select"><option value="">— Aucun —</option></select>
         </div>
         <div class="form-group">
-          <label>Facilitateur 2 <span class="role-f">F</span></label>
+          <label>Animateur 2 <span class="role-f">F</span></label>
           <select id="fFac2" class="form-select"><option value="">— Aucun —</option></select>
         </div>
 
@@ -347,8 +347,8 @@ populateSelect('selJour',   REF_JOURS,         'value', 'label');
 populateSelect('fJour',     REF_JOURS,         'value', 'label');
 populateSelect('fLieu',     REF_LIEUX,         'value', 'label');
 populateSelect('fType',     REF_TYPES,         'value', 'label');
-populateSelect('fFac1',       REF_FACILITATEURS, 'value', 'value');
-populateSelect('fFac2',       REF_FACILITATEURS, 'value', 'value');
+populateSelect('fFac1',       REF_ANIMATEURS, 'value', 'value');
+populateSelect('fFac2',       REF_ANIMATEURS, 'value', 'value');
 populateSelect('fTraduction', REF_TRADUCTEURS,   'value', 'value');
 populateSelect('fHelper1',    REF_HELPERS,       'value', 'value');
 populateSelect('fHelper2',    REF_HELPERS,       'value', 'value');
@@ -752,8 +752,8 @@ function genererDataJs() {
  *   type       {string}  catégorie (ex: "ATELIERS TANTRA (AM)")
  *   atelier    {string}  nom de l'atelier / activité
  *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" …)
- *   fac1       {string}  Facilitateur principal
- *   fac2       {string}  Facilitateur secondaire
+ *   fac1       {string}  Animateur principal
+ *   fac2       {string}  Animateur secondaire
  *   traduction {string}  Langue / traducteur
  *   helper1    {string}  Helper 1
  *   helper2    {string}  Helper 2

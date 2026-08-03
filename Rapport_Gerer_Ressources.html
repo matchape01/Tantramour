@@ -226,7 +226,7 @@
 
   <!-- LÉGENDE -->
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#166534"></div>Facilitateur</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#166534"></div>Animateur</div>
     <div class="legend-item"><div class="legend-dot" style="background:#0369a1"></div>Helper</div>
     <div class="legend-item"><div class="legend-dot" style="background:#854d0e"></div>Traducteur</div>
     <div class="legend-item"><div class="legend-dot" style="background:#9d174d"></div>Angel</div>
@@ -326,7 +326,7 @@ function initData() {
 // ROLE_META est construit dynamiquement depuis REF_RESOURCE_TYPES
 // Les 4 rôles historiques conservent leurs classes CSS dédiées ;
 // tout rôle supplémentaire reçoit 'role-x' (couleur accent générique).
-var ROLE_FIXED_CLS = { facilitateur:'role-f', helper:'role-h', traducteur:'role-t', angel:'role-a' };
+var ROLE_FIXED_CLS = { animateur:'role-f', helper:'role-h', traducteur:'role-t', angel:'role-a' };
 var ROLE_META = {};
 
 function buildRoleMeta() {
@@ -817,10 +817,10 @@ function genererRefRessources() {
 ' *   id    : cl\u00e9 unique (stable, ne jamais changer) \u2014 pr\u00e9fixe "R_"\n' +
 ' *   value : nom exact tel qu\'il appara\u00eet dans AGENDA\n' +
 ' *   roles : tableau des r\u00f4les possibles pour cette personne\n' +
-' *           Valeurs accept\u00e9es : "facilitateur" | "helper" | "traducteur" | "angel"\n' +
+' *           Valeurs accept\u00e9es : "animateur" | "helper" | "traducteur" | "angel"\n' +
 ' *\n' +
 ' * \u26a0\ufe0f  Pour les rapports existants, les alias de compatibilit\u00e9 en bas de fichier\n' +
-' *     reconstituent automatiquement REF_FACILITATEURS, REF_HELPERS,\n' +
+' *     reconstituent automatiquement REF_ANIMATEURS, REF_HELPERS,\n' +
 ' *     REF_TRADUCTEURS et REF_ANGELS depuis cette liste.\n' +
 ' */\n' +
 'var REF_RESSOURCES = [\n' +
@@ -831,8 +831,8 @@ lines + '\n' +
 '// \u2500\u2500\u2500 Alias de compatibilit\u00e9 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n' +
 '// Ces 4 variables reconstituent les anciens r\u00e9f\u00e9rentiels depuis REF_RESSOURCES.\n' +
 '// Les rapports existants continuent de fonctionner sans modification.\n' +
-'var REF_FACILITATEURS = REF_RESSOURCES\n' +
-'  .filter(function(r){ return r.roles.indexOf("facilitateur") !== -1; })\n' +
+'var REF_ANIMATEURS = REF_RESSOURCES\n' +
+'  .filter(function(r){ return r.roles.indexOf("animateur") !== -1; })\n' +
 '  .map(function(r){ return { id: "F_" + r.id.slice(2), value: r.value }; });\n' +
 '\n' +
 'var REF_HELPERS = REF_RESSOURCES\n' +

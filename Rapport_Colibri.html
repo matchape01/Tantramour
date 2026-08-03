@@ -309,7 +309,7 @@ function render() {
 function renderCard(w) {
   var e = w.entry;
 
-  // Facilitateurs
+  // Animateurs
   var facsHtml = [e.fac1, e.fac2].filter(Boolean)
     .map(function(nom) { return '<span class="pill pill-f">' + esc(nom) + '</span>'; })
     .join('') || '<span class="avail-note">—</span>';

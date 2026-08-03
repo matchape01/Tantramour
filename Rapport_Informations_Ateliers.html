@@ -6,6 +6,7 @@
   <title>Tantramour 2026 — Informations Ateliers</title>
   <script src="ref_translations.js"></script>
   <script src="i18n.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <style>
     :root {
       --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
@@ -187,6 +188,7 @@
     <div class="header-actions">
       <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn" onclick="exportAteliersDetailsExcel()">📥 Export Excel</button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
@@ -211,7 +213,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <div class="filter-label" data-i18n="r_desc_filter_fac">🎓 Facilitateur</div>
+          <div class="filter-label" data-i18n="r_desc_filter_fac">🎓 Animateur</div>
           <select class="filter-select" id="fFac" onchange="applyFilters()">
             <option value="" data-i18n="r_desc_all_fac">Tous</option>
           </select>
@@ -492,7 +494,7 @@ function renderList(items) {
       '<div class="ws-card-left">' +
         '<div class="ws-card-jour">' + esc(jourLabel(e.jour)) + (dateLabel ? ' — ' + dateLabel : '') +
           (e.heure ? ' · ' + esc(e.heure) : '') + '</div>' +
-        '<div class="ws-card-name">' + esc(e.atelier||'—') + pimentStr + '</div>' +
+        '<div class="ws-card-name">' + esc(e.atelier||'—') + pimentStr + (e.id ? ' <span style="color:var(--muted);font-size:12px">(' + esc(e.id) + ')</span>' : '') + '</div>' +
         '<div class="ws-card-meta">' +
           '<span class="tag tag-type">' + esc(e.type||'') + '</span>' +
           (e.lieu ? '<span>📍 '+esc(e.lieu)+'</span>' : '') +
@@ -541,6 +543,7 @@ function selectAtelier(agendaIdx) {
 
   // ── Grille infos
   var gridItems = [
+    { lbl:'ID',                       val: e.id || '—' },
     { lbl:I18n.t('r14_grid_fac'),     val: facs },
     { lbl:I18n.t('col_helpers'),      val: hlps },
     { lbl:I18n.t('r14_grid_trad'),    val: e.traduction || '—' },
@@ -727,6 +730,189 @@ window.goList = goList;
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+function htmlToText(html) {
+  if (!html) return '';
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  return (div.textContent || div.innerText || '').replace(/\s+\n/g, '\n').trim();
+}
+function parseHeureDebut(heure) {
+  if (!heure) return '';
+  var match = String(heure).replace(/\./g, ':').match(/(\d{1,2}:\d{2})/);
+  if (!match) return '';
+  var parts = match[1].split(':');
+  return parts[0].padStart(2, '0') + ':' + parts[1].padStart(2, '0');
+}
+function parseHeureFin(heure) {
+  if (!heure) return '';
+  var all = String(heure).replace(/\./g, ':').match(/(\d{1,2}:\d{2})/g);
+  if (!all || all.length < 2) return '';
+  var parts = all[1].split(':');
+  return parts[0].padStart(2, '0') + ':' + parts[1].padStart(2, '0');
+}
+function buildAteliersExportRows() {
+  return AGENDA.map(function(e) {
+    var desc = getDesc(e.atelier) || {};
+    var logId = e.logisticId || '';
+    var logEntry = logId && typeof LOGISTICS !== 'undefined' ? LOGISTICS[logId] : null;
+    var specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL[logId] : null;
+    var helpEntry = logId && typeof LOGISTICS_HELPERS !== 'undefined' ? LOGISTICS_HELPERS[logId] : null;
+    return {
+      id: e.id || '',
+      atelier: e.atelier || '',
+      fac1: e.fac1 || '',
+      fac2: e.fac2 || '',
+      date: getExportDateValue(e),
+      jour: e.jour || '',
+      type: e.type || '',
+      heureDebut: parseHeureDebut(e.heure || ''),
+      heureFin: parseHeureFin(e.heure || ''),
+      lieu: e.lieu || '',
+      piment: e.piment || 0,
+      note: e.note || '',
+      nomEn: desc.nomEn || '',
+      descFr: desc.descFr || '',
+      descEn: desc.descEn || '',
+      consigneFr: desc.consigne || '',
+      consigneEn: desc.consigneEn || '',
+      prepDuration: logEntry && logEntry.prepDuration !== undefined ? logEntry.prepDuration : '',
+      logInfo: logEntry ? htmlToText(logEntry.html || logEntry.text || '') : '',
+      logSpecial: specEntry ? htmlToText(specEntry.html || specEntry.text || '') : '',
+      helperAvant: helpEntry ? htmlToText(helpEntry.avant || '') : '',
+      helperPendant: helpEntry ? htmlToText(helpEntry.pendant || '') : '',
+      helperApres: helpEntry ? htmlToText(helpEntry.apres || '') : ''
+    };
+  });
+}
+function escapeXml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function formatExportDate(dateStr) {
+  if (!dateStr) return '';
+  var match = String(dateStr).match(/(\d{1,2})\s+[A-Za-zéû\.]+\s+(\d{4})/);
+  if (!match) return dateStr;
+  var day = String(parseInt(match[1], 10)).padStart(2, '0');
+  var year = match[2];
+  var monthMap = {
+    janvier:'01', fevrier:'02', février:'02', mars:'03', avril:'04', mai:'05', juin:'06', juillet:'07',
+    aout:'08', août:'08', septembre:'09', octobre:'10', novembre:'11', decembre:'12', décembre:'12'
+  };
+  var monthKey = String(dateStr).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(/\d{1,2}\s+([a-z]+)\s+\d{4}/);
+  var month = monthKey && monthMap[monthKey[1]] ? monthMap[monthKey[1]] : '';
+  return month ? (day + '/' + month + '/' + year) : dateStr;
+}
+function getExportDateValue(entry) {
+  var refJour = typeof REF_JOURS !== 'undefined'
+    ? REF_JOURS.find(function(j) { return j.value === entry.jour; })
+    : null;
+  if (refJour && refJour.dateDdMmYyyy) return refJour.dateDdMmYyyy;
+  return formatExportDate(entry.date || '');
+}
+
+function buildExcelRows(rows) {
+  return rows.map(function(row) {
+    return [
+      row.id,row.atelier,row.fac1,row.fac2,row.type,row.date,row.jour,row.heureDebut,row.heureFin,row.lieu,row.piment,row.note,
+      row.nomEn,row.descFr,row.descEn,row.consigneFr,row.consigneEn,row.prepDuration,row.logInfo,row.logSpecial,row.helperAvant,row.helperPendant,row.helperApres
+    ];
+  });
+}
+function downloadExcelFile(rows, filename) {
+  var workbook = new ExcelJS.Workbook();
+  var sheet = workbook.addWorksheet('Ateliers');
+  var headers = [
+    'ID','Atelier (FR)','Animateur 1','Animateur 2','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
+    'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
+    'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
+  ];
+  var grayColumns = { 11:true, 13:true, 14:true, 15:true, 16:true, 17:true, 18:true, 19:true, 20:true, 21:true, 22:true, 23:true };
+  var columnWidths = [12, 30, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30];
+
+  sheet.addRow(headers);
+  buildExcelRows(rows).forEach(function(values) {
+    sheet.addRow(values);
+  });
+
+  sheet.columns.forEach(function(column, index) {
+    column.width = columnWidths[index] || 18;
+  });
+ 
+  sheet.autoFilter = {
+    from: { row: 1, column: 1 },
+    to: { row: 1, column: headers.length }
+  };
+  sheet.views = [{ state: 'frozen', xSplit: 2, ySplit: 1 }];
+
+  sheet.getRow(1).eachCell(function(cell) {
+    cell.font = { bold: true };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } };
+    cell.border = {
+      right: { style: 'dotted', color: { argb: 'FF9CA3AF' } },
+      bottom: { style: 'thin', color: { argb: 'FFD1D5DB' } }
+    };
+  });
+
+  sheet.eachRow(function(row, rowNumber) {
+    if (rowNumber === 1) return;
+    var baseColor = rowNumber % 2 === 0 ? 'FFFFFFFF' : 'FFF3F4F6';
+    row.eachCell(function(cell, colNumber) {
+      var fillColor = grayColumns[colNumber] ? 'FFE5E7EB' : baseColor;
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fillColor } };
+      cell.border = {
+        right: { style: 'dotted', color: { argb: 'FF9CA3AF' } },
+        bottom: { style: 'thin', color: { argb: 'FFE5E7EB' } }
+      };
+      cell.alignment = {
+        vertical: 'top',
+        wrapText: colNumber >= 13
+      };
+      if (colNumber === 6 && cell.value) {
+        cell.numFmt = 'dd/mm/yyyy';
+      }
+    });
+  });
+
+  sheet.getColumn(6).eachCell(function(cell, rowNumber) {
+    if (rowNumber === 1 || !cell.value) return;
+    var parts = String(cell.value).split('/');
+    if (parts.length === 3) {
+      cell.value = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+      cell.numFmt = 'dd/mm/yyyy';
+    }
+  });
+
+  return workbook.xlsx.writeBuffer().then(function(buffer) {
+    var blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+function exportAteliersDetailsExcel() {
+  var rows = buildAteliersExportRows();
+  var now = new Date();
+  var yyyy = now.getFullYear();
+  var mm = String(now.getMonth() + 1).padStart(2, '0');
+  var dd = String(now.getDate()).padStart(2, '0');
+  var filename = 'TAF2026_ATELIERS DETAILS_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+  if (typeof ExcelJS === 'undefined') {
+    showToast('❌ Bibliothèque Excel indisponible', true);
+    return;
+  }
+  downloadExcelFile(rows, filename).then(function() {
+    showToast('✅ Export Excel généré');
+  });
+}
+window.exportAteliersDetailsExcel = exportAteliersDetailsExcel;
 function heureMin(h) {
   if (!h) return 9999;
   var m = String(h).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);

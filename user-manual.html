@@ -127,7 +127,7 @@
     <div class="cover-tag" data-i18n="manual_tag">Documentation</div>
     <h1 data-i18n="manual_title">Tantramour 2026</h1>
     <h2 data-i18n="manual_subtitle">Manuel utilisateur — Suite de gestion du festival</h2>
-    <div class="cover-meta" data-i18n="manual_meta">17 rapports · Lecture, édition, gestion des référentiels &amp; saisie facilitateurs</div>
+    <div class="cover-meta" data-i18n="manual_meta">17 rapports · Lecture, édition, gestion des référentiels &amp; saisie animateurs</div>
   </div>
 
   <!-- ══════════════════════════════════
@@ -179,9 +179,9 @@
       <tbody>
         <tr><td>📅 Agenda par Jour</td><td>Voir tous les ateliers filtrés par jour, lieu ou rôle</td></tr>
         <tr><td>👤 Agenda par Personne</td><td>Planning d'une personne (Fac, Helper, Angel, Traducteur)</td></tr>
-        <tr><td>🗓️ Mon Planning</td><td>Vue combinée ou par rôle — Facilitateurs, Helpers, Traducteurs, Angels</td></tr>
+        <tr><td>🗓️ Mon Planning</td><td>Vue combinée ou par rôle — Animateurs, Helpers, Traducteurs, Angels</td></tr>
         <tr><td>📋 Logistique par Atelier</td><td>Fiche logistique complète d'un atelier</td></tr>
-        <tr><td>✏️ Saisie des besoins logistiques</td><td>Interface dédiée facilitateurs pour saisir leurs besoins</td></tr>
+        <tr><td>✏️ Saisie des besoins logistiques</td><td>Interface dédiée animateurs pour saisir leurs besoins</td></tr>
       </tbody>
     </table>
 
@@ -192,7 +192,7 @@
         <tr><td>⚠️ Conflits de planning</td><td>Détection ateliers simultanés &amp; multi-rôles même atelier</td></tr>
         <tr><td>⚖️ Charge de travail</td><td>Helpers, Angels, Traducteurs — nombre d'ateliers, durée, harmonisation</td></tr>
         <tr><td>✏️ Éditer un atelier</td><td>Modifier les champs d'un atelier — sauvegarde via serveur local</td></tr>
-        <tr><td>👥 Gérer les Ressources</td><td>Facilitateurs, Helpers, Traducteurs, Angels — référentiel unifié</td></tr>
+        <tr><td>👥 Gérer les Ressources</td><td>Animateurs, Helpers, Traducteurs, Angels — référentiel unifié</td></tr>
         <tr><td>🔄 Remplacement de Ressource</td><td>Gestion des absences — remplaçants automatiques sans conflit</td></tr>
         <tr><td>🚨 Problèmes de planning</td><td>Ateliers anglophones sans traducteur · ressources insuffisantes — correction inline</td></tr>
         <tr><td>🌐 Planning Traducteurs</td><td>Vue par Traducteur — shifts regroupés, filtres Jour/Traducteur, bascule tableau</td></tr>
@@ -263,7 +263,7 @@
     <ul>
       <li>L'horaire et le lieu</li>
       <li>Le nom de l'atelier et le niveau piment (🌶️)</li>
-      <li>Le badge de type coloré et les facilitateurs</li>
+      <li>Le badge de type coloré et les animateurs</li>
     </ul>
 
     <h3 class="pink">Modale de détail (bouton ℹ️)</h3>
@@ -272,7 +272,7 @@
       <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
       <tbody>
         <tr><td><strong>En-tête</strong></td><td>Badge type coloré, nom de l'atelier, jour et date traduits</td></tr>
-        <tr><td><strong>Grille info</strong></td><td>Horaire · Lieu · Facilitateur(s) · Niveau Piment · Traduction (si renseigné)</td></tr>
+        <tr><td><strong>Grille info</strong></td><td>Horaire · Lieu · Animateur(s) · Niveau Piment · Traduction (si renseigné)</td></tr>
         <tr><td><strong>🇫🇷 Description FR</strong></td><td>Description française si disponible dans <code>ref_descriptions.js</code></td></tr>
         <tr><td><strong>🇬🇧 Description EN</strong></td><td>Description anglaise si disponible dans <code>ref_descriptions.js</code></td></tr>
         <tr><td><strong>Message vide</strong></td><td>Si aucune description n'est disponible, un message informatif s'affiche</td></tr>
@@ -292,7 +292,7 @@
 
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>
-      <div>Les <strong>noms des ateliers et des facilitateurs</strong> ne sont pas traduits (données métier) — seuls les libellés d'interface, les noms des jours et les dates le sont.</div>
+      <div>Les <strong>noms des ateliers et des animateurs</strong> ne sont pas traduits (données métier) — seuls les libellés d'interface, les noms des jours et les dates le sont.</div>
     </div>
   </div>
 
@@ -319,7 +319,7 @@
       <tbody>
         <tr><td><strong>Jour / Date</strong></td><td>Tous les jours, Jour 1 … Jour 7</td><td>Affiche uniquement les ateliers de ce jour</td></tr>
         <tr><td><strong>Lieu</strong></td><td>Liste des lieux du festival</td><td>Filtre par salle ou espace</td></tr>
-        <tr><td><strong>Rôle</strong></td><td>Facilitateur, Helper, Angel, Traducteur</td><td>Filtre par rôle</td></tr>
+        <tr><td><strong>Rôle</strong></td><td>Animateur, Helper, Angel, Traducteur</td><td>Filtre par rôle</td></tr>
         <tr><td><strong>Type d'atelier</strong></td><td>Liste des types présents dans les données</td><td>Filtre par catégorie</td></tr>
       </tbody>
     </table>
@@ -335,7 +335,7 @@
         <tr><td>Type d'atelier</td><td>Catégorie avec badge coloré</td></tr>
         <tr><td>Atelier</td><td>Nom de l'atelier (★ rouge si note renseignée)</td></tr>
         <tr><td>Lieu</td><td>Salle ou espace</td></tr>
-        <tr><td>Facilitateur(s)</td><td><span class="pill pill-f">Prénom Nom</span> badges verts</td></tr>
+        <tr><td>Animateur(s)</td><td><span class="pill pill-f">Prénom Nom</span> badges verts</td></tr>
         <tr><td>Traducteur</td><td><span class="pill pill-t">Prénom Nom</span> badge indigo</td></tr>
         <tr><td>Helper(s)</td><td><span class="pill pill-h">Prénom Nom</span> badges bleus</td></tr>
         <tr><td>Angel</td><td><span class="pill pill-a">Prénom Nom</span> badge rose</td></tr>
@@ -401,14 +401,14 @@
       <tbody>
         <tr><td><strong>Personne</strong></td><td>Liste de toutes les personnes</td><td>Affiche uniquement les ateliers de cette personne</td></tr>
         <tr><td><strong>Jour / Date</strong></td><td>Tous les jours, Jour 1 … Jour 7</td><td>Restreint à une journée</td></tr>
-        <tr><td><strong>Rôle</strong></td><td>Facilitateur, Helper, Angel, Traducteur</td><td>Filtre par type de responsabilité</td></tr>
+        <tr><td><strong>Rôle</strong></td><td>Animateur, Helper, Angel, Traducteur</td><td>Filtre par type de responsabilité</td></tr>
         <tr><td><strong>Type d'atelier</strong></td><td>Catégories des ateliers</td><td>Filtre par catégorie</td></tr>
       </tbody>
     </table>
 
     <h3>Codes couleur des rôles</h3>
     <div class="btn-row" style="align-items:center">
-      <span class="pill pill-f">Facilitateur</span>
+      <span class="pill pill-f">Animateur</span>
       <span class="pill pill-h">Helper</span>
       <span class="pill pill-a">Angel</span>
       <span class="pill pill-t">Traducteur</span>
@@ -416,7 +416,7 @@
 
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>
-      <div>Le filtre <strong>Personne</strong> liste automatiquement toutes les personnes présentes dans <code>data.js</code> — facilitateurs, helpers, angels <em>et</em> traducteurs inclus.</div>
+      <div>Le filtre <strong>Personne</strong> liste automatiquement toutes les personnes présentes dans <code>data.js</code> — animateurs, helpers, angels <em>et</em> traducteurs inclus.</div>
     </div>
   </div>
 
@@ -440,12 +440,12 @@
     <h3>Onglets de rôle</h3>
     <div class="btn-row">
       <span class="demo-btn">🌐 Combiné (tous rôles)</span>
-      <span class="demo-btn">🎓 Facilitateurs</span>
+      <span class="demo-btn">🎓 Animateurs</span>
       <span class="demo-btn">🤝 Helpers</span>
       <span class="demo-btn">🌐 Traducteurs</span>
       <span class="demo-btn">👼 Angels</span>
     </div>
-    <p>Chaque onglet filtre l'affichage sur le rôle sélectionné et colore dynamiquement l'interface (vert = Facilitateurs, bleu = Helpers, jaune = Traducteurs, rose = Angels). L'onglet <strong>Combiné</strong> affiche toutes les interventions de toutes les personnes.</p>
+    <p>Chaque onglet filtre l'affichage sur le rôle sélectionné et colore dynamiquement l'interface (vert = Animateurs, bleu = Helpers, jaune = Traducteurs, rose = Angels). L'onglet <strong>Combiné</strong> affiche toutes les interventions de toutes les personnes.</p>
 
     <h3>Filtres disponibles</h3>
     <table class="data-table">
@@ -468,14 +468,14 @@
     </ul>
 
     <h3>Statistiques affichées</h3>
-    <p>Des cartes de statistiques en haut de page affichent en temps réel : Personnes, Interventions totales, Facilitateurs, Helpers, Traducteurs, Angels.</p>
+    <p>Des cartes de statistiques en haut de page affichent en temps réel : Personnes, Interventions totales, Animateurs, Helpers, Traducteurs, Angels.</p>
 
     <h3>Fiche logistique 📋 — modale bottom-sheet</h3>
     <p>Chaque atelier affiché dans la vue <strong>par Personne</strong> dispose d'un bouton <strong>📋</strong> sur la droite de la ligne. Un clic ouvre une <strong>modale bottom-sheet</strong> affichant les informations complètes sans quitter la page :</p>
     <table class="data-table">
       <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
       <tbody>
-        <tr><td><strong>En-tête de la modale</strong></td><td>Nom de l'atelier, jour, date, heure, lieu, type, facilitateur(s), helpers, angel, traducteur</td></tr>
+        <tr><td><strong>En-tête de la modale</strong></td><td>Nom de l'atelier, jour, date, heure, lieu, type, animateur(s), helpers, angel, traducteur</td></tr>
         <tr><td><strong>Informations logistiques</strong></td><td>Contenu HTML saisi dans <code>logistics.js</code> pour cet atelier (formatage riche — listes, gras, etc.)</td></tr>
         <tr><td><strong>Message vide</strong></td><td>Si aucune info logistique n'est saisie, un message <em>« Aucune information logistique pour cet atelier »</em> s'affiche</td></tr>
       </tbody>
@@ -536,7 +536,7 @@
 
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>
-      <div>Pour vérifier les ateliers animés par des <strong>facilitateurs anglophones</strong> qui n'auraient pas encore de traducteur assigné, utilisez le rapport <strong>Affectation Traducteur</strong>.</div>
+      <div>Pour vérifier les ateliers animés par des <strong>animateurs anglophones</strong> qui n'auraient pas encore de traducteur assigné, utilisez le rapport <strong>Affectation Traducteur</strong>.</div>
     </div>
   </div>
 
@@ -577,7 +577,7 @@
     <p>Les ateliers sont affichés sous forme de cartes regroupées par jour. Chaque carte affiche :</p>
     <ul>
       <li>Jour, heure, nom, lieu et type de l'atelier</li>
-      <li>Les <strong>Facilitateurs</strong>, <strong>Helpers</strong>, <strong>Traducteur</strong> et <strong>Angel</strong> avec leurs badges colorés</li>
+      <li>Les <strong>Animateurs</strong>, <strong>Helpers</strong>, <strong>Traducteur</strong> et <strong>Angel</strong> avec leurs badges colorés</li>
       <li>Les Colibris impliqués sont mis en évidence avec un badge violet distinctif</li>
     </ul>
 
@@ -624,7 +624,7 @@
       <thead><tr><th>Zone</th><th>Contenu</th></tr></thead>
       <tbody>
         <tr><td><strong>En-tête</strong></td><td>Nom, heure, jour, date, type et lieu</td></tr>
-        <tr><td><strong>Facilitateur(s)</strong></td><td>Badges verts</td></tr>
+        <tr><td><strong>Animateur(s)</strong></td><td>Badges verts</td></tr>
         <tr><td><strong>Helper(s)</strong></td><td>Badges bleus</td></tr>
         <tr><td><strong>Angel</strong></td><td>Badge rose</td></tr>
         <tr><td><strong>Traducteur</strong></td><td>Badge indigo</td></tr>
@@ -649,23 +649,23 @@
     <div class="section-header">
       <div class="section-icon">✏️</div>
       <div>
-        <div class="section-title">Saisie des besoins logistiques <span class="section-badge badge-fac">Facilitateurs</span></div>
-        <div class="section-subtitle">Interface dédiée aux facilitateurs pour décrire leurs besoins</div>
+        <div class="section-title">Saisie des besoins logistiques <span class="section-badge badge-fac">Animateurs</span></div>
+        <div class="section-subtitle">Interface dédiée aux animateurs pour décrire leurs besoins</div>
       </div>
     </div>
 
-    <p>Cette page est conçue pour que les <strong>facilitateurs</strong> saisissent eux-mêmes leurs besoins logistiques atelier par atelier, sans avoir accès aux autres données du festival. L'interface fonctionne en <strong>3 étapes guidées</strong>.</p>
+    <p>Cette page est conçue pour que les <strong>animateurs</strong> saisissent eux-mêmes leurs besoins logistiques atelier par atelier, sans avoir accès aux autres données du festival. L'interface fonctionne en <strong>3 étapes guidées</strong>.</p>
 
     <div class="callout tip">
       <div class="callout-icon">💡</div>
-      <div>Cette page est accessible directement depuis la page d'accueil sans mot de passe — elle est conçue pour être partagée aux facilitateurs.</div>
+      <div>Cette page est accessible directement depuis la page d'accueil sans mot de passe — elle est conçue pour être partagée aux animateurs.</div>
     </div>
 
     <h3 class="green">Étape 1 — Identification</h3>
     <div class="steps-block">
       <div class="step">
         <div class="step-n green">1</div>
-        <div class="step-body">Sélectionnez votre nom dans la liste déroulante (seuls les facilitateurs ayant des ateliers dans le planning apparaissent).</div>
+        <div class="step-body">Sélectionnez votre nom dans la liste déroulante (seuls les animateurs ayant des ateliers dans le planning apparaissent).</div>
       </div>
       <div class="step">
         <div class="step-n green">2</div>
@@ -686,7 +686,7 @@
     <table class="data-table">
       <thead><tr><th>Champ</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><strong>Nom de l'atelier</strong></td><td>Titre de l'atelier (modifiable par le facilitateur)</td></tr>
+        <tr><td><strong>Nom de l'atelier</strong></td><td>Titre de l'atelier (modifiable par le animateur)</td></tr>
         <tr><td><strong>Niveau Piment</strong></td><td>Niveau d'intensité sensorielle de l'atelier (boutons de sélection)</td></tr>
         <tr><td><strong>Informations logistiques</strong></td><td>Zone de texte riche avec formatage (Gras, Italique, Souligné, Listes)</td></tr>
       </tbody>
@@ -729,7 +729,7 @@
       </div>
     </div>
 
-    <p>Ce rapport analyse automatiquement l'ensemble du planning et détecte deux types de conflits pour chaque personne (tous rôles confondus : Facilitateur, Helper, Angel, Traducteur).</p>
+    <p>Ce rapport analyse automatiquement l'ensemble du planning et détecte deux types de conflits pour chaque personne (tous rôles confondus : Animateur, Helper, Angel, Traducteur).</p>
 
     <h3>Types de conflits détectés</h3>
     <table class="data-table">
@@ -743,7 +743,7 @@
         <tr>
           <td><strong>🟠 Multi-rôles même atelier</strong></td>
           <td><span style="background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;font-weight:600;font-size:12px">Multi</span></td>
-          <td>Même personne affectée à un seul et même atelier dans <strong>plusieurs rôles différents</strong> (ex : Facilitateur ET Helper)</td>
+          <td>Même personne affectée à un seul et même atelier dans <strong>plusieurs rôles différents</strong> (ex : Animateur ET Helper)</td>
         </tr>
       </tbody>
     </table>
@@ -912,7 +912,7 @@
         <tr><td>Type d'atelier</td><td>Liste déroulante</td><td><code>ref_types.js</code></td></tr>
         <tr><td>Nom de l'atelier</td><td>Texte libre</td><td>Saisie manuelle</td></tr>
         <tr><td>Niveau Piment</td><td>Boutons de sélection</td><td><code>ref_piment.js</code></td></tr>
-        <tr><td>Facilitateur 1 &amp; 2</td><td>Listes déroulantes</td><td><code>ref_ressources.js</code></td></tr>
+        <tr><td>Animateur 1 &amp; 2</td><td>Listes déroulantes</td><td><code>ref_ressources.js</code></td></tr>
         <tr><td>Traducteur</td><td>Liste déroulante</td><td><code>ref_ressources.js</code></td></tr>
         <tr><td>Helper 1, 2 &amp; 3</td><td>Listes déroulantes</td><td><code>ref_ressources.js</code></td></tr>
         <tr><td>Angel</td><td>Liste déroulante</td><td><code>ref_ressources.js</code></td></tr>
@@ -1006,7 +1006,7 @@
     <h3 class="purple">Les 3 référentiels gérés dans Master Data</h3>
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>
-      <div>Les ressources (Facilitateurs, Helpers, Angels, Traducteurs) sont gérées dans le rapport <strong>Gérer les Ressources</strong>, pas dans Master Data.</div>
+      <div>Les ressources (Animateurs, Helpers, Angels, Traducteurs) sont gérées dans le rapport <strong>Gérer les Ressources</strong>, pas dans Master Data.</div>
     </div>
     <table class="data-table">
       <thead><tr><th>Onglet</th><th>Fichier</th><th>Utilisé dans</th></tr></thead>
@@ -1081,7 +1081,7 @@
       <div class="section-icon">👥</div>
       <div>
         <div class="section-title">Gérer les Ressources <span class="section-badge badge-admin">Admin</span></div>
-        <div class="section-subtitle">Référentiel unifié — Facilitateurs, Helpers, Traducteurs, Angels</div>
+        <div class="section-subtitle">Référentiel unifié — Animateurs, Helpers, Traducteurs, Angels</div>
       </div>
     </div>
 
@@ -1102,7 +1102,7 @@
     <table class="data-table">
       <thead><tr><th>Filtre</th><th>Comportement</th></tr></thead>
       <tbody>
-        <tr><td><strong>Rôle</strong></td><td>Filtre la liste sur un rôle spécifique (Facilitateur, Helper, Traducteur, Angel)</td></tr>
+        <tr><td><strong>Rôle</strong></td><td>Filtre la liste sur un rôle spécifique (Animateur, Helper, Traducteur, Angel)</td></tr>
         <tr><td><strong>Recherche</strong></td><td>Filtre instantané sur le nom ou l'ID</td></tr>
       </tbody>
     </table>
@@ -1152,7 +1152,7 @@
       </div>
     </div>
 
-    <p>Ce module permet de gérer rapidement l'absence d'une ressource (helper, angel, traducteur ou facilitateur) en proposant automatiquement des remplaçants qualifiés, en respectant deux règles strictes :</p>
+    <p>Ce module permet de gérer rapidement l'absence d'une ressource (helper, angel, traducteur ou animateur) en proposant automatiquement des remplaçants qualifiés, en respectant deux règles strictes :</p>
     <ul>
       <li><strong>Règle 1 — Pas de conflit horaire :</strong> un candidat n'est proposé que s'il n'est assigné à aucun autre atelier (quel que soit son rôle) sur le même créneau.</li>
       <li><strong>Règle 2 — Charge de travail équilibrée :</strong> les candidats sont classés par score de recommandation qui favorise les personnes avec le moins d'heures déjà planifiées.</li>
@@ -1247,23 +1247,23 @@
       <div class="section-icon">🌐✅</div>
       <div>
         <div class="section-title">Affectation Traducteur <span class="section-badge badge-edit">Édition</span></div>
-        <div class="section-subtitle">Vérifie et complète les affectations traducteur pour les ateliers animés par des facilitateurs anglophones</div>
+        <div class="section-subtitle">Vérifie et complète les affectations traducteur pour les ateliers animés par des animateurs anglophones</div>
       </div>
     </div>
 
-    <p>Ce module se concentre sur les <strong>ateliers animés par des facilitateurs anglophones</strong>. Il vérifie si un traducteur est déjà assigné — et, si ce n'est pas le cas, propose des candidats disponibles sans conflit horaire pour compléter l'affectation.</p>
+    <p>Ce module se concentre sur les <strong>ateliers animés par des animateurs anglophones</strong>. Il vérifie si un traducteur est déjà assigné — et, si ce n'est pas le cas, propose des candidats disponibles sans conflit horaire pour compléter l'affectation.</p>
 
     <h3 style="border-left-color:#6d28d9">Règle métier appliquée</h3>
     <ul>
-      <li>Un atelier est marqué <strong style="color:#dc2626">TBC (à confirmer)</strong> si son facilitateur est anglophone <em>et</em> qu'aucun traducteur n'est encore assigné dans le champ <code>traduction</code>.</li>
+      <li>Un atelier est marqué <strong style="color:#dc2626">TBC (à confirmer)</strong> si son animateur est anglophone <em>et</em> qu'aucun traducteur n'est encore assigné dans le champ <code>traduction</code>.</li>
       <li>Si un Helper assigné à l'atelier est aussi identifié comme Traducteur dans <code>ref_ressources.js</code>, il est proposé en priorité (il connaît déjà l'atelier).</li>
       <li>Les autres traducteurs disponibles (pas de conflit horaire) sont listés en candidats alternatifs.</li>
     </ul>
 
-    <h3 style="border-left-color:#6d28d9">Facilitateurs anglophones reconnus</h3>
-    <p>Les facilitateurs considérés comme anglophones sont ceux dont le profil dans <code>ref_ressources.js</code> inclut le rôle <code>anglophone</code>. Exemples actuels :</p>
+    <h3 style="border-left-color:#6d28d9">Animateurs anglophones reconnus</h3>
+    <p>Les animateurs considérés comme anglophones sont ceux dont le profil dans <code>ref_ressources.js</code> inclut le rôle <code>anglophone</code>. Exemples actuels :</p>
     <table class="data-table">
-      <thead><tr><th>Facilitateur anglophone</th></tr></thead>
+      <thead><tr><th>Animateur anglophone</th></tr></thead>
       <tbody>
         <tr><td>Guy El Hadad</td></tr>
         <tr><td>Mahadevi (Tina Defoy)</td></tr>
@@ -1313,7 +1313,7 @@
 
     <div class="callout info">
       <div class="callout-icon">ℹ️</div>
-      <div>La liste des facilitateurs anglophones est pilotée par le rôle <code>anglophone</code> dans <code>ref_ressources.js</code>. Pour ajouter ou retirer un facilitateur de cette liste, modifiez ses rôles dans <strong>Gérer les Ressources</strong>.</div>
+      <div>La liste des animateurs anglophones est pilotée par le rôle <code>anglophone</code> dans <code>ref_ressources.js</code>. Pour ajouter ou retirer un animateur de cette liste, modifiez ses rôles dans <strong>Gérer les Ressources</strong>.</div>
     </div>
   </div>
 
@@ -1338,7 +1338,7 @@
     <h3 style="border-left-color:#dc2626">Cas 1 — Atelier anglophone sans traducteur</h3>
     <p>Un atelier est signalé en <strong style="color:#d97706">orange</strong> si :</p>
     <ul>
-      <li>Au moins un facilitateur (fac1 ou fac2) a le rôle <code>anglophone</code> dans <code>ref_ressources.js</code></li>
+      <li>Au moins un animateur (fac1 ou fac2) a le rôle <code>anglophone</code> dans <code>ref_ressources.js</code></li>
       <li><strong>ET</strong> le champ <code>traduction</code> est vide</li>
     </ul>
 
@@ -1361,7 +1361,7 @@
       <span class="demo-btn">TEST</span>
       <span class="demo-btn">LOVE TEMPLE</span>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-top:8px">Les ateliers sans facilitateur (fac1 et fac2 vides) sont également exclus.</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">Les ateliers sans animateur (fac1 et fac2 vides) sont également exclus.</p>
 
     <h3 style="border-left-color:#dc2626">Filtres disponibles</h3>
     <table class="data-table">
@@ -1493,9 +1493,9 @@
       <thead><tr><th>Fichier</th><th>Rôle</th><th>Modifié par</th></tr></thead>
       <tbody>
         <tr><td><code>data.js</code></td><td>Source de vérité — tous les ateliers (AGENDA)</td><td>Éditer un atelier, Master Data (bouton + data.js)</td></tr>
-        <tr><td><code>logistics.js</code></td><td>Informations logistiques saisies par les facilitateurs</td><td>Saisie des besoins logistiques, Éditer un atelier</td></tr>
+        <tr><td><code>logistics.js</code></td><td>Informations logistiques saisies par les animateurs</td><td>Saisie des besoins logistiques, Éditer un atelier</td></tr>
         <tr><td><code>ref_ressources.js</code></td><td>Référentiel unifié de toutes les ressources</td><td>Gérer les Ressources</td></tr>
-        <tr><td><code>ref_resource_types.js</code></td><td>Types de ressources valides (Facilitateur, Helper…)</td><td>Chargé avant ref_ressources.js</td></tr>
+        <tr><td><code>ref_resource_types.js</code></td><td>Types de ressources valides (Animateur, Helper…)</td><td>Chargé avant ref_ressources.js</td></tr>
         <tr><td><code>ref_lieux.js</code></td><td>Liste des lieux / salles</td><td>Master Data → onglet Lieux</td></tr>
         <tr><td><code>ref_types.js</code></td><td>Liste des types d'atelier</td><td>Master Data → onglet Types</td></tr>
         <tr><td><code>ref_notes.js</code></td><td>Liste des notes normalisées</td><td>Master Data → onglet Notes</td></tr>
@@ -1517,7 +1517,7 @@
       <thead><tr><th>Action</th><th>Fichiers impactés</th></tr></thead>
       <tbody>
         <tr><td>Modifier un atelier (équipe, horaire, lieu…)</td><td><code>data.js</code></td></tr>
-        <tr><td>Saisir des besoins logistiques (facilitateur)</td><td><code>logistics.js</code></td></tr>
+        <tr><td>Saisir des besoins logistiques (animateur)</td><td><code>logistics.js</code></td></tr>
         <tr><td>Ajouter / modifier / supprimer une ressource</td><td><code>ref_ressources.js</code></td></tr>
         <tr><td>Ajouter / renommer un lieu, type ou note</td><td><code>ref_lieux.js</code> / <code>ref_types.js</code> / <code>ref_notes.js</code></td></tr>
         <tr><td>Renommer un lieu/type/note avec propagation</td><td><code>ref_*.js</code> + <code>data.js</code></td></tr>

@@ -189,7 +189,7 @@
       <label data-i18n="filter_role">Rôle</label>
       <select id="filterRole" onchange="render()">
         <option value="" data-i18n="role_tous">Tous les rôles</option>
-          <option value="F" data-i18n="role_facilitateur">Facilitateur</option>
+          <option value="F" data-i18n="role_animateur">Animateur</option>
           <option value="H" data-i18n="role_helper">Helper</option>
           <option value="A" data-i18n="role_angel">Angel</option>
           <option value="T" data-i18n="role_traducteur">Traducteur</option>
@@ -215,7 +215,7 @@
           <th style="cursor:default;text-align:center" data-i18n-title="col_piment">🌶️</th>
           <th onclick="sortBy(5)"><span data-i18n="col_lieu">Lieu</span><span class="sort-icon" id="si5">⇅</span></th>
           <th onclick="sortBy(6)"><span data-i18n="filter_role">Rôle</span><span class="sort-icon" id="si6">⇅</span></th>
-          <th onclick="sortBy(7)"><span data-i18n="col_facilitateur">Facilitateur(s)</span><span class="sort-icon" id="si7">⇅</span></th>
+          <th onclick="sortBy(7)"><span data-i18n="col_animateur">Animateur(s)</span><span class="sort-icon" id="si7">⇅</span></th>
           <th onclick="sortBy(8)"><span data-i18n="col_traducteur_long">Traducteur</span><span class="sort-icon" id="si8">⇅</span></th>
           <th onclick="sortBy(9)"><span data-i18n="col_helpers">Helper(s)</span><span class="sort-icon" id="si9">⇅</span></th>
           <th onclick="sortBy(10)"><span data-i18n="col_angel">Angel</span><span class="sort-icon" id="si10">⇅</span></th>
@@ -359,7 +359,7 @@ function renderTable(matches) {
   if (!matches.length) { tb.innerHTML=`<tr><td colspan="12" class="empty">Aucun résultat</td></tr>`; return; }
   tb.innerHTML = matches.map(({r,roles})=>{
     const roleHtml = roles.map(ro=>{
-      const label = ro==='F'?'Facilitateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
+      const label = ro==='F'?'Animateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
       return `<span class="role-badge role-${ro}">${label}</span>`;
     }).join(' ');
     return `<tr>
@@ -381,7 +381,7 @@ function renderTable(matches) {
 // Rendu d'une carte simple (1 atelier)
 function cardHtml({r, roles}) {
   const roleHtml = roles.map(ro => {
-    const lbl = ro==='F'?'Facilitateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
+    const lbl = ro==='F'?'Animateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
     const cls = ro==='F'?'role-F':ro==='H'?'role-H':ro==='A'?'role-A':'role-T';
     return `<span class="role-badge ${cls}">${lbl}</span>`;
   }).join(' ');
@@ -405,7 +405,7 @@ function cardHtml({r, roles}) {
     </div>
     <div class="card-rows">
       <div class="card-row"><span class="card-label">Rôle</span><span class="card-value">${roleHtml}${r[14]?`<span style="color:#e53e3e;font-weight:600;font-size:11px;margin-left:8px;border:1px solid #e53e3e;border-radius:4px;padding:1px 6px">${r[14]}</span>`:''}</span></div>
-      ${facs ? `<div class="card-row"><span class="card-label">Facilitateur</span><span class="card-value">${facs}</span></div>` : ''}
+      ${facs ? `<div class="card-row"><span class="card-label">Animateur</span><span class="card-value">${facs}</span></div>` : ''}
       ${trad ? `<div class="card-row"><span class="card-label">Traducteur</span><span class="card-value">${trad}</span></div>` : ''}
       ${helpers ? `<div class="card-row"><span class="card-label">Helper(s)</span><span class="card-value">${helpers}</span></div>` : ''}
       ${(()=>{ const logId=r[15]; const logE=logId&&typeof LOGISTICS!=='undefined'?LOGISTICS[logId]:null; const pd=logE&&typeof logE.prepDuration==='number'?logE.prepDuration:0; if(pd>0) return `<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value"><strong style="background:#ffe066;color:#7a5c00;padding:2px 8px;border-radius:4px;border:1.5px solid #e6b800;font-size:13px;">⏱ ${pd} min</strong></span></div>`; return `<div class="card-row"><span class="card-label">⏱ Prép.</span><span class="card-value" style="font-size:12px;color:var(--muted)">0 min</span></div>`; })()}
@@ -418,7 +418,7 @@ function cardHtml({r, roles}) {
 function cardGroupedHtml(groupKey, items) {
   const { heure, roles } = groupKey;
   const roleHtml = roles.map(ro => {
-    const lbl = ro==='F'?'Facilitateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
+    const lbl = ro==='F'?'Animateur':ro==='H'?'Helper':ro==='A'?'Angel':'Traducteur';
     const cls = ro==='F'?'role-F':ro==='H'?'role-H':ro==='A'?'role-A':'role-T';
     return `<span class="role-badge ${cls}">${lbl}</span>`;
   }).join(' ');

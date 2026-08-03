@@ -102,7 +102,7 @@
   <div class="stats-bar">
     <div class="stat-pill hi"><div class="num" id="statTotal">—</div><div class="lbl" data-i18n="lsp_stat_total">Besoins spéciaux</div></div>
     <div class="stat-pill"><div class="num" id="statJours">—</div><div class="lbl" data-i18n="lsp_stat_jours">Jours concernés</div></div>
-    <div class="stat-pill ok"><div class="num" id="statFacs">—</div><div class="lbl" data-i18n="lsp_stat_facs">Facilitateurs</div></div>
+    <div class="stat-pill ok"><div class="num" id="statFacs">—</div><div class="lbl" data-i18n="lsp_stat_teachers">Animateurs</div></div>
   </div>
 
   <!-- ── FILTRES ── -->
@@ -114,9 +114,9 @@
       </select>
     </div>
     <div class="fg">
-      <label data-i18n="col_facilitateur">Facilitateur(s)</label>
+      <label data-i18n="col_animateur">Animateur(s)</label>
       <select id="filterFac" onchange="render()">
-        <option value="" data-i18n="filter_tous_fac">Tous les facilitateurs</option>
+        <option value="" data-i18n="filter_tous_fac">Tous les animateurs</option>
       </select>
     </div>
     <div class="fg">
@@ -367,7 +367,7 @@ function exportXlsx() {
     return heureMin(a.heure) - heureMin(b.heure);
   });
 
-  var HEADERS = ['Jour','Date','Heure','Durée','Atelier','Facilitateur 1','Facilitateur 2','Lieu','Type','Piment','Info Spec.','Info log.','Last Update'];
+  var HEADERS = ['Jour','Date','Heure','Durée','Atelier','Animateur 1','Animateur 2','Lieu','Type','Piment','Info Spec.','Info log.','Last Update'];
 
   function escXml(v) {
     return String(v == null ? '' : v)

@@ -285,7 +285,7 @@
 
     <div class="validee-row" id="valideeRow">
       <input type="checkbox" id="s4ValidatedByFac" onchange="toggleValideeStyle()">
-      <label class="validee-label" for="s4ValidatedByFac" id="valideeLabel" data-i18n="r_desc_validee_fac">Validée par Facilitateur</label>
+      <label class="validee-label" for="s4ValidatedByFac" id="valideeLabel" data-i18n="r_desc_validee_fac">Validée par Animateur</label>
     </div>
 
     <div class="editor-actions">
@@ -378,7 +378,7 @@ function buildFilterOptions() {
     selJour.appendChild(opt);
   });
 
-  // Facilitateurs (triés alphabétiquement)
+  // Animateurs (triés alphabétiquement)
   var facsSet = new Set();
   AGENDA_ATELIERS.forEach(function(e) {
     if (e.fac1) facsSet.add(e.fac1);
@@ -697,8 +697,8 @@ function buildDataJs() {
     ' *   type       {string}  cat\u00e9gorie (ex: "ATELIERS TANTRA (AM)")\n' +
     ' *   atelier    {string}  nom de l\'atelier / activit\u00e9\n' +
     ' *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" \u2026)\n' +
-    ' *   fac1       {string}  Facilitateur principal\n' +
-    ' *   fac2       {string}  Facilitateur secondaire\n' +
+    ' *   fac1       {string}  Animateur principal\n' +
+    ' *   fac2       {string}  Animateur secondaire\n' +
     ' *   traduction {string}  Langue / traducteur\n' +
     ' *   helper1    {string}  Helper 1\n' +
     ' *   helper2    {string}  Helper 2\n' +

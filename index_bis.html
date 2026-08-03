@@ -96,7 +96,7 @@
     display: flex; align-items: center; justify-content: center;
     background: #fff; border: 1px solid var(--border); border-radius: 8px;
   }
-  .card-body { flex: 1; min-width: 0; }
+  .card-body { flex: 1; min-width: 0; text-align: left; }
   .card-title { font-size: 14px; font-weight: 700; margin-bottom: 1px; }
   .card-desc  { font-size: 12px; color: var(--muted); line-height: 1.4; }
   .card-arrow { font-size: 16px; color: var(--muted); flex-shrink: 0; }
@@ -160,26 +160,25 @@
     <div class="grid">
 
       <!-- Ligne 1 : Programme seul (pleine largeur) -->
-      <a class="card" href="Rapport_Programme.html" target="_blank" rel="noopener" style="grid-column:1/-1;background:#3b82d4;border-color:#3b82d4;color:#fff;justify-content:center;text-align:center;gap:16px;">
+      <a class="card" href="Rapport_Programme.html" style="grid-column:1/-1;background:#3b82d4;border-color:#3b82d4;color:#fff;justify-content:center;text-align:center;gap:16px;">
         <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">🎪</div>
         <div class="card-body" style="flex:0 1 auto;">
-          <div class="card-title" style="color:#fff;" data-i18n="card_programme_title">Programme (Festivaliers)</div>
+          <div class="card-title" style="color:#fff;" data-i18n="card_programme_title">Programme Festival</div>
           <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_programme_desc">Ateliers publics par jour — descriptions &amp; détails</div>
         </div>
       </a>
 
-      <!-- Saisie Ateliers (pleine largeur) -->
-      <a class="card" href="Rapport_Saisie_Ateliers.html" target="_blank" rel="noopener" style="grid-column:1/-1;background:#ca8a04;border-color:#ca8a04;color:#fff;justify-content:center;gap:16px;">
-        <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">📋</div>
+      <a class="card" href="Rapport_Informations_Ateliers.html" style="grid-column:1/-1;background:#16a34a;border-color:#16a34a;color:#fff;justify-content:center;gap:16px;">
+        <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">📘</div>
         <div class="card-body" style="text-align:center;">
-          <div class="card-title" style="color:#fff;" data-i18n="card_saisie_ateliers_title">FACILITATEUR : Saisie des informations Ateliers (Descriptions &amp; Logistiques)</div>
-          <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_saisie_ateliers_desc">Saisir les descriptions FR/EN, le niveau piment, les consignes et les besoins logistiques — tout en un</div>
+          <div class="card-title" style="color:#fff;">Informations Ateliers</div>
+          <div class="card-desc" style="color:rgba(255,255,255,.8);">Consignes, besoins logistiques et infos pour helpers et intervenants</div>
         </div>
         <div class="card-arrow" style="color:rgba(255,255,255,.7);">›</div>
       </a>
 
       <!-- Mon Planning V2 -->
-      <a class="card" href="Rapport_Mon_Planning_V2.html" target="_blank" rel="noopener" style="border-color:#a5b4fc;">
+      <a class="card" href="Rapport_Mon_Planning_V2.html" style="border-color:#a5b4fc;">
         <div class="card-icon">📋</div>
         <div class="card-body">
           <div class="card-title" data-i18n="card_mon_planning_v2_title">Mon Planning V2</div>
@@ -189,7 +188,7 @@
       </a>
 
       <!-- Ligne 5 : Planning Angel + Planning Traducteurs + Planning Colibri -->
-      <a class="card" href="Rapport_Angels_Shifts.html" target="_blank" rel="noopener" style="border-color:#f9a8d4;">
+      <a class="card" href="Rapport_Angels_Shifts.html" style="border-color:#f9a8d4;">
         <div class="card-icon">👼</div>
         <div class="card-body">
           <div class="card-title" data-i18n="card_angel_title">Planning Angel</div>
@@ -198,7 +197,7 @@
         <div class="card-arrow">›</div>
       </a>
 
-      <a class="card" href="Rapport_Traducteurs.html" target="_blank" rel="noopener">
+      <a class="card" href="Rapport_Traducteurs.html">
         <div class="card-icon">🌐</div>
         <div class="card-body">
           <div class="card-title" data-i18n="card_traducteurs_title">Planning Traducteurs</div>
@@ -207,11 +206,11 @@
         <div class="card-arrow">›</div>
       </a>
 
-      <a class="card" href="Rapport_Colibri.html" target="_blank" rel="noopener" style="border-color:#c4b5fd;">
+      <a class="card" href="Rapport_Colibri.html" style="border-color:#c4b5fd;">
         <div class="card-icon">🐦</div>
         <div class="card-body">
           <div class="card-title" data-i18n="card_colibri_title">Planning Colibri</div>
-          <div class="card-desc" data-i18n="card_colibri_desc">Ateliers avec facilitateur ayant le rôle Shift Colibri</div>
+          <div class="card-desc" data-i18n="card_colibri_desc">Ateliers avec animateur ayant le rôle Shift Colibri</div>
         </div>
         <div class="card-arrow">›</div>
       </a>
@@ -221,7 +220,7 @@
 
   <footer>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <a href="user-manual.html" target="_blank" rel="noopener" class="footer-btn">📖 <span data-i18n="nav_manuel">Manuel</span></a>
+      <a href="user-manual.html" class="footer-btn">📖 <span data-i18n="nav_manuel">Manuel</span></a>
     </div>
     <button onclick="openPw('gestion_planning.html','Gestion Planning — Accès référents')"
       style="display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:#1f2328;border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">
@@ -240,12 +239,12 @@ function withTs(url) {
   return url + '?v=' + Date.now();
 }
 
-// Remplace tous les liens de rapports par des versions avec timestamp
+// Navigation directe vers les rapports avec timestamp
 document.querySelectorAll('a.card[href]').forEach(a => {
   const base = a.getAttribute('href');
   a.addEventListener('click', function(e) {
     e.preventDefault();
-    window.open(withTs(base), '_blank', 'noopener');
+    location.href = withTs(base);
   });
 });
 
@@ -269,7 +268,7 @@ function checkPw() {
   var inp = document.getElementById('pwInput');
   if (inp.value === PW) {
     closePw();
-    window.open(withTs(_dest), '_blank', 'noopener');
+    location.href = withTs(_dest);
   } else {
     var err = document.getElementById('pwError');
     var btns = document.querySelectorAll('#pwOverlay button');

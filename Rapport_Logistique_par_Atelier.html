@@ -122,9 +122,9 @@
       </select>
     </div>
     <div class="step-group">
-      <label data-i18n="filter_facilitateur">Facilitateur</label>
+      <label data-i18n="filter_animateur">Animateur</label>
       <select id="selFac" onchange="onFacChange()" disabled>
-        <option value="">— Tous les facilitateurs —</option>
+        <option value="">— Tous les animateurs —</option>
       </select>
     </div>
     <div class="step-group">
@@ -144,7 +144,7 @@
       <div class="atelier-meta" id="rMeta"></div>
       <div class="prep-banner" id="rPrepBanner" style="display:none"></div>
       <div class="recap-grid">
-        <div class="recap-item"><div class="ri-label" data-i18n="col_facilitateur">Facilitateur(s)</div><div class="ri-value" id="rFac"></div></div>
+        <div class="recap-item"><div class="ri-label" data-i18n="col_animateur">Animateur(s)</div><div class="ri-value" id="rFac"></div></div>
         <div class="recap-item"><div class="ri-label" data-i18n="col_helpers">Helper(s)</div><div class="ri-value" id="rHelpers"></div></div>
         <div class="recap-item"><div class="ri-label" data-i18n="col_angel">Angel</div><div class="ri-value" id="rAngel"></div></div>
         <div class="recap-item"><div class="ri-label" data-i18n="col_traducteur_long">Traducteur</div><div class="ri-value" id="rTraduction"></div></div>
@@ -176,14 +176,14 @@ function onDateChange() {
   const sf = document.getElementById('selFac');
   const sa = document.getElementById('selAtelier');
 
-  // Réinitialiser facilitateur et atelier
-  sf.innerHTML = '<option value="">— Tous les facilitateurs —</option>';
+  // Réinitialiser animateur et atelier
+  sf.innerHTML = '<option value="">— Tous les animateurs —</option>';
   sa.innerHTML = '<option value="">-- Sélectionner un atelier --</option>';
   sa.disabled = true;
 
   if (!jour) { sf.disabled = true; hideRecap(); return; }
 
-  // Peupler le filtre facilitateur (triés alphabétiquement)
+  // Peupler le filtre animateur (triés alphabétiquement)
   const facsSet = new Set();
   ROWS.filter(r => r[0] === jour && (r[6] || r[7])).forEach(r => {
     if (r[6]) facsSet.add(r[6]);

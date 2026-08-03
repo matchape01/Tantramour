@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tantramour 2026 — Éditer un atelier</title>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <style>
   :root {
     --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
@@ -204,6 +205,7 @@
     <div class="header-actions">
       <a class="btn" href="index_bis.html">🏠 <span data-i18n="nav_home">Home</span></a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
+      <button class="btn" onclick="exportAteliersDetailsExcel()">📥 Export Excel</button>
       <button class="btn-new" onclick="newAtelier()">＋ Nouvel atelier</button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
       <button class="mode-btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
@@ -232,9 +234,9 @@
       </select>
     </div>
     <div class="filter-group">
-      <label>Facilitateur</label>
+      <label>Animateur</label>
       <select id="filterFac" onchange="renderList()">
-        <option value="">Tous les facilitateurs</option>
+        <option value="">Tous les animateurs</option>
       </select>
     </div>
     <div class="filter-group">
@@ -287,7 +289,7 @@ REF_TYPES.forEach(t => {
   selType.appendChild(o);
 });
 
-// Peupler le filtre facilitateur (liste triée des fac1/fac2 présents dans AGENDA)
+// Peupler le filtre animateur (liste triée des fac1/fac2 présents dans AGENDA)
 const selFac = document.getElementById('filterFac');
 const facsUniq = [...new Set(
   AGENDA.flatMap(e => [e.fac1, e.fac2].filter(Boolean))
@@ -379,10 +381,11 @@ function renderList() {
     const pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '<span style="color:var(--muted);font-size:11px">—</span>';
     const sel = selectedIdx === i ? ' selected' : '';
     const facs = [e.fac1, e.fac2].filter(Boolean).join(', ');
+    const atelierLabel = e.id ? `${e.atelier||'—'} <span style="color:var(--muted);font-size:11px">(${e.id})</span>` : (e.atelier||'—');
     return `<div class="list-item${sel}" onclick="selectAtelier(${i})" id="li-${i}">
       <div class="li-jour">${e.jour}</div>
       <div class="li-heure">${e.heure||'—'}</div>
-      <div class="li-atelier">${e.atelier||'—'}</div>
+      <div class="li-atelier">${atelierLabel}</div>
       <div class="li-fac">${facs || '<span style="color:var(--muted)">—</span>'}</div>
       <div class="li-piment">${pimentStr}</div>
       <div class="li-type">${e.type||''}</div>
@@ -422,6 +425,7 @@ function newAtelier() {
   // idx = -1 : signale un nouvel atelier (pas encore dans AGENDA)
   selectedIdx = -1;
   editedData  = {
+    id: generateAtelierId(),
     jour:'Jour 1', date:'Samedi 29 aout', heure:'', type: REF_TYPES[0] ? REF_TYPES[0].value : '',
     atelier:'', lieu:'', fac1:'', fac2:'', traduction:'',
     helper1:'', helper2:'', helper3:'', helper4:'', angel:'', note:'', piment:0, colibri:false, logisticId:''
@@ -557,6 +561,7 @@ function renderEditor() {
       ${isNew ? '＋ Nouvel atelier' : '✏️ Édition de l\'atelier'}
       <span class="badge-idx${isNew ? ' badge-new' : ''}">${isNew ? 'NOUVEAU' : '#' + selectedIdx + ' — ' + AGENDA[selectedIdx].jour}</span>
     </div>
+    <div style="margin:0 0 14px;color:var(--muted);font-size:13px;font-weight:700">🆔 ID atelier : ${e.id || '—'}</div>
 
     <!-- ══ BLOC 1 — INFOS PLANNING ══ -->
     <div class="form-grid">
@@ -621,13 +626,13 @@ function renderEditor() {
       <div class="form-grid">
 
         <div class="form-group">
-          <label>Facilitateur principal</label>
-          ${buildPersonSelect('f-fac1', REF_FACILITATEURS, e.fac1||'')}
+          <label>Animateur principal</label>
+          ${buildPersonSelect('f-fac1', REF_ANIMATEURS, e.fac1||'')}
         </div>
 
         <div class="form-group">
-          <label>Facilitateur secondaire</label>
-          ${buildPersonSelect('f-fac2', REF_FACILITATEURS, e.fac2||'')}
+          <label>Animateur secondaire</label>
+          ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'')}
         </div>
 
         <div class="form-group">
@@ -694,7 +699,7 @@ function renderEditor() {
       <div class="res-row">
         <label>Trad. requis</label>
         <input type="number" min="0" max="1" id="f-minTrad" value="${customMinTrad}" oninput="fieldChange('f-minTrad')">
-        <span class="res-hint">1 = traducteur obligatoire si facilitateur anglophone · 0 = non requis</span>
+        <span class="res-hint">1 = traducteur obligatoire si animateur anglophone · 0 = non requis</span>
       </div>
       <div class="res-row">
         <label>Trad. compte</label>
@@ -740,8 +745,8 @@ function renderEditor() {
         <div class="section-block-title">📦 Informations Logistiques</div>
         <div style="display:flex;align-items:center;gap:10px;">
           ${isValidated
-            ? '<span class="validated-badge yes">✅ Validé par le facilitateur</span>'
-            : '<span class="validated-badge no">⏳ Non validé par le facilitateur</span>'}
+            ? '<span class="validated-badge yes">✅ Validé par le animateur</span>'
+            : '<span class="validated-badge no">⏳ Non validé par le animateur</span>'}
           ${updatedAt ? `<span class="updated-stamp">Dernière modification : ${updatedAt}</span>` : ''}
         </div>
       </div>
@@ -1174,8 +1179,9 @@ window.deleteAtelier = deleteAtelier;
 function duplicateAtelier() {
   if (selectedIdx === null || selectedIdx === -1) return;
   const source = Object.assign({}, AGENDA[selectedIdx]);
-  // Nom avec suffixe (COPIE), logisticId réinitialisé
-  source.atelier   = (source.atelier || '') + ' (COPIE)';
+  // Nom avec suffixe (COPIE), nouvel ID et logisticId réinitialisé
+  source.id = generateAtelierId();
+  source.atelier = (source.atelier || '') + ' (COPIE)';
   source.logisticId = '';
 
   selectedIdx = -1;
@@ -1198,6 +1204,14 @@ function escJs(v) {
   return (v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r\n/g,'\\n').replace(/\r/g,'\\n').replace(/\n/g,'\\n');
 }
 
+function generateAtelierId() {
+  let id = '';
+  do {
+    id = 'A_' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+  } while (AGENDA.some(e => e.id === id));
+  return id;
+}
+
 function genererDataJs() {
   const header =
 `/**
@@ -1213,8 +1227,8 @@ function genererDataJs() {
  *   type       {string}  catégorie (ex: "ATELIERS TANTRA (AM)")
  *   atelier    {string}  nom de l'atelier / activité
  *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" …)
- *   fac1       {string}  Facilitateur principal
- *   fac2       {string}  Facilitateur secondaire
+ *   fac1       {string}  Animateur principal
+ *   fac2       {string}  Animateur secondaire
  *   traduction {string}  Langue / traducteur
  *   helper1    {string}  Helper 1
  *   helper2    {string}  Helper 2
@@ -1242,7 +1256,7 @@ var AGENDA = [`;
     if (e._minHelpers  !== undefined && e._minHelpers  !== (typeRule2.minHelpers||0)) customParts.push(`_minHelpers:${e._minHelpers}`);
     if (e._minTrad     !== undefined && e._minTrad     !== (typeRule2.minTrad||0))    customParts.push(`_minTrad:${e._minTrad}`);
     if (e._tradCounts  !== undefined && e._tradCounts  !== (typeRule2.tradCounts||0)) customParts.push(`_tradCounts:${e._tradCounts}`);
-    const line = `  {jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"}`;
+    const line = `  {id:"${escJs(e.id || generateAtelierId())}",jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"}`;
     const lineWithCustom = customParts.length
       ? line.slice(0, -1) + ',' + customParts.join(',') + '}'
       : line;
@@ -1328,6 +1342,180 @@ function genererLogisticsHelpersJs() {
 // UTILITAIRES
 // ══════════════════════════════════════════════
 function esc(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function htmlToText(html) {
+  if (!html) return '';
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  return (div.textContent || div.innerText || '').replace(/\s+\n/g, '\n').trim();
+}
+
+function buildAteliersExportRows() {
+  return AGENDA.map(function(e) {
+    var desc = findDesc(e.atelier) || {};
+    var logId = e.logisticId || '';
+    var logEntry = logId && typeof LOG !== 'undefined' ? LOG[logId] : null;
+    var specEntry = logId && typeof LOG_SPECIAL !== 'undefined' ? LOG_SPECIAL[logId] : null;
+    var helpEntry = logId && typeof LOGISTICS_HELPERS !== 'undefined' ? LOGISTICS_HELPERS[logId] : null;
+    return {
+      id: e.id || '',
+      atelier: e.atelier || '',
+      fac1: e.fac1 || '',
+      fac2: e.fac2 || '',
+      date: getExportDateValue(e),
+      jour: e.jour || '',
+      type: e.type || '',
+      heureDebut: parseHeureDebut(e.heure || ''),
+      heureFin: parseHeureFin(e.heure || ''),
+      lieu: e.lieu || '',
+      piment: e.piment || 0,
+      note: e.note || '',
+      nomEn: desc.nomEn || '',
+      descFr: desc.descFr || '',
+      descEn: desc.descEn || '',
+      consigneFr: desc.consigne || '',
+      consigneEn: desc.consigneEn || '',
+      prepDuration: logEntry && logEntry.prepDuration !== undefined ? logEntry.prepDuration : '',
+      logInfo: logEntry ? htmlToText(logEntry.html || logEntry.text || '') : '',
+      logSpecial: specEntry ? htmlToText(specEntry.html || specEntry.text || '') : '',
+      helperAvant: helpEntry ? htmlToText(helpEntry.avant || '') : '',
+      helperPendant: helpEntry ? htmlToText(helpEntry.pendant || '') : '',
+      helperApres: helpEntry ? htmlToText(helpEntry.apres || '') : ''
+    };
+  });
+}
+
+function escapeXml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatExportDate(dateStr) {
+  if (!dateStr) return '';
+  var match = String(dateStr).match(/(\d{1,2})\s+[A-Za-zéû\.]+\s+(\d{4})/);
+  if (!match) return dateStr;
+  var day = String(parseInt(match[1], 10)).padStart(2, '0');
+  var year = match[2];
+  var monthMap = {
+    janvier:'01', fevrier:'02', février:'02', mars:'03', avril:'04', mai:'05', juin:'06', juillet:'07',
+    aout:'08', août:'08', septembre:'09', octobre:'10', novembre:'11', decembre:'12', décembre:'12'
+  };
+  var monthKey = String(dateStr).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(/\d{1,2}\s+([a-z]+)\s+\d{4}/);
+  var month = monthKey && monthMap[monthKey[1]] ? monthMap[monthKey[1]] : '';
+  return month ? (day + '/' + month + '/' + year) : dateStr;
+}
+
+function getExportDateValue(entry) {
+  var refJour = typeof REF_JOURS !== 'undefined'
+    ? REF_JOURS.find(function(j) { return j.value === entry.jour; })
+    : null;
+  if (refJour && refJour.dateDdMmYyyy) return refJour.dateDdMmYyyy;
+  return formatExportDate(entry.date || '');
+}
+
+function buildExcelRows(rows) {
+  return rows.map(function(row) {
+    return [
+      row.id,row.atelier,row.fac1,row.fac2,row.type,row.date,row.jour,row.heureDebut,row.heureFin,row.lieu,row.piment,row.note,
+      row.nomEn,row.descFr,row.descEn,row.consigneFr,row.consigneEn,row.prepDuration,row.logInfo,row.logSpecial,row.helperAvant,row.helperPendant,row.helperApres
+    ];
+  });
+}
+
+async function downloadExcelFile(rows, filename) {
+  var workbook = new ExcelJS.Workbook();
+  var sheet = workbook.addWorksheet('Ateliers');
+  var headers = [
+    'ID','Atelier (FR)','Animateur 1','Animateur 2','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
+    'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
+    'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
+  ];
+  var grayColumns = { 11:true, 13:true, 14:true, 15:true, 16:true, 17:true, 18:true, 19:true, 20:true, 21:true, 22:true, 23:true };
+  var columnWidths = [12, 30, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30];
+
+  sheet.addRow(headers);
+  buildExcelRows(rows).forEach(function(values) {
+    sheet.addRow(values);
+  });
+
+  sheet.columns.forEach(function(column, index) {
+    column.width = columnWidths[index] || 18;
+  });
+ 
+  sheet.autoFilter = {
+    from: { row: 1, column: 1 },
+    to: { row: 1, column: headers.length }
+  };
+  sheet.views = [{ state: 'frozen', xSplit: 2, ySplit: 1 }];
+
+  sheet.getRow(1).eachCell(function(cell) {
+    cell.font = { bold: true };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } };
+    cell.border = {
+      right: { style: 'dotted', color: { argb: 'FF9CA3AF' } },
+      bottom: { style: 'thin', color: { argb: 'FFD1D5DB' } }
+    };
+  });
+
+  sheet.eachRow(function(row, rowNumber) {
+    if (rowNumber === 1) return;
+    var baseColor = rowNumber % 2 === 0 ? 'FFFFFFFF' : 'FFF3F4F6';
+    row.eachCell(function(cell, colNumber) {
+      var fillColor = grayColumns[colNumber] ? 'FFE5E7EB' : baseColor;
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fillColor } };
+      cell.border = {
+        right: { style: 'dotted', color: { argb: 'FF9CA3AF' } },
+        bottom: { style: 'thin', color: { argb: 'FFE5E7EB' } }
+      };
+      cell.alignment = {
+        vertical: 'top',
+        wrapText: colNumber >= 13
+      };
+      if (colNumber === 6 && cell.value) {
+        cell.numFmt = 'dd/mm/yyyy';
+      }
+    });
+  });
+
+  sheet.getColumn(6).eachCell(function(cell, rowNumber) {
+    if (rowNumber === 1 || !cell.value) return;
+    var parts = String(cell.value).split('/');
+    if (parts.length === 3) {
+      cell.value = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+      cell.numFmt = 'dd/mm/yyyy';
+    }
+  });
+
+  var buffer = await workbook.xlsx.writeBuffer();
+  var blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+async function exportAteliersDetailsExcel() {
+  var rows = buildAteliersExportRows();
+  var now = new Date();
+  var yyyy = now.getFullYear();
+  var mm = String(now.getMonth() + 1).padStart(2, '0');
+  var dd = String(now.getDate()).padStart(2, '0');
+  var filename = 'TAF2026_ATELIERS DETAILS_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+  if (typeof ExcelJS === 'undefined') {
+    showToast('❌ Bibliothèque Excel indisponible', true);
+    return;
+  }
+  await downloadExcelFile(rows, filename);
+  showToast('✅ Export Excel généré');
+}
+window.exportAteliersDetailsExcel = exportAteliersDetailsExcel;
 
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');

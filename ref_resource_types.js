@@ -3,7 +3,7 @@
  * Chaque entrée : { id, value, label, icon }
  */
 var REF_RESOURCE_TYPES = [
-  { id: "RT_FACILITATEUR", value: "facilitateur", label: "Facilitateur", icon: "🎓" },
+  { id: "RT_ANIMATEUR", value: "animateur", label: "Animateur", icon: "🎓" },
   { id: "RT_HELPER", value: "helper", label: "Helper", icon: "🤝" },
   { id: "RT_TRADUCTEUR", value: "traducteur", label: "Traducteur", icon: "🌐" },
   { id: "RT_ANGEL", value: "angel", label: "Angel", icon: "👼" },

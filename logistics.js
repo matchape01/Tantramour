@@ -99,7 +99,7 @@ var LOGISTICS = {
     text: "test logistique V4",
     validatedByFac: true,
     prepDuration: 45,
-    updatedAt: "2026-07-30 18:09"
+    updatedAt: "2026-08-01 10:08"
   },
 
   "JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_": {
@@ -756,6 +756,62 @@ var LOGISTICS = {
     validatedByFac: false,
     prepDuration: 30,
     updatedAt: "2026-07-31 10:10"
+  },
+
+  "JOUR1_TEST_MATT__COPIE_": {
+    html: "sgds",
+    text: "sgds",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 10:09"
+  },
+
+  "JOUR1_EXTRA_SUPPORT___OPENING_CEREMO": {
+    html: "",
+    text: "",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:46"
+  },
+
+  "JOUR2__CALL__POUR_RASSEMBLEMENT": {
+    html: "<div>MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.</div><div>Parcourir le hameau (restau, terrasse, etc...).</div>",
+    text: "MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.\nParcourir le hameau (restau, terrasse, etc...).",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:51"
+  },
+
+  "JOUR3__CALL__POUR_RASSEMBLEMENT": {
+    html: "<div>MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.</div><div>Parcourir le hameau (restau, terrasse, etc...).</div>",
+    text: "MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.\nParcourir le hameau (restau, terrasse, etc...).",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:52"
+  },
+
+  "JOUR4__CALL__POUR_RASSEMBLEMENT": {
+    html: "<div>MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.</div><div>Parcourir le hameau (restau, terrasse, etc...).</div>",
+    text: "MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.\nParcourir le hameau (restau, terrasse, etc...).",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR5__CALL__POUR_RASSEMBLEMENT": {
+    html: "<div>MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.</div><div>Parcourir le hameau (restau, terrasse, etc...).</div>",
+    text: "MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.\nParcourir le hameau (restau, terrasse, etc...).",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR6__CALL__POUR_RASSEMBLEMENT": {
+    html: "<div>MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.</div><div>Parcourir le hameau (restau, terrasse, etc...).</div>",
+    text: "MISSION: Appeler les festivaliers vers le chapiteau pour le rassemblement matinal.\nParcourir le hameau (restau, terrasse, etc...).",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-01 14:53"
   }
 
 };

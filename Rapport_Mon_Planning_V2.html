@@ -167,7 +167,7 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
     <div class="filter-group">
       <label>Nom</label>
       <select id="fNom" onchange="applyFilters()">
-        <option value="">Toutes les personnes</option>
+        <option value="__NONE__">Aucun</option>
       </select>
     </div>
     <div class="filter-group">
@@ -320,8 +320,8 @@ function buildIndex() {
   }
 
   AGENDA.forEach(function(e) {
-    if (e.fac1)       add(e.fac1, e, 'facilitateur');
-    if (e.fac2)       add(e.fac2, e, 'facilitateur');
+    if (e.fac1)       add(e.fac1, e, 'animateur');
+    if (e.fac2)       add(e.fac2, e, 'animateur');
     if (e.traduction) add(e.traduction, e, 'traducteur');
     if (e.helper1)    add(e.helper1, e, 'helper');
     if (e.helper2)    add(e.helper2, e, 'helper');
@@ -340,13 +340,28 @@ var FULL_INDEX = buildIndex();
 // Peupler le filtre NOM
 var allNoms = [...FULL_INDEX.keys()].sort(function(a,b){ return a.localeCompare(b,'fr'); });
 var selNom = document.getElementById('fNom');
+var params = new URLSearchParams(location.search);
+var source = (params.get('source') || '').toLowerCase();
+var showAllPeople = source === 'gestion_planning';
+if (showAllPeople) {
+  var allOption = document.createElement('option');
+  allOption.value = '';
+  allOption.text = 'Toutes les personnes';
+  selNom.appendChild(allOption);
+}
 allNoms.forEach(function(n) {
   var o = document.createElement('option'); o.value=n; o.text=n; selNom.appendChild(o);
 });
+selNom.value = '__NONE__';
 
 window.applyFilters = function applyFilters() {
   var fNom    = document.getElementById('fNom').value;
   var fSearch = document.getElementById('fSearch').value.trim().toLowerCase();
+  if (fNom === '__NONE__') {
+    document.getElementById('stats').innerHTML = '<span>0</span> personne(s)';
+    document.getElementById('resourceList').innerHTML = '<div class="empty">Aucun résultat pour ces filtres.</div>';
+    return;
+  }
 
   // Filtrer les noms de ressources
   var results = [];
@@ -369,8 +384,8 @@ window.applyFilters = function applyFilters() {
 // ════════════════════════════════════════════
 // RENDU LISTE
 // ════════════════════════════════════════════
-var ROLE_CSS  = { facilitateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a' };
-var ROLE_LBL  = { facilitateur:'Facilitateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' };
+var ROLE_CSS  = { animateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a' };
+var ROLE_LBL  = { animateur:'Animateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' };
 
 function renderList(results) {
   var list = document.getElementById('resourceList');
@@ -405,7 +420,7 @@ function renderList(results) {
     }).join('');
 
     // Badge COLIBRI : affiché uniquement si la personne est colibri ET a au moins
-    // un atelier où son rôle est helper ou traducteur (pas facilitateur)
+    // un atelier où son rôle est helper ou traducteur (pas animateur)
     var hasColibriRole = isColibri(res.nom) && res.entries.some(function(x) {
       return x.roles.indexOf('helper') !== -1 || x.roles.indexOf('traducteur') !== -1;
     });
@@ -566,7 +581,7 @@ function renderList(results) {
           '<div class="ateliers-wrap">' +
             '<table class="ateliers-table">' +
               '<thead><tr>' +
-                '<th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Facilitateur(s)</th><th>Lang.</th><th>Note</th><th></th>' +
+                '<th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th><th></th>' +
               '</tr></thead>' +
               '<tbody>'+tableRows+'</tbody>' +
             '</table>' +
@@ -677,7 +692,7 @@ function renderModalBody() {
     (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '') +
     (arrivee ? ' <span style="color:#dc2626;font-size:12px;font-weight:700;margin-left:8px;">⏰ '+(lang==='en'?'Arrive at':'Arrivée')+' '+arrivee+'</span>' : '')]);
   if (e.lieu)    rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), esc(e.lieu)]);
-  if (facs.length) rows1.push(['🎓 '+(lang==='en'?'Facilitator(s)':'Facilitateur(s)'), facs.map(esc).join(' &amp; ')]);
+  if (facs.length) rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.map(esc).join(' &amp; ')]);
   if (helpers.length) rows1.push(['🙌 Helpers', helpers.map(esc).join(', ')]);
   if (e.traduction) rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), esc(e.traduction)]);
   if (e.angel)  rows1.push(['👼 Angel', esc(e.angel)]);
@@ -723,7 +738,7 @@ function renderModalBody() {
 
   var validBadge = logE
     ? (logE.validatedByFac
-        ? '<span class="validated-badge validated-yes">✅ '+(lang==='en'?'Validated by facilitator':'Validé par facilitateur')+'</span>'
+        ? '<span class="validated-badge validated-yes">✅ '+(lang==='en'?'Validated by teacher':'Validé par animateur')+'</span>'
         : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>')
     : '<span class="validated-badge validated-no">⏳ '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>';
 

@@ -31,9 +31,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "LOG_Jour1_TEST_MATT_3": {
-    html: "test logistique special V4",
-    text: "test logistique special V4",
-    updatedAt: "2026-07-30 18:09"
+    html: "<div>test logistique special V4</div><div>fdgfdhdf</div>",
+    text: "test logistique special V4\nfdgfdhdf",
+    updatedAt: "2026-08-01 10:08"
   },
 
   "JOUR6_VOYAGE_AU_PAYS_DE_MON_SEXE": {
@@ -154,6 +154,48 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-07-31 10:10"
+  },
+
+  "JOUR1_TEST_MATT__COPIE_": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 10:09"
+  },
+
+  "JOUR1_EXTRA_SUPPORT___OPENING_CEREMO": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:46"
+  },
+
+  "JOUR2__CALL__POUR_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:51"
+  },
+
+  "JOUR3__CALL__POUR_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:52"
+  },
+
+  "JOUR4__CALL__POUR_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR5__CALL__POUR_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR6__CALL__POUR_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-01 14:53"
   }
 
 };

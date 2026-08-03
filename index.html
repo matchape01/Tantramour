@@ -18,9 +18,9 @@
     display:flex; flex-direction:column;
   }
 
-  /* ── BARRE LANGUE ── */
+  /* ── LANGUE ── */
   .lang-bar {
-    position:fixed; top:14px; right:18px; z-index:999;
+    margin-top:12px;
   }
   .lang-bar button {
     cursor:pointer; background:var(--bg); border:1px solid var(--border);
@@ -42,6 +42,8 @@
   .logo-sub { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:10px; }
   .logo h1  { font-size:38px; font-weight:800; letter-spacing:-.5px; color:var(--text); line-height:1.1; }
   .logo h2  { font-size:15px; font-weight:400; color:var(--muted); margin-top:8px; }
+  .logo-link { display:inline-block; margin-top:8px; font-size:13px; color:var(--accent); text-decoration:none; }
+  .logo-link:hover { text-decoration:underline; }
 
   /* ── BOUTON PRINCIPAL ── */
   .main-btn {
@@ -67,6 +69,10 @@
   /* ── PLAN HAMEAU ── */
   .plan-section {
     margin-top:28px; text-align:center;
+  }
+  .dreamteam-inline {
+    margin-top:14px;
+    text-align:center;
   }
   .plan-label {
     font-size:11px; font-weight:700; text-transform:uppercase;
@@ -108,10 +114,7 @@
   }
   .lightbox-close:hover { background:#f0f4ff; }
 
-  /* ── FOOTER DREAMTEAM ── */
-  footer {
-    padding:24px; text-align:center;
-  }
+  /* ── BOUTON DREAMTEAM ── */
   .dreamteam-btn {
     cursor:pointer; background:transparent; border:1px solid var(--border);
     border-radius:20px; padding:8px 20px; font-size:12px; font-weight:700;
@@ -163,26 +166,25 @@
 </head>
 <body>
 
-<!-- ── BARRE LANGUE ── -->
-<div class="lang-bar">
-  <button id="langBtn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
-</div>
-
 <!-- ── CONTENU PRINCIPAL ── -->
 <main class="main">
 
   <div class="logo">
-    <div class="logo-sub">Festival · 29 août – 4 septembre 2026</div>
+    <div class="logo-sub" data-i18n="home_festival_dates">Festival · 29 août – 4 septembre 2026</div>
     <h1>Tantramour</h1>
     <h1>2026</h1>
+    <a class="logo-link" href="https://tantramourfestival.com" target="_blank" rel="noopener">tantramourfestival.com</a>
     <h2>Bienvenue · Welcome</h2>
+    <div class="lang-bar">
+      <button id="langBtn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
+    </div>
   </div>
 
-  <a class="main-btn" href="Rapport_Programme.html" target="_blank" rel="noopener">
+  <a class="main-btn" href="Rapport_Programme.html">
     <div class="main-btn-left">
       <div class="main-btn-icon">🎪</div>
       <div class="main-btn-text">
-        <div class="main-btn-title" data-i18n="prog_btn_title">Programme des Ateliers</div>
+        <div class="main-btn-title" data-i18n="prog_btn_title">Programme Festival</div>
         <div class="main-btn-desc"  data-i18n="prog_btn_desc">Découvrez les ateliers jour par jour</div>
       </div>
     </div>
@@ -201,6 +203,12 @@
     </button>
   </div>
 
+  <div class="dreamteam-inline">
+    <button class="dreamteam-btn" onclick="openPw()">
+      🌀 <span data-i18n="dreamteam_btn">DREAM TEAM</span>
+    </button>
+  </div>
+
 </main>
 
 <!-- ── LIGHTBOX PLAN ── -->
@@ -213,12 +221,6 @@
   />
 </div>
 
-<!-- ── FOOTER DREAMTEAM ── -->
-<footer>
-  <button class="dreamteam-btn" onclick="openPw()">
-    🌀 <span data-i18n="dreamteam_btn">DREAM TEAM</span>
-  </button>
-</footer>
 
 <!-- ── MODALE MOT DE PASSE ── -->
 <div class="pw-overlay" id="pwOverlay" onclick="overlayClick(event)">

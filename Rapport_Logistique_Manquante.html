@@ -52,7 +52,7 @@
   .fg label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
   .fg select { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; min-width:160px; }
 
-  /* ── SÉPARATEUR FACILITATEUR ── */
+  /* ── SÉPARATEUR ANIMATEUR ── */
   .fac-sep { font-size:13px; font-weight:700; padding:10px 14px; border-radius:8px; background:var(--surface); border:1px solid var(--border); margin:20px 0 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .fac-sep-name { display:flex; align-items:center; gap:10px; }
   .fac-avatar { width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -103,7 +103,7 @@
 
   <!-- ── STATS ── -->
   <div class="stats-bar">
-    <div class="stat-pill"><div class="num" id="statTotal">—</div><div class="lbl" data-i18n="rlm_stat_total">Ateliers avec Fac</div></div>
+    <div class="stat-pill"><div class="num" id="statTotal">—</div><div class="lbl" data-i18n="rlm_stat_total">Ateliers avec animateur</div></div>
     <div class="stat-pill ok"><div class="num" id="statOk">—</div><div class="lbl" data-i18n="rlm_stat_ok">Renseignés ✓</div></div>
     <div class="stat-pill ok"><div class="num" id="statValidated">—</div><div class="lbl" data-i18n="rlm_stat_validated">Validés Fac ✓</div></div>
     <div class="stat-pill err"><div class="num" id="statMissing">—</div><div class="lbl" data-i18n="rlm_stat_missing">Info manquante</div></div>
@@ -119,9 +119,9 @@
       </select>
     </div>
     <div class="fg">
-      <label data-i18n="col_facilitateur">Facilitateur(s)</label>
+      <label data-i18n="col_animateur">Animateur(s)</label>
       <select id="filterFac" onchange="render()">
-        <option value="" data-i18n="filter_tous_fac">Tous les facilitateurs</option>
+        <option value="" data-i18n="filter_tous_fac">Tous les animateurs</option>
       </select>
     </div>
     <div class="fg">
@@ -288,7 +288,7 @@ function render() {
     return;
   }
 
-  // Grouper par facilitateur principal (fac1, ou fac2 si pas de fac1)
+  // Grouper par animateur principal (fac1, ou fac2 si pas de fac1)
   var byFac = {};
   filtered.forEach(function(e) {
     var fac = e.fac1 || e.fac2 || '?';

@@ -221,9 +221,9 @@
           </select>
         </div>
         <div class="filter-group">
-          <div class="filter-label" data-i18n="r_desc_filter_fac">🎓 Facilitateur</div>
+          <div class="filter-label" data-i18n="r_desc_filter_fac">🎓 Animateur</div>
           <select class="filter-select" id="filterFac" onchange="applyFilters()">
-            <option value="" data-i18n="r_desc_all_fac">Tous les facilitateurs</option>
+            <option value="" data-i18n="r_desc_all_fac">Tous les animateurs</option>
           </select>
         </div>
         <div class="filter-group">
@@ -273,7 +273,7 @@
       <span class="admin-notice-icon">ℹ️</span>
       <div>
         <strong data-i18n="r14_admin_title">Informations gérées par l'Administrateur</strong><br>
-        <span data-i18n="r14_admin_body">Le jour, les horaires, le lieu, le type, les facilitateurs, les helpers, le traducteur et l'angel ne peuvent pas être modifiés ici. Pour toute correction, contactez un</span>
+        <span data-i18n="r14_admin_body">Le jour, les horaires, le lieu, le type, les animateurs, les helpers, le traducteur et l'angel ne peuvent pas être modifiés ici. Pour toute correction, contactez un</span>
         <strong data-i18n="r14_admin_role">Administrateur</strong>.
       </div>
     </div>
@@ -437,7 +437,7 @@
     <!-- ══ VALIDATION ══ -->
     <div class="validee-row" id="valideeRow">
       <input type="checkbox" id="eValidatedByFac" onchange="toggleValideeStyle()">
-      <label class="validee-label" for="eValidatedByFac" data-i18n="rsa_validee">✅ Validée par Facilitateur</label>
+      <label class="validee-label" for="eValidatedByFac" data-i18n="rsa_validee">✅ Validée par Animateur</label>
     </div>
 
     <!-- ══ ACTIONS ══ -->
@@ -490,7 +490,7 @@ var currentPiment = 0;
 var DESCS = {};
 REF_DESCRIPTIONS.forEach(function(d) { DESCS[d.key] = Object.assign({}, d); });
 
-// Ateliers avec facilitateur
+// Ateliers avec animateur
 var AGENDA_ATELIERS = AGENDA.filter(function(e) { return (e.fac1 || e.fac2); });
 
 // ════════════════════════════════════════════
@@ -675,6 +675,7 @@ function selectAtelier(idx) {
   var helpers = [e.helper1, e.helper2, e.helper3, e.helper4].filter(Boolean).join(', ') || '—';
   var duree   = getDureeAtelier(e.heure);
   var gridData = [
+    ['🆔 ID',                            e.id || '—'],
     ['📅 ' + I18n.t('r14_grid_jour'),    e.jour + (meta.date ? ' — ' + meta.date : '')],
     ['📛 ' + I18n.t('col_atelier'),      e.atelier || '—'],
     ['🕐 ' + I18n.t('r14_grid_heure'),   e.heure ? e.heure + (duree ? ' (' + duree + ')' : '') : '—'],
