@@ -529,7 +529,7 @@ var REF_TRANSLATIONS = [
   { key: "mp_opt_aucun",       fr: "Aucun",                en: "None" },
   // ── MON PLANNING V2 — filtre Vue ────────────────────────────────────────────
   { key: "mp_vue_label",       fr: "Vue",                  en: "View" },
-  { key: "mp_vue_combined",    fr: "Vue Combinée",         en: "Combined View" },
+  { key: "mp_vue_combined",    fr: "Tous tes rôles confondus", en: "All your roles combined" },
   { key: "mp_vue_animateur",   fr: "Animateur",            en: "Teacher" },
   { key: "mp_vue_helper",      fr: "Helper",               en: "Helper" },
   { key: "mp_vue_traducteur",  fr: "Traducteur",           en: "Translator" },

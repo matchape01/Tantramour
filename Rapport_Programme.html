@@ -132,17 +132,59 @@
     background:var(--border);
     margin:0 0 12px;
   }
-  .type-section.section-yoga  { background:#f6fbf7; }
-  .type-section.section-rass  { background:#f6f8fb; }
-  .type-section.section-matin { background:#fbf7fb; }
-  .type-section.section-apm   { background:#eef8e8; }
-  .type-section.section-soir  { background:#f8ecef; }
+  .type-section.section-yoga  { background:#ffffff; }
+  .type-section.section-rass  { background:#f3f4f6; }
+  .type-section.section-matin { background:#e5e7eb; }
+  .type-section.section-apm   { background:#d1d5db; }
+  .type-section.section-soir  { background:#6b7280; }
+  .type-section.section-soir .type-section-label,
+  .type-section.section-soir .type-subgroup-label,
+  .type-section.section-soir .prog-name,
+  .type-section.section-soir .prog-time,
+  .type-section.section-soir .prog-main,
+  .type-section.section-soir .prog-main * { color:#111111; }
+  .type-section.section-soir .type-section-divider,
+  .type-section.section-soir .type-subgroup-header,
+  .type-section.section-soir .prog-card-footer { border-color:#374151; }
   .dark .type-section { background:#11161d; }
-  .dark .type-section.section-yoga  { background:#0f1713; }
-  .dark .type-section.section-rass  { background:#111826; }
-  .dark .type-section.section-matin { background:#18131d; }
-  .dark .type-section.section-apm   { background:#16210f; }
-  .dark .type-section.section-soir  { background:#24141b; }
+  .dark .type-section.section-yoga  { background:#1f2937; }
+  .dark .type-section.section-rass  { background:#273244; }
+  .dark .type-section.section-matin { background:#334155; }
+  .dark .type-section.section-apm   { background:#475569; }
+  .dark .type-section.section-soir  { background:#0f172a; }
+  .dark .type-section.section-yoga .type-section-label,
+  .dark .type-section.section-yoga .type-subgroup-label,
+  .dark .type-section.section-yoga .prog-name,
+  .dark .type-section.section-yoga .prog-time,
+  .dark .type-section.section-yoga .prog-main,
+  .dark .type-section.section-yoga .prog-main *,
+  .dark .type-section.section-matin .type-section-label,
+  .dark .type-section.section-matin .type-subgroup-label,
+  .dark .type-section.section-matin .prog-name,
+  .dark .type-section.section-matin .prog-time,
+  .dark .type-section.section-matin .prog-main,
+  .dark .type-section.section-matin .prog-main *,
+  .dark .type-section.section-rass .type-section-label,
+  .dark .type-section.section-rass .type-subgroup-label,
+  .dark .type-section.section-rass .prog-name,
+  .dark .type-section.section-rass .prog-time,
+  .dark .type-section.section-rass .prog-main,
+  .dark .type-section.section-rass .prog-main *,
+  .dark .type-section.section-apm .type-section-label,
+  .dark .type-section.section-apm .type-subgroup-label,
+  .dark .type-section.section-apm .prog-name,
+  .dark .type-section.section-apm .prog-time,
+  .dark .type-section.section-apm .prog-main,
+  .dark .type-section.section-apm .prog-main * { color:#f9fafb; }
+  .dark .type-section.section-soir .type-section-label,
+  .dark .type-section.section-soir .type-subgroup-label,
+  .dark .type-section.section-soir .prog-name,
+  .dark .type-section.section-soir .prog-time,
+  .dark .type-section.section-soir .prog-main,
+  .dark .type-section.section-soir .prog-main * { color:#f9fafb; }
+  .dark .type-section.section-soir .type-section-divider,
+  .dark .type-section.section-soir .type-subgroup-header,
+  .dark .type-section.section-soir .prog-card-footer { border-color:#374151; }
   .dark .type-section-header { background:#1b222c; border-left-color:#9ca3af; }
   .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#4b5563; flex:1; }
   .dark .type-section-label { color:#cbd5e1; }
@@ -221,8 +263,10 @@
   .badge-lieu { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
   .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; font-size:11px; }
   .badge-note  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+  .dark .badge-note { color:#111111; }
   /* FR/ENG — même taille et poids que animateurs */
   .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; font-weight:600; padding:2px 7px; }
+  .dark .badge-trad { color:#111111; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }

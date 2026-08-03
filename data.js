@@ -234,7 +234,7 @@ var AGENDA = [
   {id:"A_1169",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"15:00 - 19:00",type:"PREPA & LOGISTICS",atelier:"RANGEMENT",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:""},
 
   // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
-  {id:"A_1170",jour:"Jour 1",date:"Samedi 29 aout",heure:"10:00 - 10:30",type:"MEDITATION / YOGA",atelier:"TEST MATT",lieu:"TEST",fac1:"TEST",fac2:"TEST",traduction:"",helper1:"TEST",helper2:"TEST",helper3:"TEST",helper4:"",angel:"",note:"Atelier + long",piment:2,colibri:false,logisticId:"LOG_Jour1_TEST_MATT_3"},
+  {id:"A_1170",jour:"Jour 1",date:"Samedi 29 aout",heure:"10:00 - 10:30",type:"MEDITATION / YOGA",atelier:"TEST MATT",lieu:"TEST",fac1:"TEST",fac2:"TEST",traduction:"TEST",helper1:"TEST",helper2:"TEST",helper3:"TEST",helper4:"TEST",angel:"",note:"Atelier + long",piment:2,colibri:true,logisticId:"LOG_Jour1_TEST_MATT_3"},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_1171",jour:"Jour 2",date:"Dimanche 30 aout",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"InMen - Held by Men A somatic journey into masculinity",lieu:"SHAKTI",fac1:"Guy El Hadad - Israel",fac2:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Alexandre Fourcault",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"Atelier Homme",piment:1,colibri:false,logisticId:"JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_"},
@@ -269,7 +269,7 @@ var AGENDA = [
   // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
   {id:"A_1181",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Soir (Soirée)",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Mukti (Cecile Yvorel)",note:"",piment:0,colibri:false,logisticId:""},
   {id:"A_1182",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:0,colibri:false,logisticId:""},
-  {id:"A_1183",jour:"Jour 1",date:"Samedi 29 aout",heure:"10:00 - 10:30",type:"MEDITATION / YOGA",atelier:"TEST MATT (COPIE)",lieu:"TEST",fac1:"TEST",fac2:"TEST",traduction:"",helper1:"TEST",helper2:"TEST",helper3:"TEST",helper4:"",angel:"",note:"Atelier + long",piment:2,colibri:false,logisticId:"JOUR1_TEST_MATT__COPIE_"},
+  {id:"A_1183",jour:"Jour 1",date:"Samedi 29 aout",heure:"10:00 - 10:30",type:"MEDITATION / YOGA",atelier:"TEST MATT (COPIE)",lieu:"TEST",fac1:"TEST",fac2:"TEST",traduction:"TEST",helper1:"TEST",helper2:"TEST",helper3:"TEST",helper4:"TEST",angel:"",note:"Atelier + long",piment:2,colibri:true,logisticId:"JOUR1_TEST_MATT__COPIE_"},
   {id:"A_1184",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - OPENING CEREMONY",lieu:"SHIVA",fac1:"",fac2:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_EXTRA_SUPPORT___OPENING_CEREMO",_minRes:4,_minHelpers:4},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────

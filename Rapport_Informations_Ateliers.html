@@ -75,100 +75,43 @@
     .pill-grey   { background:var(--surface); color:var(--muted); border-color:var(--border); }
     .empty { text-align:center; padding:40px; color:var(--muted); font-style:italic; border:2px dashed var(--border); border-radius:10px; }
 
-    /* ── ÉCRAN DÉTAIL ── */
-    #screenDetail { display:none; }
-    .back-bar { display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-    .breadcrumb { font-size:13px; color:var(--muted); flex:1; }
-    .bc-link { color:var(--accent); cursor:pointer; }
-    .bc-link:hover { text-decoration:underline; }
+    /* ── MODALE DÉTAIL ── */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:flex-start; justify-content:center; padding:24px 16px; overflow-y:auto; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:var(--bg); border-radius:14px; max-width:680px; width:100%; border:1px solid var(--border); box-shadow:0 12px 40px rgba(0,0,0,.2); }
+    .modal-top { display:flex; align-items:flex-start; justify-content:space-between; padding:18px 22px 14px; border-bottom:1px solid var(--border); gap:12px; }
+    .modal-top-left { flex:1; min-width:0; }
+    .modal-top-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+    .modal-atelier { font-size:18px; font-weight:800; line-height:1.3; }
+    .modal-sub { font-size:12px; color:var(--muted); margin-top:3px; }
+    .modal-close { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:15px; font-weight:700; font-family:inherit; color:var(--text); line-height:1; }
+    .modal-close:hover { background:var(--border); }
+    .modal-lang-toggle { display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+    .modal-lang-btn { cursor:pointer; background:var(--surface); border:none; padding:5px 12px; font-size:12px; font-weight:700; font-family:inherit; color:var(--muted); }
+    .modal-lang-btn:not(:last-child) { border-right:1px solid var(--border); }
+    .modal-lang-btn.active { background:var(--accent); color:#fff; }
+    .modal-body { padding:18px 22px 22px; display:flex; flex-direction:column; gap:20px; }
+    .modal-grid { display:grid; grid-template-columns:auto 1fr; gap:6px 16px; align-items:start; }
+    .modal-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); white-space:nowrap; padding-top:2px; }
+    .modal-val { font-size:13px; }
+    .modal-desc-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 14px; font-size:13px; line-height:1.6; }
+    .modal-desc-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:6px; }
+    .no-content { font-style:italic; color:var(--muted); font-size:12px; }
+    .validated-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; }
+    .validated-yes { background:#dcfce7; color:#166534; }
+    .validated-no  { background:#fee2e2; color:#dc2626; }
+    .dark .validated-yes { background:#0a2e1a; color:#4ade80; }
+    .dark .validated-no  { background:#2d0a0a; color:#f87171; }
+    .badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; white-space:nowrap; }
+    .badge-lang { font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; }
+    .badge-fr { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+    .badge-en { background:#f0fdf4; color:#166534; border:1px solid #86efac; }
+    .piment { letter-spacing:-2px; font-size:13px; }
 
-    /* ── FICHE PRINCIPALE (accordion compact) ── */
-    .info-card {
-      border:1px solid var(--ws-hdr-border);
-      border-radius:10px;
-      background:var(--ws-hdr-bg);
-      margin-bottom:20px;
-      overflow:hidden;
+    @media(max-width:640px) {
+      .modal-top { flex-direction:column; }
+      .modal-top-right { flex-direction:row; align-items:center; }
     }
-    .info-card-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 18px; cursor:pointer; gap:12px;
-      user-select:none;
-    }
-    .info-card-header:hover { filter:brightness(.97); }
-    .info-card-title-block { flex:1; min-width:0; }
-    .info-card-jour { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--ws-hdr-text); opacity:.75; margin-bottom:2px; }
-    .info-card-name { font-size:18px; font-weight:800; color:var(--ws-hdr-text); line-height:1.2; }
-    .info-card-sub  { font-size:12px; color:var(--ws-hdr-text); opacity:.75; margin-top:4px; display:flex; gap:12px; flex-wrap:wrap; }
-    .info-card-toggle { font-size:18px; color:var(--ws-hdr-text); opacity:.6; flex-shrink:0; transition:transform .2s; }
-    .info-card-toggle.open { transform:rotate(180deg); }
-    .info-card-body { padding:0 18px 16px; border-top:1px solid var(--ws-hdr-border); }
-    .info-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-      gap:10px 20px;
-      padding-top:14px;
-    }
-    .info-field { display:flex; flex-direction:column; gap:1px; }
-    .info-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--ws-hdr-text); opacity:.65; }
-    .info-val { font-size:12px; color:var(--ws-hdr-text); font-weight:500; line-height:1.4; }
-
-    /* Descriptions & consignes dans la fiche */
-    .desc-section { margin-top:14px; padding-top:12px; border-top:1px solid var(--ws-hdr-border); }
-    .desc-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    @media(max-width:600px) { .desc-cols { grid-template-columns:1fr; } }
-    .desc-block-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--ws-hdr-text); opacity:.65; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-    .lang-badge { font-size:9px; font-weight:800; padding:1px 5px; border-radius:3px; }
-    .lang-fr { background:var(--fr-bg); color:#1d4ed8; border:1px solid var(--fr-border); }
-    .lang-en { background:var(--en-bg); color:#166534; border:1px solid var(--en-border); }
-    .desc-text { font-size:12px; color:var(--ws-hdr-text); line-height:1.6; white-space:pre-wrap; }
-    .desc-empty { font-size:12px; color:var(--ws-hdr-text); opacity:.45; font-style:italic; }
-    .consigne-box { margin-top:12px; background:rgba(245,158,11,.08); border:1px solid #fcd34d; border-radius:7px; padding:10px 13px; }
-    .consigne-box-title { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:#92400e; margin-bottom:5px; }
-    .consigne-text { font-size:12px; color:#92400e; line-height:1.5; white-space:pre-wrap; }
-
-    /* ── BLOCS LOGISTIQUE ── */
-    .log-section { margin-bottom:16px; }
-    .log-block {
-      border:1px solid var(--border);
-      border-radius:8px;
-      overflow:hidden;
-      margin-bottom:12px;
-    }
-    .log-block-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 14px; background:var(--surface);
-      cursor:pointer; user-select:none; gap:8px;
-    }
-    .log-block-header:hover { background:var(--border); }
-    .log-block-title { font-size:12px; font-weight:700; color:var(--text); }
-    .log-block-toggle { font-size:14px; color:var(--muted); transition:transform .2s; }
-    .log-block-toggle.open { transform:rotate(180deg); }
-    .log-block-body { padding:12px 14px; border-top:1px solid var(--border); font-size:13px; color:var(--text); line-height:1.6; }
-    .log-block-body p, .log-block-body ul, .log-block-body ol { margin-bottom:4px; }
-    .log-block-body ul, .log-block-body ol { padding-left:18px; }
-    .log-block-body.purple { border-top-color:var(--purple-border); }
-    .log-block.purple { border-color:var(--purple-border); }
-    .log-block.purple .log-block-header { background:var(--purple-bg); }
-    .log-block.purple .log-block-title { color:var(--purple); }
-
-    /* Helper sous-sections */
-    .helper-phase { margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid var(--border); }
-    .helper-phase:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
-    .helper-phase-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--purple); margin-bottom:5px; }
-
-    /* Prep duration */
-    .prep-badge { display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; color:var(--text); }
-
-    /* Validation & stamp */
-    .validation-row { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:12px 16px; border-radius:8px; border:1px solid var(--border); background:var(--surface); margin-bottom:12px; }
-    .validation-badge { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; }
-    .validation-badge.ok  { color:var(--green); }
-    .validation-badge.nok { color:var(--muted); }
-    .stamp { font-size:12px; color:var(--muted); }
-
-    /* Section title */
-    .section-title { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--text); border-bottom:2px solid var(--border); padding-bottom:6px; margin:22px 0 14px; }
 
     /* ── TOAST ── */
     #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1f2328; color:#fff; border-radius:8px; padding:12px 22px; font-size:13px; font-weight:600; z-index:10000; transition:transform .3s,opacity .3s; opacity:0; white-space:nowrap; }
@@ -251,81 +194,24 @@
 
   </div><!-- /screenList -->
 
-  <!-- ══ ÉCRAN DÉTAIL ══ -->
-  <div id="screenDetail">
-
-    <div class="back-bar">
-      <button class="btn btn-sm" onclick="goList()" data-i18n="rsa_back">← Retour à la liste</button>
-      <div class="breadcrumb">
-        <span class="bc-link" onclick="goList()" data-i18n="rsa_breadcrumb">Ateliers</span>
-        &nbsp;›&nbsp;
-        <span id="dBreadcrumb">—</span>
-      </div>
-    </div>
-
-    <!-- ── FICHE PRINCIPALE (accordion) ── -->
-    <div class="info-card" id="infoCard">
-      <div class="info-card-header" onclick="toggleInfoCard()">
-        <div class="info-card-title-block">
-          <div class="info-card-jour" id="dJour"></div>
-          <div class="info-card-name" id="dName"></div>
-          <div class="info-card-sub"  id="dSub"></div>
+  <div class="modal-overlay" id="detailModal" onclick="closeModalOnOverlay(event)">
+    <div class="modal-box" id="detailBox">
+      <div class="modal-top">
+        <div class="modal-top-left">
+          <div class="modal-atelier" id="mTitle">—</div>
+          <div class="modal-sub" id="mSub"></div>
         </div>
-        <div class="info-card-toggle open" id="infoCardToggle">▼</div>
+        <div class="modal-top-right">
+          <button class="modal-close" onclick="closeModal()" title="Fermer">✕</button>
+          <div class="modal-lang-toggle">
+            <button class="modal-lang-btn active" id="mlBtnFr" onclick="setModalLang('fr')">FR</button>
+            <button class="modal-lang-btn" id="mlBtnEn" onclick="setModalLang('en')">ENG</button>
+          </div>
+        </div>
       </div>
-      <div class="info-card-body" id="infoCardBody">
-        <div class="info-grid" id="dGrid"></div>
-        <div class="desc-section" id="dDescSection"></div>
-      </div>
+      <div class="modal-body" id="mBody"></div>
     </div>
-
-    <!-- ── LOGISTIQUE ── -->
-    <div class="section-title" data-i18n="rsa_sec2_title">2 — Informations Logistiques</div>
-
-    <!-- Durée de préparation -->
-    <div style="margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;" data-i18n="rsa_prep_label">⏱ Estimation durée de préparation</div>
-      <div class="prep-badge" id="dPrepDuration">—</div>
-    </div>
-
-    <!-- Consignes Helpers -->
-    <div class="log-block purple" id="blockHelpers">
-      <div class="log-block-header" onclick="toggleBlock('blockHelpers')">
-        <span class="log-block-title" data-i18n="rsa_helpers_label">🤝 Consignes pour Helpers</span>
-        <span class="log-block-toggle open" id="blockHelpers_toggle">▼</span>
-      </div>
-      <div class="log-block-body purple" id="blockHelpers_body">
-        <div class="helper-phase" id="phaseAvant"></div>
-        <div class="helper-phase" id="phasePendant"></div>
-        <div class="helper-phase" id="phaseApres"></div>
-      </div>
-    </div>
-
-    <!-- Infos logistiques -->
-    <div class="log-block" id="blockLog">
-      <div class="log-block-header" onclick="toggleBlock('blockLog')">
-        <span class="log-block-title" data-i18n="rsa_log_label">📦 Informations logistiques</span>
-        <span class="log-block-toggle open" id="blockLog_toggle">▼</span>
-      </div>
-      <div class="log-block-body" id="blockLog_body"></div>
-    </div>
-
-    <!-- Infos logistiques spéciales -->
-    <div class="log-block purple" id="blockSpecial">
-      <div class="log-block-header" onclick="toggleBlock('blockSpecial')">
-        <span class="log-block-title" data-i18n="rsa_special_label">⭐ Besoins logistiques spécifiques</span>
-        <span class="log-block-toggle open" id="blockSpecial_toggle">▼</span>
-      </div>
-      <div class="log-block-body purple" id="blockSpecial_body"></div>
-    </div>
-
-    <!-- Validation & stamp -->
-    <div class="validation-row" id="dValidation">
-      <div class="validation-badge" id="dValidBadge"></div>
-      <div class="stamp" id="dStamp"></div>
-    </div>
-
-  </div><!-- /screenDetail -->
+  </div>
 
   <footer data-i18n="ria_footer">Tantramour 2026 — Informations Ateliers</footer>
 </div>
@@ -337,7 +223,7 @@
 <script src="ref_piment.js"></script>
 <script>
 if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
-loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js'], function() {
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js','ref_notes.js'], function() {
 
 // ════════════════════════════════════════════
 // CONSTANTES
@@ -363,6 +249,8 @@ function jourLabel(jour) {
 // ÉTAT
 // ════════════════════════════════════════════
 var currentAgendaIdx = -1;
+var _modalLang = 'fr';
+var _modalEntry = null;
 
 // ════════════════════════════════════════════
 // INDEX DESCRIPTIONS
@@ -518,212 +406,200 @@ function selectAtelier(agendaIdx) {
   var e = AGENDA[agendaIdx];
   if (!e) return;
   currentAgendaIdx = agendaIdx;
+  _modalEntry = e;
+  _modalLang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  document.getElementById('mlBtnFr').classList.toggle('active', _modalLang==='fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', _modalLang==='en');
 
-  var meta  = JOUR_META[e.jour] || {};
-  var d     = getDesc(e.atelier);
-  var lang  = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
-  var pimentStr = e.piment > 0 ? ' ' + '🌶️'.repeat(e.piment) : '';
-  var duree = getDureeAtelier(e.heure);
-  var facs  = [e.fac1,e.fac2].filter(Boolean).join(' / ') || '—';
-  var hlps  = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean).join(', ') || '—';
-  var logId  = e.logisticId || '';
-  var logEntry = logId && typeof LOGISTICS !== 'undefined' && LOGISTICS[logId];
-  var specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' && LOGISTICS_SPECIAL[logId];
-  var helpEntry = logId && typeof LOGISTICS_HELPERS !== 'undefined' && LOGISTICS_HELPERS[logId];
+  var pm = parseInt(e.piment)||0;
+  document.getElementById('mTitle').innerHTML = esc(e.atelier||'—') + (pm ? ' '+pimentHtml(pm) : '');
+  document.getElementById('mSub').textContent = jourSubtitle(e.jour, _modalLang);
 
-  // ── En-tête
-  var dateDetailLabel = lang === 'en' ? (meta.dateEn || meta.date) : meta.date;
-  document.getElementById('dJour').textContent = jourLabel(e.jour) + (dateDetailLabel ? ' — ' + dateDetailLabel : '');
-  var displayName = (lang === 'en' && d && d.nomEn && d.nomEn.trim()) ? d.nomEn : (e.atelier||'—');
-  document.getElementById('dName').innerHTML = esc(displayName) + pimentStr;
-  document.getElementById('dSub').innerHTML =
-    (e.heure ? '<span>🕐 ' + esc(e.heure) + (duree ? ' <em>('+duree+')</em>' : '') + '</span>' : '') +
-    (e.lieu  ? '<span>📍 ' + esc(e.lieu) + '</span>' : '') +
-    (e.type  ? '<span>🏷 ' + esc(e.type) + '</span>' : '');
-  document.getElementById('dBreadcrumb').textContent = e.atelier || '—';
-
-  // ── Grille infos
-  var gridItems = [
-    { lbl:'ID',                       val: e.id || '—' },
-    { lbl:I18n.t('r14_grid_fac'),     val: facs },
-    { lbl:I18n.t('col_helpers'),      val: hlps },
-    { lbl:I18n.t('r14_grid_trad'),    val: e.traduction || '—' },
-    { lbl:I18n.t('col_angel'),        val: e.angel || '—' },
-    { lbl:I18n.t('col_note'),         val: e.note  || '—' },
-  ];
-  document.getElementById('dGrid').innerHTML = gridItems.map(function(gi) {
-    return '<div class="info-field">' +
-      '<div class="info-lbl">' + esc(gi.lbl) + '</div>' +
-      '<div class="info-val">'  + esc(gi.val) + '</div>' +
-    '</div>';
-  }).join('');
-
-  // ── Descriptions & consignes
-  var descHtml = '';
-  if (d) {
-    var hasFr = d.descFr && d.descFr.trim();
-    var hasEn = d.descEn && d.descEn.trim();
-    if (hasFr || hasEn) {
-      descHtml += '<div class="desc-cols">';
-      descHtml += '<div>' +
-        '<div class="desc-block-label"><span data-i18n="r_desc_label_fr">Description</span> <span class="lang-badge lang-fr">🇫🇷 FR</span></div>' +
-        (hasFr ? '<div class="desc-text">' + esc(d.descFr) + '</div>'
-               : '<div class="desc-empty">—</div>') +
-        '</div>';
-      descHtml += '<div>' +
-        '<div class="desc-block-label"><span data-i18n="r_desc_label_en">Description</span> <span class="lang-badge lang-en">🇬🇧 EN</span></div>' +
-        (hasEn ? '<div class="desc-text">' + esc(d.descEn) + '</div>'
-               : '<div class="desc-empty">—</div>') +
-        '</div>';
-      descHtml += '</div>';
-    }
-    // Consignes
-    var consigneFr = d.consigne   && d.consigne.trim()   ? d.consigne   : '';
-    var consigneEn = d.consigneEn && d.consigneEn.trim() ? d.consigneEn : '';
-    if (consigneFr || consigneEn) {
-      descHtml += '<div class="consigne-box">';
-      descHtml += '<div class="consigne-box-title">⚠️ ' + I18n.t('rsa_consigne_fr_label') + '</div>';
-      if (consigneFr) descHtml += '<div class="consigne-text">' + esc(consigneFr) + '</div>';
-      if (consigneEn) {
-        descHtml += '<div class="consigne-box-title" style="margin-top:8px;">⚠️ ' + I18n.t('rsa_consigne_en_label') + '</div>';
-        descHtml += '<div class="consigne-text">' + esc(consigneEn) + '</div>';
-      }
-      descHtml += '</div>';
-    }
-  }
-  document.getElementById('dDescSection').innerHTML = descHtml;
-  if (typeof I18n !== 'undefined') I18n.apply(document.getElementById('dDescSection'));
-
-  // ── Durée de préparation
-  var prepDur = logEntry && logEntry.prepDuration !== undefined ? logEntry.prepDuration : null;
-  if (prepDur !== null) {
-    var prepLabel = prepDur === 0 ? I18n.t('rsa_prep_0') : prepDur + ' min';
-    document.getElementById('dPrepDuration').textContent = '⏱ ' + prepLabel;
-  } else {
-    document.getElementById('dPrepDuration').textContent = '—';
-  }
-
-  // ── Consignes helpers
-  var hasHelpers = helpEntry && (
-    (helpEntry.avant   && helpEntry.avant.replace(/<[^>]*>/g,'').trim()) ||
-    (helpEntry.pendant && helpEntry.pendant.replace(/<[^>]*>/g,'').trim()) ||
-    (helpEntry.apres   && helpEntry.apres.replace(/<[^>]*>/g,'').trim())
-  );
-
-  function renderPhase(elId, label, html) {
-    var el = document.getElementById(elId);
-    var text = html ? html.replace(/<[^>]*>/g,'').trim() : '';
-    if (text) {
-      el.innerHTML = '<div class="helper-phase-label">' + esc(label) + '</div>' + html;
-      el.style.display = '';
-    } else {
-      el.style.display = 'none';
-    }
-  }
-
-  if (hasHelpers) {
-    renderPhase('phaseAvant',   I18n.t('rsa_helper_avant'),   helpEntry.avant   || '');
-    renderPhase('phasePendant', I18n.t('rsa_helper_pendant'), helpEntry.pendant || '');
-    renderPhase('phaseApres',   I18n.t('rsa_helper_apres'),   helpEntry.apres   || '');
-    document.getElementById('blockHelpers').style.display = '';
-  } else {
-    document.getElementById('phaseAvant').innerHTML   = '<div class="desc-empty" style="color:var(--muted)">—</div>';
-    document.getElementById('phasePendant').innerHTML = '';
-    document.getElementById('phaseApres').innerHTML   = '';
-    document.getElementById('phaseAvant').style.display = '';
-    document.getElementById('phasePendant').style.display = 'none';
-    document.getElementById('phaseApres').style.display  = 'none';
-  }
-
-  // ── Logistique principale
-  if (logEntry && (logEntry.html || logEntry.text)) {
-    document.getElementById('blockLog_body').innerHTML = logEntry.html || esc(logEntry.text).replace(/\n/g,'<br>');
-    document.getElementById('blockLog').style.display = '';
-  } else {
-    document.getElementById('blockLog_body').innerHTML = '<div class="desc-empty" style="color:var(--muted)">—</div>';
-    document.getElementById('blockLog').style.display = '';
-  }
-
-  // ── Logistique spéciale
-  if (specEntry && (specEntry.html || specEntry.text)) {
-    document.getElementById('blockSpecial_body').innerHTML = specEntry.html || esc(specEntry.text).replace(/\n/g,'<br>');
-    document.getElementById('blockSpecial').style.display = '';
-  } else {
-    document.getElementById('blockSpecial_body').innerHTML = '<div class="desc-empty" style="color:var(--muted)">—</div>';
-    document.getElementById('blockSpecial').style.display = '';
-  }
-
-  // ── Validation
-  var isValidated = (d && d.validatedByFac) || (logEntry && logEntry.validatedByFac);
-  var validBadge = document.getElementById('dValidBadge');
-  if (isValidated) {
-    validBadge.className = 'validation-badge ok';
-    validBadge.textContent = '✅ ' + I18n.t('rsa_validee').replace('✅ ','');
-  } else {
-    validBadge.className = 'validation-badge nok';
-    validBadge.textContent = '⏳ ' + I18n.t('ria_not_validated');
-  }
-
-  // ── Horodatage
-  var stamps = [
-    d && d.updatedAt,
-    logEntry && logEntry.updatedAt,
-    helpEntry && helpEntry.updatedAt,
-    specEntry && specEntry.updatedAt,
-  ].filter(Boolean);
-  var lastStamp = stamps.sort().reverse()[0] || '';
-  document.getElementById('dStamp').textContent = lastStamp
-    ? I18n.t('r_desc_last_modif') + ' ' + lastStamp
-    : '';
-
-  // Ouvrir l'accordion principal
-  openInfoCard();
-
-  showScreen('detail');
+  renderModalBody();
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 window.selectAtelier = selectAtelier;
 
-// ════════════════════════════════════════════
-// ACCORDION
-// ════════════════════════════════════════════
-function openInfoCard() {
-  document.getElementById('infoCardBody').style.display = '';
-  var t = document.getElementById('infoCardToggle');
-  t.classList.add('open');
-}
+window.setModalLang = function(lang) {
+  _modalLang = lang;
+  document.getElementById('mlBtnFr').classList.toggle('active', lang==='fr');
+  document.getElementById('mlBtnEn').classList.toggle('active', lang==='en');
+  if (_modalEntry) document.getElementById('mSub').textContent = jourSubtitle(_modalEntry.jour, lang);
+  renderModalBody();
+};
 
-function toggleInfoCard() {
-  var body = document.getElementById('infoCardBody');
-  var t    = document.getElementById('infoCardToggle');
-  var open = body.style.display !== 'none';
-  body.style.display = open ? 'none' : '';
-  t.classList.toggle('open', !open);
-}
-window.toggleInfoCard = toggleInfoCard;
+window.closeModal = function() {
+  document.getElementById('detailModal').classList.remove('open');
+  document.body.style.overflow = '';
+};
+window.closeModalOnOverlay = function(ev) {
+  if (ev.target === document.getElementById('detailModal')) closeModal();
+};
+document.addEventListener('keydown', function(ev) {
+  if (ev.key === 'Escape') closeModal();
+});
 
-function toggleBlock(blockId) {
-  var body = document.getElementById(blockId + '_body');
-  var tog  = document.getElementById(blockId + '_toggle');
-  var open = body.style.display !== 'none';
-  body.style.display = open ? 'none' : '';
-  tog.classList.toggle('open', !open);
-}
-window.toggleBlock = toggleBlock;
+function renderModalBody() {
+  var e = _modalEntry;
+  var lang = _modalLang;
+  if (!e) return;
 
-// ════════════════════════════════════════════
-// NAVIGATION
-// ════════════════════════════════════════════
-function showScreen(name) {
-  document.getElementById('screenList').style.display   = name === 'list'   ? '' : 'none';
-  document.getElementById('screenDetail').style.display = name === 'detail' ? 'block' : 'none';
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
+  var logId = e.logisticId || '';
+  var logE = logId && typeof LOGISTICS!=='undefined' ? LOGISTICS[logId] : null;
+  var logH = logId && typeof LOGISTICS_HELPERS!=='undefined' ? LOGISTICS_HELPERS[logId] : null;
+  var logS = logId && typeof LOGISTICS_SPECIAL!=='undefined' ? LOGISTICS_SPECIAL[logId] : null;
+  var desc = getDesc(e.atelier);
 
-function goList() {
-  showScreen('list');
-  applyFilters();
+  var dur = calcDuree(e.heure);
+  var prep = (logE && logE.prepDuration != null) ? logE.prepDuration : 15;
+  var debut = heureMin(e.heure);
+  var arrivee = (debut!==null) ? fmtHeure(debut-prep) : '';
+
+  var facs = [e.fac1,e.fac2].filter(Boolean);
+  var helpers = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean);
+  var hasBilingue = isBilingue(e.fac1) || isBilingue(e.fac2);
+  var langBadge = (e.traduction || hasBilingue)
+    ? '<span class="badge badge-lang badge-en">FR / EN</span>'
+    : '<span class="badge badge-lang badge-fr">FR</span>';
+
+  var noteVal = e.note ? noteLabel(e.note, lang) : '';
+  var nomAtelierVal = esc(e.atelier||'—') + ' ' + langBadge;
+  var typeVal = e.type ? esc(e.type) : '—';
+  var jourDate = jourSubtitle(e.jour, lang);
+  var horaireVal = esc(e.heure||'—') + (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '');
+  var rows1 = [];
+  rows1.push(['🧘 '+(lang==='en'?'Workshop (FR/ENG)':'Nom atelier (FR/ENG)'), nomAtelierVal]);
+  rows1.push(['🏷 '+(lang==='en'?'Type':'Type'), typeVal]);
+  rows1.push(['📅 '+(lang==='en'?'Day - Date':'Jour - Date'), jourDate]);
+  rows1.push(['🕐 '+(lang==='en'?'Schedule':'Horaire'), horaireVal]);
+  if (arrivee) rows1.push(['⏰ '+(lang==='en'?'Arrive at':'Arrivée'), '<strong style="color:#dc2626">'+arrivee+'</strong>']);
+  if (e.lieu) rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), esc(e.lieu)]);
+  rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.length ? facs.map(esc).join(' &amp; ') : '—']);
+  rows1.push(['🙌 '+(lang==='en'?'Helper(s)':'Helper(s)'), helpers.length ? helpers.map(esc).join(', ') : '—']);
+  rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), e.traduction ? esc(e.traduction) : '—']);
+  rows1.push(['👼 Angel', angelWithPhone(e.angel)]);
+  rows1.push(['🏷 Note', noteVal ? esc(noteVal) : '—']);
+
+  var gridHtml1 = rows1.map(function(r) {
+    return '<div class="modal-lbl">'+r[0]+'</div><div class="modal-val">'+r[1]+'</div>';
+  }).join('');
+
+  var noTxt = '<span class="no-content">—</span>';
+  var dark = document.body.classList.contains('dark');
+  var descTxt = (lang==='en' && desc && desc.descEn && desc.descEn.trim())
+    ? desc.descEn : (desc && desc.descFr && desc.descFr.trim() ? desc.descFr : '');
+  var consigneTxt = (lang==='en' && desc && desc.consigneEn && desc.consigneEn.trim())
+    ? desc.consigneEn : (desc && desc.consigne && desc.consigne.trim() ? desc.consigne : '');
+  var consigneLabel = lang==='en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
+
+  var S_INFO = dark
+    ? 'background:#2d2500;border:2px solid #92400e;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#fefce8;border:2px solid #fde68a;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_INFO_TL = dark ? 'color:#fcd34d' : 'color:#854d0e';
+  var S_LOG = dark
+    ? 'background:#052e16;border:2px solid #16a34a;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#f0fdf4;border:2px solid #4ade80;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_LOG_TL = dark ? 'color:#4ade80' : 'color:#166534';
+  var S_SPEC = dark
+    ? 'background:#1a0533;border:2px solid #9333ea;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#faf5ff;border:2px solid #c084fc;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_SPEC_TL = dark ? 'color:#c084fc' : 'color:#7e22ce';
+  var S_HELP = dark
+    ? 'background:#0c1a40;border:2px solid #2563eb;border-radius:12px;padding:16px 18px;margin-bottom:0'
+    : 'background:#eff6ff;border:2px solid #3b82f6;border-radius:12px;padding:16px 18px;margin-bottom:0';
+  var S_HELP_TL = dark ? 'color:#60a5fa' : 'color:#1d4ed8';
+  var titleStyle = 'font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;padding-bottom:8px;margin-bottom:14px;border-bottom:2px solid;';
+
+  var sec1 = '<div style="'+S_INFO+'">'+
+    '<div style="'+titleStyle+S_INFO_TL+';border-bottom-color:'+(dark?'#92400e':'#fde68a')+'">'+
+      '1) '+(lang==='en'?'General information':'Informations générales')+
+    '</div>'+
+    '<div class="modal-grid">'+gridHtml1+'</div>'+
+    '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box" style="border-color:'+(dark?'#92400e':'#fcd34d')+';background:'+(dark?'#2d2006':'#fffbeb')+'">'+
+        '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
+        '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'Description':'Description atelier')+'</div>'+
+        '<div>'+(descTxt ? esc(descTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  var isDefaultPrep = !(logE && logE.prepDuration != null);
+  var prepVal = prep+' min'+
+    (isDefaultPrep ? ' <span style="font-size:10px;color:var(--muted);font-style:italic;">('+(lang==='en'?'default':'défaut')+')</span>' : '')+
+    (arrivee ? ' &rarr; '+(lang==='en'?'arrival':'arrivée')+' <strong style="color:#dc2626">'+arrivee+'</strong>' : '');
+
+  var validBadge = logE
+    ? (logE.validatedByFac
+        ? '<span class="validated-badge validated-yes">&#10003; '+(lang==='en'?'Validated by teacher':'Validé par animateur')+'</span>'
+        : '<span class="validated-badge validated-no">&#8987; '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>')
+    : '<span class="validated-badge validated-no">&#8987; '+(lang==='en'?'Not yet validated':'Non encore validé')+'</span>';
+
+  var updatedAt = logE && logE.updatedAt ? logE.updatedAt : (logH && logH.updatedAt ? logH.updatedAt : (logS && logS.updatedAt ? logS.updatedAt : (desc && desc.updatedAt ? desc.updatedAt : '')));
+  var avantTxt = logH && logH.avant && logH.avant.trim().replace(/<[^>]*>/g,'').trim() ? logH.avant : '';
+  var pendantTxt = logH && logH.pendant && logH.pendant.trim().replace(/<[^>]*>/g,'').trim() ? logH.pendant : '';
+  var apresTxt = logH && logH.apres && logH.apres.trim().replace(/<[^>]*>/g,'').trim() ? logH.apres : '';
+  var logInfoTxt = logE && logE.html && logE.html.trim() ? logE.html : '';
+  var logSpecTxt = logS && logS.html && logS.html.trim().replace(/<[^>]*>/g,'').trim() ? logS.html : '';
+
+  var sec_log = '<div style="'+S_LOG+'">'+
+    '<div style="'+titleStyle+S_LOG_TL+';border-bottom-color:'+(dark?'#16a34a':'#4ade80')+'">'+
+      '2) '+(lang==='en'?'Logistics information':'Informations logistiques')+
+    '</div>'+
+    '<div class="modal-grid" style="margin-bottom:10px">'+
+      '<div class="modal-lbl" style="white-space:nowrap">'+(lang==='en'?'Preparation':'Préparation')+'</div>'+
+      '<div class="modal-val" style="white-space:nowrap">'+prepVal+'</div>'+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  var sec_spec = '<div style="'+S_SPEC+'">'+
+    '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
+      '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
+    '</div>'+
+    '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
+  '</div>';
+
+  var sec_help = '<div style="'+S_HELP+'">'+
+    '<div style="'+titleStyle+S_HELP_TL+';border-bottom-color:'+(dark?'#2563eb':'#3b82f6')+'">'+
+      '4) '+(lang==='en'?'Helper instructions':'Consignes helpers')+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;">'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
+        '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
+        '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
+      '</div>'+
+      '<div class="modal-desc-box">'+
+        '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
+        '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  var sec_footer =
+    '<div style="padding:10px 4px 2px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:4px;">'+
+      validBadge+
+      '<div style="font-size:11px;color:var(--muted)">'+(lang==='en'?'Last updated':'Dernière modification')+' : '+(updatedAt ? esc(updatedAt) : '—')+'</div>'+
+    '</div>';
+
+  document.getElementById('mBody').innerHTML =
+    '<div style="display:flex;flex-direction:column;gap:14px">'+
+      sec1 + sec_log + sec_spec + sec_help + sec_footer +
+    '</div>';
 }
-window.goList = goList;
 
 // ════════════════════════════════════════════
 // UTILITAIRES
@@ -736,6 +612,59 @@ function htmlToText(html) {
   var div = document.createElement('div');
   div.innerHTML = html;
   return (div.textContent || div.innerText || '').replace(/\s+\n/g, '\n').trim();
+}
+function noteLabel(val, lang) {
+  if (!val) return '';
+  if (typeof REF_NOTES !== 'undefined') {
+    var e = REF_NOTES.find(function(n){ return n.value===val; });
+    if (e) return (lang==='en' && e.valueEn) ? e.valueEn : e.value;
+  }
+  return val;
+}
+function pimentHtml(n) {
+  return n > 0 ? '<span class="piment">'+'🌶️'.repeat(n)+'</span>' : '';
+}
+function isBilingue(nom) {
+  if (!nom || typeof REF_RESSOURCES==='undefined') return false;
+  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  return r && r.langues && r.langues.indexOf('FR')!==-1 && r.langues.indexOf('EN')!==-1;
+}
+function angelWithPhone(nom) {
+  if (!nom) return '—';
+  if (typeof REF_RESSOURCES === 'undefined') return esc(nom);
+  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  if (!r || !r.tel) return esc(nom);
+  return esc(nom) + ' <span style="color:var(--muted)">(' + esc(r.tel) + ')</span>';
+}
+function heureMin(h) {
+  if (!h) return null;
+  var m = String(h).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
+  return m ? parseInt(m[1])*60+parseInt(m[2]) : null;
+}
+function calcDuree(h) {
+  if (!h) return null;
+  var m = String(h).replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  var d = (parseInt(m[3])*60+parseInt(m[4])) - (parseInt(m[1])*60+parseInt(m[2]));
+  if (d < 0) d += 1440;
+  return d;
+}
+function fmtDuree(mins) {
+  if (!mins) return '';
+  var h = Math.floor(mins/60), mn = mins%60;
+  return h > 0 ? (mn > 0 ? h+'h'+(mn<10?'0':'')+mn : h+'h') : mn+'min';
+}
+function fmtHeure(mins) {
+  if (mins == null) return '';
+  var h = Math.floor(mins/60)%24, m = mins%60;
+  return h+':'+(m<10?'0':'')+m;
+}
+function jourSubtitle(jour, lang) {
+  var m = JOUR_META[jour];
+  if (!m) return jour;
+  var j = (lang === 'en' && m.labelEn) ? m.labelEn : jour;
+  var d = (lang === 'en' && m.dateEn) ? m.dateEn : m.date;
+  return j + (d ? ' — ' + d : '');
 }
 function parseHeureDebut(heure) {
   if (!heure) return '';

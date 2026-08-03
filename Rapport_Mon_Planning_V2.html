@@ -154,13 +154,13 @@ input[type="text"] { min-width:200px; }
 /* ── MODALE DÉTAIL ── */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:flex-start; justify-content:center; padding:24px 16px; overflow-y:auto; }
 .modal-overlay.open { display:flex; }
-.modal-box { background:var(--bg); border-radius:14px; max-width:680px; width:100%; border:1px solid var(--border); box-shadow:0 12px 40px rgba(0,0,0,.2); }
+.modal-box { position:relative; background:var(--bg); border-radius:14px; max-width:680px; width:100%; border:1px solid var(--border); box-shadow:0 12px 40px rgba(0,0,0,.2); }
 .modal-top { display:flex; align-items:flex-start; justify-content:space-between; padding:18px 22px 14px; border-bottom:1px solid var(--border); gap:12px; }
 .modal-top-left { flex:1; min-width:0; }
-.modal-top-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+.modal-top-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; padding-top:28px; }
 .modal-atelier { font-size:18px; font-weight:800; line-height:1.3; }
 .modal-sub { font-size:12px; color:var(--muted); margin-top:3px; }
-.modal-close { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:15px; font-weight:700; font-family:inherit; color:var(--text); line-height:1; }
+.modal-close { position:absolute; top:18px; right:22px; cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:15px; font-weight:700; font-family:inherit; color:var(--text); line-height:1; }
 .modal-close:hover { background:var(--border); }
 .modal-lang-toggle { display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
 .modal-lang-btn { cursor:pointer; background:var(--surface); border:none; padding:5px 12px; font-size:12px; font-weight:700; font-family:inherit; color:var(--muted); }
@@ -222,7 +222,7 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
   <!-- ── TABS VUE ── -->
   <div class="vue-tabs" id="vueTabs">
     <span class="vue-tabs-lbl" data-i18n="mp_vue_label">Vue :</span>
-    <button class="vtab active-combined" data-vue="" onclick="setVue(this,'')"         data-i18n="mp_vue_combined">Vue Combinée</button>
+    <button class="vtab active-combined" data-vue="" onclick="setVue(this,'')"         data-i18n="mp_vue_combined">Tous tes rôles confondus</button>
     <button class="vtab"                 data-vue="animateur" onclick="setVue(this,'animateur')" data-i18n="mp_vue_animateur">Animateur</button>
     <button class="vtab"                 data-vue="helper"    onclick="setVue(this,'helper')"    data-i18n="mp_vue_helper">Helper</button>
     <button class="vtab"                 data-vue="traducteur" onclick="setVue(this,'traducteur')" data-i18n="mp_vue_traducteur">Traducteur</button>
@@ -306,6 +306,13 @@ function isBilingue(nom) {
   if (!nom || typeof REF_RESSOURCES==='undefined') return false;
   var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
   return r && r.langues && r.langues.indexOf('FR')!==-1 && r.langues.indexOf('EN')!==-1;
+}
+function angelWithPhone(nom) {
+  if (!nom) return '—';
+  if (typeof REF_RESSOURCES === 'undefined') return esc(nom);
+  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  if (!r || !r.tel) return esc(nom);
+  return esc(nom) + ' <span style="color:var(--muted)">(' + esc(r.tel) + ')</span>';
 }
 function isColibri(nom) {
   if (!nom || typeof REF_RESSOURCES==='undefined') return false;
@@ -422,6 +429,10 @@ if (showAllPeople) {
 allNoms.forEach(function(n) {
   var o = document.createElement('option'); o.value=n; o.text=n; selNom.appendChild(o);
 });
+var naOption = document.createElement('option');
+naOption.value = '__ALL__';
+naOption.text = 'N/A';
+selNom.appendChild(naOption);
 selNom.value = '__NONE__';
 
 // ── État de la vue active (géré par les tabs, pas par un select) ──────────
@@ -478,7 +489,7 @@ window.applyFilters = function applyFilters() {
   var results = [];
   FULL_INDEX.forEach(function(entries, nom) {
     // Filtre select nom exact
-    if (fNom && nom !== fNom) return;
+    if (fNom && fNom !== '__ALL__' && nom !== fNom) return;
     // Filtre recherche texte libre
     if (fSearch && nom.toLowerCase().indexOf(fSearch)===-1) return;
 
@@ -831,24 +842,24 @@ function renderModalBody() {
     : '<span class="badge badge-lang badge-fr">FR</span>';
 
   var noteVal = e.note ? noteLabel(e.note, lang) : '';
+  var nomAtelierVal = esc(e.atelier||'—') + ' ' + langBadge;
+  var typeVal = e.type ? esc(e.type) : '—';
+  var jourDate = jourSubtitle(e.jour, lang);
+  var horaireVal = esc(e.heure||'—') + (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '');
 
   // ── Section 1 : Infos générales ─────────────────────────────────────────
   var rows1 = [];
-  // Horaire sur sa propre ligne (sans Arrivée)
-  rows1.push(['🕐 '+(lang==='en'?'Schedule':'Horaire'),
-    esc(e.heure||'—') +
-    (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '')]);
-  // Arrivée sur la ligne suivante (si disponible)
-  if (arrivee) rows1.push(['⏰ '+(lang==='en'?'Arrive at':'Arrivée'),
-    '<strong style="color:#dc2626">'+arrivee+'</strong>']);
-  if (e.lieu)    rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), esc(e.lieu)]);
-  if (facs.length) rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.map(esc).join(' &amp; ')]);
-  if (helpers.length) rows1.push(['🙌 Helpers', helpers.map(esc).join(', ')]);
-  if (e.traduction) rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), esc(e.traduction)]);
-  if (e.angel)  rows1.push(['👼 Angel', esc(e.angel)]);
-  if (noteVal)  rows1.push(['🏷 Note', esc(noteVal)]);
-  rows1.push(['🌐 Langue', langBadge]);
-  if (parseInt(e.piment)) rows1.push(['🌶️ Piment', pimentHtml(parseInt(e.piment))]);
+  rows1.push(['🧘 '+(lang==='en'?'Workshop (FR/ENG)':'Nom atelier (FR/ENG)'), nomAtelierVal]);
+  rows1.push(['🏷 '+(lang==='en'?'Type':'Type'), typeVal]);
+  rows1.push(['📅 '+(lang==='en'?'Day - Date':'Jour - Date'), jourDate]);
+  rows1.push(['🕐 '+(lang==='en'?'Schedule':'Horaire'), horaireVal]);
+  if (arrivee) rows1.push(['⏰ '+(lang==='en'?'Arrive at':'Arrivée'), '<strong style="color:#dc2626">'+arrivee+'</strong>']);
+  rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), e.lieu ? esc(e.lieu) : '—']);
+  rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.length ? facs.map(esc).join(' &amp; ') : '—']);
+  rows1.push(['🙌 '+(lang==='en'?'Helper(s)':'Helper(s)'), helpers.length ? helpers.map(esc).join(', ') : '—']);
+  rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), e.traduction ? esc(e.traduction) : '—']);
+  rows1.push(['👼 Angel', angelWithPhone(e.angel)]);
+  rows1.push(['🏷 Note', noteVal ? esc(noteVal) : '—']);
 
   var gridHtml1 = rows1.map(function(r){
     return '<div class="modal-lbl">'+r[0]+'</div><div class="modal-val">'+r[1]+'</div>';
