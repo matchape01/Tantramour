@@ -262,15 +262,22 @@
   .badge-type { border:1px solid; }
   .badge-lieu { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
   .badge-fac  { background:var(--surface); color:var(--text);  border:1px solid var(--border); font-weight:600; font-size:11px; }
+  /* Note — fond ambre, texte sombre */
   .badge-note  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
-  .dark .badge-note { color:#111111; }
-  /* FR/ENG — même taille et poids que animateurs */
-  .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; font-weight:600; padding:2px 7px; }
-  .dark .badge-trad { color:#111111; }
-  /* Surcharge explicite : badge-note et badge-trad dans prog-main restent noirs en mode nuit
-     (les sélecteurs .dark .type-section.section-* .prog-main * ont une spécificité plus haute) */
-  .dark .prog-main .badge-note,
-  .dark .prog-main .badge-trad { color:#111111 !important; }
+  .dark .badge-note { background:#2d1f00; color:#fbbf24; border-color:#92400e; }
+
+  /* FR / ENG — fond bleu clair, texte bleu foncé */
+  .badge-trad     { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; font-weight:600; padding:2px 7px; }
+  .dark .badge-trad { background:#0c1a40; color:#93c5fd; border-color:#1e3a8a; }
+
+  /* FR seul — fond vert clair, texte vert foncé */
+  .badge-trad-fr  { background:#f0fdf4; color:#166534; border:1px solid #86efac; font-size:11px; font-weight:600; padding:2px 7px; }
+  .dark .badge-trad-fr { background:#052e16; color:#4ade80; border-color:#166534; }
+
+  /* Surcharge de spécificité : s'assurer que les sections colorées ne cassent pas les badges */
+  .dark .prog-main .badge-note  { background:#2d1f00  !important; color:#fbbf24 !important; border-color:#92400e !important; }
+  .dark .prog-main .badge-trad  { background:#0c1a40  !important; color:#93c5fd !important; border-color:#1e3a8a !important; }
+  .dark .prog-main .badge-trad-fr { background:#052e16 !important; color:#4ade80 !important; border-color:#166534 !important; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }
@@ -730,7 +737,7 @@ function cardHtml(e, globalIdx, opts) {
     (e.lieu ? '<span class="badge badge-lieu">📍 ' + esc(e.lieu) + '</span>' : '') +
     (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2)
       ? '<span class="badge badge-trad" title="' + (e.traduction ? esc(e.traduction) : 'FR / ENG') + '">FR / ENG</span>'
-      : '<span class="badge badge-trad" title="Atelier en français" style="background:#f0fdf4;color:#166534;border-color:#86efac">FR</span>');
+      : '<span class="badge badge-trad-fr" title="Atelier en français">FR</span>');
 
   // Animateurs
   var facsHtml = facs.map(function(f) { return '<span class="badge badge-fac">🎓 ' + esc(f) + '</span>'; }).join('');
