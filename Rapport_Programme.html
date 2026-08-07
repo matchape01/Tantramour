@@ -267,6 +267,10 @@
   /* FR/ENG — même taille et poids que animateurs */
   .badge-trad  { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:11px; font-weight:600; padding:2px 7px; }
   .dark .badge-trad { color:#111111; }
+  /* Surcharge explicite : badge-note et badge-trad dans prog-main restent noirs en mode nuit
+     (les sélecteurs .dark .type-section.section-* .prog-main * ont une spécificité plus haute) */
+  .dark .prog-main .badge-note,
+  .dark .prog-main .badge-trad { color:#111111 !important; }
 
   /* Couleurs par type */
   .t-tantra  { --tc:var(--c-tantra);  --tbg:var(--c-tantra-bg);  --tbd:var(--c-tantra-bd); }

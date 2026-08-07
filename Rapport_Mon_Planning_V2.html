@@ -143,6 +143,9 @@ input[type="text"] { min-width:200px; }
 .angel-shift-row td { background:var(--badge-a-bg) !important; font-weight:700; color:var(--badge-a-tx) !important; }
 .angel-shift-row td.at-heure { color:var(--badge-a-tx) !important; }
 .angel-shift-row td.at-name  { color:var(--badge-a-tx) !important; }
+/* Chevron collapse intégré dans la ligne shift */
+.angel-shift-row .shift-chevron { display:inline-block; margin-left:8px; font-size:13px; color:var(--badge-a-tx); transition:transform .2s; vertical-align:middle; opacity:.7; }
+.angel-shift-row.shift-open .shift-chevron { transform:rotate(90deg); }
 .angel-covered-row td { background:#fdf2f8; color:#9ca3af; }
 .dark .angel-covered-row td { background:#2a0e22; color:#6b7280; }
 .angel-covered-row td.at-heure { padding-left:22px; position:relative; }
@@ -150,6 +153,9 @@ input[type="text"] { min-width:200px; }
 .dark .angel-covered-row td.at-heure::before { color:#9d174d; }
 .angel-shift-dur-pill { display:inline-block; font-size:10px; font-weight:700; background:var(--badge-a-tx); color:#fff; border-radius:99px; padding:1px 10px; margin-left:8px; vertical-align:middle; }
 .dark .angel-shift-dur-pill { background:var(--badge-a-tx); }
+/* Lignes couvertes masquées par défaut */
+.angel-covered-row { display:none; }
+.angel-covered-row.shift-visible { display:table-row; }
 
 /* ── MODALE DÉTAIL ── */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:flex-start; justify-content:center; padding:24px 16px; overflow-y:auto; }
@@ -222,7 +228,7 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
   <!-- ── TABS VUE ── -->
   <div class="vue-tabs" id="vueTabs">
     <span class="vue-tabs-lbl" data-i18n="mp_vue_label">Vue :</span>
-    <button class="vtab active-combined" data-vue="" onclick="setVue(this,'')"         data-i18n="mp_vue_combined">Tous tes rôles confondus</button>
+    <button class="vtab active-combined" data-vue="" onclick="setVue(this,'')"         data-i18n="mp_vue_combined">Tous mes rôles confondus</button>
     <button class="vtab"                 data-vue="animateur" onclick="setVue(this,'animateur')" data-i18n="mp_vue_animateur">Animateur</button>
     <button class="vtab"                 data-vue="helper"    onclick="setVue(this,'helper')"    data-i18n="mp_vue_helper">Helper</button>
     <button class="vtab"                 data-vue="traducteur" onclick="setVue(this,'traducteur')" data-i18n="mp_vue_traducteur">Traducteur</button>
@@ -349,6 +355,24 @@ function getAngelShiftIntervals(entries) {
     ivs.push({ s:s, e:e });
   });
   return ivs;
+}
+
+// Calcule le nombre réel d'ateliers d'un groupe de jour :
+// - Un SHIFT ANGEL compte pour 1.
+// - Les ateliers couverts par un shift angel ne sont pas comptés.
+// - Si pas de shift angel : count simple.
+function calcNbJour(entries) {
+  var shiftIvs = getAngelShiftIntervals(entries);
+  if (shiftIvs.length === 0) return entries.length;
+  return entries.reduce(function(n, x) {
+    if ((x.entry.type||'').toUpperCase() === 'SHIFT ANGEL') return n + 1; // le shift compte pour 1
+    var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+    if (!m) return n + 1;
+    var as=parseInt(m[1])*60+parseInt(m[2]), ae=parseInt(m[3])*60+parseInt(m[4]);
+    if (ae<as) ae+=1440;
+    var covered = shiftIvs.some(function(iv){ return as>=iv.s && ae<=iv.e; });
+    return covered ? n : n + 1;
+  }, 0);
 }
 
 // Calcule la durée réelle d'un groupe de jour :
@@ -524,7 +548,10 @@ window.applyFilters = function applyFilters() {
 // RENDU LISTE
 // ════════════════════════════════════════════
 var ROLE_CSS  = { animateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a' };
-var ROLE_LBL  = { animateur:'Animateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' };
+function ROLE_LBL_FN(r) {
+  var map = { animateur:'mp_vue_animateur', helper:'mp_vue_helper', traducteur:'mp_vue_traducteur', angel:'mp_vue_angel' };
+  return (typeof I18n!=='undefined' && map[r]) ? I18n.t(map[r]) : ({ animateur:'Animateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' }[r] || r);
+}
 
 function renderList(results) {
   var list = document.getElementById('resourceList');
@@ -549,13 +576,15 @@ function renderList(results) {
 
     // Total ateliers + durée — calculés sur les entries filtrées
     // En vue rôle simple : somme directe des durées (pas de logique angel)
-    // En vue combinée ou angel : logique calcDurJour
-    var totalAteliers = res.entries.length;
+    // En vue combinée ou angel : logique calcDurJour / calcNbJour
+    var totalAteliers;
     var totalMins;
     if (!fRole || fRole === 'angel') {
-      totalMins = jours.reduce(function(s,g){ return s + calcDurJour(g.entries); }, 0);
+      totalAteliers = jours.reduce(function(s,g){ return s + calcNbJour(g.entries); }, 0);
+      totalMins     = jours.reduce(function(s,g){ return s + calcDurJour(g.entries); }, 0);
     } else {
       // Pour Helper / Animateur / Traducteur / Colibri : somme simple des durées des entries filtrées
+      totalAteliers = res.entries.length;
       totalMins = res.entries.reduce(function(s,x){ return s + (calcDuree(x.entry.heure)||0); }, 0);
     }
 
@@ -564,7 +593,7 @@ function renderList(results) {
     res.entries.forEach(function(x){ x.roles.forEach(function(r){ rolesSet.add(r); }); });
     var rolesBadges = [...rolesSet].map(function(r) {
       var css = ROLE_CSS[r]||'badge-x';
-      var lbl = ROLE_LBL[r]||r;
+      var lbl = ROLE_LBL_FN(r);
       return '<span class="badge '+css+'">'+lbl+'</span>';
     }).join('');
 
@@ -574,7 +603,7 @@ function renderList(results) {
       return x.roles.indexOf('helper') !== -1 || x.roles.indexOf('traducteur') !== -1;
     });
     var colibriHtml = hasColibriRole
-      ? '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">🕊 Colibri</span>'
+      ? '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">Colibri</span>'
       : '';
 
     // Avatar initiale
@@ -585,7 +614,7 @@ function renderList(results) {
       var rolesJour = new Set();
       g.entries.forEach(function(x){ x.roles.forEach(function(r){ rolesJour.add(r); }); });
       var rBadges = [...rolesJour].map(function(r){
-        return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+(ROLE_LBL[r]||r)+'</span>';
+        return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+ROLE_LBL_FN(r)+'</span>';
       }).join('');
 
       // Badge Colibri au niveau du jour : si au moins 1 atelier du jour = helper/traducteur
@@ -593,7 +622,7 @@ function renderList(results) {
         return x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1;
       });
       if (hasColibriJour) {
-        rBadges += '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">🕊 Colibri</span>';
+        rBadges += '<span class="badge" style="background:#fff7ed;color:#c2410c;border:1px solid #fdba74;">Colibri</span>';
       }
 
       // Durée jour : même logique que pour le total
@@ -603,7 +632,7 @@ function renderList(results) {
       } else {
         durJour = g.entries.reduce(function(s,x){ return s + (calcDuree(x.entry.heure)||0); }, 0);
       }
-      var nb = g.entries.length;
+      var nb = (!fRole || fRole === 'angel') ? calcNbJour(g.entries) : g.entries.length;
 
       // Intervalles des SHIFT ANGEL (pour le grisage des lignes couvertes)
       var angelIntervals = getAngelShiftIntervals(g.entries);
@@ -679,8 +708,13 @@ function renderList(results) {
         }
       });
 
+      // Génère un ID stable pour un shift (basé sur l'index dans AGENDA)
+      function shiftGroupId(shiftEntry) {
+        return 'sg-'+ri+'-'+gi+'-'+AGENDA.indexOf(shiftEntry.entry);
+      }
+
       // Fonction de rendu d'une ligne
-      function renderRow(x, covered) {
+      function renderRow(x, covered, groupId) {
         var e = x.entry;
         var isShift = isAngelEntry(x);
         var dur = calcDuree(e.heure);
@@ -690,37 +724,74 @@ function renderList(results) {
         var facs = [e.fac1,e.fac2].filter(Boolean).join(' & ');
         var pm = parseInt(e.piment)||0;
         var roleBadge = x.roles.map(function(r){
-          return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+(ROLE_LBL[r]||r)+'</span>';
+          return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+ROLE_LBL_FN(r)+'</span>';
         }).join('');
         var agendaIdx = AGENDA.indexOf(e);
 
+        // Pill de durée + nombre ateliers couverts + chevron pour la ligne shift
+        var shiftDurPill = '';
+        if (isShift) {
+          var nbCovered = 0;
+          if (groupId) {
+            // Compter les enfants de ce shift
+            sequence.forEach(function(item) {
+              if (item.covered && item.parentGroupId === groupId) nbCovered++;
+            });
+          }
+          shiftDurPill = (dur ? '<span class="angel-shift-dur-pill">'+fmtDuree(dur)+'</span>' : '') +
+            (nbCovered > 0 ? '<span style="display:inline-block;font-size:10px;font-weight:600;color:var(--badge-a-tx);margin-left:6px;opacity:.8;">'+nbCovered+' atelier'+(nbCovered>1?'s':'')+'</span>' : '') +
+            '<span class="shift-chevron">›</span>';
+        }
+
         // Classe de ligne selon type
-        var rowClass = isShift ? ' class="angel-shift-row"'
-                     : covered ? ' class="angel-covered-row"'
-                     : '';
+        var rowClass, rowAttrs;
+        if (isShift) {
+          rowClass = 'angel-shift-row';
+          // Clic sur la ligne shift → toggle groupe couvert (pas ouverture modale)
+          rowAttrs = ' class="'+rowClass+'" data-shift-group="'+(groupId||'')+'" style="cursor:pointer"'+
+            ' onclick="toggleAngelShift(this)"';
+        } else if (covered) {
+          rowClass = 'angel-covered-row';
+          rowAttrs = ' class="'+rowClass+'" data-shift-member="'+(groupId||'')+'" style="cursor:pointer"'+
+            ' onclick="openDetail('+agendaIdx+',\''+ri+'\')"';
+        } else {
+          rowClass = '';
+          rowAttrs = ' style="cursor:pointer" onclick="openDetail('+agendaIdx+',\''+ri+'\')"';
+        }
 
-        // Pill de durée pour la ligne shift
-        var shiftDurPill = (isShift && dur)
-          ? '<span class="angel-shift-dur-pill">'+fmtDuree(dur)+'</span>'
-          : '';
-
-        return '<tr'+rowClass+' style="cursor:pointer" onclick="openDetail('+agendaIdx+',\''+ri+'\')">'+
+        return '<tr'+rowAttrs+'>'+
           '<td style="width:32px;padding:4px 6px;" onclick="event.stopPropagation()"><button class="info-btn" title="Détails" onclick="openDetail('+agendaIdx+',\''+ri+'\')">ℹ️</button></td>'+
           '<td class="at-heure">'+esc(e.heure||'—')+'</td>'+
           '<td class="at-duree">'+((!isShift && dur) ? fmtDuree(dur) : (isShift ? '' : '—'))+'</td>'+
+          '<td>'+roleBadge+'</td>'+
+          '<td>'+esc(e.lieu||'—')+'</td>'+
           '<td class="at-name">'+esc(e.atelier||'—')+shiftDurPill+
             (pm?'<span style="margin-left:4px;font-size:11px">'+pimentHtml(pm)+'</span>':'')+
-            (isColibri(res.nom) && (x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1) ? '<span class="badge" style="margin-left:5px;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;font-size:9px;">🕊 Colibri</span>' : '')+
+            (isColibri(res.nom) && (x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1) ? '<span class="badge" style="margin-left:5px;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;font-size:9px;">Colibri</span>' : '')+
           '</td>'+
-          '<td>'+esc(e.lieu||'—')+'</td>'+
-          '<td>'+roleBadge+'</td>'+
           '<td>'+esc(facs||'—')+'</td>'+
           '<td>'+langBadge+'</td>'+
           '<td>'+(e.note?'<span style="font-size:11px;color:#d97706">'+esc(e.note)+'</span>':'')+'</td>'+
         '</tr>';
       }
 
-      var tableRows = sequence.map(function(item){ return renderRow(item.x, item.covered); }).join('');
+      // Enrichir la séquence avec parentGroupId sur les entrées couvertes
+      (function() {
+        var currentShiftGroupId = null;
+        sequence.forEach(function(item) {
+          if (isAngelEntry(item.x)) {
+            currentShiftGroupId = shiftGroupId(item.x);
+            item.groupId = currentShiftGroupId;
+          } else if (item.covered) {
+            item.parentGroupId = currentShiftGroupId;
+          }
+        });
+      })();
+
+      var tableRows = sequence.map(function(item) {
+        var gid = item.groupId || item.parentGroupId || null;
+        return renderRow(item.x, item.covered, gid);
+      }).join('');
 
       var tableId = 'tbl-'+ri+'-'+gi;
       return '<div class="day-row" id="drow-'+ri+'-'+gi+'" onclick="toggleDay(\''+ri+'\',\''+gi+'\')">' +
@@ -734,7 +805,7 @@ function renderList(results) {
           '<div class="ateliers-wrap">' +
             '<table class="ateliers-table">' +
               '<thead><tr>' +
-                '<th></th><th>Heure</th><th>Durée</th><th>Atelier</th><th>Lieu</th><th>Rôle</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th>' +
+                '<th></th><th>Heure</th><th>Durée</th><th>Rôle</th><th>Lieu</th><th>Atelier</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th>' +
               '</tr></thead>' +
               '<tbody>'+tableRows+'</tbody>' +
             '</table>' +
@@ -760,6 +831,20 @@ function renderList(results) {
 window.toggleResource = function(ri) {
   var card = document.getElementById('rcard-'+ri);
   if (card) card.classList.toggle('open');
+};
+
+// Toggle les ateliers couverts sous un shift angel
+window.toggleAngelShift = function(shiftRow) {
+  var groupId = shiftRow.getAttribute('data-shift-group');
+  if (!groupId) return;
+  var isOpen = shiftRow.classList.contains('shift-open');
+  shiftRow.classList.toggle('shift-open', !isOpen);
+  // Trouver le tableau parent et basculer toutes les lignes membres
+  var tbody = shiftRow.closest('tbody');
+  if (!tbody) return;
+  tbody.querySelectorAll('[data-shift-member="'+groupId+'"]').forEach(function(row) {
+    row.classList.toggle('shift-visible', !isOpen);
+  });
 };
 
 window.toggleDay = function(ri, gi) {
