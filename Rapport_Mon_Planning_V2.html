@@ -901,6 +901,26 @@ document.addEventListener('keydown', function(ev) {
   if (ev.key==='Escape') closeModal();
 });
 
+// ── Swipe horizontal sur la modal (mobile) → fermer ──────────────────────────
+(function() {
+  var box = document.getElementById('detailBox');
+  var startX = 0, startY = 0;
+
+  box.addEventListener('touchstart', function(ev) {
+    startX = ev.touches[0].clientX;
+    startY = ev.touches[0].clientY;
+  }, { passive: true });
+
+  box.addEventListener('touchend', function(ev) {
+    var dx = ev.changedTouches[0].clientX - startX;
+    var dy = ev.changedTouches[0].clientY - startY;
+    // Swipe horizontal > 60px ET plus horizontal que vertical → fermer
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      closeModal();
+    }
+  }, { passive: true });
+})();
+
 function renderModalBody() {
   var e    = _modalEntry;
   var lang = _modalLang;
