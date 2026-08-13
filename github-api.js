@@ -107,7 +107,7 @@ async function githubSaveFile(filename, content) {
   async function getFreshSha() {
     const r = await fetch(
       `${apiBase}?ref=${GITHUB_BRANCH}&_t=${Date.now()}`,
-      { method: 'GET', headers, cache: 'no-store' }
+      { method: 'GET', headers: { ...headers, 'If-None-Match': '' }, cache: 'no-store' }
     );
     if (r.status === 401) {
       localStorage.removeItem('tm_gh_token');
@@ -144,21 +144,21 @@ async function githubSaveFile(filename, content) {
     const msg = errData.message || '';
     console.log(`[github-api] Conflit ${res.status} pour ${filename}: ${msg}`);
 
-    // Extraire le SHA depuis le message GitHub (formats : "is at <sha>" ou "does not match <sha>")
+    // Toujours refaire un GET frais — plus fiable que d'extraire le SHA du message.
     let freshSha = null;
-    const shaMatch = msg.match(/(?:is at|does not match) ([0-9a-f]{40})/);
-    if (shaMatch) {
-      freshSha = shaMatch[1];
-      console.log(`[github-api] SHA extrait du message d'erreur: ${freshSha}`);
+    try {
+      freshSha = await getFreshSha();
+      console.log(`[github-api] SHA via GET de récupération: ${freshSha}`);
+    } catch(e) {
+      console.warn(`[github-api] GET de récupération échoué: ${e.message}`);
     }
 
-    // Fallback : GET frais si le message ne contenait pas le SHA
+    // Fallback : extraire le SHA depuis le message GitHub si le GET a échoué
     if (!freshSha) {
-      try {
-        freshSha = await getFreshSha();
-        console.log(`[github-api] SHA via GET de récupération: ${freshSha}`);
-      } catch(e) {
-        console.warn(`[github-api] GET de récupération échoué: ${e.message}`);
+      const shaMatch = msg.match(/(?:is at|does not match) ([0-9a-f]{40})/);
+      if (shaMatch) {
+        freshSha = shaMatch[1];
+        console.log(`[github-api] SHA extrait du message d'erreur: ${freshSha}`);
       }
     }
 
