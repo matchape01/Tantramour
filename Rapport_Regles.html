@@ -223,6 +223,7 @@ var REPORTS = [
       { type: 'check', text: 'Les descriptions proviennent de ref_descriptions.js — chargé via loadData(). Si aucune description n\'est disponible, un message "Aucune description disponible" s\'affiche.' },
       { type: 'info',  text: 'Bilingue FR / EN : bouton 🌐 EN dans le header. Tous les libellés d\'interface, dates, noms des jours (Jour 1 → Day 1) et types d\'ateliers sont traduits. La langue est persistée en localStorage.' },
       { type: 'info',  text: 'Le changement de langue est instantané — un listener tm_lang_changed re-rend la grille des jours, l\'écran programme actif et les chips de filtre sans recharger la page.' },
+      { type: 'check', text: 'Mode nuit adaptatif : les badges badge-note et badge-trad / badge-trad-fr ont fond + texte + bordure distincts en mode jour ET mode nuit (surcharges !important). La classe badge-trad-fr remplace l\'ancien style inline pour le badge FR.' },
     ]
   },
   {
@@ -269,6 +270,22 @@ var REPORTS = [
       { type: 'info',  text: 'Deux vues disponibles : Vue par Personne (blocs colorés) et Vue Tableau (triable).' },
       { type: 'info',  text: 'Bouton 📋 sur chaque ligne : ouvre une modale bottom-sheet avec les détails de l\'atelier (date, heure, lieu, équipe, note) et les informations logistiques de logistics.js.' },
       { type: 'check', text: 'La modale se ferme en cliquant sur ✕ CLOSE ou en cliquant sur l\'overlay. Scroll body bloqué pendant l\'ouverture.' },
+    ]
+  },
+  {
+    id: 'mon_planning_v2',
+    icon: '📋',
+    title: 'Mon Planning V2',
+    file: 'Rapport_Mon_Planning_V2.html',
+    type: 'lecture',
+    description: 'Vue par ressource — tous les rôles confondus, modale logistique FR/EN, shifts Angel collapsibles.',
+    rules: [
+      { type: 'info',  text: 'Onglet principal : "Tous tes rôles confondus" — affiche tous les ateliers de la personne, quel que soit le rôle (Animateur, Helper, Traducteur, Angel, Colibri).' },
+      { type: 'info',  text: 'Filtres disponibles : Personne (sélecteur), Recherche nom (texte libre), Vue (onglets de rôle).' },
+      { type: 'check', text: 'Shifts Angel collapsibles : les ateliers couverts par un shift sont masqués par défaut (display:none via .angel-covered-row). Clic sur le shift → toggleAngelShift() révèle les ateliers avec animation chevron. Attributs data-shift-group / data-shift-member gèrent le mécanisme.' },
+      { type: 'info',  text: 'Compteur "N ateliers" affiché dans la pill du shift angel.' },
+      { type: 'info',  text: 'Modale logistique popup : nom atelier FR/EN, type, jour/date, horaire/durée, lieu, équipe, note, instructions participantes, description, logistique et consignes helpers. Toggle FR / EN dans la modale.' },
+      { type: 'check', text: 'Codes couleur lignes : NOM = bleu foncé #1e40af, JOUR = gris foncé #374151 (identiques à Charge de travail).' },
     ]
   },
   {
@@ -355,9 +372,13 @@ var REPORTS = [
     rules: [
       { type: 'block', text: 'Types exclus du calcul de charge : REPAS & PAUSE, PREPA & LOGISTICS, REUNION D\'EQUIPE, TEST. Tous les autres types (ATELIERS TANTRA, MEDITATION, CEREMONIE, LOVE TEMPLE, DJ Set, POOL PARTY, etc.) sont inclus.' },
       { type: 'algo',  text: 'La durée de chaque atelier est calculée depuis le champ heure (format HH:MM - HH:MM ou HH.MM - HH.MM).' },
-      { type: 'algo',  text: 'Pour les Angels : fusion des intervalles qui se chevauchent sur le même jour (interval merging) — on ne compte que la durée nette couverte.' },
+      { type: 'algo',  text: 'Pour les Angels : fusion des intervalles qui se chevauchent sur le même jour (interval merging) — on ne compte que la durée nette couverte. 1 shift angel = 1 seul atelier comptabilisé (merged.length).' },
       { type: 'info',  text: 'Barre de charge par journée : vert < 2h · orange 2–4h · rouge > 4h.' },
       { type: 'info',  text: 'Filtre disponible : Jour (restreint le calcul à une journée).' },
+      { type: 'check', text: 'Carte personne — badges rôles distincts : chaque rôle (Helper, Angel, Traducteur) est affiché séparément avec sa couleur propre, jamais fusionné sur un seul badge. Même logique que les badges de jour.' },
+      { type: 'check', text: 'Badges rôles sans émoji : les labels Helper, Angel, Traducteur sont affichés sans émoji préfixe (ex : pas de 🤝 devant "Helper").' },
+      { type: 'info',  text: 'Codes couleur identiques à Mon Planning V2 : ligne NOM = bleu foncé #1e40af, ligne JOUR = gris foncé #374151.' },
+      { type: 'check', text: 'Rapport entièrement bilingue FR / EN via I18n.t() — 90+ clés r6_* dans ref_translations.js couvrent titre, onglets, summaryBar, buildHarmony, renderHarmony et toggleMode.' },
     ]
   },
   {
@@ -368,7 +389,7 @@ var REPORTS = [
     type: 'algo',
     description: 'Propositions automatiques de rééquilibrage de charge entre Helpers, Angels et Traducteurs.',
     rules: [
-      { type: 'info',  text: 'L\'onglet ⚖️ Harmonisation s\'affiche directement dans la page (pas de popup). Une sous-navigation permet de filtrer les propositions : 📊 Vue globale, 🤝 Helpers, 👼 Angels, 🌐 Traducteurs.' },
+      { type: 'info',  text: 'L\'onglet ⚖️ Harmonisation s\'affiche directement dans la page (pas de popup). Une sous-navigation permet de filtrer les propositions : Vue globale, Helpers, Angels, Traducteurs.' },
       { type: 'algo',  text: 'Seuil SURCHARGÉ : charge > 120 % de la moyenne du groupe (helpers, angels ou traducteurs). Carte orange.' },
       { type: 'algo',  text: 'Seuil TRÈS SURCHARGÉ (alerte) : charge > 140 % de la moyenne. Carte rouge.' },
       { type: 'algo',  text: 'Zone cible acceptable : entre 80 % et 120 % de la moyenne du groupe.' },

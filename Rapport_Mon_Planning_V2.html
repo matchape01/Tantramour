@@ -764,11 +764,11 @@ function renderList(results) {
           '<td class="at-heure">'+esc(e.heure||'—')+'</td>'+
           '<td class="at-duree">'+((!isShift && dur) ? fmtDuree(dur) : (isShift ? '' : '—'))+'</td>'+
           '<td>'+roleBadge+'</td>'+
-          '<td>'+esc(e.lieu||'—')+'</td>'+
           '<td class="at-name">'+esc(e.atelier||'—')+shiftDurPill+
             (pm?'<span style="margin-left:4px;font-size:11px">'+pimentHtml(pm)+'</span>':'')+
             (isColibri(res.nom) && (x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1) ? '<span class="badge" style="margin-left:5px;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;font-size:9px;">Colibri</span>' : '')+
           '</td>'+
+          '<td>'+esc(e.lieu||'—')+'</td>'+
           '<td>'+esc(facs||'—')+'</td>'+
           '<td>'+langBadge+'</td>'+
           '<td>'+(e.note?'<span style="font-size:11px;color:#d97706">'+esc(e.note)+'</span>':'')+'</td>'+
@@ -805,7 +805,7 @@ function renderList(results) {
           '<div class="ateliers-wrap">' +
             '<table class="ateliers-table">' +
               '<thead><tr>' +
-                '<th></th><th>Heure</th><th>Durée</th><th>Rôle</th><th>Lieu</th><th>Atelier</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th>' +
+                '<th></th><th>Heure</th><th>Durée</th><th>Rôle</th><th>Atelier</th><th>Lieu</th><th>Animateur(s)</th><th>Lang.</th><th>Note</th>' +
               '</tr></thead>' +
               '<tbody>'+tableRows+'</tbody>' +
             '</table>' +

@@ -125,7 +125,7 @@
     padding:8px 12px 8px 14px;
     border-radius:8px; margin-bottom:12px;
     border-left:4px solid #6b7280;
-    background:#eef0f3;
+    background:#ffffff;
   }
   .type-section-divider {
     height:1px;
@@ -926,7 +926,6 @@ function renderModalContent() {
   // ── Grille info (horaire, lieu, animateur, traducteur, piment) ──
   if (e) {
     var rows = [];
-    if (e.id) rows.push(['ID', esc(e.id)]);
     if (e.heure) {
       var duree = heureDuree(e.heure);
       rows.push([tModal('rp_horaire'), esc(e.heure) + (duree ? ' <span style="color:var(--muted);font-weight:400">(' + duree + ')</span>' : '')]);
@@ -996,7 +995,7 @@ window.openDetail = function(idx) {
   badgeEl.className = 'modal-type-badge badge badge-type badge-type-c ' + css;
   badgeEl.textContent = typeLabel(e.type);
 
-  document.getElementById('mTitle').textContent    = (e.atelier || '—') + (e.id ? ' (' + e.id + ')' : '');
+  document.getElementById('mTitle').textContent    = (e.atelier || '—');
   document.getElementById('mSubtitle').textContent = jourLabel(e.jour) + (meta.date ? ' — ' + jourDate(meta) : '');
 
   // Rendre la grille + consigne + description selon la langue active

@@ -165,8 +165,8 @@
       <span data-lang="en">User Manual — DreamTeam</span>
     </h2>
     <div class="cover-meta">
-      <span data-lang="fr">6 rapports · Programme festivaliers, plannings équipes</span>
-      <span data-lang="en">6 reports · Festival programme, team schedules</span>
+      <span data-lang="fr">7 rapports · Programme festivaliers, plannings équipes</span>
+      <span data-lang="en">7 reports · Festival programme, team schedules</span>
     </div>
   </div>
 
@@ -200,6 +200,10 @@
       <li><span class="toc-num">6</span><a href="#colibri">
         <span data-lang="fr">Planning Colibri 🐦</span>
         <span data-lang="en">Colibri Schedule 🐦</span>
+      </a></li>
+      <li><span class="toc-num" style="background:#0369a1">7</span><a href="#charge">
+        <span data-lang="fr">Charge de travail — Helpers, Angels &amp; Traducteurs</span>
+        <span data-lang="en">Workload — Helpers, Angels &amp; Translators</span>
       </a></li>
     </ol>
   </div>
@@ -449,6 +453,21 @@
     </div>
 
     <h3>
+      <span data-lang="fr">Shifts Angel — affichage collapsible</span>
+      <span data-lang="en">Angel shifts — collapsible display</span>
+    </h3>
+    <p data-lang="fr">Dans l'onglet <strong>Angel</strong>, les shifts sont affichés sous forme de lignes condensées. Les ateliers couverts par un shift sont <strong>masqués par défaut</strong> et s'affichent en cliquant sur la ligne du shift (chevron ▶ / ▼). Le nombre d'ateliers couverts est indiqué dans la pill du shift.</p>
+    <p data-lang="en">In the <strong>Angel</strong> tab, shifts are displayed as condensed rows. The workshops covered by a shift are <strong>hidden by default</strong> and appear by clicking on the shift row (chevron ▶ / ▼). The number of covered workshops is shown in the shift pill.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>
+        <span data-lang="fr">Cliquer sur un shift angel révèle les ateliers individuels couverts avec leurs horaires précis, en retrait visuel sous la ligne du shift.</span>
+        <span data-lang="en">Clicking an angel shift reveals the individual workshops it covers, with their precise times, visually indented below the shift row.</span>
+      </div>
+    </div>
+
+    <h3>
       <span data-lang="fr">Fiche logistique — modale popup</span>
       <span data-lang="en">Logistics sheet — popup modal</span>
     </h3>
@@ -668,6 +687,127 @@
       <div>
         <span data-lang="fr">Un atelier peut avoir plusieurs Colibris. Il apparaît dans la liste de chaque Colibri concerné lorsque le filtre est actif.</span>
         <span data-lang="en">A workshop can have several Colibris. It appears in each concerned Colibri's list when the filter is active.</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════
+       7 — CHARGE DE TRAVAIL
+  ══════════════════════════════════════ -->
+  <div class="section" id="charge">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <div>
+        <div class="section-title">
+          <span data-lang="fr">Charge de travail</span>
+          <span data-lang="en">Workload</span>
+          <span class="section-badge" style="background:#e0f2fe;color:#0369a1">
+            <span data-lang="fr">Helpers · Angels · Traducteurs</span>
+            <span data-lang="en">Helpers · Angels · Translators</span>
+          </span>
+        </div>
+        <div class="section-subtitle">
+          <span data-lang="fr">Analyse de la répartition de charge et suggestions d'harmonisation</span>
+          <span data-lang="en">Workload distribution analysis and balancing suggestions</span>
+        </div>
+      </div>
+    </div>
+
+    <p data-lang="fr">Ce rapport analyse la <strong>charge de travail</strong> des Helpers, Angels et Traducteurs, exprimée en heures d'ateliers couverts. Il met en évidence les déséquilibres et propose des <strong>suggestions d'harmonisation</strong> automatiques. Il est entièrement <strong>bilingue FR / EN</strong>.</p>
+    <p data-lang="en">This report analyses the <strong>workload</strong> of Helpers, Angels and Translators, expressed in hours of workshops covered. It highlights imbalances and proposes automatic <strong>harmonisation suggestions</strong>. It is fully <strong>bilingual FR / EN</strong>.</p>
+
+    <h3 style="border-left-color:#0369a1">
+      <span data-lang="fr">Onglets</span>
+      <span data-lang="en">Tabs</span>
+    </h3>
+    <table class="data-table">
+      <thead><tr>
+        <th><span data-lang="fr">Onglet</span><span data-lang="en">Tab</span></th>
+        <th><span data-lang="fr">Contenu</span><span data-lang="en">Content</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-h">Helpers</span></td>
+          <td><span data-lang="fr">Charge par helper — heures totales et par jour, barre de charge colorée, tri par nom ou durée</span><span data-lang="en">Load per helper — total and daily hours, colour-coded load bar, sort by name or duration</span></td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-a">Angels</span></td>
+          <td><span data-lang="fr">Charge par angel — durée nette couverte (fusion des créneaux qui se chevauchent). 1 shift angel = 1 seul atelier comptabilisé.</span><span data-lang="en">Load per angel — net duration covered (overlapping slots are merged). 1 angel shift = 1 workshop counted.</span></td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-t"><span data-lang="fr">Traducteurs</span><span data-lang="en">Translators</span></span></td>
+          <td><span data-lang="fr">Charge par traducteur — heures totales et par jour</span><span data-lang="en">Load per translator — total and daily hours</span></td>
+        </tr>
+        <tr>
+          <td><span class="pill" style="background:#ede9fe;color:#7c3aed">⚖️ <span data-lang="fr">Harmonisation</span><span data-lang="en">Harmonisation</span></span></td>
+          <td><span data-lang="fr">Propositions de rééquilibrage automatiques entre membres trop / peu chargés</span><span data-lang="en">Automatic rebalancing proposals between over- and under-loaded members</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#0369a1">
+      <span data-lang="fr">Carte personne — informations affichées</span>
+      <span data-lang="en">Person card — displayed information</span>
+    </h3>
+    <p data-lang="fr">En cliquant sur une personne, ses informations s'affichent avec les détails suivants :</p>
+    <p data-lang="en">Clicking on a person expands their card with the following details:</p>
+    <ul>
+      <li><span data-lang="fr"><strong>Badges rôles distincts</strong> — chaque rôle (Helper, Angel, Traducteur) est affiché séparément avec sa couleur propre, jamais fusionné (ex : pas de "Helper + Traducteur" sur un seul badge)</span><span data-lang="en"><strong>Distinct role badges</strong> — each role (Helper, Angel, Translator) is shown separately with its own colour, never merged (e.g. no "Helper + Translator" on a single badge)</span></li>
+      <li><span data-lang="fr">Heures totales et ventilation par jour</span><span data-lang="en">Total hours and breakdown by day</span></li>
+      <li><span data-lang="fr">Barre de charge par journée : <span style="color:#16a34a">vert &lt; 2 h</span> · <span style="color:#d97706">orange 2–4 h</span> · <span style="color:#dc2626">rouge &gt; 4 h</span></span><span data-lang="en">Daily load bar: <span style="color:#16a34a">green &lt; 2 h</span> · <span style="color:#d97706">orange 2–4 h</span> · <span style="color:#dc2626">red &gt; 4 h</span></span></li>
+    </ul>
+
+    <div class="btn-row" style="margin-top:8px">
+      <span class="pill pill-h">Helper</span>
+      <span class="pill pill-a">Angel</span>
+      <span class="pill pill-t"><span data-lang="fr">Traducteur</span><span data-lang="en">Translator</span></span>
+    </div>
+
+    <h3 style="border-left-color:#0369a1">
+      <span data-lang="fr">Calcul de la charge</span>
+      <span data-lang="en">Load calculation</span>
+    </h3>
+    <table class="data-table">
+      <thead><tr>
+        <th><span data-lang="fr">Rôle</span><span data-lang="en">Role</span></th>
+        <th><span data-lang="fr">Règle de calcul</span><span data-lang="en">Calculation rule</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-h">Helper</span></td>
+          <td><span data-lang="fr">Somme des durées de chaque atelier assigné (types REPAS, PREPA, REUNION, TEST exclus)</span><span data-lang="en">Sum of durations of each assigned workshop (REPAS, PREPA, REUNION, TEST types excluded)</span></td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-a">Angel</span></td>
+          <td><span data-lang="fr">Fusion des intervalles qui se chevauchent sur le même jour (<em>interval merging</em>) — durée nette couverte. 1 shift = 1 atelier comptabilisé.</span><span data-lang="en">Overlapping intervals on the same day are merged (<em>interval merging</em>) — net duration covered. 1 shift = 1 workshop counted.</span></td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-t"><span data-lang="fr">Traducteur</span><span data-lang="en">Translator</span></span></td>
+          <td><span data-lang="fr">Somme des durées de chaque atelier traduit</span><span data-lang="en">Sum of durations of each translated workshop</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="border-left-color:#0369a1">
+      <span data-lang="fr">Onglet Harmonisation</span>
+      <span data-lang="en">Harmonisation tab</span>
+    </h3>
+    <p data-lang="fr">L'onglet ⚖️ Harmonisation propose des transferts de charge entre personnes. Une sous-navigation filtre par groupe : Vue globale, Helpers, Angels, Traducteurs.</p>
+    <p data-lang="en">The ⚖️ Harmonisation tab proposes load transfers between people. A sub-navigation filters by group: Global view, Helpers, Angels, Translators.</p>
+    <ul>
+      <li><span data-lang="fr"><strong>Surchargé</strong> — charge &gt; 120 % de la moyenne du groupe (carte orange)</span><span data-lang="en"><strong>Overloaded</strong> — load &gt; 120 % of group average (orange card)</span></li>
+      <li><span data-lang="fr"><strong>Très surchargé</strong> — charge &gt; 140 % de la moyenne (carte rouge)</span><span data-lang="en"><strong>Very overloaded</strong> — load &gt; 140 % of average (red card)</span></li>
+      <li><span data-lang="fr"><strong>Disponible</strong> — charge &lt; 85 % de la moyenne ET charge globale ≤ 130 % de la moyenne globale</span><span data-lang="en"><strong>Available</strong> — load &lt; 85 % of average AND global load ≤ 130 % of global average</span></li>
+    </ul>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <span data-lang="fr">Les Helpers ayant le rôle <code>colibri</code>, <code>manager</code> ou <code>admin</code> sont exclus des calculs de moyenne et des suggestions d'harmonisation.</span>
+        <span data-lang="en">Helpers with the <code>colibri</code>, <code>manager</code> or <code>admin</code> role are excluded from average calculations and harmonisation suggestions.</span>
       </div>
     </div>
   </div>

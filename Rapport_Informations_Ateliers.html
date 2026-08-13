@@ -40,7 +40,39 @@
     .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
     .btn { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 14px; font-size:13px; color:var(--text); font-family:inherit; display:inline-flex; align-items:center; gap:6px; text-decoration:none; transition:background .15s; }
     .btn:hover { background:var(--border); }
+    .btn:disabled { opacity:.6; cursor:wait; }
     .btn-sm { padding:5px 10px; font-size:12px; }
+    .hidden-file-input { display:none; }
+
+    .import-panel { display:none; margin-bottom:16px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+    .import-panel.open { display:block; }
+    .import-title { font-size:12px; font-weight:700; margin-bottom:6px; }
+    .import-help { font-size:12px; color:var(--muted); margin-bottom:12px; }
+    .import-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .import-summary { margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+    .import-summary-box { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; }
+    .import-summary-title { font-size:12px; font-weight:700; margin-bottom:8px; }
+    .import-summary-list { display:flex; flex-direction:column; gap:8px; }
+    .import-item { border:1px solid var(--border); border-radius:8px; padding:10px; background:var(--bg); }
+    .import-item-head { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; margin-bottom:8px; }
+    .import-item-title { font-size:13px; font-weight:700; }
+    .import-item-meta { font-size:11px; color:var(--muted); }
+    .import-item-context { margin-top:4px; font-size:11px; color:var(--muted); }
+    .import-fields-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+    .import-field { border:1px solid var(--border); border-radius:8px; padding:8px; background:var(--surface); }
+    .import-field-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; }
+    .import-field-values { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:start; margin-top:4px; }
+    .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; }
+    .import-field-arrow { color:var(--muted); font-size:12px; padding-top:2px; }
+    .import-choice { display:flex; gap:12px; margin-top:6px; font-size:12px; }
+    .import-choice label { display:flex; align-items:center; gap:5px; cursor:pointer; }
+    .import-empty { font-size:12px; color:var(--muted); font-style:italic; }
+    .status-ok { color:#166534; }
+    .status-warn { color:#92400e; }
+
+    @media(max-width:900px) {
+      .import-fields-grid { grid-template-columns:1fr; }
+    }
 
     /* ── FILTRES ── */
     .filters-panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:18px; }
@@ -133,10 +165,22 @@
       <a class="btn" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn" onclick="exportAteliersDetailsExcel()">📥 Export Excel</button>
+      <button class="btn" onclick="toggleImportPanel()">📤 Import Excel</button>
       <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 <span data-i18n="nav_mode_nuit">Mode Nuit</span></button>
+      <input class="hidden-file-input" id="importExcelInput" type="file" accept=".xlsx" onchange="handleImportFile(event)">
       <button class="btn tm-lang-btn" onclick="I18n.setLang(I18n.getLang()==='fr'?'en':'fr')">🌐 EN</button>
     </div>
   </header>
+
+  <div class="import-panel" id="importPanel">
+    <div class="import-title">Import des informations ateliers</div>
+    <div class="import-help">Importe un fichier Excel au format <strong>TAF2026_ATELIERS DETAILS</strong>. Seules les colonnes K, M à W sont prises en compte, avec l’ID comme repère.</div>
+    <div class="import-actions">
+      <button class="btn" onclick="triggerImportFile()">Choisir un fichier .xlsx</button>
+      <button class="btn btn-sm" onclick="closeImportPanel()">Fermer</button>
+    </div>
+    <div class="import-summary" id="importSummary"></div>
+  </div>
 
   <!-- ══ ÉCRAN LISTE ══ -->
   <div id="screenList">
@@ -157,27 +201,19 @@
           </select>
         </div>
         <div class="filter-group">
-          <div class="filter-label" data-i18n="r_desc_filter_fac">🎓 Animateur</div>
-          <select class="filter-select" id="fFac" onchange="applyFilters()">
-            <option value="" data-i18n="r_desc_all_fac">Tous</option>
+          <div class="filter-label">👤 Nom</div>
+          <select class="filter-select" id="fNom" onchange="applyFilters()">
+            <option value="">Tout le monde</option>
           </select>
         </div>
         <div class="filter-group">
-          <div class="filter-label" data-i18n="ria_filter_helper">🤝 Helper</div>
-          <select class="filter-select" id="fHelper" onchange="applyFilters()">
-            <option value="" data-i18n="ria_filter_all_helpers">Tous</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <div class="filter-label" data-i18n="col_traducteur_long">🌐 Traducteur</div>
-          <select class="filter-select" id="fTrad" onchange="applyFilters()">
-            <option value="" data-i18n="ria_filter_all_trad">Tous</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <div class="filter-label" data-i18n="col_angel">👼 Angel</div>
-          <select class="filter-select" id="fAngel" onchange="applyFilters()">
-            <option value="" data-i18n="ria_filter_all_angels">Tous</option>
+          <div class="filter-label">🎭 Rôle</div>
+          <select class="filter-select" id="fRole" onchange="applyFilters()">
+            <option value="">Tous les rôles</option>
+            <option value="animateur">Animateur</option>
+            <option value="helper">Helper</option>
+            <option value="traducteur">Traducteur</option>
+            <option value="angel">Angel</option>
           </select>
         </div>
         <div class="filter-reset-wrap">
@@ -251,6 +287,28 @@ function jourLabel(jour) {
 var currentAgendaIdx = -1;
 var _modalLang = 'fr';
 var _modalEntry = null;
+var IMPORT_ALLOWED_PIMENTS = { '0':true, '1':true, '2':true, '3':true };
+var IMPORT_ALLOWED_PREP = { '0':true, '15':true, '30':true, '45':true, '60':true };
+var IMPORT_HEADERS = [
+  'ID','Atelier (FR)','Animateur 1','Animateur 2','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
+  'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
+  'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
+];
+var IMPORT_FIELD_DEFS = [
+  { key:'piment', label:'Piment', col:11 },
+  { key:'nomEn', label:'Workshop name (ENG)', col:13 },
+  { key:'descFr', label:'Description (FR)', col:14 },
+  { key:'descEn', label:'Description (ENG)', col:15 },
+  { key:'consigne', label:'Instructions participants (FR)', col:16 },
+  { key:'consigneEn', label:'Participant instructions (ENG)', col:17 },
+  { key:'prepDuration', label:'Estimation préparation', col:18 },
+  { key:'logInfo', label:'Informations logistiques', col:19 },
+  { key:'logSpecial', label:'Besoins logistiques spécifiques', col:20 },
+  { key:'helperAvant', label:'Consignes HELPER – AVANT', col:21 },
+  { key:'helperPendant', label:'Consignes HELPER – PENDANT', col:22 },
+  { key:'helperApres', label:'Consignes HELPER – APRES', col:23 }
+];
+var IMPORT_PREVIEW = null;
 
 // ════════════════════════════════════════════
 // INDEX DESCRIPTIONS
@@ -264,25 +322,31 @@ if (typeof REF_DESCRIPTIONS !== 'undefined') {
 function getDesc(atelier) {
   return DESCS_BY_NAME[(atelier||'').trim().toLowerCase()] || null;
 }
+function rebuildDescIndex() {
+  DESCS_BY_NAME = {};
+  if (typeof REF_DESCRIPTIONS === 'undefined') return;
+  REF_DESCRIPTIONS.forEach(function(d) {
+    DESCS_BY_NAME[(d.atelier||'').trim().toLowerCase()] = d;
+  });
+}
 
 // ════════════════════════════════════════════
 // PEUPLEMENT DES FILTRES
 // ════════════════════════════════════════════
 function buildFilters() {
-  var jours=new Set(), types=new Set(), facs=new Set(),
-      helpers=new Set(), trads=new Set(), angels=new Set();
+  var jours=new Set(), types=new Set(), noms=new Set();
 
   AGENDA.forEach(function(e) {
     if (e.jour)       jours.add(e.jour);
     if (e.type)       types.add(e.type);
-    if (e.fac1)       facs.add(e.fac1);
-    if (e.fac2)       facs.add(e.fac2);
-    if (e.helper1)    helpers.add(e.helper1);
-    if (e.helper2)    helpers.add(e.helper2);
-    if (e.helper3)    helpers.add(e.helper3);
-    if (e.helper4)    helpers.add(e.helper4);
-    if (e.traduction) trads.add(e.traduction);
-    if (e.angel)      angels.add(e.angel);
+    if (e.fac1)       noms.add(e.fac1);
+    if (e.fac2)       noms.add(e.fac2);
+    if (e.helper1)    noms.add(e.helper1);
+    if (e.helper2)    noms.add(e.helper2);
+    if (e.helper3)    noms.add(e.helper3);
+    if (e.helper4)    noms.add(e.helper4);
+    if (e.traduction) noms.add(e.traduction);
+    if (e.angel)      noms.add(e.angel);
   });
 
   function fill(selId, set, sorted) {
@@ -299,12 +363,9 @@ function buildFilters() {
       });
   }
 
-  fill('fJour',   jours,   false);
-  fill('fType',   types,   true);
-  fill('fFac',    facs,    true);
-  fill('fHelper', helpers, true);
-  fill('fTrad',   trads,   true);
-  fill('fAngel',  angels,  true);
+  fill('fJour', jours, false);
+  fill('fType', types, true);
+  fill('fNom',  noms,  true);
 }
 
 // ════════════════════════════════════════════
@@ -313,19 +374,29 @@ function buildFilters() {
 function getFiltered() {
   var fJ = document.getElementById('fJour').value;
   var fT = document.getElementById('fType').value;
-  var fF = document.getElementById('fFac').value;
-  var fH = document.getElementById('fHelper').value;
-  var fR = document.getElementById('fTrad').value;
-  var fA = document.getElementById('fAngel').value;
+  var fR = document.getElementById('fRole').value;
+  var fN = document.getElementById('fNom').value;
 
   var result = [];
   AGENDA.forEach(function(e, idx) {
     if (fJ && e.jour !== fJ) return;
     if (fT && e.type !== fT) return;
-    if (fF && e.fac1 !== fF && e.fac2 !== fF) return;
-    if (fH && e.helper1 !== fH && e.helper2 !== fH && e.helper3 !== fH && e.helper4 !== fH) return;
-    if (fR && e.traduction !== fR) return;
-    if (fA && e.angel !== fA) return;
+    if (fN) {
+      var inAnim = (e.fac1 === fN || e.fac2 === fN);
+      var inHelp = (e.helper1 === fN || e.helper2 === fN || e.helper3 === fN || e.helper4 === fN);
+      var inTrad = (e.traduction === fN);
+      var inAngel= (e.angel === fN);
+      if (fR === 'animateur'  && !inAnim)  return;
+      if (fR === 'helper'     && !inHelp)  return;
+      if (fR === 'traducteur' && !inTrad)  return;
+      if (fR === 'angel'      && !inAngel) return;
+      if (!fR && !inAnim && !inHelp && !inTrad && !inAngel) return;
+    } else if (fR) {
+      if (fR === 'animateur'  && !e.fac1 && !e.fac2)                                           return;
+      if (fR === 'helper'     && !e.helper1 && !e.helper2 && !e.helper3 && !e.helper4)         return;
+      if (fR === 'traducteur' && !e.traduction)                                                 return;
+      if (fR === 'angel'      && !e.angel)                                                      return;
+    }
     result.push({ e:e, idx:idx });
   });
 
@@ -341,7 +412,7 @@ function applyFilters() { renderList(getFiltered()); }
 window.applyFilters = applyFilters;
 
 function resetFilters() {
-  ['fJour','fType','fFac','fHelper','fTrad','fAngel'].forEach(function(id){
+  ['fJour','fType','fRole','fNom'].forEach(function(id){
     document.getElementById(id).value = '';
   });
   applyFilters();
@@ -735,7 +806,17 @@ function formatExportDate(dateStr) {
   var month = monthKey && monthMap[monthKey[1]] ? monthMap[monthKey[1]] : '';
   return month ? (day + '/' + month + '/' + year) : dateStr;
 }
+var JOUR_DATE_MAP = {
+  'Jour 1': '29/08/2026',
+  'Jour 2': '30/08/2026',
+  'Jour 3': '31/08/2026',
+  'Jour 4': '01/09/2026',
+  'Jour 5': '02/09/2026',
+  'Jour 6': '03/09/2026',
+  'Jour 7': '04/09/2026'
+};
 function getExportDateValue(entry) {
+  if (entry.jour && JOUR_DATE_MAP[entry.jour]) return JOUR_DATE_MAP[entry.jour];
   var refJour = typeof REF_JOURS !== 'undefined'
     ? REF_JOURS.find(function(j) { return j.value === entry.jour; })
     : null;
@@ -810,7 +891,7 @@ function downloadExcelFile(rows, filename) {
     if (rowNumber === 1 || !cell.value) return;
     var parts = String(cell.value).split('/');
     if (parts.length === 3) {
-      cell.value = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+      cell.value = new Date(Date.UTC(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0])));
       cell.numFmt = 'dd/mm/yyyy';
     }
   });
@@ -843,6 +924,439 @@ function exportAteliersDetailsExcel() {
   });
 }
 window.exportAteliersDetailsExcel = exportAteliersDetailsExcel;
+
+function toggleImportPanel() {
+  var panel = document.getElementById('importPanel');
+  panel.classList.toggle('open');
+}
+window.toggleImportPanel = toggleImportPanel;
+
+function closeImportPanel() {
+  document.getElementById('importPanel').classList.remove('open');
+}
+window.closeImportPanel = closeImportPanel;
+
+function triggerImportFile() {
+  document.getElementById('importExcelInput').click();
+}
+window.triggerImportFile = triggerImportFile;
+
+function normalizeCellValue(value) {
+  if (value == null) return '';
+  if (typeof value === 'object') {
+    if (value.text != null) return normalizeCellValue(value.text);
+    if (value.richText && value.richText.length) {
+      return normalizeCellValue(value.richText.map(function(part) { return part.text || ''; }).join(''));
+    }
+    if (value.result != null) return normalizeCellValue(value.result);
+    if (value.formula != null && value.result == null) return normalizeCellValue(value.formula);
+    if (value.sharedFormula != null && value.result == null) return normalizeCellValue(value.sharedFormula);
+    if (value.hyperlink != null) return normalizeCellValue(value.text || value.hyperlink);
+  }
+  return String(value).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+}
+function normalizeComparableValue(value) {
+  return normalizeCellValue(value).replace(/\s+/g, ' ').trim();
+}
+function formatImportValue(value) {
+  var txt = normalizeCellValue(value);
+  return txt || '—';
+}
+function parseImportNumber(value) {
+  var txt = normalizeCellValue(value);
+  if (!txt) return '';
+  if (/^\d+(?:[\.,]\d+)?$/.test(txt)) {
+    return String(Number(txt.replace(',', '.')));
+  }
+  return txt;
+}
+function textToHtml(text) {
+  var safe = esc(normalizeCellValue(text));
+  return safe ? safe.replace(/\n/g, '<br>') : '';
+}
+function getAgendaByIdMap() {
+  var map = {};
+  AGENDA.forEach(function(entry, idx) {
+    if (entry.id) map[entry.id] = { entry:entry, idx:idx };
+  });
+  return map;
+}
+function getImportHeaderError(row) {
+  for (var i = 0; i < IMPORT_HEADERS.length; i++) {
+    if (normalizeComparableValue(row.getCell(i + 1).value) !== normalizeComparableValue(IMPORT_HEADERS[i])) {
+      return 'Structure invalide : colonne ' + String.fromCharCode(65 + i) + ' attendue « ' + IMPORT_HEADERS[i] + ' ».';
+    }
+  }
+  return '';
+}
+function handleImportFile(event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (!/\.xlsx$/i.test(file.name)) {
+    showToast('❌ Le fichier doit être au format .xlsx', true);
+    renderImportError('Le fichier sélectionné n’est pas un .xlsx.');
+    return;
+  }
+  if (typeof ExcelJS === 'undefined') {
+    showToast('❌ Bibliothèque Excel indisponible', true);
+    renderImportError('La bibliothèque ExcelJS est indisponible.');
+    return;
+  }
+  closeModal();
+  document.getElementById('importPanel').classList.add('open');
+  renderImportLoading(file.name);
+  file.arrayBuffer().then(function(buffer) {
+    var workbook = new ExcelJS.Workbook();
+    return workbook.xlsx.load(buffer);
+  }).then(function(workbook) {
+    var sheet = workbook.worksheets[0];
+    if (!sheet) throw new Error('Le fichier Excel ne contient aucune feuille.');
+    var headerError = getImportHeaderError(sheet.getRow(1));
+    if (headerError) throw new Error(headerError);
+    var preview = buildImportPreview(sheet);
+    IMPORT_PREVIEW = preview;
+    renderImportPreview(preview, file.name);
+    if (!preview.items.length) {
+      showToast('ℹ️ Aucune modification détectée');
+    }
+  }).catch(function(err) {
+    IMPORT_PREVIEW = null;
+    renderImportError(err.message || 'Import impossible.');
+    showToast('❌ ' + (err.message || 'Import impossible'), true);
+  });
+}
+window.handleImportFile = handleImportFile;
+
+function buildImportPreview(sheet) {
+  var agendaById = getAgendaByIdMap();
+  var items = [];
+  var seenIds = {};
+  for (var rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber++) {
+    var row = sheet.getRow(rowNumber);
+    var id = normalizeCellValue(row.getCell(1).value);
+    if (!id) continue;
+    if (seenIds[id]) {
+      throw new Error('ID atelier dupliqué dans le fichier importé : ' + id + '.');
+    }
+    seenIds[id] = true;
+    var agendaInfo = agendaById[id];
+    if (!agendaInfo) {
+      throw new Error('ID atelier inconnu : ' + id + ' (ligne ' + rowNumber + ').');
+    }
+    var entry = agendaInfo.entry;
+    var desc = getDesc(entry.atelier) || {};
+    var logId = entry.logisticId || '';
+    var logEntry = logId && typeof LOGISTICS !== 'undefined' ? LOGISTICS[logId] : null;
+    var specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL[logId] : null;
+    var helpEntry = logId && typeof LOGISTICS_HELPERS !== 'undefined' ? LOGISTICS_HELPERS[logId] : null;
+    var changes = [];
+
+    IMPORT_FIELD_DEFS.forEach(function(def) {
+      var raw = row.getCell(def.col).value;
+      var nextValue = (def.key === 'piment' || def.key === 'prepDuration') ? parseImportNumber(raw) : normalizeCellValue(raw);
+      var currentValue = '';
+      if (def.key === 'piment') currentValue = String(entry.piment || 0);
+      else if (def.key === 'nomEn') currentValue = normalizeCellValue(desc.nomEn || '');
+      else if (def.key === 'descFr') currentValue = normalizeCellValue(desc.descFr || '');
+      else if (def.key === 'descEn') currentValue = normalizeCellValue(desc.descEn || '');
+      else if (def.key === 'consigne') currentValue = normalizeCellValue(desc.consigne || '');
+      else if (def.key === 'consigneEn') currentValue = normalizeCellValue(desc.consigneEn || '');
+      else if (def.key === 'prepDuration') currentValue = logEntry && logEntry.prepDuration != null ? String(logEntry.prepDuration) : '';
+      else if (def.key === 'logInfo') currentValue = normalizeCellValue(htmlToText(logEntry ? (logEntry.html || logEntry.text || '') : ''));
+      else if (def.key === 'logSpecial') currentValue = normalizeCellValue(htmlToText(specEntry ? (specEntry.html || specEntry.text || '') : ''));
+      else if (def.key === 'helperAvant') currentValue = normalizeCellValue(htmlToText(helpEntry ? helpEntry.avant || '' : ''));
+      else if (def.key === 'helperPendant') currentValue = normalizeCellValue(htmlToText(helpEntry ? helpEntry.pendant || '' : ''));
+      else if (def.key === 'helperApres') currentValue = normalizeCellValue(htmlToText(helpEntry ? helpEntry.apres || '' : ''));
+
+      if (def.key === 'piment' && nextValue && !IMPORT_ALLOWED_PIMENTS[nextValue]) {
+        throw new Error('Valeur Piment invalide pour ' + id + ' : ' + nextValue + '. Valeurs autorisées : 0, 1, 2, 3.');
+      }
+      if (def.key === 'prepDuration' && nextValue && !IMPORT_ALLOWED_PREP[nextValue]) {
+        throw new Error('Valeur Estimation préparation invalide pour ' + id + ' : ' + nextValue + '. Valeurs autorisées : 0, 15, 30, 45, 60.');
+      }
+      if (normalizeComparableValue(currentValue) === normalizeComparableValue(nextValue)) return;
+      changes.push({ key:def.key, label:def.label, currentValue:currentValue, nextValue:nextValue, choice:'apply' });
+    });
+
+    if (changes.length) {
+      items.push({
+        id:id,
+        atelier:entry.atelier || '',
+        agendaIdx:agendaInfo.idx,
+        jour: entry.jour || '',
+        heure: entry.heure || '',
+        lieu: entry.lieu || '',
+        facs: [entry.fac1, entry.fac2].filter(Boolean).join(' & '),
+        changes:changes
+      });
+    }
+  }
+  return { items:items, totalChanges:items.reduce(function(sum, item) { return sum + item.changes.length; }, 0) };
+}
+
+function renderImportLoading(filename) {
+  document.getElementById('importSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title">Lecture du fichier</div><div class="import-empty">Analyse en cours : ' + esc(filename) + '</div></div>';
+}
+function renderImportError(message) {
+  document.getElementById('importSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
+}
+function renderImportPreview(preview, filename) {
+  var summary = document.getElementById('importSummary');
+  if (!preview.items.length) {
+    summary.innerHTML =
+      '<div class="import-summary-box"><div class="import-summary-title status-ok">Fichier analysé</div><div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
+    return;
+  }
+  summary.innerHTML =
+    '<div class="import-summary-box">' +
+      '<div class="import-summary-title">Validation des modifications</div>' +
+      '<div class="import-help">Chaque ligne propose les différences détectées. Tu peux accepter ou ignorer chaque valeur avant enregistrement.</div>' +
+      '<div class="import-item-meta">' + preview.items.length + ' atelier(s) concerné(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        return '<div class="import-item">' +
+          '<div class="import-item-head">' +
+            '<div>' +
+              '<div class="import-item-title">' + esc(item.atelier || item.id) + '</div>' +
+              '<div class="import-item-meta">ID : ' + esc(item.id) + '</div>' +
+              '<div class="import-item-context">' +
+                (item.jour ? esc(item.jour) : '—') +
+                (item.heure ? ' · ' + esc(item.heure) : '') +
+                (item.lieu ? ' · ' + esc(item.lieu) : '') +
+                (item.facs ? ' · ' + esc(item.facs) : '') +
+              '</div>' +
+            '</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+          '</div>' +
+          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
+            return '<div class="import-field">' +
+              '<div class="import-field-name">' + esc(change.label) + '</div>' +
+              '<div class="import-field-values">' +
+                '<div class="import-field-value">' + esc(formatImportValue(change.currentValue)).replace(/\n/g,'<br>') + '</div>' +
+                '<div class="import-field-arrow">→</div>' +
+                '<div class="import-field-value">' + esc(formatImportValue(change.nextValue)).replace(/\n/g,'<br>') + '</div>' +
+              '</div>' +
+              '<div class="import-choice">' +
+                '<label><input type="radio" name="import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
+                '<label><input type="radio" name="import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
+              '</div>' +
+            '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+      }).join('') + '</div>' +
+      '<div class="import-actions">' +
+        '<button class="btn" id="importApplyBtn" onclick="applyImportPreview()">✅ Valider l’import</button>' +
+        '<button class="btn btn-sm" id="importCancelBtn" onclick="clearImportPreview()">✕ Annuler</button>' +
+      '</div>' +
+    '</div>';
+}
+function clearImportPreview() {
+  IMPORT_PREVIEW = null;
+  document.getElementById('importSummary').innerHTML = '';
+}
+window.clearImportPreview = clearImportPreview;
+function setImportChoice(itemIdx, changeIdx, choice) {
+  if (!IMPORT_PREVIEW || !IMPORT_PREVIEW.items[itemIdx] || !IMPORT_PREVIEW.items[itemIdx].changes[changeIdx]) return;
+  IMPORT_PREVIEW.items[itemIdx].changes[changeIdx].choice = choice;
+}
+window.setImportChoice = setImportChoice;
+
+async function saveTextFile(filename, content) {
+  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
+  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) {
+    var res = await fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: filename, content: content })
+    });
+    if (!res.ok) {
+      var err = await res.json().catch(function() { return {}; });
+      throw new Error(err.error || ('Erreur ' + res.status));
+    }
+    return;
+  }
+  await githubSaveFile(filename, content);
+}
+function ensureDescEntry(entry) {
+  if (typeof REF_DESCRIPTIONS === 'undefined') window.REF_DESCRIPTIONS = [];
+  var desc = getDesc(entry.atelier);
+  if (desc) return desc;
+  var key = (entry.atelier || 'atelier').toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
+  desc = {
+    key:key,
+    atelier:entry.atelier || '',
+    nomEn:'',
+    type:entry.type || '',
+    piment:entry.piment || 0,
+    fac1:entry.fac1 || '',
+    fac2:entry.fac2 || '',
+    descFr:'',
+    descEn:'',
+    consigne:'',
+    consigneEn:'',
+    validatedByFac:false,
+    updatedAt:''
+  };
+  REF_DESCRIPTIONS.push(desc);
+  rebuildDescIndex();
+  return desc;
+}
+function ensureLogisticId(entry) {
+  if (entry.logisticId) return entry.logisticId;
+  var safeName = (entry.atelier || 'ATELIER').replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase();
+  var jourKey = (entry.jour || '').replace(/\s+/g,'').toUpperCase();
+  entry.logisticId = jourKey + '_' + safeName;
+  return entry.logisticId;
+}
+function generateRefDescriptionsJs() {
+  return '/**\n * TANTRAMOUR 2026 — Descriptions des Ateliers (FR / EN)\n * Géré automatiquement\n */\n\nvar REF_DESCRIPTIONS = [\n\n' +
+    REF_DESCRIPTIONS.map(function(d) {
+      return '  { key:' + JSON.stringify(d.key || '') + ', atelier:' + JSON.stringify(d.atelier || '') + ', nomEn:' + JSON.stringify(d.nomEn || '') + ', type:' + JSON.stringify(d.type || '') + ', piment:' + JSON.stringify(d.piment || 0) + ', fac1:' + JSON.stringify(d.fac1 || '') + ', fac2:' + JSON.stringify(d.fac2 || '') + ', descFr:' + JSON.stringify(d.descFr || '') + ', descEn:' + JSON.stringify(d.descEn || '') + ', consigne:' + JSON.stringify(d.consigne || '') + ', consigneEn:' + JSON.stringify(d.consigneEn || '') + ', validatedByFac:' + JSON.stringify(!!d.validatedByFac) + ', updatedAt:' + JSON.stringify(d.updatedAt || '') + ' }';
+    }).join(',\n') + '\n\n];\n';
+}
+function generateLogisticsJs() {
+  var keys = Object.keys(LOGISTICS || {}).sort();
+  return '/**\n * TANTRAMOUR 2026 — Informations logistiques\n * Géré automatiquement\n */\n\nvar LOGISTICS = {\n' + keys.map(function(key) {
+    var item = LOGISTICS[key] || {};
+    return '  ' + JSON.stringify(key) + ': { html:' + JSON.stringify(item.html || '') + ', text:' + JSON.stringify(item.text || '') + ', validatedByFac:' + JSON.stringify(!!item.validatedByFac) + ', prepDuration:' + JSON.stringify(item.prepDuration != null ? item.prepDuration : '') + ', updatedAt:' + JSON.stringify(item.updatedAt || '') + ' }';
+  }).join(',\n') + '\n};\n';
+}
+function generateLogisticsSpecialJs() {
+  var keys = Object.keys(LOGISTICS_SPECIAL || {}).sort();
+  return '/**\n * TANTRAMOUR 2026 — Besoins logistiques spécifiques\n * Géré automatiquement\n */\n\nvar LOGISTICS_SPECIAL = {\n' + keys.map(function(key) {
+    var item = LOGISTICS_SPECIAL[key] || {};
+    return '  ' + JSON.stringify(key) + ': { html:' + JSON.stringify(item.html || '') + ', text:' + JSON.stringify(item.text || '') + ', updatedAt:' + JSON.stringify(item.updatedAt || '') + ' }';
+  }).join(',\n') + '\n};\n';
+}
+function generateLogisticsHelpersJs() {
+  var keys = Object.keys(LOGISTICS_HELPERS || {}).sort();
+  return '/**\n * TANTRAMOUR 2026 — Consignes helpers\n * Géré automatiquement\n */\n\nvar LOGISTICS_HELPERS = {\n' + keys.map(function(key) {
+    var item = LOGISTICS_HELPERS[key] || {};
+    return '  ' + JSON.stringify(key) + ': { avant:' + JSON.stringify(item.avant || '') + ', pendant:' + JSON.stringify(item.pendant || '') + ', apres:' + JSON.stringify(item.apres || '') + ', updatedAt:' + JSON.stringify(item.updatedAt || '') + ' }';
+  }).join(',\n') + '\n};\n';
+}
+function setImportSavingState(isSaving) {
+  var applyBtn = document.getElementById('importApplyBtn');
+  var cancelBtn = document.getElementById('importCancelBtn');
+  if (applyBtn) {
+    applyBtn.disabled = isSaving;
+    applyBtn.textContent = isSaving ? '⏳ Enregistrement en cours...' : '✅ Valider l’import';
+  }
+  if (cancelBtn) cancelBtn.disabled = isSaving;
+}
+async function applyImportPreview() {
+  if (!IMPORT_PREVIEW || !IMPORT_PREVIEW.items.length) return;
+  var items = IMPORT_PREVIEW.items;
+  var appliedCount = 0;
+  var now = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
+
+  items.forEach(function(item) {
+    var entry = AGENDA[item.agendaIdx];
+    if (!entry) return;
+    var selectedChanges = item.changes.filter(function(change) { return change.choice !== 'skip'; });
+    if (!selectedChanges.length) return;
+    var desc = null;
+    var logId = '';
+    selectedChanges.forEach(function(change) {
+      var value = change.nextValue;
+      if (change.key === 'piment') {
+        entry.piment = parseInt(value || '0', 10) || 0;
+        desc = desc || ensureDescEntry(entry);
+        desc.piment = entry.piment;
+        desc.updatedAt = now;
+      } else if (change.key === 'nomEn' || change.key === 'descFr' || change.key === 'descEn' || change.key === 'consigne' || change.key === 'consigneEn') {
+        desc = desc || ensureDescEntry(entry);
+        desc[change.key] = normalizeCellValue(value);
+        desc.type = entry.type || desc.type || '';
+        desc.fac1 = entry.fac1 || desc.fac1 || '';
+        desc.fac2 = entry.fac2 || desc.fac2 || '';
+        desc.updatedAt = now;
+      } else {
+        logId = logId || ensureLogisticId(entry);
+        if (typeof LOGISTICS === 'undefined') window.LOGISTICS = {};
+        if (typeof LOGISTICS_SPECIAL === 'undefined') window.LOGISTICS_SPECIAL = {};
+        if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
+        if (!LOGISTICS[logId]) LOGISTICS[logId] = { html:'', text:'', validatedByFac:false, prepDuration:'', updatedAt:'' };
+        if (!LOGISTICS_SPECIAL[logId]) LOGISTICS_SPECIAL[logId] = { html:'', text:'', updatedAt:'' };
+        if (!LOGISTICS_HELPERS[logId]) LOGISTICS_HELPERS[logId] = { avant:'', pendant:'', apres:'', updatedAt:'' };
+
+        if (change.key === 'prepDuration') {
+          LOGISTICS[logId].prepDuration = value === '' ? '' : parseInt(value, 10);
+          LOGISTICS[logId].updatedAt = now;
+        } else if (change.key === 'logInfo') {
+          LOGISTICS[logId].html = textToHtml(value);
+          LOGISTICS[logId].text = normalizeCellValue(value);
+          LOGISTICS[logId].updatedAt = now;
+        } else if (change.key === 'logSpecial') {
+          LOGISTICS_SPECIAL[logId].html = textToHtml(value);
+          LOGISTICS_SPECIAL[logId].text = normalizeCellValue(value);
+          LOGISTICS_SPECIAL[logId].updatedAt = now;
+        } else if (change.key === 'helperAvant' || change.key === 'helperPendant' || change.key === 'helperApres') {
+          var helperKey = change.key === 'helperAvant' ? 'avant' : (change.key === 'helperPendant' ? 'pendant' : 'apres');
+          LOGISTICS_HELPERS[logId][helperKey] = textToHtml(value);
+          LOGISTICS_HELPERS[logId].updatedAt = now;
+        }
+      }
+      appliedCount++;
+    });
+  });
+
+  if (!appliedCount) {
+    showToast('ℹ️ Aucune valeur sélectionnée pour l’import');
+    return;
+  }
+
+  setImportSavingState(true);
+  try {
+    var saveResults = await Promise.allSettled([
+      saveTextFile('data.js', 'var AGENDA = ' + JSON.stringify(AGENDA, null, 2) + ';\n'),
+      saveTextFile('ref_descriptions.js', generateRefDescriptionsJs()),
+      saveTextFile('logistics.js', generateLogisticsJs()),
+      saveTextFile('logistics.special.js', generateLogisticsSpecialJs()),
+      saveTextFile('logistics.helpers.js', generateLogisticsHelpersJs())
+    ]);
+    var saveError = saveResults.find(function(result) { return result.status === 'rejected'; });
+    if (saveError) throw saveError.reason;
+    rebuildDescIndex();
+    applyFilters();
+    if (_modalEntry) {
+      var modalId = _modalEntry.id;
+      _modalEntry = modalId ? (getAgendaByIdMap()[modalId] || {}).entry || _modalEntry : _modalEntry;
+      renderModalBody();
+    }
+    IMPORT_PREVIEW = null;
+    document.getElementById('importSummary').innerHTML = '<div class="import-summary-box"><div class="import-summary-title status-ok">Import terminé</div><div class="import-empty">Les nouvelles valeurs ont bien été enregistrées et sont disponibles dans les rapports.</div></div>';
+    alert('Import enregistré : ' + appliedCount + ' valeur(s) ont bien été sauvegardées.');
+    showToast('✅ Import enregistré (' + appliedCount + ' valeur(s))');
+  } catch (err) {
+    var message = err && err.message ? err.message : String(err || 'Erreur inconnue');
+    renderImportError(message);
+    alert('Import impossible : ' + message);
+    showToast('❌ ' + message, true);
+  } finally {
+    setImportSavingState(false);
+  }
+}
+window.applyImportPreview = applyImportPreview;
+
+function showToast(message, isError) {
+  var toast = document.getElementById('toast');
+  if (!toast) {
+    if (isError) console.error(message);
+    else console.log(message);
+    return;
+  }
+  toast.textContent = message;
+  toast.style.background = isError ? '#b91c1c' : '#1f2328';
+  toast.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(function() {
+    toast.classList.remove('show');
+  }, 2600);
+}
 function heureMin(h) {
   if (!h) return 9999;
   var m = String(h).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
@@ -888,10 +1402,8 @@ if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_'+loca
 
 // ── Re-render on language change
 document.addEventListener('tm_lang_changed', function() {
-  // Re-render list so dates and pills reflect the new language
   applyFilters();
-  // If detail screen is open, re-render it
-  if (document.getElementById('screenDetail').style.display !== 'none' && currentAgendaIdx >= 0) {
+  if (document.getElementById('detailModal').classList.contains('open') && currentAgendaIdx >= 0) {
     selectAtelier(currentAgendaIdx);
   }
 });
@@ -899,7 +1411,6 @@ document.addEventListener('tm_lang_changed', function() {
 // ── Init
 buildFilters();
 applyFilters();
-showScreen('list');
 
 }); // fin loadData
 </script>
