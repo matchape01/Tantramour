@@ -115,6 +115,8 @@
   .rbadge-h   { background: var(--badge-h-bg); color: var(--badge-h-tx); }
   .rbadge-t   { background: var(--badge-t-bg); color: var(--badge-t-tx); }
   .rbadge-a   { background: var(--badge-a-bg); color: var(--badge-a-tx); }
+  .rbadge-m   { background: #ede9fe; color: #5b21b6; }
+  .dark .rbadge-m { background: #2d1a5e; color: #c4b5fd; }
   .role-stats { margin-left: auto; font-size: 12px; color: var(--muted); text-align: right; }
   .role-stats strong { color: var(--role-accent); font-size: 15px; transition: color .2s; }
 
@@ -383,6 +385,7 @@ const ROLE_META = {
   'H': { label: function(){ return 'Helper'; },       icon: '🤝', cls: 'rbadge-h', tabCls: 'active-h', bodyCls: 'role-h' },
   'T': { label: function(){ return (typeof I18n !== 'undefined' && I18n.getLang() === 'en') ? 'Translator' : 'Traducteur'; },   icon: '🌐', cls: 'rbadge-t', tabCls: 'active-t', bodyCls: 'role-t' },
   'A': { label: function(){ return 'Angel'; },        icon: '👼', cls: 'rbadge-a', tabCls: 'active-a', bodyCls: 'role-a' },
+  'M': { label: function(){ return 'Réunion'; },      icon: '👥', cls: 'rbadge-m', tabCls: 'active-m', bodyCls: 'role-m' },
 };
 const JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 
@@ -414,15 +417,17 @@ function construireData() {
     const base = {
       atelier: e.atelier, jour: e.jour, date: e.date,
       heure: e.heure, lieu: e.lieu||'', type: e.type,
-      fac1: e.fac1||'', fac2: e.fac2||'', piment: e.piment||0,
+      fac1: e.fac1||'', fac2: e.fac2||'', fac3: e.fac3||'', fac4: e.fac4||'', piment: e.piment||0,
       traduction: e.traduction||'', helper1: e.helper1||'',
       helper2: e.helper2||'', helper3: e.helper3||'', helper4: e.helper4||'',
       angel: e.angel||'', note: e.note||'',
-      logisticId: e.logisticId||''
+      logisticId: e.logisticId||'', meetingRoles: e.meetingRoles||''
     };
     // Animateurs
     if (e.fac1) addEntry(e.fac1, 'F', base);
     if (e.fac2) addEntry(e.fac2, 'F', base);
+    if (e.fac3) addEntry(e.fac3, 'F', base);
+    if (e.fac4) addEntry(e.fac4, 'F', base);
     // Traducteur
     if (e.traduction) addEntry(e.traduction, 'T', base);
     // Helpers
@@ -432,6 +437,20 @@ function construireData() {
     if (e.helper4) addEntry(e.helper4, 'H', base);
     // Angel
     if (e.angel) addEntry(e.angel, 'A', base);
+    // REUNION : diffuser à toutes les personnes des rôles sélectionnés
+    if (e.type === 'REUNION' && e.meetingRoles) {
+      var roles = e.meetingRoles.split(',').map(function(r) { return r.trim(); }).filter(Boolean);
+      if (roles.length && typeof REF_RESSOURCES !== 'undefined') {
+        REF_RESSOURCES.forEach(function(res) {
+          if (!res.value) return;
+          var hasRole = roles.some(function(r) { return res.roles && res.roles.indexOf(r) !== -1; });
+          if (!hasRole) return;
+          // Éviter les doublons si cette personne est déjà dans fac1..fac4 / helpers / etc.
+          const alreadyAdded = [e.fac1,e.fac2,e.fac3,e.fac4,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4,e.angel].indexOf(res.value) !== -1;
+          if (!alreadyAdded) addEntry(res.value, 'M', base);
+        });
+      }
+    }
   });
 
   // Trier chaque personne par jour puis heure
@@ -576,7 +595,7 @@ function renderCards(data) {
     var rolesHtml = Object.keys(rolesSet).map(roleBadgeHtml).join(' ');
 
     var rows = p.entries.map(function(e) {
-      var facs = [e.fac1, e.fac2].filter(Boolean);
+      var facs = [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean);
       var facsHtml = facs.length && e.role !== 'F'
         ? '<br><span style="font-size:11px;color:var(--muted);font-style:italic">🎓 ' + facs.join(' & ') + '</span>'
         : '';
@@ -618,7 +637,7 @@ function renderTable(data) {
   var trs = '';
   data.forEach(function(p) {
     p.entries.forEach(function(e) {
-      var facs = [e.fac1, e.fac2].filter(Boolean).join(' & ');
+      var facs = [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean).join(' & ');
       trs += '<tr>' +
         '<td style="font-weight:700">' + p.nom + '</td>' +
         '<td>' + e.jour + '</td>' +
@@ -747,7 +766,7 @@ function openLogModal(midx) {
   if (!e) return;
 
   // ── EN-TÊTE : titre ───────────────────────────────────────────
-  var isAnglo = isAnglophoneMP(e.fac1) || isAnglophoneMP(e.fac2);
+  var isAnglo = isAnglophoneMP(e.fac1) || isAnglophoneMP(e.fac2) || isAnglophoneMP(e.fac3) || isAnglophoneMP(e.fac4);
   var pimentHtml = e.piment > 0
     ? '<span style="letter-spacing:-1px;font-size:12px">' + '🌶️'.repeat(e.piment) + '</span>' : '';
   document.getElementById('logModalTitle').innerHTML =
@@ -764,7 +783,7 @@ function openLogModal(midx) {
     return txt ? '<span class="pill-sm ' + cls + '">' + esc(txt) + '</span>' : '';
   }
 
-  var facs = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f')].filter(Boolean).join(' ');
+  var facs = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f'), pill(e.fac3,'pill-sm-f'), pill(e.fac4,'pill-sm-f')].filter(Boolean).join(' ');
   var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h'), pill(e.helper4,'pill-sm-h')].filter(Boolean).join(' ');
   var trad   = pill(e.traduction, 'pill-sm-t');
   var angel  = pill(e.angel, 'pill-sm-a');

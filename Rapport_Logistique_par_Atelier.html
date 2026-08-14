@@ -185,9 +185,11 @@ function onDateChange() {
 
   // Peupler le filtre animateur (triés alphabétiquement)
   const facsSet = new Set();
-  ROWS.filter(r => r[0] === jour && (r[6] || r[7])).forEach(r => {
+  ROWS.filter(r => r[0] === jour && (r[6] || r[7] || r[17] || r[18])).forEach(r => {
     if (r[6]) facsSet.add(r[6]);
     if (r[7]) facsSet.add(r[7]);
+    if (r[17]) facsSet.add(r[17]);
+    if (r[18]) facsSet.add(r[18]);
   });
   Array.from(facsSet).sort((a, b) => a.localeCompare(b, 'fr')).forEach(f => {
     const o = document.createElement('option'); o.value = f; o.text = f; sf.appendChild(o);
@@ -212,7 +214,7 @@ function populateAteliers(jour, fac) {
   if (!jour) { sa.disabled = true; return; }
 
   const ateliers = ROWS
-    .filter(r => r[0] === jour && (!fac || r[6] === fac || r[7] === fac))
+    .filter(r => r[0] === jour && (!fac || r[6] === fac || r[7] === fac || r[17] === fac || r[18] === fac))
     .map(r => ({ key: r[2] + '|||' + r[4], label: r[2] ? `[${r[2]}] ${r[4]}` : r[4], mins: heureEnMinutes(r[2]) }))
     .filter((v, i, a) => a.findIndex(x => x.key === v.key) === i)
     .sort((a, b) => a.mins - b.mins);
@@ -259,7 +261,7 @@ function showRecap(r) {
   const noteLabel2 = noteRef2 ? noteRef2.value : noteVal2;
   const notePill = noteLabel2 ? `<span class="pill pill-lieu" style="background:#fff8e1;color:#78350f;border-color:#fde68a">${noteLabel2}</span>` : '';
   document.getElementById('rMeta').innerHTML = `${r[0]} — ${r[1]} &nbsp;·&nbsp; ${r[2]} &nbsp; ${type} ${lieu}${notePill ? ' &nbsp;' + notePill : ''}`;
-  document.getElementById('rFac').innerHTML = pillList([r[6],r[7]],'pill-f') || '<span style="color:var(--muted)">—</span>';
+  document.getElementById('rFac').innerHTML = pillList([r[6],r[7],r[17],r[18]],'pill-f') || '<span style="color:var(--muted)">—</span>';
   document.getElementById('rHelpers').innerHTML = pillList([r[9],r[10],r[11],r[12]],'pill-h') || '<span style="color:var(--muted)">—</span>';
   document.getElementById('rAngel').innerHTML = pill(r[13],'pill-a') || '<span style="color:var(--muted)">—</span>';
   document.getElementById('rTraduction').innerHTML = pill(r[8],'pill-t') || '<span style="color:var(--muted)">—</span>';

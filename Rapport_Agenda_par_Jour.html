@@ -254,7 +254,8 @@ const RAW = AGENDA.map((e, i) => {
     e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
     e.fac1, e.fac2, e.traduction,
     e.helper1, e.helper2, e.helper3, e.helper4 || '',
-    e.angel, e.note, e.logisticId || '', e.piment || 0
+    e.angel, e.note, e.logisticId || '', e.piment || 0,
+    e.fac3 || '', e.fac4 || ''
   ];
   r._idx = i; // index stable dans AGENDA
   return r;
@@ -288,6 +289,8 @@ function buildConflictIndex() {
     };
     add(e.fac1,       'Animateur', 'fac1');
     add(e.fac2,       'Animateur', 'fac2');
+    add(e.fac3,       'Animateur', 'fac3');
+    add(e.fac4,       'Animateur', 'fac4');
     add(e.traduction, 'Traducteur',   'traduction');
     add(e.helper1,    'Helper',       'helper1');
     add(e.helper2,    'Helper',       'helper2');
@@ -469,7 +472,7 @@ function render() {
 
 // Champs RAW → colonne tableau (index colonne → champ(s) de l'entrée AGENDA)
 const COL_FIELDS = {
-  6: ['fac1','fac2'],
+  6: ['fac1','fac2','fac3','fac4'],
   7: ['traduction'],
   8: ['helper1','helper2','helper3','helper4'],
   9: ['angel'],
@@ -522,7 +525,7 @@ function renderTable(data) {
       <td class="td-wrap">${r[4]||''}${enBadge}${r[14]?'<span style="color:#e53e3e;font-weight:700;margin-left:3px">*</span>':''}</td>
       <td class="td-piment">${pimentHtml}</td>
       <td>${r[5]||''}</td>
-      <td${ccNames(6)}>${pillsNames([r[6],r[7]],['fac1','fac2'],'pill-f')}</td>
+      <td${ccNames(6)}>${pillsNames([r[6],r[7],r[17],r[18]],['fac1','fac2','fac3','fac4'],'pill-f')}</td>
       <td class="td-names">${tradHtml}</td>
       <td${ccNames(8)}>${pillsNames([r[9],r[10],r[11],r[12]],['helper1','helper2','helper3','helper4'],'pill-h')}</td>
       <td class="td-names">${angelHtml}</td>
@@ -790,7 +793,7 @@ function exportXlsx() {
 
   // ── Colonnes ────────────────────────────────────────────────────────────
   const HEADERS = ['Jour','Date','Heure','Type','Atelier','Piment','Lieu',
-                   'Animateur 1','Animateur 2','Traducteur',
+                   'Animateur 1','Animateur 2','Animateur 3','Animateur 4','Traducteur',
                    'Helper 1','Helper 2','Helper 3','Helper 4','Angel','Note'];
 
   // ── Helpers XML ─────────────────────────────────────────────────────────
@@ -826,8 +829,8 @@ function exportXlsx() {
   // Données (à partir de la ligne 2)
   data.forEach((r, ri) => {
     const rowNum = ri + 2;
-    // r = [jour, date, heure, type, atelier, lieu, fac1, fac2, trad, h1, h2, h3, h4, angel, note, logisticId, piment]
-    const vals = [r[0],r[1],r[2],r[3],r[4], r[16]||0, r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13],r[14]];
+    // r = [jour, date, heure, type, atelier, lieu, fac1, fac2, trad, h1, h2, h3, h4, angel, note, logisticId, piment, fac3, fac4]
+    const vals = [r[0],r[1],r[2],r[3],r[4], r[16]||0, r[5],r[6],r[7],r[17]||'',r[18]||'',r[8],r[9],r[10],r[11],r[12],r[13],r[14]];
     rowsXml += `<row r="${rowNum}">`;
     vals.forEach((v, ci) => { rowsXml += cellS(ci, rowNum, v == null ? '' : v); });
     rowsXml += `</row>`;

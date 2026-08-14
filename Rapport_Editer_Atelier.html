@@ -294,7 +294,7 @@ REF_TYPES.forEach(t => {
 // Peupler le filtre animateur (liste triée des fac1/fac2 présents dans AGENDA)
 const selFac = document.getElementById('filterFac');
 const facsUniq = [...new Set(
-  AGENDA.flatMap(e => [e.fac1, e.fac2].filter(Boolean))
+  AGENDA.flatMap(e => [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean))
 )].sort((a, b) => a.localeCompare(b, 'fr'));
 facsUniq.forEach(f => {
   const o = document.createElement('option');
@@ -317,8 +317,8 @@ function getFiltered() {
     .filter(({e}) =>
       (!j || e.jour === j) &&
       (!t || e.type === t) &&
-      (!f || e.fac1 === f || e.fac2 === f) &&
-      (!s || e.atelier.toLowerCase().includes(s) || (e.fac1||'').toLowerCase().includes(s) || (e.fac2||'').toLowerCase().includes(s))
+      (!f || e.fac1 === f || e.fac2 === f || e.fac3 === f || e.fac4 === f) &&
+      (!s || e.atelier.toLowerCase().includes(s) || (e.fac1||'').toLowerCase().includes(s) || (e.fac2||'').toLowerCase().includes(s) || (e.fac3||'').toLowerCase().includes(s) || (e.fac4||'').toLowerCase().includes(s))
     )
     .sort((a, b) => {
       const dj = JOUR_ORDER.indexOf(a.e.jour) - JOUR_ORDER.indexOf(b.e.jour);
@@ -382,7 +382,7 @@ function renderList() {
   wrap.innerHTML = items.map(({e, i}) => {
     const pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '<span style="color:var(--muted);font-size:11px">—</span>';
     const sel = selectedIdx === i ? ' selected' : '';
-    const facs = [e.fac1, e.fac2].filter(Boolean).join(', ');
+    const facs = [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean).join(', ');
     const atelierLabel = e.id ? `${e.atelier||'—'} <span style="color:var(--muted);font-size:11px">(${e.id})</span>` : (e.atelier||'—');
     return `<div class="list-item${sel}" onclick="selectAtelier(${i})" id="li-${i}">
       <div class="li-jour">${e.jour}</div>
@@ -429,8 +429,8 @@ function newAtelier() {
   editedData  = {
     id: generateAtelierId(),
     jour:'Jour 1', date:'Samedi 29 aout', heure:'', type: REF_TYPES[0] ? REF_TYPES[0].value : '',
-    atelier:'', lieu:'', fac1:'', fac2:'', traduction:'',
-    helper1:'', helper2:'', helper3:'', helper4:'', angel:'', note:'', piment:0, colibri:false, logisticId:''
+    atelier:'', lieu:'', fac1:'', fac2:'', fac3:'', fac4:'', traduction:'',
+    helper1:'', helper2:'', helper3:'', helper4:'', angel:'', note:'', piment:0, colibri:false, logisticId:'', meetingRoles:''
   };
 
   // Désélectionner toute ligne en cours
@@ -524,6 +524,30 @@ function rteToolbar(id) {
     <div class="rte-sep"></div>
     <button class="rte-btn" onclick="rteCmd('${id}','removeFormat')">✖</button>
   </div>`;
+}
+
+function buildMeetingRolesBlock(e) {
+  if (e.type !== 'REUNION') return '';
+  var MEETING_OPTS = [
+    {value:'animateur',  label:'🎓 Animateur'},
+    {value:'helper',     label:'🤝 Helper'},
+    {value:'angel',      label:'👼 Angel'},
+    {value:'traducteur', label:'🌐 Traducteur'},
+    {value:'healer',     label:'💚 Healer'},
+  ];
+  var currentRoles = (e.meetingRoles||'').split(',').map(function(r){return r.trim();}).filter(Boolean);
+  var checkboxes = MEETING_OPTS.map(function(opt) {
+    var checked = currentRoles.indexOf(opt.value) !== -1 ? ' checked' : '';
+    return '<label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:13px;user-select:none;">' +
+      '<input type="checkbox" value="' + opt.value + '"' + checked + ' onchange="updateMeetingRoles()" style="margin:0;cursor:pointer;">' +
+      ' ' + opt.label +
+      '</label>';
+  }).join('');
+  return '<div class="form-group" style="margin-bottom:14px;">' +
+    '<label style="font-weight:700;margin-bottom:6px;display:block;">👥 Types de ressources convoquées à cette réunion</label>' +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Les personnes appartenant aux types cochés verront cet atelier dans leur planning personnel.</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;">' + checkboxes + '</div>' +
+    '</div>';
 }
 
 function renderEditor() {
@@ -625,6 +649,9 @@ function renderEditor() {
     <!-- ══ BLOC 3 — ÉQUIPE ══ -->
     <div class="section-block">
       <div class="section-block-title">👥 Équipe</div>
+
+      ${buildMeetingRolesBlock(e)}
+
       <div class="form-grid">
 
         <div class="form-group">
@@ -635,6 +662,16 @@ function renderEditor() {
         <div class="form-group">
           <label>Animateur secondaire</label>
           ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Animateur 3</label>
+          ${buildPersonSelect('f-fac3', REF_ANIMATEURS, e.fac3||'')}
+        </div>
+
+        <div class="form-group">
+          <label>Animateur 4</label>
+          ${buildPersonSelect('f-fac4', REF_ANIMATEURS, e.fac4||'')}
         </div>
 
         <div class="form-group">
@@ -819,7 +856,7 @@ function fieldChange(id) {
   // Mapping id → clé AGENDA (champs standard)
   const map = {
     'jour':'jour','atelier':'atelier','type':'type','lieu':'lieu',
-    'fac1':'fac1','fac2':'fac2','traduction':'traduction',
+    'fac1':'fac1','fac2':'fac2','fac3':'fac3','fac4':'fac4','traduction':'traduction','meetingRoles':'meetingRoles',
     'helper1':'helper1','helper2':'helper2','helper3':'helper3','helper4':'helper4',
     'angel':'angel','note':'note'
   };
@@ -854,6 +891,15 @@ function resetResRules() {
   renderEditor();
   showToast('↩ Règles réinitialisées aux valeurs du type');
 }
+// Mettre à jour meetingRoles depuis les checkboxes (atelier de type REUNION)
+function updateMeetingRoles() {
+  const checks = document.querySelectorAll('[onchange="updateMeetingRoles()"]');
+  const roles = [];
+  checks.forEach(function(cb) { if (cb.checked) roles.push(cb.value); });
+  editedData.meetingRoles = roles.join(',');
+}
+window.updateMeetingRoles = updateMeetingRoles;
+
 window.resetResRules = resetResRules;
 
 function setPiment(val) {
@@ -1231,6 +1277,8 @@ function genererDataJs() {
  *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" …)
  *   fac1       {string}  Animateur principal
  *   fac2       {string}  Animateur secondaire
+ *   fac3       {string}  Animateur 3
+ *   fac4       {string}  Animateur 4
  *   traduction {string}  Langue / traducteur
  *   helper1    {string}  Helper 1
  *   helper2    {string}  Helper 2
@@ -1258,7 +1306,7 @@ var AGENDA = [`;
     if (e._minHelpers  !== undefined && e._minHelpers  !== (typeRule2.minHelpers||0)) customParts.push(`_minHelpers:${e._minHelpers}`);
     if (e._minTrad     !== undefined && e._minTrad     !== (typeRule2.minTrad||0))    customParts.push(`_minTrad:${e._minTrad}`);
     if (e._tradCounts  !== undefined && e._tradCounts  !== (typeRule2.tradCounts||0)) customParts.push(`_tradCounts:${e._tradCounts}`);
-    const line = `  {id:"${escJs(e.id || generateAtelierId())}",jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}"}`;
+    const line = `  {id:"${escJs(e.id || generateAtelierId())}",jour:"${escJs(e.jour)}",date:"${escJs(e.date)}",heure:"${escJs(e.heure)}",type:"${escJs(e.type)}",atelier:"${escJs(e.atelier)}",lieu:"${escJs(e.lieu)}",fac1:"${escJs(e.fac1)}",fac2:"${escJs(e.fac2)}",fac3:"${escJs(e.fac3||'')}",fac4:"${escJs(e.fac4||'')}",traduction:"${escJs(e.traduction)}",helper1:"${escJs(e.helper1)}",helper2:"${escJs(e.helper2)}",helper3:"${escJs(e.helper3)}",helper4:"${escJs(e.helper4||'')}",angel:"${escJs(e.angel)}",note:"${escJs(e.note)}",piment:${e.piment||0},colibri:${e.colibri?true:false},logisticId:"${escJs(e.logisticId||'')}",meetingRoles:"${escJs(e.meetingRoles||'')}"}`;
     const lineWithCustom = customParts.length
       ? line.slice(0, -1) + ',' + customParts.join(',') + '}'
       : line;
@@ -1275,13 +1323,15 @@ var AGENDA = [`;
  * Indice : [0]jour [1]date [2]heure [3]type [4]atelier [5]lieu
  *          [6]fac1 [7]fac2 [8]traduction [9]helper1 [10]helper2
  *          [11]helper3 [12]helper4 [13]angel [14]note [15]logisticId [16]piment
+ *          [17]fac3 [18]fac4 [19]meetingRoles
  */
 function agendaToRaw(entries) {
   return entries.map(e => [
     e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,
     e.fac1, e.fac2, e.traduction,
     e.helper1, e.helper2, e.helper3, e.helper4 || '',
-    e.angel, e.note, e.logisticId || '', e.piment || 0
+    e.angel, e.note, e.logisticId || '', e.piment || 0,
+    e.fac3 || '', e.fac4 || '', e.meetingRoles || ''
   ]);
 }`;
 }
@@ -1364,6 +1414,8 @@ function buildAteliersExportRows() {
       atelier: e.atelier || '',
       fac1: e.fac1 || '',
       fac2: e.fac2 || '',
+      fac3: e.fac3 || '',
+      fac4: e.fac4 || '',
       date: getExportDateValue(e),
       jour: e.jour || '',
       type: e.type || '',
@@ -1421,7 +1473,7 @@ function getExportDateValue(entry) {
 function buildExcelRows(rows) {
   return rows.map(function(row) {
     return [
-      row.id,row.atelier,row.fac1,row.fac2,row.type,row.date,row.jour,row.heureDebut,row.heureFin,row.lieu,row.piment,row.note,
+      row.id,row.atelier,row.fac1,row.fac2,row.fac3,row.fac4,row.type,row.date,row.jour,row.heureDebut,row.heureFin,row.lieu,row.piment,row.note,
       row.nomEn,row.descFr,row.descEn,row.consigneFr,row.consigneEn,row.prepDuration,row.logInfo,row.logSpecial,row.helperAvant,row.helperPendant,row.helperApres
     ];
   });
@@ -1431,12 +1483,12 @@ async function downloadExcelFile(rows, filename) {
   var workbook = new ExcelJS.Workbook();
   var sheet = workbook.addWorksheet('Ateliers');
   var headers = [
-    'ID','Atelier (FR)','Animateur 1','Animateur 2','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
+    'ID','Atelier (FR)','Animateur 1','Animateur 2','Animateur 3','Animateur 4','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
     'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
     'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
   ];
-  var grayColumns = { 11:true, 13:true, 14:true, 15:true, 16:true, 17:true, 18:true, 19:true, 20:true, 21:true, 22:true, 23:true };
-  var columnWidths = [12, 30, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30];
+  var grayColumns = { 13:true, 15:true, 16:true, 17:true, 18:true, 19:true, 20:true, 21:true, 22:true, 23:true, 24:true, 25:true };
+  var columnWidths = [12, 30, 24, 24, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30];
 
   sheet.addRow(headers);
   buildExcelRows(rows).forEach(function(values) {

@@ -22,5 +22,6 @@ var REF_TYPES = [
   { id: "T_TEST", value: "TEST", label: "TEST", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_ANGEL", value: "SHIFT ANGEL", label: "SHIFT ANGEL", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
   { id: "T_POOL", value: "POOL PARTY", label: "POOL PARTY", minRes: 1, minHelpers: 1, minTrad: 0, tradCounts: 1 },
-  { id: "T_NEW1", value: "CONFERENCE", label: "CONFERENCE", minRes: 2, minHelpers: 1, minTrad: 0, tradCounts: 1 },
+  { id: "T_CONF", value: "CONFERENCE", label: "CONFERENCE", minRes: 2, minHelpers: 1, minTrad: 0, tradCounts: 1 },
+  { id: "T_MEETING", value: "REUNION", label: "REUNION", minRes: 0, minHelpers: 0, minTrad: 0, tradCounts: 0 },
 ];

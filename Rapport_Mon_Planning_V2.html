@@ -129,6 +129,8 @@ input[type="text"] { min-width:200px; }
 .at-duree { white-space:nowrap; color:var(--muted); }
 .badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; white-space:nowrap; }
 .badge-f  { background:var(--badge-f-bg); color:var(--badge-f-tx); }
+.badge-m  { background:#ede9fe; color:#5b21b6; }
+.dark .badge-m { background:#2d1a5e; color:#c4b5fd; }
 .badge-h  { background:var(--badge-h-bg); color:var(--badge-h-tx); }
 .badge-t  { background:var(--badge-t-bg); color:var(--badge-t-tx); }
 .badge-a  { background:var(--badge-a-bg); color:var(--badge-a-tx); }
@@ -287,6 +289,41 @@ function calcDuree(h) {
   if (d < 0) d += 1440;
   return d;
 }
+
+// Extrait l'intervalle {s, e} d'une entrée à partir de son heure
+function parseInterval(heure) {
+  var m = String(heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  var s = parseInt(m[1])*60+parseInt(m[2]), e = parseInt(m[3])*60+parseInt(m[4]);
+  if (e < s) e += 1440;
+  return { s:s, e:e };
+}
+
+// Fusionne une liste d'intervalles {s,e} et retourne la somme des durées après fusion
+function mergedDuration(intervals) {
+  if (!intervals.length) return 0;
+  var sorted = intervals.slice().sort(function(a,b){ return a.s-b.s; });
+  var merged = [sorted[0]];
+  for (var i=1; i<sorted.length; i++) {
+    var last = merged[merged.length-1];
+    if (sorted[i].s <= last.e) { last.e = Math.max(last.e, sorted[i].e); }
+    else                        { merged.push(sorted[i]); }
+  }
+  return merged.reduce(function(t,iv){ return t+(iv.e-iv.s); }, 0);
+}
+
+// Fusionne une liste d'intervalles et retourne le nombre d'intervalles fusionnés
+function mergedCount(intervals) {
+  if (!intervals.length) return 0;
+  var sorted = intervals.slice().sort(function(a,b){ return a.s-b.s; });
+  var merged = [sorted[0]];
+  for (var i=1; i<sorted.length; i++) {
+    var last = merged[merged.length-1];
+    if (sorted[i].s <= last.e) { last.e = Math.max(last.e, sorted[i].e); }
+    else                        { merged.push(sorted[i]); }
+  }
+  return merged.length;
+}
 function fmtDuree(mins) {
   if (!mins) return '';
   var h = Math.floor(mins/60), mn = mins%60;
@@ -360,43 +397,84 @@ function getAngelShiftIntervals(entries) {
 // Calcule le nombre réel d'ateliers d'un groupe de jour :
 // - Un SHIFT ANGEL compte pour 1.
 // - Les ateliers couverts par un shift angel ne sont pas comptés.
-// - Si pas de shift angel : count simple.
+// - Les REUNION simultanées (qui se chevauchent) comptent pour 1 seule par créneau fusionné.
+// - Si pas de shift angel : count simple (avec dédup REUNION).
 function calcNbJour(entries) {
   var shiftIvs = getAngelShiftIntervals(entries);
-  if (shiftIvs.length === 0) return entries.length;
-  return entries.reduce(function(n, x) {
-    if ((x.entry.type||'').toUpperCase() === 'SHIFT ANGEL') return n + 1; // le shift compte pour 1
-    var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
-    if (!m) return n + 1;
-    var as=parseInt(m[1])*60+parseInt(m[2]), ae=parseInt(m[3])*60+parseInt(m[4]);
-    if (ae<as) ae+=1440;
-    var covered = shiftIvs.some(function(iv){ return as>=iv.s && ae<=iv.e; });
-    return covered ? n : n + 1;
+
+  // Intervalles des REUNION (pour déduplication)
+  var reunionIvs = entries
+    .filter(function(x){ return (x.entry.type||'').toUpperCase() === 'REUNION'; })
+    .map(function(x){ return parseInterval(x.entry.heure); })
+    .filter(Boolean);
+  var reunionMergedNb = mergedCount(reunionIvs);
+  var reunionRawNb    = reunionIvs.length;
+
+  if (shiftIvs.length === 0) {
+    // Pas de shift angel : count simple, mais REUNION dédupliquées
+    var nonReunion = entries.filter(function(x){ return (x.entry.type||'').toUpperCase() !== 'REUNION'; }).length;
+    return nonReunion + reunionMergedNb;
+  }
+  var count = 0;
+  // Tracks REUNION already counted via merged slots
+  var reunionMergedCounted = false;
+  entries.reduce(function(n, x) {
+    if ((x.entry.type||'').toUpperCase() === 'SHIFT ANGEL') { count++; return n; }
+    if ((x.entry.type||'').toUpperCase() === 'REUNION') return n; // traitées séparément
+    var iv = parseInterval(x.entry.heure);
+    if (!iv) { count++; return n; }
+    var covered = shiftIvs.some(function(s){ return iv.s>=s.s && iv.e<=s.e; });
+    if (!covered) count++;
+    return n;
   }, 0);
+  // Ajouter les REUNION dédupliquées (non couvertes par shift)
+  if (reunionIvs.length > 0) {
+    var uncoveredReunions = reunionIvs.filter(function(iv){
+      return !shiftIvs.some(function(s){ return iv.s>=s.s && iv.e<=s.e; });
+    });
+    count += mergedCount(uncoveredReunions);
+  }
+  return count;
 }
 
 // Calcule la durée réelle d'un groupe de jour :
 // - Pour chaque SHIFT ANGEL : on compte la durée du shift.
 // - Pour chaque autre entrée : on ne la compte QUE si elle n'est pas couverte par un shift angel.
-// - Si pas de shift angel : somme simple de toutes les durées.
+// - Les REUNION simultanées (qui se chevauchent) ne comptent que la durée de l'union des créneaux.
+// - Si pas de shift angel : somme des durées avec dédup REUNION.
 function calcDurJour(entries) {
   var shiftIvs = getAngelShiftIntervals(entries);
+
+  // Intervalles des REUNION (pour déduplication)
+  var reunionIvs = entries
+    .filter(function(x){ return (x.entry.type||'').toUpperCase() === 'REUNION'; })
+    .map(function(x){ return parseInterval(x.entry.heure); })
+    .filter(Boolean);
+
   if (shiftIvs.length === 0) {
-    return entries.reduce(function(s,x){ return s+(calcDuree(x.entry.heure)||0); }, 0);
+    // Pas de shift : somme normale pour les non-REUNION + durée fusionnée pour les REUNION
+    var nonReunionDur = entries.reduce(function(t,x) {
+      if ((x.entry.type||'').toUpperCase() === 'REUNION') return t;
+      return t + (calcDuree(x.entry.heure)||0);
+    }, 0);
+    return nonReunionDur + mergedDuration(reunionIvs);
   }
-  // Durée des shifts angel
+
+  // Avec shift angel
   var shiftDur = shiftIvs.reduce(function(t,iv){ return t+(iv.e-iv.s); }, 0);
-  // Entrées hors shift angel : compter celles qui ne sont pas couvertes par un shift
   var extraDur = entries.reduce(function(t,x) {
     if ((x.entry.type||'').toUpperCase() === 'SHIFT ANGEL') return t; // déjà compté
-    var m = String(x.entry.heure||'').replace(/\./g,':').replace(/[–—]/g,'-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
-    if (!m) return t;
-    var as=parseInt(m[1])*60+parseInt(m[2]), ae=parseInt(m[3])*60+parseInt(m[4]);
-    if (ae<as) ae+=1440;
-    var covered = shiftIvs.some(function(iv){ return as>=iv.s && ae<=iv.e; });
-    return covered ? t : t+(ae-as);
+    if ((x.entry.type||'').toUpperCase() === 'REUNION') return t;     // traité séparément
+    var iv = parseInterval(x.entry.heure);
+    if (!iv) return t;
+    var covered = shiftIvs.some(function(s){ return iv.s>=s.s && iv.e<=s.e; });
+    return covered ? t : t+(iv.e-iv.s);
   }, 0);
-  return shiftDur + extraDur;
+  // Durée des REUNION non couvertes par shift (dédupliquées)
+  var uncoveredReunions = reunionIvs.filter(function(iv){
+    return !shiftIvs.some(function(s){ return iv.s>=s.s && iv.e<=s.e; });
+  });
+  return shiftDur + extraDur + mergedDuration(uncoveredReunions);
 }
 
 // ════════════════════════════════════════════
@@ -423,12 +501,27 @@ function buildIndex() {
   AGENDA.forEach(function(e) {
     if (e.fac1)       add(e.fac1, e, 'animateur');
     if (e.fac2)       add(e.fac2, e, 'animateur');
+    if (e.fac3)       add(e.fac3, e, 'animateur');
+    if (e.fac4)       add(e.fac4, e, 'animateur');
     if (e.traduction) add(e.traduction, e, 'traducteur');
     if (e.helper1)    add(e.helper1, e, 'helper');
     if (e.helper2)    add(e.helper2, e, 'helper');
     if (e.helper3)    add(e.helper3, e, 'helper');
     if (e.helper4)    add(e.helper4, e, 'helper');
     if (e.angel)      add(e.angel, e, 'angel');
+    // REUNION : diffuser à toutes les personnes des rôles sélectionnés
+    if (e.type === 'REUNION' && e.meetingRoles) {
+      var roles = e.meetingRoles.split(',').map(function(r) { return r.trim(); }).filter(Boolean);
+      if (roles.length && typeof REF_RESSOURCES !== 'undefined') {
+        REF_RESSOURCES.forEach(function(res) {
+          if (!res.value) return;
+          var hasRole = roles.some(function(r) { return res.roles && res.roles.indexOf(r) !== -1; });
+          if (!hasRole) return;
+          var alreadyAdded = [e.fac1,e.fac2,e.fac3,e.fac4,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4,e.angel].indexOf(res.value) !== -1;
+          if (!alreadyAdded) add(res.value, e, 'reunion');
+        });
+      }
+    }
   });
   return idx;
 }
@@ -547,10 +640,10 @@ window.applyFilters = function applyFilters() {
 // ════════════════════════════════════════════
 // RENDU LISTE
 // ════════════════════════════════════════════
-var ROLE_CSS  = { animateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a' };
+var ROLE_CSS  = { animateur:'badge-f', helper:'badge-h', traducteur:'badge-t', angel:'badge-a', reunion:'badge-m' };
 function ROLE_LBL_FN(r) {
   var map = { animateur:'mp_vue_animateur', helper:'mp_vue_helper', traducteur:'mp_vue_traducteur', angel:'mp_vue_angel' };
-  return (typeof I18n!=='undefined' && map[r]) ? I18n.t(map[r]) : ({ animateur:'Animateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel' }[r] || r);
+  return (typeof I18n!=='undefined' && map[r]) ? I18n.t(map[r]) : ({ animateur:'Animateur', helper:'Helper', traducteur:'Traducteur', angel:'Angel', reunion:'Réunion' }[r] || r);
 }
 
 function renderList(results) {
@@ -718,10 +811,10 @@ function renderList(results) {
         var e = x.entry;
         var isShift = isAngelEntry(x);
         var dur = calcDuree(e.heure);
-        var langBadge = (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2))
+        var langBadge = (e.traduction || isBilingue(e.fac1) || isBilingue(e.fac2) || isBilingue(e.fac3) || isBilingue(e.fac4))
           ? '<span class="badge badge-lang badge-en">FR/EN</span>'
           : '<span class="badge badge-lang badge-fr">FR</span>';
-        var facs = [e.fac1,e.fac2].filter(Boolean).join(' & ');
+        var facs = [e.fac1,e.fac2,e.fac3,e.fac4].filter(Boolean).join(' & ');
         var pm = parseInt(e.piment)||0;
         var roleBadge = x.roles.map(function(r){
           return '<span class="badge '+(ROLE_CSS[r]||'badge-x')+'">'+ROLE_LBL_FN(r)+'</span>';
@@ -939,9 +1032,9 @@ function renderModalBody() {
   var debut = heureMin(e.heure);
   var arrivee = (debut!==null) ? fmtHeure(debut-prep) : '';
 
-  var facs    = [e.fac1,e.fac2].filter(Boolean);
+  var facs    = [e.fac1,e.fac2,e.fac3,e.fac4].filter(Boolean);
   var helpers = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean);
-  var hasBilingue = isBilingue(e.fac1) || isBilingue(e.fac2);
+  var hasBilingue = isBilingue(e.fac1) || isBilingue(e.fac2) || isBilingue(e.fac3) || isBilingue(e.fac4);
   var langBadge = (e.traduction || hasBilingue)
     ? '<span class="badge badge-lang badge-en">FR / EN</span>'
     : '<span class="badge badge-lang badge-fr">FR</span>';

@@ -510,7 +510,7 @@ var DESCS = {};
 REF_DESCRIPTIONS.forEach(function(d) { DESCS[d.key] = Object.assign({}, d); });
 
 // Ateliers avec animateur
-var AGENDA_ATELIERS = AGENDA.filter(function(e) { return (e.fac1 || e.fac2); });
+var AGENDA_ATELIERS = AGENDA.filter(function(e) { return (e.fac1 || e.fac2 || e.fac3 || e.fac4); });
 
 // ════════════════════════════════════════════
 // FILTRES
@@ -531,6 +531,8 @@ function buildFilterOptions() {
   AGENDA_ATELIERS.forEach(function(e) {
     if (e.fac1) facsSet.add(e.fac1);
     if (e.fac2) facsSet.add(e.fac2);
+    if (e.fac3) facsSet.add(e.fac3);
+    if (e.fac4) facsSet.add(e.fac4);
   });
   var facsSorted = Array.from(facsSet).sort(function(a,b){ return a.localeCompare(b,'fr'); });
   var selFac = document.getElementById('filterFac');
@@ -558,7 +560,7 @@ function getFilteredAteliers() {
 
   var filtered = AGENDA_ATELIERS.filter(function(e) {
     if (fJour && e.jour !== fJour) return false;
-    if (fFac  && e.fac1 !== fFac && e.fac2 !== fFac) return false;
+    if (fFac  && e.fac1 !== fFac && e.fac2 !== fFac && e.fac3 !== fFac && e.fac4 !== fFac) return false;
     if (fType && e.type !== fType) return false;
     return true;
   });
@@ -605,7 +607,7 @@ function renderList(ateliers) {
     var d      = findDescByKey(e);
     var logId  = e.logisticId || '';
     var logEntry = logId && LOGISTICS[logId];
-    var facs   = [e.fac1, e.fac2].filter(Boolean).join(' & ');
+    var facs   = [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean).join(' & ');
     var meta   = JOUR_META[e.jour] || {};
     var pimentStr = e.piment > 0 ? '<span style="letter-spacing:-1px">' + '🌶️'.repeat(e.piment) + '</span>' : '';
 
@@ -690,7 +692,7 @@ function selectAtelier(idx) {
   document.getElementById('eTitle').textContent = e.atelier || '—';
 
   // Grille infos
-  var facs    = [e.fac1, e.fac2].filter(Boolean).join(' / ') || '—';
+  var facs    = [e.fac1, e.fac2, e.fac3, e.fac4].filter(Boolean).join(' / ') || '—';
   var helpers = [e.helper1, e.helper2, e.helper3, e.helper4].filter(Boolean).join(', ') || '—';
   var duree   = getDureeAtelier(e.heure);
   var gridData = [
@@ -1027,6 +1029,9 @@ function buildDataJs() {
       '",lieu:"'             + escJs(e.lieu||'') +
       '",fac1:"'             + escJs(e.fac1||'') +
       '",fac2:"'             + escJs(e.fac2||'') +
+      '",fac3:"'             + escJs(e.fac3||'') +
+      '",fac4:"'             + escJs(e.fac4||'') +
+      '",meetingRoles:"'     + escJs(e.meetingRoles||'') +
       '",traduction:"'       + escJs(e.traduction||'') +
       '",helper1:"'          + escJs(e.helper1||'') +
       '",helper2:"'          + escJs(e.helper2||'') +
@@ -1044,7 +1049,8 @@ function buildDataJs() {
     '    e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,\n' +
     '    e.fac1, e.fac2, e.traduction,\n' +
     '    e.helper1, e.helper2, e.helper3, e.helper4 || \'\',\n' +
-    '    e.angel, e.note, e.logisticId, e.piment || 0\n' +
+    '    e.angel, e.note, e.logisticId, e.piment || 0,\n' +
+    '    e.fac3 || \'\', e.fac4 || \'\', e.meetingRoles || \'\'\n' +
     '  ]; });\n}\n';
 
   return '/**\n * TANTRAMOUR 2026 — Référentiel de données commun\n' +

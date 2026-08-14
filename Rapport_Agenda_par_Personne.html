@@ -249,7 +249,7 @@
 <script>
 loadData(['data.js', 'logistics.js', 'logistics.special.js'], function() {
 const RAW = agendaToRaw(AGENDA);
-const DATA = RAW.map((r, i) => { while(r.length<16) r.push(""); r._agendaIdx = i; return r; });
+const DATA = RAW.map((r, i) => { while(r.length<19) r.push(""); r._agendaIdx = i; return r; });
 
 // Index global pour la modale : DATA[i] → entrée AGENDA correspondante
 // Chaque entrée r porte r._agendaIdx = index dans AGENDA
@@ -269,10 +269,21 @@ function addPerson(name, role) {
   personRoleMap[n].add(role);
 }
 DATA.forEach(r => {
-  addPerson(r[6],'F'); addPerson(r[7],'F');
+  addPerson(r[6],'F'); addPerson(r[7],'F'); addPerson(r[17],'F'); addPerson(r[18],'F');
   addPerson(r[8],'T');
   addPerson(r[9],'H'); addPerson(r[10],'H'); addPerson(r[11],'H'); addPerson(r[12],'H');
   addPerson(r[13],'A');
+  // REUNION : ajouter toutes les personnes des rôles meetingRoles
+  if (r[3] === 'REUNION' && r[19]) {
+    const meetRoles = r[19].split(',').map(s=>s.trim()).filter(Boolean);
+    if (meetRoles.length && typeof REF_RESSOURCES !== 'undefined') {
+      REF_RESSOURCES.forEach(res => {
+        if (!res.value) return;
+        if (!meetRoles.some(mr => res.roles && res.roles.indexOf(mr) !== -1)) return;
+        addPerson(res.value, 'M');
+      });
+    }
+  }
 });
 
 const persons = Object.keys(personRoleMap).sort((a,b)=>a.localeCompare(b,'fr'));
@@ -289,17 +300,28 @@ function getMatches(person, role) {
   const results = [];
   DATA.forEach(r => {
     const roles = [];
-    if (r[6]===person||r[7]===person) roles.push('F');
+    if (r[6]===person||r[7]===person||r[17]===person||r[18]===person) roles.push('F');
     if (r[8]===person) roles.push('T');
     if (r[9]===person||r[10]===person||r[11]===person||r[12]===person) roles.push('H');
     if (r[13]===person) roles.push('A');
+    // REUNION : vérifier si la personne est concernée via meetingRoles
+    if (r[3] === 'REUNION' && r[19] && person) {
+      const meetRoles = r[19].split(',').map(s=>s.trim()).filter(Boolean);
+      if (meetRoles.length && typeof REF_RESSOURCES !== 'undefined') {
+        const res = REF_RESSOURCES.find(res => res.value === person);
+        if (res && meetRoles.some(mr => res.roles && res.roles.indexOf(mr) !== -1)) {
+          if (!roles.includes('M')) roles.push('M');
+        }
+      }
+    }
     // Si "Toutes les personnes" : inclure toutes les lignes qui ont au moins un rôle renseigné
     if (!person) {
       const allRoles = [];
-      if (r[6]||r[7]) allRoles.push('F');
+      if (r[6]||r[7]||r[17]||r[18]) allRoles.push('F');
       if (r[8]) allRoles.push('T');
       if (r[9]||r[10]||r[11]||r[12]) allRoles.push('H');
       if (r[13]) allRoles.push('A');
+      // REUNION pour "Toutes les personnes" : skip (trop de lignes) — seulement quand une personne est sélectionnée
       if (!allRoles.length) return;
       if (role && !allRoles.includes(role)) return;
       results.push({r, roles: role ? [role] : allRoles});
@@ -615,7 +637,7 @@ function openLogModal(agendaIdx) {
     return txt ? '<span class="pill-sm ' + cls + '">' + esc(txt) + '</span>' : '';
   }
 
-  var facs    = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f')].filter(Boolean).join(' ');
+  var facs    = [pill(e.fac1,'pill-sm-f'), pill(e.fac2,'pill-sm-f'), pill(e.fac3,'pill-sm-f'), pill(e.fac4,'pill-sm-f')].filter(Boolean).join(' ');
   var helpers = [pill(e.helper1,'pill-sm-h'), pill(e.helper2,'pill-sm-h'), pill(e.helper3,'pill-sm-h'), pill(e.helper4,'pill-sm-h')].filter(Boolean).join(' ');
   var trad    = pill(e.traduction, 'pill-sm-t');
   var angel   = pill(e.angel, 'pill-sm-a');
