@@ -288,26 +288,37 @@ var currentAgendaIdx = -1;
 var _modalLang = 'fr';
 var _modalEntry = null;
 var IMPORT_ALLOWED_PIMENTS = { '0':true, '1':true, '2':true, '3':true };
-var IMPORT_ALLOWED_PREP = { '0':true, '15':true, '30':true, '45':true, '60':true };
-var IMPORT_HEADERS = [
+var IMPORT_ALLOWED_PREP = { '0':true, '15':true, '20':true, '30':true, '45':true, '50':true, '60':true, '80':true, '90':true, '100':true, '110':true, '120':true };
+// Format 23 cols (interne) : ID, Atelier, Anim1, Anim2, Type, Date, Jour, HeureDébut, HeureFin, Lieu, Piment, Note, ...
+// Format 26 cols (TRANSFORM_UPLOAD) : idem mais avec Anim3 et Anim4 en cols 5-6 → décalage de +2 à partir de la col 5
+var IMPORT_HEADERS_BASE = [
+  'ID','Atelier (FR)','Animateur 1','Animateur 2'
+]; // cols 1-4 communes aux deux formats
+var IMPORT_HEADERS_23 = [
   'ID','Atelier (FR)','Animateur 1','Animateur 2','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
   'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
   'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
 ];
-var IMPORT_FIELD_DEFS = [
-  { key:'piment', label:'Piment', col:11 },
-  { key:'nomEn', label:'Workshop name (ENG)', col:13 },
-  { key:'descFr', label:'Description (FR)', col:14 },
-  { key:'descEn', label:'Description (ENG)', col:15 },
-  { key:'consigne', label:'Instructions participants (FR)', col:16 },
-  { key:'consigneEn', label:'Participant instructions (ENG)', col:17 },
-  { key:'prepDuration', label:'Estimation préparation', col:18 },
-  { key:'logInfo', label:'Informations logistiques', col:19 },
-  { key:'logSpecial', label:'Besoins logistiques spécifiques', col:20 },
-  { key:'helperAvant', label:'Consignes HELPER – AVANT', col:21 },
-  { key:'helperPendant', label:'Consignes HELPER – PENDANT', col:22 },
-  { key:'helperApres', label:'Consignes HELPER – APRES', col:23 }
+var IMPORT_HEADERS_26 = [
+  'ID','Atelier (FR)','Animateur 1','Animateur 2','Animateur 3','Animateur 4','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
+  'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
+  'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES','Commentaire'
 ];
+// Décalage 0 = format 23 cols, décalage 2 = format 26 cols
+var IMPORT_FIELD_DEFS = [
+  { key:'piment',        label:'Piment',                              col:11 },
+  { key:'nomEn',         label:'Workshop name (ENG)',                 col:13 },
+  { key:'descFr',        label:'Description (FR)',                    col:14 },
+  { key:'descEn',        label:'Description (ENG)',                   col:15 },
+  { key:'consigne',      label:'Instructions participants (FR)',       col:16 },
+  { key:'consigneEn',    label:'Participant instructions (ENG)',       col:17 },
+  { key:'prepDuration',  label:'Estimation préparation',              col:18 },
+  { key:'logInfo',       label:'Informations logistiques',            col:19 },
+  { key:'logSpecial',    label:'Besoins logistiques spécifiques',     col:20 },
+  { key:'helperAvant',   label:'Consignes HELPER – AVANT',            col:21 },
+  { key:'helperPendant', label:'Consignes HELPER – PENDANT',          col:22 },
+  { key:'helperApres',   label:'Consignes HELPER – APRES',            col:23 }
+]; // cols pour format 23 — buildImportPreview() applique le décalage si format 26
 var IMPORT_PREVIEW = null;
 
 // ════════════════════════════════════════════
@@ -986,12 +997,16 @@ function getAgendaByIdMap() {
   return map;
 }
 function getImportHeaderError(row) {
-  for (var i = 0; i < IMPORT_HEADERS.length; i++) {
-    if (normalizeComparableValue(row.getCell(i + 1).value) !== normalizeComparableValue(IMPORT_HEADERS[i])) {
-      return 'Structure invalide : colonne ' + String.fromCharCode(65 + i) + ' attendue « ' + IMPORT_HEADERS[i] + ' ».';
+  // Détecte le format : si la colonne 5 est "Animateur 3" → format 26 cols (TRANSFORM_UPLOAD)
+  var col5 = normalizeComparableValue(row.getCell(5).value);
+  var headers = (col5 === normalizeComparableValue('Animateur 3')) ? IMPORT_HEADERS_26 : IMPORT_HEADERS_23;
+  // Vérifie chaque colonne connue (ignore les colonnes supplémentaires en fin de fichier)
+  for (var i = 0; i < headers.length; i++) {
+    if (normalizeComparableValue(row.getCell(i + 1).value) !== normalizeComparableValue(headers[i])) {
+      return 'Structure invalide : colonne ' + String.fromCharCode(65 + i) + ' attendue « ' + headers[i] + ' ».';
     }
   }
-  return '';
+  return headers === IMPORT_HEADERS_26 ? '__FORMAT26__' : '';
 }
 function handleImportFile(event) {
   var file = event.target.files && event.target.files[0];
@@ -1017,8 +1032,13 @@ function handleImportFile(event) {
     var sheet = workbook.worksheets[0];
     if (!sheet) throw new Error('Le fichier Excel ne contient aucune feuille.');
     var headerError = getImportHeaderError(sheet.getRow(1));
+    var colOffset = 0;
+    if (headerError === '__FORMAT26__') {
+      colOffset = 2; // Animateur 3 + Animateur 4 insérés en cols 5-6
+      headerError = '';
+    }
     if (headerError) throw new Error(headerError);
-    var preview = buildImportPreview(sheet);
+    var preview = buildImportPreview(sheet, colOffset);
     IMPORT_PREVIEW = preview;
     renderImportPreview(preview, file.name);
     if (!preview.items.length) {
@@ -1032,9 +1052,11 @@ function handleImportFile(event) {
 }
 window.handleImportFile = handleImportFile;
 
-function buildImportPreview(sheet) {
+function buildImportPreview(sheet, colOffset) {
+  colOffset = colOffset || 0;
   var agendaById = getAgendaByIdMap();
   var items = [];
+  var warnings = [];
   var seenIds = {};
   for (var rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber++) {
     var row = sheet.getRow(rowNumber);
@@ -1057,7 +1079,7 @@ function buildImportPreview(sheet) {
     var changes = [];
 
     IMPORT_FIELD_DEFS.forEach(function(def) {
-      var raw = row.getCell(def.col).value;
+      var raw = row.getCell(def.col + colOffset).value;
       var nextValue = (def.key === 'piment' || def.key === 'prepDuration') ? parseImportNumber(raw) : normalizeCellValue(raw);
       var currentValue = '';
       if (def.key === 'piment') currentValue = String(entry.piment || 0);
@@ -1073,11 +1095,13 @@ function buildImportPreview(sheet) {
       else if (def.key === 'helperPendant') currentValue = normalizeCellValue(htmlToText(helpEntry ? helpEntry.pendant || '' : ''));
       else if (def.key === 'helperApres') currentValue = normalizeCellValue(htmlToText(helpEntry ? helpEntry.apres || '' : ''));
 
-      if (def.key === 'piment' && nextValue && !IMPORT_ALLOWED_PIMENTS[nextValue]) {
-        throw new Error('Valeur Piment invalide pour ' + id + ' : ' + nextValue + '. Valeurs autorisées : 0, 1, 2, 3.');
+      if (def.key === 'piment' && nextValue !== '' && !IMPORT_ALLOWED_PIMENTS[nextValue]) {
+        warnings.push('⚠️ Piment invalide pour « ' + id + ' » : valeur « ' + nextValue + ' » ignorée (valeurs acceptées : 0, 1, 2, 3).');
+        return; // on ignore ce champ, l'import continue
       }
-      if (def.key === 'prepDuration' && nextValue && !IMPORT_ALLOWED_PREP[nextValue]) {
-        throw new Error('Valeur Estimation préparation invalide pour ' + id + ' : ' + nextValue + '. Valeurs autorisées : 0, 15, 30, 45, 60.');
+      if (def.key === 'prepDuration' && nextValue !== '' && !IMPORT_ALLOWED_PREP[nextValue]) {
+        warnings.push('⚠️ Estimation préparation invalide pour « ' + id + ' » : valeur « ' + nextValue + ' » ignorée (valeurs acceptées : 0, 15, 20, 30, 45, 50, 60, 80, 90, 100, 110, 120).');
+        return; // on ignore ce champ, l'import continue
       }
       if (normalizeComparableValue(currentValue) === normalizeComparableValue(nextValue)) return;
       changes.push({ key:def.key, label:def.label, currentValue:currentValue, nextValue:nextValue, choice:'apply' });
@@ -1096,7 +1120,7 @@ function buildImportPreview(sheet) {
       });
     }
   }
-  return { items:items, totalChanges:items.reduce(function(sum, item) { return sum + item.changes.length; }, 0) };
+  return { items:items, warnings:warnings, totalChanges:items.reduce(function(sum, item) { return sum + item.changes.length; }, 0) };
 }
 
 function renderImportLoading(filename) {
@@ -1109,13 +1133,22 @@ function renderImportError(message) {
 }
 function renderImportPreview(preview, filename) {
   var summary = document.getElementById('importSummary');
+  var warningsHtml = (preview.warnings && preview.warnings.length)
+    ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;line-height:1.6;">' +
+        '<strong>⚠️ ' + preview.warnings.length + ' valeur(s) Piment non reconnue(s) — champ ignoré, import non bloqué</strong>' +
+        '<ul style="margin:6px 0 0 18px;padding:0;">' +
+          preview.warnings.map(function(w){ return '<li>' + esc(w) + '</li>'; }).join('') +
+        '</ul>' +
+      '</div>'
+    : '';
   if (!preview.items.length) {
     summary.innerHTML =
-      '<div class="import-summary-box"><div class="import-summary-title status-ok">Fichier analysé</div><div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
+      '<div class="import-summary-box">' + warningsHtml + '<div class="import-summary-title status-ok">Fichier analysé</div><div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
     return;
   }
   summary.innerHTML =
     '<div class="import-summary-box">' +
+      warningsHtml +
       '<div class="import-summary-title">Validation des modifications</div>' +
       '<div class="import-help">Chaque ligne propose les différences détectées. Tu peux accepter ou ignorer chaque valeur avant enregistrement.</div>' +
       '<div class="import-item-meta">' + preview.items.length + ' atelier(s) concerné(s) · ' + preview.totalChanges + ' changement(s)</div>' +

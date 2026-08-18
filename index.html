@@ -9,6 +9,42 @@
     --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
     --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
   }
+
+  /* ── WIDGET MESSAGE IMPORTANT ── */
+  .msg-important {
+    background: #fffbeb;
+    border: 2px solid #fcd34d;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    width: 100%; max-width: 400px;
+  }
+  .msg-important-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .msg-important-header-left { display: flex; align-items: center; gap: 7px; }
+  .msg-important-title {
+    font-size: 12px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .7px;
+    color: #b45309;
+  }
+  .msg-counter {
+    font-size: 11px; color: #92400e; font-weight: 600;
+    background: #fde68a; border-radius: 10px; padding: 1px 7px;
+  }
+  .msg-nav-btn {
+    cursor: pointer; background: none; border: 1.5px solid #fcd34d;
+    border-radius: 50%; width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: #b45309; flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+    padding: 0;
+  }
+  .msg-nav-btn:hover { background: #fde68a; border-color: #f59e0b; }
+  .msg-date { font-size: 11px; color: #92400e; margin-bottom: 4px; }
+  .msg-text { font-size: 14px; color: #1f2328; line-height: 1.6; }
+
   * { box-sizing:border-box; margin:0; padding:0; }
   body {
     font-family:-apple-system,"Segoe UI",system-ui,sans-serif;
@@ -191,6 +227,21 @@
     <div class="main-btn-arrow">›</div>
   </a>
 
+  <!-- ── WIDGET MESSAGE IMPORTANT (Festivaliers) ── -->
+  <div id="msgFvWidget" style="display:none;">
+    <div class="msg-important">
+      <div class="msg-important-header">
+        <div class="msg-important-header-left">
+          <span style="font-size:18px;">⚠️</span>
+          <span class="msg-important-title" id="msgFvTitle">Message Important</span>
+          <span class="msg-counter" id="msgFvCounter" style="display:none;"></span>
+        </div>
+        <button class="msg-nav-btn" id="msgFvNavBtn" onclick="msgFvNext()" style="display:none;" title="Message suivant">›</button>
+      </div>
+      <div id="msgFvBody"></div>
+    </div>
+  </div>
+
   <!-- ── PLAN HAMEAU ── -->
   <div class="plan-section">
     <div class="plan-label" data-i18n="home_hameau_map">🗺 Plan du Hameau</div>
@@ -241,7 +292,81 @@
   </div>
 </div>
 
+<script src="loader.js"></script>
 <script>
+// ── MESSAGE IMPORTANT (Festivaliers) ─────────────────────────────────────────
+var _fvNews   = [];   // liste filtrée (festivalier), ordre chronologique
+var _fvIndex  = 0;   // index du message affiché (0 = plus ancien, length-1 = plus récent)
+
+function formatMsgFvDate(str) {
+  if (!str) return '';
+  var parts = str.split(' ');
+  if (parts.length < 2) return str;
+  var d = parts[0].split('-');
+  if (d.length < 3) return str;
+  return d[2] + '/' + d[1] + '/' + d[0] + ' ' + parts[1];
+}
+
+function renderMsgFvWidget() {
+  if (typeof REF_NEWS === 'undefined' || !Array.isArray(REF_NEWS)) return;
+  var all = REF_NEWS.filter(function(n) { return n.type === 'festivalier' && !n.hidden; });
+  if (all.length === 0) return;
+
+  // News prioritaire en tête si elle existe, puis les autres du plus récent au plus ancien
+  var prio  = all.filter(function(n) { return n.priority === true; });
+  var rest  = all.filter(function(n) { return !n.priority; });
+  _fvNews = prio.concat(rest);
+
+  // Afficher la prioritaire (index 0) ou la plus récente si pas de prioritaire
+  _fvIndex = 0;
+
+  var titleEl  = document.getElementById('msgFvTitle');
+  var navBtn   = document.getElementById('msgFvNavBtn');
+  var counter  = document.getElementById('msgFvCounter');
+  var lang     = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+
+  if (titleEl) titleEl.textContent = lang === 'en' ? 'Important Info' : 'Message Important';
+
+  // Flèche et compteur visibles seulement si plusieurs messages
+  if (_fvNews.length > 1) {
+    navBtn.style.display  = '';
+    counter.style.display = '';
+  }
+
+  document.getElementById('msgFvWidget').style.display = 'block';
+  _renderFvMsg();
+}
+
+function _renderFvMsg() {
+  var lang    = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  var n       = _fvNews[_fvIndex];
+  var text    = lang === 'en' ? (n.en || n.fr || '') : (n.fr || n.en || '');
+  var body    = document.getElementById('msgFvBody');
+  var counter = document.getElementById('msgFvCounter');
+
+  body.innerHTML =
+    '<div class="msg-date">' + formatMsgFvDate(n.publishedAt) + '</div>' +
+    '<div class="msg-text">' + text + '</div>';
+
+  // Compteur : "2 / 3"
+  if (_fvNews.length > 1) {
+    counter.textContent = (_fvIndex + 1) + ' / ' + _fvNews.length;
+  }
+}
+
+// Avance au message suivant (ou revient au premier si on est au dernier)
+function msgFvNext() {
+  if (_fvNews.length < 2) return;
+  _fvIndex = (_fvIndex + 1) % _fvNews.length;
+  _renderFvMsg();
+}
+
+loadData(['ref_news.js'], function() {
+  renderMsgFvWidget();
+  document.addEventListener('tm_lang_changed', renderMsgFvWidget);
+});
+// ── FIN MESSAGE IMPORTANT ─────────────────────────────────────────────────────
+
 // ── Bouton FR/EN ─────────────────────────────────────────────────────────────
 function updateLangBtn() {
   var btn = document.getElementById('langBtn');

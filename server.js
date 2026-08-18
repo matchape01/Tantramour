@@ -43,6 +43,7 @@ const ALLOWED = new Set([
   'ref_lieux.js',
   'ref_types.js',
   'ref_jours.js',
+  'ref_news.js',
 ]);
 
 // ── SERVEUR ───────────────────────────────────────────────────

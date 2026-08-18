@@ -30,6 +30,7 @@ ALLOWED = {
     'ref_notes.js',
     'ref_piment.js',
     'ref_heures.js',
+    'ref_news.js',
 }
 
 MIME = {
@@ -59,6 +60,29 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     # ── POST /save ────────────────────────────────────────────
     def do_POST(self):
+
+        # ── POST /save-import  (fichiers binaires → dossier IMPORT) ──
+        if self.path == '/save-import':
+            length = int(self.headers.get('Content-Length', 0))
+            body   = self.rfile.read(length)
+            try:
+                import base64
+                data     = json.loads(body)
+                filename = os.path.basename(data['filename'])
+                b64      = data['content_b64']
+                binary   = base64.b64decode(b64)
+
+                import_dir = ROOT / 'IMPORT'
+                import_dir.mkdir(exist_ok=True)
+                filepath = import_dir / filename
+                filepath.write_bytes(binary)
+                print(f"  [SAVE-IMPORT] {filename}  ({len(binary)} octets)")
+                self._json(200, {'ok': True, 'file': str(filepath)})
+            except Exception as e:
+                print(f"  [ERREUR save-import] {e}")
+                self._json(500, {'ok': False, 'error': str(e)})
+            return
+
         if self.path != '/save':
             self._not_found(); return
 

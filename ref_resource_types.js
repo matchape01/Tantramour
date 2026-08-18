@@ -15,4 +15,5 @@ var REF_RESOURCE_TYPES = [
   { id: "RT_ARTIST", value: "artist", label: "Artiste", icon: "" },
   { id: "RT_HEALER", value: "healer", label: "Healer", icon: "" },
   { id: "RT_STAND", value: "stand", label: "Stand", icon: "" },
+  { id: "RT_NEW1", value: "Mi-Colibri", label: "MiColibri", icon: "" },
 ];

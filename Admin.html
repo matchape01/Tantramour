@@ -107,6 +107,37 @@
   .placeholder small { font-size: 12px; }
 
   footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+
+  /* ── MODULE NEWS ── */
+  .news-module { margin-top: 32px; }
+  .news-module-title {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    padding-bottom: 10px; margin-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .news-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
+  @media (max-width: 600px) { .news-form-row { grid-template-columns: 1fr; } }
+  .news-form-group { display: flex; flex-direction: column; gap: 5px; }
+  .news-form-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+  .news-form-group textarea { resize: vertical; min-height: 70px; width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: var(--bg); color: var(--text); font-family: inherit; line-height: 1.55; }
+  .news-form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59,130,212,.12); }
+  .news-list { margin-top: 20px; }
+  .news-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 10px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .news-item-body { flex: 1; min-width: 0; }
+  .news-item-meta { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .news-item-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .news-item-en { font-size: 12px; color: var(--muted); margin-top: 3px; font-style: italic; }
+  .news-item-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+  .btn-news-edit { cursor: pointer; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 4px 10px; font-size: 12px; color: var(--text); font-family: inherit; }
+  .btn-news-edit:hover { background: var(--border); }
+  .btn-news-del { cursor: pointer; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 5px; padding: 4px 10px; font-size: 12px; color: #dc2626; font-family: inherit; }
+  .btn-news-del:hover { background: #fee2e2; }
+  .news-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 20px; }
 </style>
 <script src="ref_translations.js"></script>
 <script src="i18n.js"></script>
@@ -303,6 +334,35 @@
   </div>
 </div>
 
+<!-- ── MODULE NEWS ── -->
+<div class="wrap news-module" id="newsModuleWrap" style="display:none;">
+  <div class="news-module-title">📢 Gérer les News</div>
+
+  <div class="edit-card">
+    <div class="edit-card-title" id="newsFormTitle">✏️ Nouvelle news</div>
+    <div class="news-form-row">
+      <div class="news-form-group">
+        <label>Texte FR 🇫🇷</label>
+        <textarea id="nFr" placeholder="Texte en français…"></textarea>
+      </div>
+      <div class="news-form-group">
+        <label>Texte EN 🇬🇧</label>
+        <textarea id="nEn" placeholder="Text in English…"></textarea>
+      </div>
+    </div>
+    <div class="actions-bar">
+      <button class="btn btn-primary" onclick="publierNews()">📢 Publier</button>
+      <button class="btn btn-cancel" onclick="annulerEditionNews()">✖ Annuler</button>
+    </div>
+  </div>
+
+  <div class="news-list" id="newsList"></div>
+
+  <div class="actions-bar" style="margin-top:16px;">
+    <button class="btn btn-save-now" onclick="sauvegarderNews()">💾 Sauvegarder ref_news.js</button>
+  </div>
+</div>
+
 <!-- ── CONFIRM DIALOG ── -->
 <div class="overlay" id="overlay">
   <div class="dialog">
@@ -328,7 +388,8 @@
 loadData([
   'ref_jours.js','ref_lieux.js','ref_types.js',
   'ref_resource_types.js','ref_ressources.js','ref_notes.js',
-  'logistics.js','logistics.special.js','data.js'
+  'logistics.js','logistics.special.js','data.js',
+  'ref_news.js'
 ], function() {
 // ════════════════════════════════════════════════
 // RÉFÉRENTIELS → SELECTS
@@ -888,6 +949,157 @@ window.fmt                 = fmt;
 window.fmtH                = fmtH;
 window.onJourChange        = onJourChange;
 window.onAtelierChange     = onAtelierChange;
+
+// ════════════════════════════════════════════════
+// MODULE NEWS
+// ════════════════════════════════════════════════
+
+// SESSION News en mémoire (copie de REF_NEWS)
+var NEWS_SESSION = (typeof REF_NEWS !== 'undefined' && Array.isArray(REF_NEWS))
+  ? REF_NEWS.map(function(n) { return Object.assign({}, n); })
+  : [];
+var _newsEditId = null; // null = nouvelle news, sinon id de la news en édition
+
+// Afficher le module
+document.getElementById('newsModuleWrap').style.display = '';
+
+// Rendu de la liste
+function renderNewsList() {
+  var list = document.getElementById('newsList');
+  if (NEWS_SESSION.length === 0) {
+    list.innerHTML = '<div class="news-empty">Aucune news pour l\'instant.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  // Afficher du plus récent au plus ancien
+  var sorted = NEWS_SESSION.slice().reverse();
+  sorted.forEach(function(n) {
+    var item = document.createElement('div');
+    item.className = 'news-item';
+    item.innerHTML =
+      '<div class="news-item-body">' +
+        '<div class="news-item-meta">' + (n.publishedAt || '') + (n.author ? ' — ' + n.author : '') + '</div>' +
+        '<div class="news-item-text">' + escHtmlText(n.fr || '') + '</div>' +
+        (n.en ? '<div class="news-item-en">' + escHtmlText(n.en) + '</div>' : '') +
+      '</div>' +
+      '<div class="news-item-actions">' +
+        '<button class="btn-news-edit" onclick="editerNews(\'' + n.id + '\')">✏️ Modifier</button>' +
+        '<button class="btn-news-del" onclick="supprimerNews(\'' + n.id + '\')">🗑</button>' +
+      '</div>';
+    list.appendChild(item);
+  });
+}
+
+function escHtmlText(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function genNewsId() {
+  // Format : NEWS_<timestamp>
+  return 'NEWS_' + Date.now();
+}
+
+function viderFormulaireNews() {
+  document.getElementById('nFr').value = '';
+  document.getElementById('nEn').value = '';
+  document.getElementById('newsFormTitle').textContent = '✏️ Nouvelle news';
+  _newsEditId = null;
+}
+
+function editerNews(id) {
+  var news = NEWS_SESSION.find(function(n) { return n.id === id; });
+  if (!news) return;
+  _newsEditId = id;
+  document.getElementById('nFr').value = news.fr || '';
+  document.getElementById('nEn').value = news.en || '';
+  document.getElementById('newsFormTitle').textContent = '✏️ Modifier : ' + (news.publishedAt || id);
+  document.getElementById('nFr').focus();
+  document.getElementById('newsModuleWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function annulerEditionNews() {
+  viderFormulaireNews();
+}
+
+function supprimerNews(id) {
+  if (!confirm('Supprimer cette news ?')) return;
+  NEWS_SESSION = NEWS_SESSION.filter(function(n) { return n.id !== id; });
+  renderNewsList();
+}
+
+function publierNews() {
+  var fr = document.getElementById('nFr').value.trim();
+  var en = document.getElementById('nEn').value.trim();
+  if (!fr && !en) { afficherToast('⚠️ Le texte FR ou EN est obligatoire.', true); return; }
+
+  var now = new Date();
+  var pad = function(n) { return String(n).padStart(2, '0'); };
+  var publishedAt = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate())
+    + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+
+  if (_newsEditId) {
+    // Mise à jour
+    var idx = NEWS_SESSION.findIndex(function(n) { return n.id === _newsEditId; });
+    if (idx !== -1) {
+      NEWS_SESSION[idx].fr = fr;
+      NEWS_SESSION[idx].en = en;
+    }
+  } else {
+    // Nouvelle news
+    NEWS_SESSION.push({ id: genNewsId(), fr: fr, en: en, publishedAt: publishedAt, author: 'Admin' });
+  }
+  viderFormulaireNews();
+  renderNewsList();
+  afficherToast('✅ News ajoutée — pensez à cliquer 💾 Sauvegarder.');
+}
+
+function escNewsStr(s) {
+  return String(s||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r?\n/g,'\\n');
+}
+
+function genNewsJs() {
+  var header =
+'/**\n' +
+' * TANTRAMOUR 2026 — News de la DreamTeam\n' +
+' * =======================================\n' +
+' * Fichier géré automatiquement par Admin.html.\n' +
+' * Ne pas modifier manuellement.\n' +
+' *\n' +
+' * Structure :\n' +
+' *   id          {string}  identifiant unique (ex: "NEWS_001")\n' +
+' *   fr          {string}  texte en français\n' +
+' *   en          {string}  texte en anglais\n' +
+' *   publishedAt {string}  date/heure de publication "YYYY-MM-DD HH:MM"\n' +
+' *   author      {string}  auteur de la news\n' +
+' */\n\n' +
+'var REF_NEWS = [\n';
+
+  var lines = NEWS_SESSION.map(function(n) {
+    return '  {id:"' + escNewsStr(n.id) + '",fr:"' + escNewsStr(n.fr) + '",en:"' + escNewsStr(n.en) + '",publishedAt:"' + escNewsStr(n.publishedAt) + '",author:"' + escNewsStr(n.author||'Admin') + '"}';
+  });
+
+  return header + lines.join(',\n') + '\n];\n';
+}
+
+async function sauvegarderNews() {
+  const content = genNewsJs();
+  try {
+    await githubSaveFile('ref_news.js', content);
+    afficherToast('✅ ref_news.js sauvegardé sur GitHub.');
+  } catch(e) {
+    afficherToast('❌ Sauvegarde impossible : ' + e.message, true);
+  }
+}
+
+// Exposer les fonctions news dans window
+window.publierNews        = publierNews;
+window.annulerEditionNews = annulerEditionNews;
+window.editerNews         = editerNews;
+window.supprimerNews      = supprimerNews;
+window.sauvegarderNews    = sauvegarderNews;
+
+// Afficher la liste initiale
+renderNewsList();
 
 }); // fin loadData
 </script>
