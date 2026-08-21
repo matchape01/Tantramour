@@ -32,8 +32,13 @@ ALLOWED = {
     'ref_lieux.js',
     'ref_types.js',
     'ref_jours.js',
+    'ref_notes.js',
     'ref_news.js',
     'ref_equipements.js',
+    'ref_equip_cat.js',
+    'ref_consignes_type.js',
+    'ref_piment.js',
+    'ref_heures.js',
 }
 
 mimetypes.add_type('text/javascript; charset=utf-8', '.js')

@@ -27,7 +27,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 18:32"
   },
 
   "JOUR1_TEST_MATT__COPIE_": {
@@ -55,9 +55,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
-    html: "-",
-    text: "-",
-    updatedAt: "2026-08-18 23:48"
+    html: "- micro casque",
+    text: "- micro casque",
+    updatedAt: "2026-08-21 10:21"
   },
 
   "JOUR2_LA_DANSE_DE_LA_POLARITE": {
@@ -110,8 +110,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR2_YABYUM___LET_LOVE_HAPPEN": {
     html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Tapis de yoga : 1 pour 2 <br>• BEAUCOUP de coussins : au moins 2 par personne",
-    text: "• Sono & table de mix\n• Micro main sans fil\n• Tapis de yoga : 1 pour 2 \n• BEAUCOUP de coussins : au moins 2 par personne",
-    updatedAt: "2026-08-21 03:30"
+    text: "• Sono & table de mix\n• Micro main sans fil\n• Tapis de yoga : 1 pour 2\n• BEAUCOUP de coussins : au moins 2 par personne",
+    updatedAt: "2026-08-21 23:42"
   },
 
   "JOUR2__CALL__POUR_RASSEMBLEMENT": {
@@ -129,7 +129,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3_DANCING_EROS": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 10:16"
   },
 
   "JOUR3_DANSE_DES_PORTES_MULTIDIMENSIO": {
@@ -189,7 +189,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
     html: "- Une piscine gonflable<br>- 200KG de glaçons<br>- Un accès à l'eau pour remplir la piscine",
     text: "- Une piscine gonflable\n- 200KG de glaçons\n- Un accès à l'eau pour remplir la piscine",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 19:14"
   },
 
   "JOUR3_VOYAGE_AVEC_LA_ROSE__FEMMES_": {
@@ -236,8 +236,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
     html: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert <br>Prevoir de l'eau pour nous pendant le concert <br>30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
-    text: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert \nPrevoir de l'eau pour nous pendant le concert \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
-    updatedAt: "2026-08-18 23:48"
+    text: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert\nPrevoir de l'eau pour nous pendant le concert\n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    updatedAt: "2026-08-21 18:30"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
@@ -273,7 +273,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-21 03:57"
+    updatedAt: "2026-08-21 17:08"
   },
 
   "JOUR4_PREPA_TEMPLE__CHENREZIG____DEV": {
@@ -327,7 +327,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_": {
     html: "3 helpers svp<br>- 2 micros sans fils",
     text: "3 helpers svp\n- 2 micros sans fils",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 20:35"
   },
 
   "JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO": {
@@ -343,9 +343,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR5_LIVE_ELECTRO_ACCOUSTIQUE___VOI": {
-    html: "-",
-    text: "-",
-    updatedAt: "2026-08-18 23:48"
+    html: "<br>",
+    text: "",
+    updatedAt: "2026-08-21 19:28"
   },
 
   "JOUR5_POOL_PARTY___DJ_JUAN_FELIX": {
@@ -355,9 +355,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR5_TANTRA_CAFE___TOUT_CE_QUE_VOUS": {
-    html: "-",
-    text: "-",
-    updatedAt: "2026-08-18 23:48"
+    html: "- 3 micros sans fils (animateur/traducteur/participant)",
+    text: "- 3 micros sans fils (animateur/traducteur/participant)",
+    updatedAt: "2026-08-21 18:21"
   },
 
   "JOUR5__CALL__POUR_RASSEMBLEMENT": {
@@ -381,7 +381,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR6_LOVING_LEADERSHIP_": {
     html: "6 spots (voir avec Felix)",
     text: "6 spots (voir avec Felix)",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 10:14"
   },
 
   "JOUR6_L_ART_D_ETRE_EN_MOUVEMENT_": {
@@ -409,9 +409,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR6_VOYAGE_AU_PAYS_DE_MON_SEXE": {
-    html: "Quatre (4) flacons de talc.<br>- 2 micros sans fil HF mains",
-    text: "Quatre (4) flacons de talc.\n- 2 micros sans fil HF mains",
-    updatedAt: "2026-08-21 03:30"
+    html: "<ul><li>Quatre (4) flacons de talc.</li></ul><ul><li>2 micros sans fil HF mains</li></ul>",
+    text: "Quatre (4) flacons de talc.\n2 micros sans fil HF mains",
+    updatedAt: "2026-08-21 20:36"
   },
 
   "JOUR6__CALL__POUR_RASSEMBLEMENT": {
@@ -452,14 +452,14 @@ var LOGISTICS_SPECIAL = {
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
     html: "- 7 roses rouges<br>- 1 rose blanche <br>- 1 récipient avec de l'eau",
-    text: "- 7 roses rouges\n- 1 rose blanche \n- 1 récipient avec de l'eau",
-    updatedAt: "2026-08-21 03:30"
+    text: "- 7 roses rouges\n- 1 rose blanche\n- 1 récipient avec de l'eau",
+    updatedAt: "2026-08-21 18:52"
   },
 
   "LOG_Jour2_RASSEMBLEMENT": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-18 17:11"
+    html: "<div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\">Rassemblements\nsous le<span style=\"mso-spacerun:yes\">&nbsp; </span>chapiteau : 2 helpers (en amont\n30 mins avant : rangement, ouvrir les baies plastique &gt; accueil)<span style=\"mso-spacerun:yes\">&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div><br></div>",
+    text: "Rassemblements sous le  chapiteau : 2 helpers (en amont 30 mins avant : rangement, ouvrir les baies plastique > accueil) \n\n\nTraduction: \n- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma\n- 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur alors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.",
+    updatedAt: "2026-08-21 10:02"
   },
 
   "LOG_Jour2_YOGA2": {
@@ -483,7 +483,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour3_RASSEMBLEMENT": {
     html: "",
     text: "",
-    updatedAt: "2026-08-18 17:11"
+    updatedAt: "2026-08-21 10:04"
   },
 
   "LOG_Jour3_YOGA": {
@@ -495,7 +495,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour4_RASSEMBLEMENT": {
     html: "",
     text: "",
-    updatedAt: "2026-08-18 17:11"
+    updatedAt: "2026-08-21 10:04"
   },
 
   "LOG_Jour4_YOGA": {
@@ -519,7 +519,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour5_RASSEMBLEMENT": {
     html: "",
     text: "",
-    updatedAt: "2026-08-18 17:12"
+    updatedAt: "2026-08-21 10:05"
   },
 
   "LOG_Jour5_YOGA_NIDRA": {
@@ -531,7 +531,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour6_ACROYOGA_": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-21 20:20"
   },
 
   "LOG_Jour6_ALICE___INCARNATION__3_3__MASS_2": {
@@ -567,7 +567,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour6_RASSEMBLEMENT": {
     html: "",
     text: "",
-    updatedAt: "2026-08-18 17:12"
+    updatedAt: "2026-08-21 10:05"
   },
 
   "LOG_Jour6_SOIREE_SURPRISE_POUR_ENFLAMMER": {
@@ -592,6 +592,60 @@ var LOGISTICS_SPECIAL = {
     html: "- bloc de yoga<br>- Je vais le guider en Francais. Avec des petites touches en anglais possible mais pas dans l'entiereté. Donc à communiquer ou voir pour un traducteur??",
     text: "- bloc de yoga\n- Je vais le guider en Francais. Avec des petites touches en anglais possible mais pas dans l'entiereté. Donc à communiquer ou voir pour un traducteur??",
     updatedAt: "2026-08-21 03:30"
+  },
+
+  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
+    html: "<br>",
+    text: "",
+    updatedAt: "2026-08-21 18:26"
+  },
+
+  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 19:24"
+  },
+
+  "JOUR2_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR3_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR6_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR4_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:23"
+  },
+
+  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:24"
+  },
+
+  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:50"
+  },
+
+  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 00:21"
   }
 
 };

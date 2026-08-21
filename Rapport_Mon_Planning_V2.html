@@ -267,12 +267,13 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
 <script src="ref_piment.js"></script>
 <script src="ref_notes.js"></script>
 <script src="ref_lieux.js"></script>
+<script src="ref_consignes_type.js"></script>
 <script src="ref_ressources.js"></script>
 <script src="ref_equipements.js"></script>
 
 <script src="loader.js"></script>
 <script>
-loadData(['data.js','ref_descriptions.js','logistics.js','logistics.helpers.js','logistics.special.js'], function() {
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.helpers.js','logistics.special.js','ref_consignes_type.js'], function() {
 
 // ════════════════════════════════════════════
 // UTILITAIRES
@@ -1040,7 +1041,8 @@ function renderModalBody() {
     : null;
 
   var dur   = calcDuree(e.heure);
-  var prep  = (logE && logE.prepDuration != null) ? logE.prepDuration : 15; // 15 min par défaut
+  var prep  = (logE && logE.prepDuration  != null) ? logE.prepDuration  : 15; // 15 min par défaut
+  var range = (logE && logE.rangeDuration != null) ? logE.rangeDuration : 0;  // 0 min par défaut
   var debut = heureMin(e.heure);
   var arrivee = (debut!==null) ? fmtHeure(debut-prep) : '';
 
@@ -1085,6 +1087,26 @@ function renderModalBody() {
     ? desc.consigneEn : (desc && desc.consigne && desc.consigne.trim() ? desc.consigne : '');
   var consigneLabel = lang==='en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
 
+  // ── Consignes type actives pour cet atelier ──────────────────────────────
+  var _disabled = e._consignesDisabled || {};
+  function _consignesTypeBlock(placement) {
+    if (typeof REF_CONSIGNES_TYPE === 'undefined') return '';
+    var items = REF_CONSIGNES_TYPE.filter(function(c) {
+      if (c.actif === false) return false;
+      if (_disabled[c.id]) return false;
+      if (!c.placements || c.placements.indexOf(placement) === -1) return false;
+      if (c.types && c.types.length > 0 && e.type && c.types.indexOf(e.type) === -1) return false;
+      return true;
+    });
+    if (!items.length) return '';
+    var html = '';
+    items.forEach(function(c) {
+      var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+    return html ? '<span>' + html + '</span>' : '';
+  }
+
   // ── Palettes blocs (identiques à Saisie Ateliers) ───────────────────────
   // Jaune  : INFO GÉNÉRAL
   var S_INFO   = dark
@@ -1128,6 +1150,7 @@ function renderModalBody() {
     '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box" style="border-color:'+(dark?'#92400e':'#fcd34d')+';background:'+(dark?'#2d2006':'#fffbeb')+'">'+
         '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
+        _consignesTypeBlock('Participant')+
         '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
@@ -1172,6 +1195,7 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        _consignesTypeBlock('Logistique')+
         '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+
@@ -1182,6 +1206,7 @@ function renderModalBody() {
     '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
       '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
     '</div>'+
+    _consignesTypeBlock('Spécifique')+
     '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
   '</div>';
 
@@ -1246,14 +1271,18 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
+        _consignesTypeBlock('Avant')+
         '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
+        _consignesTypeBlock('Pendant')+
         '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
+        (range > 0 ? '<div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:3px 8px;margin-bottom:6px;">🧹 '+(lang==='en'?'Tidying up':'Rangement')+' : <strong style="color:var(--text)">'+range+' min</strong></div>' : '')+
+        _consignesTypeBlock('Après')+
         '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+

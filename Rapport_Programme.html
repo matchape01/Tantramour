@@ -430,8 +430,9 @@
 <script src="loader.js"></script>
 <script src="ref_piment.js"></script>
 <script src="ref_notes.js"></script>
+<script src="ref_consignes_type.js"></script>
 <script>
-loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js', 'ref_consignes_type.js'], function() {
 
 // ════════════════════════════════════════════
 // CONFIG
@@ -958,8 +959,27 @@ function renderModalContent() {
     : (d && d.consigne && d.consigne.trim() ? d.consigne : '');
   var consigneLabel = lang === 'en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
   var noInfoTxt     = lang === 'en' ? 'No specific instructions.' : 'Aucune instruction spécifique.';
+
+  // Consignes type actives — placement Participant uniquement
+  var _consDisabled = e._consignesDisabled || {};
+  var _consTypeHtml = '';
+  if (typeof REF_CONSIGNES_TYPE !== 'undefined') {
+    var _consTypeItems = REF_CONSIGNES_TYPE.filter(function(c) {
+      if (c.actif === false) return false;
+      if (_consDisabled[c.id]) return false;
+      if (!c.placements || c.placements.indexOf('Participant') === -1) return false;
+      if (c.types && c.types.length > 0 && e.type && c.types.indexOf(e.type) === -1) return false;
+      return true;
+    });
+    _consTypeItems.forEach(function(c) {
+      var txt = (lang === 'en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) _consTypeHtml += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+  }
+
   consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#fcd34d;background:#fffbeb">' +
     '<div class="modal-desc-label" style="color:#92400e">' + consigneLabel + '</div>' +
+    _consTypeHtml +
     '<div>' + (consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noInfoTxt + '</span>') + '</div>' +
   '</div>';
 

@@ -76,7 +76,7 @@
   .cal-body { display:flex; width:100%; position:relative; }
   .col-hours { width:var(--hour-col); flex-shrink:0; border-right:1px solid var(--border); position:relative; }
   .hour-label { position:absolute; right:4px; font-size:11px; font-weight:600; color:var(--muted); line-height:1; transform:translateY(-50%); font-variant-numeric:tabular-nums; white-space:nowrap; }
-  .col-day { flex:1; min-width:120px; position:relative; border-right:2px solid var(--border); overflow:hidden; }
+  .col-day { flex:1; min-width:120px; position:relative; border-right:2px solid var(--border); overflow:visible; }
   .col-day:last-child { border-right:none; }
 
   /* Lignes horaires (fond) */
@@ -105,6 +105,31 @@
   .dark .evt-arrivee-badge { background:#2a1500; color:#fbbf24; }
   .evt-arrivee-prep { font-size:9px; font-weight:400; color:var(--muted); margin-left:3px; }
   .evt-facs { font-size:10px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* ── BLOC RANGEMENT (hachures grises après l'atelier) ── */
+  .evt-range {
+    position:absolute; z-index:1; pointer-events:none;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 3px,
+      rgba(100,116,139,.18) 3px, rgba(100,116,139,.18) 6px
+    );
+    border: 1px dashed rgba(100,116,139,.4);
+    border-radius: 4px;
+    box-sizing: border-box;
+    display:flex; align-items:flex-start; justify-content:center; padding-top:2px;
+  }
+  .dark .evt-range {
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 3px,
+      rgba(148,163,184,.15) 3px, rgba(148,163,184,.15) 6px
+    );
+    border-color: rgba(148,163,184,.35);
+  }
+  .evt-range-label {
+    font-size:9px; font-weight:600; color:var(--muted);
+    background:rgba(255,255,255,.8); border-radius:3px; padding:0 3px; white-space:nowrap;
+  }
+  .dark .evt-range-label { background:rgba(22,27,34,.75); color:#8b949e; }
 
   /* ── BLOC PRÉPARATION (hachures grises avant l'atelier) ── */
   .evt-prep {
@@ -197,7 +222,8 @@
   </div>
   <div class="topbar-right" id="jourChips"></div>
   <div class="topbar-right">
-    <a class="btn" href="index_bis.html" data-i18n="mas_back">← Retour</a>
+    <a class="btn" href="index.html">🏠 Accueil</a>
+    <a class="btn" href="index_bis.html">🌀 DreamTeam</a>
     <button class="btn" onclick="doRefresh()" data-i18n="mas_refresh">🔄 Refresh</button>
     <button class="btn" id="btnExport" onclick="exportJpeg()" style="display:none;" data-i18n="mas_export_jpeg">📷 Export JPEG</button>
     <button class="btn" id="btnIcal" onclick="exportIcal()" style="display:none;">📅 Export iCal</button>
@@ -696,6 +722,23 @@ function render() {
       var ttTrad    = entry.traduction || '';
       var ttAngel   = entry.angel || '';
 
+      // ── Bloc rangement ────────────────────────────────────────────────────
+      var rangeMin = (entry.type === 'REUNION' || entry.type === 'PREPA & LOGISTICS' || entry.type === 'SHIFT ANGEL') ? 0 : (logEntry && logEntry.rangeDuration != null) ? logEntry.rangeDuration : 0;
+      var finMin   = iv.e;
+      if (rangeMin > 0 && finMin !== null) {
+        var rangeTop    = minToPx(finMin);
+        var rangeHeight = durationPx(rangeMin);
+        bodyHtml += '<div class="evt-range"'
+          +' style="top:'+rangeTop.toFixed(1)+'px;height:'+rangeHeight.toFixed(1)+'px;left:'+left+';width:'+width+';">';
+        if (rangeHeight > 16) {
+          var rangeLabel = rangeMin >= 60
+            ? (rangeMin/60 % 1 === 0 ? rangeMin/60+'h' : (Math.floor(rangeMin/60)+'h'+rangeMin%60)) + ' rangement'
+            : rangeMin + 'min rangement';
+          bodyHtml += '<div class="evt-range-label">'+rangeLabel+'</div>';
+        }
+        bodyHtml += '</div>';
+      }
+
       // ── Bloc préparation ──────────────────────────────────────────────────
       if (prepMin > 0 && debutMin !== null) {
         var prepStartMin = iv.s - prepMin;
@@ -724,6 +767,7 @@ function render() {
         +' data-tt-pill="'+esc(pillStyle)+'"'
         +' data-tt-arrivee="'+esc(arriveeStr)+'"'
         +' data-tt-prep="'+prepMin+'"'
+        +' data-tt-range="'+rangeMin+'"'
         +' data-tt-facs="'+esc(ttFacs)+'"'
         +' data-tt-helpers="'+esc(ttHelpers)+'"'
         +' data-tt-trad="'+esc(ttTrad)+'"'
@@ -915,6 +959,7 @@ window.doRefresh = function() {
     var pill    = el.dataset.ttPill    || '';
     var arrivee = el.dataset.ttArrivee || '';
     var prep    = el.dataset.ttPrep    || '';
+    var range   = el.dataset.ttRange   || '';
     var facs    = el.dataset.ttFacs    || '';
     var helpers = el.dataset.ttHelpers || '';
     var trad    = el.dataset.ttTrad    || '';
@@ -928,6 +973,9 @@ window.doRefresh = function() {
       if (arrivee) {
         var prepTxt = prep && prep !== '0' ? ' <span style="color:var(--muted);font-weight:400;">('+tt('mas_prep_prefix')+' ' + esc(prep) + 'min)</span>' : '';
         html += '<div class="tt-row"><b>'+tt('mas_tt_arrivee')+'</b><span class="tt-arrivee">'+esc(arrivee)+prepTxt+'</span></div>';
+      }
+      if (range && range !== '0') {
+        html += '<div class="tt-row"><b>🧹 Rangement</b><span style="color:var(--muted)">'+esc(range)+' min</span></div>';
       }
     }
     if (lieu) html += '<div class="tt-row"><b>'+tt('mas_tt_lieu')+'</b><span>'+esc(lieu)+'</span></div>';

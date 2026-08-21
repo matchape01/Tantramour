@@ -30,7 +30,7 @@ var LOGISTICS_HELPERS = {
     avant: "Would be nice to have 2 helpers experience with Ecstatic Dance (or conscious dance) that can function as space holders: prepare space energetically (smudge) and greet people as they come in the space/maybe smudge them (palo santo or sage or incense). I would like to meet them about 1 hour before session starts.",
     pendant: "Same helpers can be space holders during dance. Fully embodying dance, maybe, if necessary, kindly asking people to refrain from speaking.",
     apres: "1 helper to carry an instrument.",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 18:32"
   },
 
   "JOUR1_TEST_MATT__COPIE_": {
@@ -65,7 +65,7 @@ var LOGISTICS_HELPERS = {
     avant: "Come clean, relaxed and available to emotioanly support. If you are not availale let me know please. please smudge the room before and make sure the sound and mic works.",
     pendant: "Being there with loving eyes &amp; being available to support emotionnally to ground only. This is not a therapy/healing session. If needed, support only by grounding. If needed call me for support.",
     apres: "first - Thank you. then please smudge the space, give a hug to each other and we move on.",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 10:21"
   },
 
   "JOUR2_LA_DANSE_DE_LA_POLARITE": {
@@ -114,7 +114,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Installer les tapis de yoga (soit en cercles concentriques, soit en étoile autour du centre, selon la salle et la jauge du nombre de personnes)<br>• Nombreux coussins proches des tapis de yoga (2 dessus, et d'autres autour)<br>• Aide branchement sono si besoin (généralement, je gère ;-) )",
     pendant: "• Tenir l'espace avec moi<br>• Si besoin entrer dans la pratique avec une personne si nb. impair<br>• Démo des variantes de posture du Yabyum avec moi (idéalement 1 SkyDancer·euse 🩷)<br>• Aider à l'exploration de l'installation en Yabyum<br>• Être dispo si qq'1 lève la main pour besoin logistique ou d'ajustement de la position Yabyum / coussin / besoin émotionnel, etc.<br>• Gestion aération et température (clim et/ou aération)",
     apres: "Aérer la salle à nouveau ;-)<br>Ranger tapis de yoga et coussins<br>Remettre l'espace dispo pour la suite",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 23:42"
   },
 
   "JOUR2__CALL__POUR_RASSEMBLEMENT": {
@@ -135,7 +135,7 @@ var LOGISTICS_HELPERS = {
     avant: "Come clean, relaxed and available to emotionnaly support. If you are not available let me know please. Please smudge the room before and make sure the sound and mic works.",
     pendant: "Being there with loving eyes &amp; being available to support emotionnally to ground only. This is not a therapy/healing session. If needed support only by grounding. If needed call me for support.",
     apres: "first - Thank you. then please smudge the space, give a hug to each other and we move on.",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 10:16"
   },
 
   "JOUR3_DANSE_DES_PORTES_MULTIDIMENSIO": {
@@ -204,8 +204,8 @@ var LOGISTICS_HELPERS = {
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
     avant: "Balayer l'espace si besoin, <br>Préparer un grand cercle de coussin pour 50 personnes",
     pendant: "Aider les participants à se rhabiller après le bain froid.",
-    apres: "Vider la piscine<br>Ranger l'espace",
-    updatedAt: "2026-08-21 03:30"
+    apres: "<div>(environ 15-20 min)</div><div>Vider la piscine</div>Ranger l'espace",
+    updatedAt: "2026-08-21 19:14"
   },
 
   "JOUR3_VOYAGE_AVEC_LA_ROSE__FEMMES_": {
@@ -261,7 +261,7 @@ var LOGISTICS_HELPERS = {
     avant: "Preparer l'autel, fleurs bougies",
     pendant: "30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     apres: "ras",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 18:30"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
@@ -296,7 +296,7 @@ var LOGISTICS_HELPERS = {
     avant: "Faire un cercle de coussin pour 30 personnes",
     pendant: "Pas d'admisssion après le début des chants",
     apres: "Ranger la salle",
-    updatedAt: "2026-08-21 03:57"
+    updatedAt: "2026-08-21 17:08"
   },
 
   "JOUR4_PREPA_TEMPLE__CHENREZIG____DEV": {
@@ -359,7 +359,7 @@ var LOGISTICS_HELPERS = {
     avant: "Installer des matelas au sol + 2 coussins par matelas. <br>Suivant la place disponible, mettre les matelas en étoile autour du centre.",
     pendant: "Observation des particaipant·e·s. Nous prévenir si des personnes sont en difficultés ou si manquement à nos consignes",
     apres: "Ranger les matelas et coussins.",
-    updatedAt: "2026-08-18 21:59"
+    updatedAt: "2026-08-21 20:35"
   },
 
   "JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO": {
@@ -380,7 +380,7 @@ var LOGISTICS_HELPERS = {
     avant: "installer matelas pour participants <br>aider à emmener le matériel de musique<br>passer enscens<br>allumer bougies",
     pendant: "-",
     apres: "Ranger les matelas<br>Aider à ramener le matériel de musique",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 19:28"
   },
 
   "JOUR5_POOL_PARTY___DJ_JUAN_FELIX": {
@@ -394,7 +394,7 @@ var LOGISTICS_HELPERS = {
     avant: "Préparer les matelas et coussins pour faire un espace super cozy. Ecrire des questions et les poster dans la boite. Test son.",
     pendant: "Donner un micro aux participants qui souhaitent poser des questions",
     apres: "distribuer les cartes cadeaux et ranger la salle",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 18:21"
   },
 
   "JOUR5__CALL__POUR_RASSEMBLEMENT": {
@@ -422,7 +422,7 @@ var LOGISTICS_HELPERS = {
     avant: "May need to tweak chair adustment 10min. prior to class.<br>Sound check prior to the event<br>Installer des spots (voir avec Felix)",
     pendant: "Mic runners (see above)",
     apres: "Ranger les chaises",
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-21 10:14"
   },
 
   "JOUR6_L_ART_D_ETRE_EN_MOUVEMENT_": {
@@ -450,7 +450,7 @@ var LOGISTICS_HELPERS = {
     avant: "Installer des matelas au sol + 2 coussins par matelas. Suivant la place disponible, mettre les matelas en étoile autour du centre.",
     pendant: "Observation des particaipant·e·s. Nous prévenir si des personnes sont en difficultés ou si manquement à nos consignes",
     apres: "Ranger les matelas et coussins.",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 20:36"
   },
 
   "JOUR6__CALL__POUR_RASSEMBLEMENT": {
@@ -485,14 +485,14 @@ var LOGISTICS_HELPERS = {
     avant: "Préparer le centre avec les roses mais je serai là pour le préparer",
     pendant: "Sortir des matelas",
     apres: "Ranger la salle",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-21 18:52"
   },
 
   "LOG_Jour2_RASSEMBLEMENT": {
     avant: "Rassemblements<br>sous le&nbsp; chapiteau : 2 helpers (en amont<br>30 mins avant : rangement, ouvrir les baies plastique &gt; accueil)",
-    pendant: "Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur",
+    pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><b>Traduction:&nbsp;</b></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div><br></div>",
     apres: "Ranger les cousins afin de libérer le chapiteau pour l'atelier du matin",
-    updatedAt: "2026-08-18 17:11"
+    updatedAt: "2026-08-21 10:02"
   },
 
   "LOG_Jour2_YOGA2": {
@@ -511,9 +511,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour3_RASSEMBLEMENT": {
     avant: "",
-    pendant: "",
+    pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
     apres: "",
-    updatedAt: "2026-08-18 17:11"
+    updatedAt: "2026-08-21 10:04"
   },
 
   "LOG_Jour3_YOGA": {
@@ -525,9 +525,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour4_RASSEMBLEMENT": {
     avant: "",
-    pendant: "",
+    pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
     apres: "",
-    updatedAt: "2026-08-18 17:11"
+    updatedAt: "2026-08-21 10:04"
   },
 
   "LOG_Jour4_YOGA": {
@@ -539,9 +539,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour5_RASSEMBLEMENT": {
     avant: "",
-    pendant: "",
+    pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
     apres: "",
-    updatedAt: "2026-08-18 17:12"
+    updatedAt: "2026-08-21 10:05"
   },
 
   "LOG_Jour5_YOGA_NIDRA": {
@@ -555,7 +555,7 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir la salle, vérifier que tout est en place<br>Acceuillir participants<br>Demander de prendre un tapis + deux blocs <br>Aider pour la sono",
     pendant: "",
     apres: "Ranger la salle",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-21 20:20"
   },
 
   "LOG_Jour6_ALICE___INCARNATION__3_3__MASS_2": {
@@ -595,9 +595,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour6_RASSEMBLEMENT": {
     avant: "",
-    pendant: "",
+    pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
     apres: "",
-    updatedAt: "2026-08-18 17:12"
+    updatedAt: "2026-08-21 10:05"
   },
 
   "LOG_Jour7_YOGA___AUTOMASSAGES": {
@@ -605,6 +605,69 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "Ranger la salle",
     updatedAt: "2026-08-21 03:30"
+  },
+
+  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 18:26"
+  },
+
+  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 19:24"
+  },
+
+  "JOUR2_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR3_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR6_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR4_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:23"
+  },
+
+  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:24"
+  },
+
+  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:50"
+  },
+
+  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 00:21"
   }
 
 };

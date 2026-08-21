@@ -175,7 +175,7 @@
 
   <div class="import-panel" id="importPanel">
     <div class="import-title">Import des informations ateliers</div>
-    <div class="import-help">Importe un fichier Excel au format <strong>TAF2026_ATELIERS DETAILS</strong>. Seules les colonnes K, M à W sont prises en compte, avec l’ID comme repère.</div>
+    <div class="import-help">Importe un fichier Excel au format <strong>TAF2026_ATELIERS DETAILS</strong> (23 ou 26 colonnes, avec ou sans Animateur 3/4). Seuls les champs Atelier (FR), Piment, Workshop name (ENG), Description (FR/ENG), Instructions participants (FR/ENG), Estimation préparation, Informations logistiques, Besoins logistiques spécifiques et Consignes HELPER (avant/pendant/après) sont pris en compte, avec l’ID comme repère.</div>
     <div class="import-actions">
       <button class="btn" onclick="triggerImportFile()">Choisir un fichier .xlsx</button>
       <button class="btn btn-sm" onclick="closeImportPanel()">Fermer</button>
@@ -258,9 +258,10 @@
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script src="ref_piment.js"></script>
+<script src="ref_consignes_type.js"></script>
 <script>
 if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
-loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js','ref_notes.js'], function() {
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js','ref_notes.js','ref_consignes_type.js'], function() {
 
 // ════════════════════════════════════════════
 // CONSTANTES
@@ -578,6 +579,26 @@ function renderModalBody() {
     ? desc.consigneEn : (desc && desc.consigne && desc.consigne.trim() ? desc.consigne : '');
   var consigneLabel = lang==='en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
 
+  // ── Consignes type actives pour cet atelier ──────────────────────────────
+  var _disabled = e._consignesDisabled || {};
+  function _consignesTypeBlock(placement) {
+    if (typeof REF_CONSIGNES_TYPE === 'undefined') return '';
+    var items = REF_CONSIGNES_TYPE.filter(function(c) {
+      if (c.actif === false) return false;
+      if (_disabled[c.id]) return false;
+      if (!c.placements || c.placements.indexOf(placement) === -1) return false;
+      if (c.types && c.types.length > 0 && e.type && c.types.indexOf(e.type) === -1) return false;
+      return true;
+    });
+    if (!items.length) return '';
+    var html = '';
+    items.forEach(function(c) {
+      var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+    return html ? '<span>' + html + '</span>' : '';
+  }
+
   var S_INFO = dark
     ? 'background:#2d2500;border:2px solid #92400e;border-radius:12px;padding:16px 18px;margin-bottom:0'
     : 'background:#fefce8;border:2px solid #fde68a;border-radius:12px;padding:16px 18px;margin-bottom:0';
@@ -604,6 +625,7 @@ function renderModalBody() {
     '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box" style="border-color:'+(dark?'#92400e':'#fcd34d')+';background:'+(dark?'#2d2006':'#fffbeb')+'">'+
         '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
+        _consignesTypeBlock('Participant')+
         '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
@@ -642,6 +664,7 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        _consignesTypeBlock('Logistique')+
         '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+
@@ -651,6 +674,7 @@ function renderModalBody() {
     '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
       '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
     '</div>'+
+    _consignesTypeBlock('Spécifique')+
     '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
   '</div>';
 
@@ -661,14 +685,17 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
+        _consignesTypeBlock('Avant')+
         '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
+        _consignesTypeBlock('Pendant')+
         '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
+        _consignesTypeBlock('Après')+
         '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+

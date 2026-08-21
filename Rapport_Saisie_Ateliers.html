@@ -160,7 +160,7 @@
     .dark .desc-area.consigne:focus { background:#1c1400; }
     .consigne-badge { font-size:10px; font-weight:800; padding:2px 7px; border-radius:4px; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
 
-    /* ── PRÉPARATION DURÉE ── */
+    /* ── PRÉPARATION / RANGEMENT DURÉE ── */
     .prep-select { padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:14px; background:var(--bg); color:var(--text); font-family:inherit; cursor:pointer; }
     .prep-select:focus { outline:2px solid var(--accent); outline-offset:1px; }
 
@@ -185,7 +185,7 @@
     /* ── BLOC ÉQUIPEMENTS ── */
     .eq-block { margin-top:4px; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
     .eq-block-title { background:var(--surface); padding:10px 16px; font-size:13px; font-weight:700; border-bottom:1px solid var(--border); }
-    .eq-cols { display:grid; grid-template-columns:repeat(3,1fr); }
+    .eq-cols { display:grid; grid-template-columns:repeat(4,1fr); }
     @media(max-width:760px) { .eq-cols { grid-template-columns:1fr; } }
     .eq-col { border-right:1px solid var(--border); }
     .eq-col:last-child { border-right:none; }
@@ -220,6 +220,10 @@
     .eq-demande-form input:focus { outline:none; border-color:var(--accent); }
     .eq-demande-form .inp-nom { flex:1; min-width:140px; }
     .eq-demande-form .inp-desc { flex:2; min-width:180px; }
+    .eq-demande-form select { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; }
+    .eq-demande-form select:focus { outline:none; border-color:var(--accent); }
+    .eq-demande-form .sel-type { min-width:120px; }
+    .eq-demande-form .sel-cat  { min-width:160px; }
     .btn-eq-add { cursor:pointer; background:#f0fdf4; color:#16a34a; border:1px solid #86efac; border-radius:6px; padding:7px 16px; font-size:13px; font-family:inherit; font-weight:700; white-space:nowrap; }
     .btn-eq-add:hover { background:#dcfce7; }
     .btn-eq-edit { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:5px; padding:3px 8px; font-size:12px; color:var(--text); font-family:inherit; }
@@ -384,6 +388,7 @@
       </div>
 
       <!-- Consignes pour festivalier FR + EN côte à côte -->
+      <div id="cons-type-participant"></div>
       <div class="desc-cols">
         <div class="desc-block">
           <div class="desc-label">
@@ -412,28 +417,48 @@
     <div class="section-block block-green">
       <div class="section-title" data-i18n="rsa_sec2_title">2 — Informations Logistiques</div>
 
-      <!-- Durée de préparation -->
-      <div class="field-wrap">
-        <label data-i18n="rsa_prep_label">⏱ Estimation durée de préparation</label>
-        <select class="prep-select" id="ePrepDuration">
-          <option value="0" data-i18n="rsa_prep_0">0 min — Aucune préparation</option>
-          <option value="15" selected>15 min</option>
-          <option value="20">20 min</option>
-          <option value="30">30 min</option>
-          <option value="45">45 min</option>
-          <option value="50">50 min</option>
-          <option value="60">60 min</option>
-          <option value="80">80 min</option>
-          <option value="90">90 min</option>
-          <option value="100">100 min</option>
-          <option value="110">110 min</option>
-          <option value="120">120 min</option>
-        </select>
+      <!-- Durée de préparation + rangement -->
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <div class="field-wrap" style="margin-bottom:0;">
+          <label data-i18n="rsa_prep_label">⏱ Estimation durée de préparation</label>
+          <select class="prep-select" id="ePrepDuration">
+            <option value="0" data-i18n="rsa_prep_0">0 min — Aucune préparation</option>
+            <option value="15" selected>15 min</option>
+            <option value="20">20 min</option>
+            <option value="30">30 min</option>
+            <option value="45">45 min</option>
+            <option value="50">50 min</option>
+            <option value="60">60 min</option>
+            <option value="80">80 min</option>
+            <option value="90">90 min</option>
+            <option value="100">100 min</option>
+            <option value="110">110 min</option>
+            <option value="120">120 min</option>
+          </select>
+        </div>
+        <div class="field-wrap" style="margin-bottom:0;">
+          <label>🧹 Estimation durée rangement</label>
+          <select class="prep-select" id="eRangeDuration">
+            <option value="0">0 min — Aucun rangement</option>
+            <option value="10">10 min</option>
+            <option value="15">15 min</option>
+            <option value="20">20 min</option>
+            <option value="25">25 min</option>
+            <option value="30">30 min</option>
+            <option value="35">35 min</option>
+            <option value="40">40 min</option>
+            <option value="45">45 min</option>
+            <option value="50">50 min</option>
+            <option value="55">55 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </div>
       </div>
 
       <!-- Besoins logistiques -->
       <div class="field-wrap" style="margin-bottom:6px;">
         <label data-i18n="rsa_log_label">Informations logistiques</label>
+        <div id="cons-type-logistique"></div>
         <p class="editor-hint" style="margin-bottom:8px;margin-top:2px;" data-i18n="rsa_log_hint">Décrivez vos besoins en matériel (tables, chaises, tapis yoga, matelas, coussins, etc…), technique (lumière, micros, câbles, etc…) ou autres. S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.</p>
         <div class="toolbar" id="tbLog">
           <button class="tb-btn" onclick="fmt('logEditor','bold')"><strong>G</strong></button>
@@ -453,6 +478,7 @@
     <div class="section-block block-purple">
       <div class="section-title" data-i18n="rsa_special_label">⭐ Besoins logistiques spécifiques</div>
       <p class="editor-hint" style="margin-bottom:8px;margin-top:-10px;" data-i18n="rsa_special_hint">Décrivez les besoins complémentaires en matériel spécial, achats à faire… S'il n'y a rien, indiquez « RAS » ou « N/A ». Utilisez la liste à puces pour plus de clarté.</p>
+      <div id="cons-type-specifique"></div>
       <div class="toolbar" style="border-bottom-color:#c4b5fd;">
         <button class="tb-btn" onclick="fmt('logSpecialEditor','bold')"><strong>G</strong></button>
         <button class="tb-btn" onclick="fmt('logSpecialEditor','italic')"><em>I</em></button>
@@ -469,8 +495,8 @@
 
     <!-- ══ 4 — ÉQUIPEMENTS ══ -->
     <div class="section-block block-teal">
-      <div class="section-title">🔩 4 — Équipements</div>
-      <p class="editor-hint" style="margin-bottom:12px;margin-top:-10px;">Sélectionnez les équipements nécessaires pour cet atelier. Cliquez sur un équipement pour le sélectionner/désélectionner. Ajustez les quantités. Vous pouvez aussi créer de nouveaux équipements (section NEW).</p>
+      <div class="section-title" id="eq-section-title">🔩 4 — Équipements</div>
+      <p class="editor-hint" style="margin-bottom:12px;margin-top:-10px;">Sélectionnez les équipements nécessaires pour cet atelier. Cliquez sur un équipement pour le sélectionner/désélectionner. Ajustez les quantités. Vous pouvez aussi créer un nouvel équipement en choisissant son fournisseur et sa catégorie ci-dessous : il apparaîtra directement dans la bonne colonne.</p>
 
       <div class="eq-block" id="eq-block-main">
         <div class="eq-block-title">🔩 Équipements</div>
@@ -480,9 +506,10 @@
 
         <!-- Section NEW -->
         <div class="eq-demande-block">
-          <div class="eq-demande-title">🆕 NEW</div>
-          <div class="eq-demande-list" id="eq-demande-list"></div>
+          <div class="eq-demande-title">🆕 Ajouter un équipement</div>
           <div class="eq-demande-form" id="eq-demande-form">
+            <select class="sel-type" id="eq-new-type"></select>
+            <select class="sel-cat" id="eq-new-cat"></select>
             <input type="text" class="inp-nom" id="eq-new-nom" placeholder="Nom de l'équipement…">
             <input type="text" class="inp-desc" id="eq-new-desc" placeholder="Description…">
             <span class="eq-qty-lbl">Qté</span>
@@ -503,6 +530,7 @@
       <!-- Avant -->
       <div class="helper-sub">
         <div class="helper-sub-label" data-i18n="rsa_helper_avant">🔧 Avant l'atelier — Préparation - Installation</div>
+        <div id="cons-type-avant"></div>
         <div class="toolbar" style="border-radius:0;border-top:none;">
           <button class="tb-btn" onclick="fmt('helperAvant','insertUnorderedList')">• Liste</button>
           <button class="tb-btn" onclick="fmt('helperAvant','bold')"><strong>G</strong></button>
@@ -514,6 +542,7 @@
       <!-- Pendant -->
       <div class="helper-sub">
         <div class="helper-sub-label" data-i18n="rsa_helper_pendant">▶️ Pendant l'atelier</div>
+        <div id="cons-type-pendant"></div>
         <div class="toolbar" style="border-radius:0;border-top:none;">
           <button class="tb-btn" onclick="fmt('helperPendant','insertUnorderedList')">• Liste</button>
           <button class="tb-btn" onclick="fmt('helperPendant','bold')"><strong>G</strong></button>
@@ -525,6 +554,7 @@
       <!-- Après -->
       <div class="helper-sub">
         <div class="helper-sub-label" data-i18n="rsa_helper_apres">🧹 Après l'atelier — Désinstallation – Rangement – Nettoyage</div>
+        <div id="cons-type-apres"></div>
         <div class="toolbar" style="border-radius:0;border-top:none;">
           <button class="tb-btn" onclick="fmt('helperApres','insertUnorderedList')">• Liste</button>
           <button class="tb-btn" onclick="fmt('helperApres','bold')"><strong>G</strong></button>
@@ -563,10 +593,12 @@
 <script src="ref_ressources.js"></script>
 <script src="ref_lieux.js"></script>
 <script src="ref_equipements.js"></script>
+<script src="ref_equip_cat.js"></script>
+<script src="ref_consignes_type.js"></script>
 <script>
 // Initialisation par défaut — sera écrasée si logistics.helpers.js se charge correctement
 if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
-loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.js', 'logistics.helpers.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.js', 'logistics.helpers.js', 'ref_consignes_type.js'], function() {
 
 // ════════════════════════════════════════════
 // CONSTANTES
@@ -585,10 +617,24 @@ var JOUR_META  = {
 // ════════════════════════════════════════════
 // ÉTAT
 // ════════════════════════════════════════════
-var currentKey         = '';
-var currentLogId       = '';
-var currentPiment      = 0;
-var currentEquipements = {}; // { eqId: qty }
+var currentKey              = '';
+var currentLogId            = '';
+var currentPiment           = 0;
+var currentEquipements      = {}; // { eqId: qty }
+var currentLieu             = ''; // lieu de la salle courante
+var currentType             = ''; // type de l'atelier courant
+var currentConsignesDisabled = {}; // { consId: true } — consignes type désactivées pour cet atelier
+
+// Types avec rangement par défaut 15 min
+var RANGE_DEFAULT_TYPES = [
+  'ATELIERS TANTRA (Matin)', 'ATELIERS TANTRA (Apres-Midi)',
+  'ATELIER ARTISTIQUE (Matin)', 'ATELIER ARTISTIQUE (Apres-Midi)',
+  'CEREMONIE & CONCERT', 'CONFERENCE', 'MEDITATION / YOGA',
+  'DJ Set', 'POOL PARTY', 'TANTRA CAFE', 'LOVE TEMPLE', 'RASSEMBLEMENT'
+];
+function getDefaultRangement(type) {
+  return (type && RANGE_DEFAULT_TYPES.indexOf(type) !== -1) ? 15 : 0;
+}
 
 // Index mémoire descriptions
 var DESCS = {};
@@ -818,15 +864,15 @@ function selectAtelier(idx) {
     var raw = (logEntry && logEntry.prepDuration !== undefined) ? logEntry.prepDuration : 15;
     var sel = document.getElementById('ePrepDuration');
     var allowed = Array.from(sel.options).map(function(o){ return parseInt(o.value, 10); });
-    if (allowed.indexOf(parseInt(raw, 10)) !== -1) {
-      sel.value = String(raw);
-    } else {
-      // snap vers la valeur valide la plus proche
-      var closest = allowed.reduce(function(prev, cur) {
-        return Math.abs(cur - raw) < Math.abs(prev - raw) ? cur : prev;
-      });
-      sel.value = String(closest);
-    }
+    if (allowed.indexOf(parseInt(raw, 10)) !== -1) { sel.value = String(raw); }
+    else { sel.value = String(allowed.reduce(function(p,c){ return Math.abs(c-raw)<Math.abs(p-raw)?c:p; })); }
+  })();
+  (function(){
+    var rawR = (logEntry && logEntry.rangeDuration !== undefined) ? logEntry.rangeDuration : getDefaultRangement(e.type);
+    var selR = document.getElementById('eRangeDuration');
+    var allowedR = Array.from(selR.options).map(function(o){ return parseInt(o.value, 10); });
+    if (allowedR.indexOf(parseInt(rawR, 10)) !== -1) { selR.value = String(rawR); }
+    else { selR.value = String(allowedR.reduce(function(p,c){ return Math.abs(c-rawR)<Math.abs(p-rawR)?c:p; })); }
   })();
 
   var specEntry = currentLogId && typeof LOGISTICS_SPECIAL !== 'undefined' && LOGISTICS_SPECIAL[currentLogId];
@@ -836,7 +882,13 @@ function selectAtelier(idx) {
   var eqLogistics = (currentLogId && LOGISTICS[currentLogId] && LOGISTICS[currentLogId]._equipements) || {};
   var eqAgenda    = e._equipements || {};
   currentEquipements = Object.assign({}, eqLogistics, eqAgenda);
+  currentLieu = e.lieu || '';
+  currentType = e.type || '';
   buildEqCols();
+
+  // Consignes type désactivées — chargées depuis AGENDA
+  currentConsignesDisabled = e._consignesDisabled ? Object.assign({}, e._consignesDisabled) : {};
+  buildConsignesTypeWidgets();
 
   // Consignes helpers
   var helpEntry = currentLogId && typeof LOGISTICS_HELPERS !== 'undefined' && LOGISTICS_HELPERS[currentLogId];
@@ -991,11 +1043,13 @@ async function doSave() {
     var logHtml  = logEl.innerHTML.trim();
     var logText  = logEl.innerText.trim();
     var prepDur  = parseInt(document.getElementById('ePrepDuration').value, 10) || 0;
+    var rangeDur = parseInt(document.getElementById('eRangeDuration').value, 10) || 0;
     var eqData   = Object.keys(currentEquipements).length > 0 ? Object.assign({}, currentEquipements) : undefined;
     LOGISTICS[currentLogId] = {
       html: logHtml, text: logText,
       validatedByFac: isValidated,
       prepDuration: prepDur,
+      rangeDuration: rangeDur,
       updatedAt: today
     };
     if (eqData) LOGISTICS[currentLogId]._equipements = eqData;
@@ -1044,6 +1098,79 @@ async function doSave() {
 window.doSave = doSave;
 
 // ════════════════════════════════════════════
+// CONSIGNES TYPE — widgets dynamiques
+// ════════════════════════════════════════════
+function buildConsignesTypeHtml(placement) {
+  if (typeof REF_CONSIGNES_TYPE === 'undefined') return '';
+  var items = REF_CONSIGNES_TYPE.filter(function(c) {
+    if (c.actif === false) return false;
+    if (!c.placements || c.placements.indexOf(placement) === -1) return false;
+    if (c.types && c.types.length > 0 && currentType && c.types.indexOf(currentType) === -1) return false;
+    return true;
+  });
+  if (!items.length) return '';
+  var rows = items.map(function(c) {
+    var isOff = !!currentConsignesDisabled[c.id];
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-bottom:1px solid var(--border);opacity:' + (isOff ? '0.45' : '1') + '">' +
+      '<input type="checkbox" id="cons-toggle-' + c.id + '" ' + (isOff ? '' : 'checked') +
+        ' title="Activer / désactiver cette consigne pour cet atelier"' +
+        ' onchange="consigneTypeToggleSaisie(\'' + c.id + '\', this.checked)"' +
+        ' style="margin-top:3px;flex-shrink:0;">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:12px;color:var(--text);' + (isOff ? 'text-decoration:line-through;' : '') + '">' + esc(c.valueFr || '') + '</div>' +
+        (c.valueEn ? '<div style="font-size:11px;color:var(--muted);margin-top:1px;' + (isOff ? 'text-decoration:line-through;' : '') + '">' + esc(c.valueEn) + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+  return '<div class="cons-type-widget" style="border:1px solid #fcd34d;border-radius:7px;overflow:hidden;margin-bottom:10px;background:#fffbeb;">' +
+    '<div style="background:#fef3c7;padding:5px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#92400e;border-bottom:1px solid #fcd34d;">📋 Consignes type <span style="font-weight:400;font-style:italic;">(non éditables ici — modifiables dans Master Data)</span></div>' +
+    rows +
+  '</div>';
+}
+
+function buildConsignesTypeWidgets() {
+  var mapping = {
+    'cons-type-logistique': 'Logistique',
+    'cons-type-specifique': 'Spécifique',
+    'cons-type-avant':      'Avant',
+    'cons-type-pendant':    'Pendant',
+    'cons-type-apres':      'Après',
+    'cons-type-participant':'Participant',
+  };
+  Object.keys(mapping).forEach(function(containerId) {
+    var el = document.getElementById(containerId);
+    if (el) el.innerHTML = buildConsignesTypeHtml(mapping[containerId]);
+  });
+}
+window.buildConsignesTypeWidgets = buildConsignesTypeWidgets;
+
+window.consigneTypeToggleSaisie = function(id, checked) {
+  if (!checked) {
+    currentConsignesDisabled[id] = true;
+  } else {
+    delete currentConsignesDisabled[id];
+  }
+  // Propager sur l'entrée AGENDA active
+  var eActive = (window._currentList || []).find(function(e) {
+    return e.logisticId === currentLogId || (currentKey && e.atelier);
+  });
+  // On identifie l'atelier via currentKey (key de desc) → chercher dans AGENDA
+  if (currentKey) {
+    AGENDA.forEach(function(e) {
+      var d = findDescByKey(e);
+      if (d && d.key === currentKey) {
+        if (Object.keys(currentConsignesDisabled).length > 0) {
+          e._consignesDisabled = Object.assign({}, currentConsignesDisabled);
+        } else {
+          delete e._consignesDisabled;
+        }
+      }
+    });
+  }
+  buildConsignesTypeWidgets();
+};
+
+// ════════════════════════════════════════════
 // SÉRIALISATION
 // ════════════════════════════════════════════
 function escJs(s) {
@@ -1081,7 +1208,8 @@ function buildRefDescJs() {
 function buildLogisticsJs() {
   var entries = Object.entries(LOGISTICS).map(function(pair) {
     var id = pair[0], v = pair[1];
-    var prepDur = (v.prepDuration !== undefined && v.prepDuration !== null) ? v.prepDuration : 15;
+    var prepDur  = (v.prepDuration  !== undefined && v.prepDuration  !== null) ? v.prepDuration  : 15;
+    var rangeDur = (v.rangeDuration !== undefined && v.rangeDuration !== null) ? v.rangeDuration : 0;
     var eqLine = (v._equipements && Object.keys(v._equipements).length > 0)
       ? '    _equipements: ' + JSON.stringify(v._equipements) + ',\n'
       : '';
@@ -1090,6 +1218,7 @@ function buildLogisticsJs() {
       '    text: "' + escJs(v.text || '') + '",\n' +
       '    validatedByFac: ' + (v.validatedByFac ? 'true' : 'false') + ',\n' +
       '    prepDuration: ' + prepDur + ',\n' +
+      '    rangeDuration: ' + rangeDur + ',\n' +
       eqLine +
       '    updatedAt: "' + escJs(v.updatedAt || '') + '"\n' +
       '  }';
@@ -1135,16 +1264,14 @@ function buildLogisticsHelpersJs() {
 function buildRefEquipementsJs() {
   var lines = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : []).map(function(eq) {
     var stock = (eq.stock === 'N/A') ? '"N/A"' : (parseInt(eq.stock,10) || 0);
-    var ordre = parseInt(eq.ordre) || 1;
     var cat   = escJs(eq.categorie || 'Divers');
-    return '  { id: "' + escJs(eq.id) + '", value: "' + escJs(eq.value) + '", type: "' + escJs(eq.type) + '", categorie: "' + cat + '", ordre: ' + ordre + ', stock: ' + stock + ', description: "' + escJs(eq.description || '') + '", remarque: "' + escJs(eq.remarque || '') + '" }';
+    return '  { type: "' + escJs(eq.type) + '", categorie: "' + cat + '", id: "' + escJs(eq.id) + '", value: "' + escJs(eq.value) + '", stock: ' + stock + ', description: "' + escJs(eq.description || '') + '", remarque: "' + escJs(eq.remarque || '') + '" }';
   });
   return '/**\n * TANTRAMOUR 2026 — Référentiel : Équipements\n' +
-    ' * Chaque entrée : { id, value, type, categorie, ordre, stock, description, remarque }\n' +
+    ' * Chaque entrée : { id, value, type, categorie, stock, description, remarque }\n' +
     ' *   value       : nom de l\'équipement\n' +
-    ' *   type        : "Hameau" | "Tantramour" | "NEW" | "Animateur" | "Autre"\n' +
-    ' *   categorie   : "Ambiance & décoration" | "Animation" | "Pratique" | "Hygiène & entretien"\n' +
-    ' *               | "Consommables & fournitures" | "Mobilier & aménagement" | "Cuisine" | "Divers"\n' +
+    ' *   type        : "Hameau" | "Tantramour" | "Animateur" | "Autre" (fournisseur)\n' +
+    ' *   categorie   : nom de la catégorie — géré via ref_equip_cat.js (REF_EQUIP_CAT)\n' +
     ' *   stock       : nombre (0-1000) ou "N/A"\n' +
     ' *   description : texte libre\n' +
     ' *   remarque    : texte libre\n' +
@@ -1156,32 +1283,68 @@ function buildRefEquipementsJs() {
 // GESTION DES ÉQUIPEMENTS
 // ════════════════════════════════════════════
 
-// Construit les 3 colonnes (Hameau / Tantramour / Animateur)
+// Options de la colonne "categorie" — dynamiques, basées sur REF_EQUIP_CAT (triées par ordre)
+function eqCategorieOptionsList() {
+  return (typeof REF_EQUIP_CAT !== 'undefined' ? REF_EQUIP_CAT : []).slice()
+    .sort(function(a, b) { return (parseInt(a.ordre) || 0) - (parseInt(b.ordre) || 0); })
+    .map(function(c) { return c.value; });
+}
+
+// Remplit les selects du formulaire de création (Fournisseur / Catégorie)
+function populateEqNewSelects() {
+  var typeEl = document.getElementById('eq-new-type');
+  var catEl  = document.getElementById('eq-new-cat');
+  if (typeEl && !typeEl.options.length) {
+    var types = ['Hameau','Tantramour','Animateur','Autre'];
+    typeEl.innerHTML = types.map(function(t) { return '<option value="' + esc(t) + '">' + esc(t) + '</option>'; }).join('');
+  }
+  if (catEl && !catEl.options.length) {
+    catEl.innerHTML = eqCategorieOptionsList().map(function(c) { return '<option value="' + esc(c) + '">' + esc(c) + '</option>'; }).join('');
+  }
+}
+window.populateEqNewSelects = populateEqNewSelects;
+
+// Construit les colonnes (Hameau / Tantramour / Animateur / Autre)
 function buildEqCols() {
   var container = document.getElementById('eq-cols-container');
   if (!container) return;
 
+  // Affichage lieu + capacité dans le titre de section et le titre du bloc équipements
+  var lieuRef = currentLieu && (typeof REF_LIEUX !== 'undefined' ? REF_LIEUX : []).find(function(l) { return l.value === currentLieu; });
+  var lieuInfo = '';
+  if (currentLieu) {
+    var nomLieu = lieuRef ? lieuRef.label : currentLieu;
+    var cap = lieuRef && lieuRef.capacite > 0 ? ' — ' + lieuRef.capacite + ' pers.' : '';
+    lieuInfo = ' <span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:8px;">📍 ' + esc(nomLieu) + cap + '</span>';
+  }
+  var eqSectionTitle = document.getElementById('eq-section-title');
+  if (eqSectionTitle) eqSectionTitle.innerHTML = '🔩 4 — Équipements' + lieuInfo;
+  var eqBlockTitle = document.querySelector('#eq-block-main .eq-block-title');
+  if (eqBlockTitle) eqBlockTitle.innerHTML = '🔩 Équipements' + lieuInfo;
+
   var colonnes = [
     { type: 'Hameau',     label: 'Stock Hameau'         },
     { type: 'Tantramour', label: 'Stock Tantramour'      },
-    { type: 'Animateur',  label: 'Apporté par animateur' }
+    { type: 'Animateur',  label: 'Apporté par animateur' },
+    { type: 'Autre',      label: 'Autre'                 }
   ];
+
+  var catOrderRef = eqCategorieOptionsList();
 
   container.innerHTML = colonnes.map(function(col) {
     var allItems = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : [])
       .filter(function(eq) { return eq.type === col.type; })
       .sort(function(a, b) { return (a.value||'').localeCompare(b.value||'', 'fr', {sensitivity:'base'}); });
 
-    // Grouper par catégorie (ordre défini)
-    var CAT_ORDER = ['Animation','Pratique','Ambiance & décoration','Hygiène & entretien','Consommables & fournitures','Mobilier & aménagement','Cuisine','Divers'];
+    // Grouper par catégorie (ordre dynamique — REF_EQUIP_CAT)
     var catMap = {};
     allItems.forEach(function(eq) {
       var cat = eq.categorie || 'Divers';
       if (!catMap[cat]) catMap[cat] = [];
       catMap[cat].push(eq);
     });
-    var catOrder = CAT_ORDER.filter(function(c) { return catMap[c]; })
-      .concat(Object.keys(catMap).filter(function(c) { return CAT_ORDER.indexOf(c) === -1; }).sort());
+    var catOrder = catOrderRef.filter(function(c) { return catMap[c]; })
+      .concat(Object.keys(catMap).filter(function(c) { return catOrderRef.indexOf(c) === -1; }).sort());
 
     var rows = catOrder.map(function(cat) {
       var catItems = catMap[cat].map(function(eq) {
@@ -1204,9 +1367,7 @@ function buildEqCols() {
     '</div>';
   }).join('');
 
-  // Rafraîchir aussi la liste NEW
-  var listEl = document.getElementById('eq-demande-list');
-  if (listEl) listEl.innerHTML = buildDemandeListHtml();
+  populateEqNewSelects();
 }
 window.buildEqCols = buildEqCols;
 
@@ -1242,30 +1403,15 @@ function eqQtyChange(eqId, val, itemEl) {
 }
 window.eqQtyChange = eqQtyChange;
 
-// Construit le HTML de la liste NEW
-function buildDemandeListHtml() {
-  var demandes = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : [])
-    .filter(function(eq) { return eq.type === 'NEW'; })
-    .sort(function(a, b) { return (a.ordre || 999) - (b.ordre || 999); });
-  if (!demandes.length) return '<div style="font-size:12px;color:var(--muted);font-style:italic;padding:4px 0;">Aucun équipement NEW pour l\'instant.</div>';
-  return demandes.map(function(eq) {
-    var savedQty = currentEquipements[eq.id] || 0;
-    return '<div class="eq-demande-item" data-eq-id="' + esc(eq.id) + '">' +
-      '<span class="eq-demande-item-name">' + esc(eq.value) + '</span>' +
-      '<span class="eq-demande-item-desc">' + esc(eq.description || '') + '</span>' +
-      '<span class="eq-qty-lbl">Qté</span>' +
-      '<input type="number" class="eq-qty" min="0" max="999" value="' + savedQty + '" oninput="eqQtyChange(\'' + esc(eq.id) + '\', this.value)">' +
-      '<button class="btn-eq-edit" onclick="eqDemandeEditer(\'' + esc(eq.id) + '\')">✏️ Edit</button>' +
-      '<button class="btn-eq-del" onclick="eqDemandeEffacer(\'' + esc(eq.id) + '\')">🗑</button>' +
-    '</div>';
-  }).join('');
-}
-
-// Ajouter un nouvel équipement NEW
+// Ajouter un nouvel équipement — choix du fournisseur (type) + catégorie
 async function eqDemandeAjouter() {
+  var typeEl = document.getElementById('eq-new-type');
+  var catEl  = document.getElementById('eq-new-cat');
   var nomEl  = document.getElementById('eq-new-nom');
   var descEl = document.getElementById('eq-new-desc');
   var qtyEl  = document.getElementById('eq-new-qty');
+  var type   = (typeEl ? typeEl.value : 'Hameau');
+  var cat    = (catEl  ? catEl.value  : 'Divers');
   var nom    = (nomEl  ? nomEl.value.trim()  : '');
   var desc   = (descEl ? descEl.value.trim() : '');
   var qty    = parseInt(qtyEl ? qtyEl.value : '1', 10) || 1;
@@ -1276,10 +1422,7 @@ async function eqDemandeAjouter() {
   var n = 1, newId;
   do { newId = 'EQ_NEW' + (n < 10 ? '0' : '') + n; n++; } while (existingIds.indexOf(newId) !== -1);
 
-  var nextOrdre = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : [])
-    .filter(function(e){ return e.type === 'NEW'; })
-    .reduce(function(m, e){ return Math.max(m, parseInt(e.ordre) || 0); }, 0) + 1;
-  var newEq = { id: newId, value: nom, type: 'NEW', categorie: 'Divers', ordre: nextOrdre, stock: 0, description: desc, remarque: '' };
+  var newEq = { type: type, categorie: cat, id: newId, value: nom, stock: 0, description: desc, remarque: '' };
   if (typeof REF_EQUIPEMENTS === 'undefined') window.REF_EQUIPEMENTS = [];
   REF_EQUIPEMENTS.push(newEq);
 
@@ -1288,8 +1431,7 @@ async function eqDemandeAjouter() {
   try {
     await saveFile('ref_equipements.js', buildRefEquipementsJs());
     showToast('✅ Équipement ajouté !', 'ok');
-    var listEl = document.getElementById('eq-demande-list');
-    if (listEl) listEl.innerHTML = buildDemandeListHtml();
+    buildEqCols();
     if (nomEl)  nomEl.value  = '';
     if (descEl) descEl.value = '';
     if (qtyEl)  qtyEl.value  = '1';
@@ -1300,90 +1442,6 @@ async function eqDemandeAjouter() {
   }
 }
 window.eqDemandeAjouter = eqDemandeAjouter;
-
-// Éditer un équipement NEW — pré-remplit le formulaire
-function eqDemandeEditer(eqId) {
-  var eq = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : []).find(function(e){ return e.id === eqId; });
-  if (!eq) return;
-  var nomEl  = document.getElementById('eq-new-nom');
-  var descEl = document.getElementById('eq-new-desc');
-  var qtyEl  = document.getElementById('eq-new-qty');
-  if (nomEl)  nomEl.value  = eq.value || '';
-  if (descEl) descEl.value = eq.description || '';
-  if (qtyEl)  qtyEl.value  = currentEquipements[eqId] || 1;
-  if (nomEl) nomEl.focus();
-  var formEl = document.getElementById('eq-demande-form');
-  if (formEl) {
-    var addBtn = formEl.querySelector('.btn-eq-add');
-    if (addBtn) {
-      addBtn.textContent = '💾 Mettre à jour';
-      addBtn.onclick = function() { eqDemandeEnregistrerEdit(eqId); };
-    }
-  }
-}
-window.eqDemandeEditer = eqDemandeEditer;
-
-// Enregistrer l'édition d'un équipement NEW
-async function eqDemandeEnregistrerEdit(eqId) {
-  var eq = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : []).find(function(e){ return e.id === eqId; });
-  if (!eq) return;
-  var nomEl  = document.getElementById('eq-new-nom');
-  var descEl = document.getElementById('eq-new-desc');
-  var qtyEl  = document.getElementById('eq-new-qty');
-  var nom    = (nomEl  ? nomEl.value.trim()  : '');
-  var desc   = (descEl ? descEl.value.trim() : '');
-  var qty    = parseInt(qtyEl ? qtyEl.value : '1', 10) || 0;
-  if (!nom) { showToast('⚠️ Le nom est obligatoire', 'err'); return; }
-
-  var oldValue = eq.value;
-  var oldDesc  = eq.description;
-  eq.value       = nom;
-  eq.description = desc;
-  if (qty > 0) { currentEquipements[eqId] = qty; }
-  else { delete currentEquipements[eqId]; }
-
-  try {
-    await saveFile('ref_equipements.js', buildRefEquipementsJs());
-    showToast('✅ Équipement mis à jour !', 'ok');
-    var listEl = document.getElementById('eq-demande-list');
-    if (listEl) listEl.innerHTML = buildDemandeListHtml();
-    if (nomEl)  nomEl.value  = '';
-    if (descEl) descEl.value = '';
-    if (qtyEl)  qtyEl.value  = '1';
-    var formEl = document.getElementById('eq-demande-form');
-    if (formEl) {
-      var addBtn = formEl.querySelector('.btn-eq-add');
-      if (addBtn) { addBtn.textContent = '＋ Enregistrer'; addBtn.onclick = eqDemandeAjouter; }
-    }
-  } catch(err) {
-    eq.value = oldValue;
-    eq.description = oldDesc;
-    showToast('❌ Sauvegarde impossible : ' + err.message, 'err');
-  }
-}
-window.eqDemandeEnregistrerEdit = eqDemandeEnregistrerEdit;
-
-// Effacer un équipement NEW
-async function eqDemandeEffacer(eqId) {
-  var eq = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : []).find(function(e){ return e.id === eqId; });
-  if (!eq) return;
-  if (!confirm('Supprimer définitivement l\'équipement "' + eq.value + '" ?')) return;
-
-  var idx = REF_EQUIPEMENTS.indexOf(eq);
-  REF_EQUIPEMENTS.splice(idx, 1);
-  delete currentEquipements[eqId];
-
-  try {
-    await saveFile('ref_equipements.js', buildRefEquipementsJs());
-    showToast('🗑 Équipement supprimé.', 'ok');
-    var listEl = document.getElementById('eq-demande-list');
-    if (listEl) listEl.innerHTML = buildDemandeListHtml();
-  } catch(err) {
-    REF_EQUIPEMENTS.splice(idx, 0, eq);
-    showToast('❌ Suppression impossible : ' + err.message, 'err');
-  }
-}
-window.eqDemandeEffacer = eqDemandeEffacer;
 
 function buildDataJs() {
   var lines = AGENDA.map(function(e) {
@@ -1406,7 +1464,11 @@ function buildDataJs() {
       '",angel:"'            + escJs(e.angel||'') +
       '",note:"'             + escJs(e.note||'') +
       '",piment:'            + (e.piment||0) +
-      ',logisticId:"'        + escJs(e.logisticId||'') + '"}';
+      ',logisticId:"'        + escJs(e.logisticId||'') + '"' +
+      (e._consignesDisabled && Object.keys(e._consignesDisabled).length > 0
+        ? ',_consignesDisabled:' + JSON.stringify(e._consignesDisabled)
+        : '') +
+      '}';
   }).join(',\n');
 
   var footer = '\n];\n\n' +

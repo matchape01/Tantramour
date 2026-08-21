@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -74,15 +74,14 @@
   /* ── COLONNES ÉQUIPEMENTS — responsive sans table-layout:fixed ── */
   /* Ordi ≥1024px */
   #sec-equipements .tbl-wrap { overflow-x:auto; }
-  #sec-equipements th:nth-child(1) { width:9%;  min-width:80px; }   /* Type */
+  #sec-equipements th:nth-child(1) { width:9%;  min-width:80px; }   /* Fournisseur */
   #sec-equipements th:nth-child(2) { width:15%; min-width:120px; }  /* Catégorie */
   #sec-equipements th:nth-child(3) { width:11%; min-width:90px; }   /* ID */
   #sec-equipements th:nth-child(4) { width:16%; min-width:110px; }  /* Équipement */
-  #sec-equipements th:nth-child(5) { width:5%;  min-width:55px; }   /* Ordre */
-  #sec-equipements th:nth-child(6) { width:6%;  min-width:50px; }   /* Stock */
-  #sec-equipements th:nth-child(7) { width:18%; min-width:110px; }  /* Description */
-  #sec-equipements th:nth-child(8) { width:9%;  min-width:70px; }   /* Remarque */
-  #sec-equipements th:nth-child(9) { width:6%;  min-width:90px; }   /* Actions */
+  #sec-equipements th:nth-child(5) { width:6%;  min-width:50px; }   /* Stock */
+  #sec-equipements th:nth-child(6) { width:18%; min-width:110px; }  /* Description */
+  #sec-equipements th:nth-child(7) { width:9%;  min-width:70px; }   /* Remarque */
+  #sec-equipements th:nth-child(8) { width:6%;  min-width:90px; }   /* Actions */
 
   /* Tablette ≤1023px : masquer Description + Remarque */
   @media(max-width:1023px) {
@@ -145,9 +144,41 @@
   .td-en-inp { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:4px 8px; font-size:12px; color:var(--text); font-family:inherit; width:100%; outline:none; }
   .td-en-inp:focus { border-color:var(--accent); box-shadow:0 0 0 2px rgba(59,130,212,.08); }
   .td-key { font-family:monospace; font-size:10px; color:var(--muted); }
+
+  /* ── IMPORT / EXPORT EXCEL — ÉQUIPEMENTS ── */
+  .btn-sm { padding:5px 10px; font-size:12px; }
+  .hidden-file-input { display:none; }
+  .import-panel { display:none; margin:0 0 16px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+  .import-panel.open { display:block; }
+  .import-title { font-size:12px; font-weight:700; margin-bottom:6px; }
+  .import-help { font-size:12px; color:var(--muted); margin-bottom:12px; }
+  .import-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .import-summary { margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+  .import-summary-box { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; }
+  .import-summary-title { font-size:12px; font-weight:700; margin-bottom:8px; }
+  .import-summary-list { display:flex; flex-direction:column; gap:8px; }
+  .import-item { border:1px solid var(--border); border-radius:8px; padding:10px; background:var(--bg); }
+  .import-item-head { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; margin-bottom:8px; }
+  .import-item-title { font-size:13px; font-weight:700; }
+  .import-item-meta { font-size:11px; color:var(--muted); }
+  .import-fields-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+  .import-field { border:1px solid var(--border); border-radius:8px; padding:8px; background:var(--surface); }
+  .import-field-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; }
+  .import-field-values { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:start; margin-top:4px; }
+  .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; }
+  .import-field-arrow { color:var(--muted); font-size:12px; padding-top:2px; }
+  .import-choice { display:flex; gap:12px; margin-top:6px; font-size:12px; }
+  .import-choice label { display:flex; align-items:center; gap:5px; cursor:pointer; }
+  .import-empty { font-size:12px; color:var(--muted); font-style:italic; }
+  .status-ok { color:#166534; }
+  .status-warn { color:#92400e; }
+  @media(max-width:900px) {
+    .import-fields-grid { grid-template-columns:1fr; }
+  }
 </style>
 <script src="ref_translations.js"></script>
 <script src="i18n.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 </head>
 <body>
 <script>
@@ -199,6 +230,8 @@
     <button class="tab"        onclick="showTab('resource_types')">🎭 <span data-i18n="md_tab_res_types">Types de ressource</span></button>
     <button class="tab"        onclick="showTab('heures')">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
     <button class="tab"        onclick="showTab('equipements')">🔧 Équipements</button>
+    <button class="tab"        onclick="showTab('equip_cat')">📂 Catégories équip.</button>
+    <button class="tab"        onclick="showTab('consignes_type')">📋 Consignes type</button>
     <button class="tab"        onclick="showTab('translations')">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
   </div>
 
@@ -363,19 +396,32 @@
 
   <!-- ════════════════════════════════════════════════
        SECTION : ÉQUIPEMENTS
-       Fichier : ref_equipements.js  |  { id, value, type, categorie, ordre, stock, description, remarque }
+       Fichier : ref_equipements.js  |  { id, value, type, categorie, stock, description, remarque }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-equipements">
     <div class="sec-title">🔧 Équipements</div>
-    <div class="sec-meta">ref_equipements.js — REF_EQUIPEMENTS — colonnes : type, categorie, id, value, ordre, stock, description, remarque</div>
+    <div class="sec-meta">ref_equipements.js — REF_EQUIPEMENTS — colonnes : type, categorie, id, value, stock, description, remarque</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn" onclick="exportEquipementsExcel()">📥 Export Excel</button>
+      <button class="btn" onclick="toggleEqImportPanel()">📤 Import Excel</button>
+      <input class="hidden-file-input" id="eqImportInput" type="file" accept=".xlsx" onchange="handleEqImportFile(event)">
+    </div>
+    <div class="import-panel" id="eqImportPanel">
+      <div class="import-title">Import des équipements</div>
+      <div class="import-help">Importe un fichier Excel exporté depuis cet onglet (feuille « Equipement »). Les lignes avec un ID existant proposent une confirmation avant modification ; les lignes sans ID correspondant créent un nouvel équipement (ID temporaire EQ_NEWxxx attribué automatiquement). Aucune suppression n'est effectuée.</div>
+      <div class="import-actions">
+        <button class="btn" onclick="triggerEqImportFile()">Choisir un fichier .xlsx</button>
+        <button class="btn btn-sm" onclick="closeEqImportPanel()">Fermer</button>
+      </div>
+      <div class="import-summary" id="eqImportSummary"></div>
+    </div>
     <div class="tbl-wrap">
       <table>
         <thead><tr id="thead-equipements-row">
-          <th class="th-sort" onclick="eqSort('type')"        >Type        <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="eqSort('type')"        >Fournisseur <span class="sort-icon">⇅</span></th>
           <th class="th-sort" onclick="eqSort('categorie')"   >Catégorie   <span class="sort-icon">⇅</span></th>
           <th class="th-sort col-hide-mob" onclick="eqSort('id')"          >ID          <span class="sort-icon">⇅</span></th>
           <th class="th-sort" onclick="eqSort('value')"       >Équipement  <span class="sort-icon">⇅</span></th>
-          <th class="th-sort col-hide-mob" onclick="eqSort('ordre')"       >Ordre       <span class="sort-icon">⇅</span></th>
           <th class="th-sort col-hide-mob" onclick="eqSort('stock')"       >Stock       <span class="sort-icon">⇅</span></th>
           <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('description')" >Description <span class="sort-icon">⇅</span></th>
           <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('remarque')"    >Remarque    <span class="sort-icon">⇅</span></th>
@@ -396,6 +442,82 @@
       <span class="save-bar-msg">⚠️ Modifications non sauvegardées — Équipements</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-save" onclick="save('equipements')">💾 Sauvegarder ref_equipements.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : CATÉGORIES D'ÉQUIPEMENTS
+       Fichier : ref_equip_cat.js  |  { id, value, ordre }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-equip_cat">
+    <div class="sec-title">📂 Catégories d'équipements</div>
+    <div class="sec-meta">ref_equip_cat.js — REF_EQUIP_CAT — colonnes : id, value, ordre</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th>Ordre affichage</th><th></th></tr></thead>
+        <tbody id="tbody-equip_cat"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('equip_cat')">+ Ajouter une catégorie</button>
+    <div class="save-bar" id="bar-equip_cat">
+      <span class="save-bar-msg" data-i18n="md_unsaved">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('equip_cat')">💾 Sauvegarder ref_equip_cat.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SECTION : CONSIGNES TYPE
+       Fichier : ref_consignes_type.js  |  { id, valueFr, valueEn, descriptif, placements[], actif, types[] }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-consignes_type">
+    <div class="sec-title">📋 Consignes type</div>
+    <div class="sec-meta">ref_consignes_type.js — REF_CONSIGNES_TYPE — colonnes : id, valueFr, valueEn, descriptif, placements, actif, types</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn" onclick="exportConsignesTypeExcel()">📥 Export Excel</button>
+      <button class="btn" onclick="toggleConsImportPanel()">📤 Import Excel</button>
+      <input class="hidden-file-input" id="consImportInput" type="file" accept=".xlsx" onchange="handleConsImportFile(event)">
+    </div>
+    <div class="import-panel" id="consImportPanel">
+      <div class="import-title">Import des consignes type</div>
+      <div class="import-help">Importe un fichier Excel exporté depuis cet onglet (feuille « Consignes »). Les lignes avec un ID existant permettent de modifier le texte, les placements, les types — mais jamais l'ID ni le statut Actif. Les lignes sans ID existant créent une nouvelle consigne (Actif = NON par défaut). Aucune suppression n'est effectuée.</div>
+      <div class="import-actions">
+        <button class="btn" onclick="triggerConsImportFile()">Choisir un fichier .xlsx</button>
+        <button class="btn btn-sm" onclick="closeConsImportPanel()">Fermer</button>
+      </div>
+      <div class="import-summary" id="consImportSummary"></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;line-height:1.6;">
+      Les <strong>placements</strong> déterminent dans quelle section chaque consigne apparaîtra automatiquement :<br>
+      <strong>Avant / Pendant / Après</strong> → Consignes helpers &nbsp;|&nbsp;
+      <strong>Logistique</strong> → Informations logistiques &nbsp;|&nbsp;
+      <strong>Spécifique</strong> → Besoins logistiques spécifiques &nbsp;|&nbsp;
+      <strong>Participant</strong> → Instructions participants<br>
+      <strong>Types</strong> : restreint la consigne à certains types d'ateliers (vide = tous les types).<br>
+      <strong>Actif</strong> : décoché = consigne désactivée globalement pour tous les ateliers.
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:7%;min-width:60px">Actif</th>
+          <th style="width:10%;min-width:90px">ID</th>
+          <th style="min-width:130px">Texte FR</th>
+          <th style="min-width:130px">Texte EN</th>
+          <th style="min-width:100px">Descriptif</th>
+          <th style="min-width:140px">Placements</th>
+          <th style="min-width:140px">Types d'ateliers</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tbody-consignes_type"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addConsigneType()">+ Ajouter une consigne type</button>
+    <div class="save-bar" id="bar-consignes_type">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="saveConsignesType()">💾 Sauvegarder ref_consignes_type.js</button>
       </div>
     </div>
   </div>
@@ -475,6 +597,8 @@
 <script src="ref_resource_types.js"></script>
 <script src="ref_ressources.js"></script>
 <script src="ref_equipements.js"></script>
+<script src="ref_equip_cat.js"></script>
+<script src="ref_consignes_type.js"></script>
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
@@ -542,15 +666,22 @@ var CFG = {
     varName:      'REF_EQUIPEMENTS',
     fileName:     'ref_equipements.js',
     prefix:       'EQ_',
-    cols:         ['type','categorie','id','value','ordre','stock','description','remarque'],
+    cols:         ['type','categorie','id','value','stock','description','remarque'],
     textareaCols: ['description','remarque'],
     selectCols:   {
-      type:      ['Hameau','Tantramour','NEW','Animateur','Autre'],
-      categorie: ['Ambiance & décoration','Animation','Pratique','Hygiène & entretien','Consommables & fournitures','Mobilier & aménagement','Cuisine','Divers'],
+      type:      ['Hameau','Tantramour','Animateur','Autre'],
+      categorie: [], // valeurs dynamiques — voir eqCategorieOptions() (basées sur REF_EQUIP_CAT)
     },
-    ordreCol:     'ordre',
     stockCol:     'stock',
     dataField:    [],
+  },
+  equip_cat: {
+    varName:     'REF_EQUIP_CAT',
+    fileName:    'ref_equip_cat.js',
+    prefix:      'CAT_',
+    cols:        ['id','value','ordre'],
+    numericCols: ['ordre'],
+    dataField:   [],
   },
 };
 
@@ -593,11 +724,17 @@ function esc(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 // Classes responsive par colonne équipements
 var EQ_COL_CLASS = {
   id:          'td-id col-hide-mob',
-  ordre:       'td-val col-hide-mob',
   stock:       'td-val col-hide-mob',
   description: 'td-val col-hide-tab col-hide-mob',
   remarque:    'td-val col-hide-tab col-hide-mob',
 };
+
+// Options de la colonne "categorie" des équipements — dynamiques, basées sur REF_EQUIP_CAT (triées par ordre)
+function eqCategorieOptions() {
+  return STORE['equip_cat'].slice()
+    .sort(function(a, b) { return (parseInt(a.ordre) || 0) - (parseInt(b.ordre) || 0); })
+    .map(function(c) { return c.value; });
+}
 
 function renderTable(key) {
   // Pour les équipements, toujours passer par eqSort (tri par défaut ou actif)
@@ -772,7 +909,7 @@ function eqSort(col, reapply) {
   }).join('');
 
   // Mettre à jour les indicateurs visuels dans les en-têtes
-  var cols = ['type','categorie','id','value','ordre','stock','description','remarque'];
+  var cols = ['type','categorie','id','value','stock','description','remarque'];
   var thRow = document.getElementById('thead-equipements-row');
   if (thRow) {
     var ths = thRow.querySelectorAll('.th-sort');
@@ -815,7 +952,8 @@ function editRow(key, i) {
     var v = item[col] !== undefined ? item[col] : '';
     // Colonne avec liste déroulante (selectCols)
     if (cfg.selectCols && cfg.selectCols[col]) {
-      var selectOpts = cfg.selectCols[col].map(function(opt) {
+      var opts = (key === 'equipements' && col === 'categorie') ? eqCategorieOptions() : cfg.selectCols[col];
+      var selectOpts = opts.map(function(opt) {
         return '<option value="' + esc(opt) + '"' + (String(v) === opt ? ' selected' : '') + '>' + esc(opt) + '</option>';
       }).join('');
       return '<td style="min-width:110px"><select class="inp" id="inp-' + key + '-' + i + '-' + col + '">' + selectOpts + '</select></td>';
@@ -940,16 +1078,14 @@ function addRow(key) {
   cfg.cols.forEach(function(col) {
     if (col === 'id') return;
     if (cfg.selectCols && cfg.selectCols[col]) {
-      newItem[col] = cfg.selectCols[col][0]; // première valeur par défaut
-    } else if (cfg.ordreCol && cfg.ordreCol === col) {
-      // Prochaine valeur disponible pour le type par défaut
-      var defaultType = cfg.selectCols && cfg.selectCols.type ? cfg.selectCols.type[0] : '';
-      var maxO = STORE[key].reduce(function(m, it) {
-        return it.type === defaultType ? Math.max(m, parseInt(it.ordre) || 0) : m;
-      }, 0);
-      newItem[col] = maxO + 1;
+      var defOpts = (key === 'equipements' && col === 'categorie') ? eqCategorieOptions() : cfg.selectCols[col];
+      newItem[col] = defOpts[0]; // première valeur par défaut
     } else if (cfg.stockCol && cfg.stockCol === col) {
       newItem[col] = 'N/A';
+    } else if (key === 'equip_cat' && col === 'ordre') {
+      // Prochain ordre disponible (max + 1)
+      var maxOrdreCat = STORE[key].reduce(function(m, it) { return Math.max(m, parseInt(it.ordre) || 0); }, 0);
+      newItem[col] = maxOrdreCat + 1;
     } else {
       newItem[col] = (col === 'value' && cfg.numericValue) ? 0 : '';
     }
@@ -1036,7 +1172,8 @@ var FILE_COMMENTS = {
   piment:         'Référentiel : Piment\n * Chaque entrée : { id, value (number), label }',
   resource_types: 'Référentiel : Types de ressource\n * Chaque entrée : { id, value, label, icon }',
   heures:         'Référentiel : Heures\n * Chaque entrée : { id, value } — format HH:MM',
-  equipements:    'Référentiel : Équipements\n * Chaque entrée : { id, value, type, categorie, ordre, stock, description, remarque }\n *   value       : nom de l\'équipement\n *   type        : "Hameau" | "Tantramour" | "NEW" | "Animateur" | "Autre"\n *   categorie   : "Ambiance & décoration" | "Animation" | "Pratique" | etc.\n *   ordre       : ordre d\'affichage au sein du type (1, 2, 3…)\n *   stock       : nombre (0-1000) ou "N/A"\n *   description : texte libre\n *   remarque    : texte libre',
+  equipements:    'Référentiel : Équipements\n * Chaque entrée : { id, value, type, categorie, stock, description, remarque }\n *   value       : nom de l\'équipement\n *   type        : "Hameau" | "Tantramour" | "Animateur" | "Autre" (fournisseur)\n *   categorie   : nom de la catégorie — géré via ref_equip_cat.js (REF_EQUIP_CAT)\n *   stock       : nombre (0-1000) ou "N/A"\n *   description : texte libre\n *   remarque    : texte libre',
+  equip_cat:      'Référentiel : Catégories d\'équipements\n * Chaque entrée : { id, value, ordre }\n *   value : nom de la catégorie (affiché dans Master Data et les rapports)\n *   ordre : ordre d\'affichage des catégories (1, 2, 3…)',
 };
 
 function genRefFile(key) {
@@ -1146,6 +1283,348 @@ async function save(key, withData) {
 window.save = save;
 
 // ════════════════════════════════════════════════════════════
+// EXPORT EXCEL — ÉQUIPEMENTS
+// ════════════════════════════════════════════════════════════
+function exportEquipementsExcel() {
+  if (typeof ExcelJS === 'undefined') {
+    showToast('❌ Bibliothèque Excel indisponible', true);
+    return;
+  }
+  var workbook = new ExcelJS.Workbook();
+
+  // ── Onglet Fournisseur ──
+  var shipSheet = workbook.addWorksheet('Fournisseur');
+  shipSheet.addRow(['Fournisseur']);
+  CFG.equipements.selectCols.type.forEach(function(v) { shipSheet.addRow([v]); });
+  shipSheet.getColumn(1).width = 22;
+  shipSheet.getRow(1).font = { bold: true };
+  shipSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } };
+
+  // ── Onglet Catégorie ──
+  var catList = STORE['equip_cat'].slice().sort(function(a, b) { return (parseInt(a.ordre) || 0) - (parseInt(b.ordre) || 0); });
+  var catSheet = workbook.addWorksheet('Catégorie');
+  catSheet.addRow(['ID', 'Value', 'Ordre d\'affichage']);
+  catList.forEach(function(c) { catSheet.addRow([c.id, c.value, c.ordre]); });
+  catSheet.columns.forEach(function(col, i) { col.width = [16, 30, 16][i]; });
+  catSheet.getRow(1).font = { bold: true };
+  catSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } };
+
+  // ── Onglet Equipement ──
+  var sheet = workbook.addWorksheet('Equipement');
+  var headers = ['Fournisseur', 'Catégorie', 'ID', 'Équipement', 'Stock', 'Description', 'Remarque'];
+  sheet.addRow(headers);
+  STORE['equipements'].forEach(function(eq) {
+    sheet.addRow([eq.type, eq.categorie, eq.id, eq.value, eq.stock, eq.description, eq.remarque]);
+  });
+  var colWidths = [14, 22, 14, 26, 10, 34, 24];
+  sheet.columns.forEach(function(col, i) { col.width = colWidths[i] || 18; });
+  sheet.getRow(1).eachCell(function(cell) {
+    cell.font = { bold: true };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } };
+  });
+  sheet.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: headers.length } };
+  sheet.views = [{ state: 'frozen', ySplit: 1 }];
+
+  // Menus déroulants : Fournisseur (col A) et Catégorie (col B), lignes 2 à 1000
+  var lastShipRow = CFG.equipements.selectCols.type.length + 1;
+  var lastCatRow  = Math.max(catList.length + 1, 2);
+  for (var r = 2; r <= 1000; r++) {
+    sheet.getCell('A' + r).dataValidation = { type: 'list', allowBlank: true, formulae: ['Fournisseur!$A$2:$A$' + lastShipRow] };
+    sheet.getCell('B' + r).dataValidation = { type: 'list', allowBlank: true, formulae: ['Catégorie!$B$2:$B$' + lastCatRow] };
+  }
+
+  var now = new Date();
+  var yyyy = now.getFullYear(), mm = String(now.getMonth() + 1).padStart(2, '0'), dd = String(now.getDate()).padStart(2, '0');
+  var filename = 'TAF2026_EQUIPEMENTS_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+
+  workbook.xlsx.writeBuffer().then(function(buffer) {
+    var blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Export Excel généré');
+  }).catch(function(err) {
+    showToast('❌ ' + err.message, true);
+  });
+}
+window.exportEquipementsExcel = exportEquipementsExcel;
+
+// ════════════════════════════════════════════════════════════
+// IMPORT EXCEL — ÉQUIPEMENTS
+// ════════════════════════════════════════════════════════════
+var EQ_IMPORT_PREVIEW = null;
+var EQ_IMPORT_HEADERS = ['Fournisseur', 'Catégorie', 'ID', 'Équipement', 'Stock', 'Description', 'Remarque'];
+
+function toggleEqImportPanel() {
+  document.getElementById('eqImportPanel').classList.toggle('open');
+}
+window.toggleEqImportPanel = toggleEqImportPanel;
+
+function closeEqImportPanel() {
+  document.getElementById('eqImportPanel').classList.remove('open');
+}
+window.closeEqImportPanel = closeEqImportPanel;
+
+function triggerEqImportFile() {
+  document.getElementById('eqImportInput').click();
+}
+window.triggerEqImportFile = triggerEqImportFile;
+
+function eqNormalizeCellValue(value) {
+  if (value == null) return '';
+  if (typeof value === 'object') {
+    if (value.text != null) return eqNormalizeCellValue(value.text);
+    if (value.richText && value.richText.length) return eqNormalizeCellValue(value.richText.map(function(p) { return p.text || ''; }).join(''));
+    if (value.result != null) return eqNormalizeCellValue(value.result);
+  }
+  return String(value).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+}
+
+function eqGetImportHeaderError(row) {
+  for (var i = 0; i < EQ_IMPORT_HEADERS.length; i++) {
+    if (eqNormalizeCellValue(row.getCell(i + 1).value) !== EQ_IMPORT_HEADERS[i]) {
+      return 'Structure invalide : colonne ' + String.fromCharCode(65 + i) + ' attendue « ' + EQ_IMPORT_HEADERS[i] + ' ».';
+    }
+  }
+  return '';
+}
+
+function handleEqImportFile(event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (!/\.xlsx$/i.test(file.name)) {
+    showToast('❌ Le fichier doit être au format .xlsx', true);
+    eqRenderImportError('Le fichier sélectionné n\'est pas un .xlsx.');
+    return;
+  }
+  if (typeof ExcelJS === 'undefined') {
+    showToast('❌ Bibliothèque Excel indisponible', true);
+    eqRenderImportError('La bibliothèque ExcelJS est indisponible.');
+    return;
+  }
+  document.getElementById('eqImportPanel').classList.add('open');
+  eqRenderImportLoading(file.name);
+  file.arrayBuffer().then(function(buffer) {
+    var workbook = new ExcelJS.Workbook();
+    return workbook.xlsx.load(buffer);
+  }).then(function(workbook) {
+    var sheet = workbook.getWorksheet('Equipement') || workbook.worksheets[0];
+    if (!sheet) throw new Error('Le fichier Excel ne contient aucune feuille.');
+    var headerError = eqGetImportHeaderError(sheet.getRow(1));
+    if (headerError) throw new Error(headerError);
+    var preview = eqBuildImportPreview(sheet);
+    EQ_IMPORT_PREVIEW = preview;
+    eqRenderImportPreview(preview, file.name);
+    if (!preview.items.length) showToast('ℹ️ Aucune modification détectée');
+  }).catch(function(err) {
+    EQ_IMPORT_PREVIEW = null;
+    eqRenderImportError(err.message || 'Import impossible.');
+    showToast('❌ ' + (err.message || 'Import impossible'), true);
+  });
+}
+window.handleEqImportFile = handleEqImportFile;
+
+function eqBuildImportPreview(sheet) {
+  var idMap = {};
+  STORE['equipements'].forEach(function(eq, idx) { idMap[eq.id] = idx; });
+  var usedIds = {};
+  STORE['equipements'].forEach(function(eq) { usedIds[eq.id] = true; });
+
+  var items = [];
+  var warnings = [];
+  var seenIds = {};
+
+  for (var rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber++) {
+    var row = sheet.getRow(rowNumber);
+    var rawId      = eqNormalizeCellValue(row.getCell(3).value);
+    var type       = eqNormalizeCellValue(row.getCell(1).value);
+    var categorie  = eqNormalizeCellValue(row.getCell(2).value);
+    var value      = eqNormalizeCellValue(row.getCell(4).value);
+    var stock      = eqNormalizeCellValue(row.getCell(5).value);
+    var description = eqNormalizeCellValue(row.getCell(6).value);
+    var remarque   = eqNormalizeCellValue(row.getCell(7).value);
+
+    // Ligne totalement vide → ignorée silencieusement
+    if (!rawId && !type && !categorie && !value && !stock && !description && !remarque) continue;
+
+    if (!value) {
+      warnings.push('⚠️ Ligne ' + rowNumber + ' ignorée : le champ Équipement est obligatoire.');
+      continue;
+    }
+
+    var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
+
+    if (existingIdx !== -1) {
+      // ── Mise à jour d'un équipement existant (ID non modifiable) ──
+      if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier importé, ligne ' + rowNumber + ' ignorée : ' + rawId + '.'); continue; }
+      seenIds[rawId] = true;
+      var eq = STORE['equipements'][existingIdx];
+      var changes = [];
+      [
+        { key: 'type',        label: 'Fournisseur', next: type,        cur: eq.type },
+        { key: 'categorie',   label: 'Catégorie',    next: categorie,   cur: eq.categorie },
+        { key: 'value',       label: 'Équipement',   next: value,       cur: eq.value },
+        { key: 'stock',       label: 'Stock',        next: stock,       cur: String(eq.stock) },
+        { key: 'description', label: 'Description',  next: description, cur: eq.description },
+        { key: 'remarque',    label: 'Remarque',     next: remarque,    cur: eq.remarque }
+      ].forEach(function(f) {
+        if (f.next !== f.cur) changes.push({ key: f.key, label: f.label, currentValue: f.cur, nextValue: f.next, choice: 'apply' });
+      });
+      if (changes.length) items.push({ mode: 'update', id: rawId, storeIdx: existingIdx, label: eq.value, changes: changes });
+    } else {
+      // ── Création d'un nouvel équipement — ID temporaire EQ_NEWXXX (000-999) attribué automatiquement ──
+      var n = 0, newId;
+      do {
+        newId = 'EQ_NEW' + String(n).padStart(3, '0');
+        n++;
+      } while (usedIds[newId] && n <= 999);
+      usedIds[newId] = true;
+      var changes2 = [
+        { key: 'type',        label: 'Fournisseur', currentValue: '', nextValue: type,               choice: 'apply' },
+        { key: 'categorie',   label: 'Catégorie',    currentValue: '', nextValue: categorie,          choice: 'apply' },
+        { key: 'value',       label: 'Équipement',   currentValue: '', nextValue: value,              choice: 'apply' },
+        { key: 'stock',       label: 'Stock',        currentValue: '', nextValue: stock || 'N/A',     choice: 'apply' },
+        { key: 'description', label: 'Description',  currentValue: '', nextValue: description,        choice: 'apply' },
+        { key: 'remarque',    label: 'Remarque',     currentValue: '', nextValue: remarque,           choice: 'apply' }
+      ];
+      items.push({ mode: 'create', id: newId, storeIdx: -1, label: value, changes: changes2 });
+    }
+  }
+  return { items: items, warnings: warnings, totalChanges: items.reduce(function(sum, it) { return sum + it.changes.length; }, 0) };
+}
+
+function eqRenderImportLoading(filename) {
+  document.getElementById('eqImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title">Lecture du fichier</div><div class="import-empty">Analyse en cours : ' + esc(filename) + '</div></div>';
+}
+function eqRenderImportError(message) {
+  document.getElementById('eqImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
+}
+function eqRenderImportPreview(preview, filename) {
+  var summary = document.getElementById('eqImportSummary');
+  var warningsHtml = (preview.warnings && preview.warnings.length)
+    ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;line-height:1.6;">' +
+        '<strong>⚠️ ' + preview.warnings.length + ' avertissement(s) — lignes ou valeurs ignorées, import non bloqué</strong>' +
+        '<ul style="margin:6px 0 0 18px;padding:0;">' + preview.warnings.map(function(w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>' +
+      '</div>'
+    : '';
+  if (!preview.items.length) {
+    summary.innerHTML = '<div class="import-summary-box">' + warningsHtml + '<div class="import-summary-title status-ok">Fichier analysé</div><div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
+    return;
+  }
+  var updateCount = preview.items.filter(function(it) { return it.mode === 'update'; }).length;
+  var createCount = preview.items.filter(function(it) { return it.mode === 'create'; }).length;
+  summary.innerHTML =
+    '<div class="import-summary-box">' +
+      warningsHtml +
+      '<div class="import-summary-title">Validation des modifications</div>' +
+      '<div class="import-help">Chaque ligne propose les différences détectées. Accepte ou ignore chaque valeur avant l\'enregistrement. L\'ID n\'est jamais modifiable via l\'import ; les nouveaux équipements reçoivent un ID temporaire automatique.</div>' +
+      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        var badge = item.mode === 'create'
+          ? '<span style="font-size:11px;font-weight:700;color:#166534;background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:2px 6px;">Nouveau — ' + esc(item.id) + '</span>'
+          : '<span class="import-item-meta">ID : ' + esc(item.id) + '</span>';
+        return '<div class="import-item">' +
+          '<div class="import-item-head">' +
+            '<div>' +
+              '<div class="import-item-title">' + esc(item.label || item.id) + '</div>' +
+              '<div style="margin-top:4px">' + badge + '</div>' +
+            '</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+          '</div>' +
+          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
+            return '<div class="import-field">' +
+              '<div class="import-field-name">' + esc(change.label) + '</div>' +
+              '<div class="import-field-values">' +
+                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
+                '<div class="import-field-arrow">→</div>' +
+                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
+              '</div>' +
+              '<div class="import-choice">' +
+                '<label><input type="radio" name="eq-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setEqImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
+                '<label><input type="radio" name="eq-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setEqImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
+              '</div>' +
+            '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+      }).join('') + '</div>' +
+      '<div class="import-actions">' +
+        '<button class="btn" id="eqImportApplyBtn" onclick="applyEqImportPreview()">✅ Valider l\'import</button>' +
+        '<button class="btn btn-sm" id="eqImportCancelBtn" onclick="clearEqImportPreview()">✕ Annuler</button>' +
+      '</div>' +
+    '</div>';
+}
+function clearEqImportPreview() {
+  EQ_IMPORT_PREVIEW = null;
+  document.getElementById('eqImportSummary').innerHTML = '';
+}
+window.clearEqImportPreview = clearEqImportPreview;
+function setEqImportChoice(itemIdx, changeIdx, choice) {
+  if (!EQ_IMPORT_PREVIEW || !EQ_IMPORT_PREVIEW.items[itemIdx] || !EQ_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx]) return;
+  EQ_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx].choice = choice;
+}
+window.setEqImportChoice = setEqImportChoice;
+
+function setEqImportSavingState(isSaving) {
+  var applyBtn = document.getElementById('eqImportApplyBtn');
+  var cancelBtn = document.getElementById('eqImportCancelBtn');
+  if (applyBtn) { applyBtn.disabled = isSaving; applyBtn.textContent = isSaving ? '⏳ Enregistrement en cours...' : '✅ Valider l\'import'; }
+  if (cancelBtn) cancelBtn.disabled = isSaving;
+}
+async function applyEqImportPreview() {
+  if (!EQ_IMPORT_PREVIEW || !EQ_IMPORT_PREVIEW.items.length) return;
+  var items = EQ_IMPORT_PREVIEW.items;
+  var appliedCount = 0;
+
+  items.forEach(function(item) {
+    var selectedChanges = item.changes.filter(function(c) { return c.choice !== 'skip'; });
+    if (!selectedChanges.length) return;
+
+    if (item.mode === 'update') {
+      var eq = STORE['equipements'][item.storeIdx];
+      if (!eq) return;
+      selectedChanges.forEach(function(c) { eq[c.key] = c.nextValue; appliedCount++; });
+    } else {
+      var newEq = { id: item.id, type: '', categorie: '', value: '', stock: 'N/A', description: '', remarque: '' };
+      selectedChanges.forEach(function(c) { newEq[c.key] = c.nextValue; appliedCount++; });
+      if (!newEq.value) return; // sécurité : ne pas créer une ligne sans nom d'équipement
+      STORE['equipements'].push(newEq);
+    }
+  });
+
+  if (!appliedCount) {
+    showToast('ℹ️ Aucune valeur sélectionnée pour l\'import');
+    return;
+  }
+
+  markDirty('equipements');
+  renderTable('equipements');
+
+  setEqImportSavingState(true);
+  try {
+    await saveToServer(CFG.equipements.fileName, genRefFile('equipements'));
+    DIRTY['equipements'] = false;
+    var bar = document.getElementById('bar-equipements');
+    if (bar) bar.classList.remove('on');
+    var sticky = document.getElementById('bar-equipements-sticky');
+    if (sticky) sticky.classList.remove('on');
+    EQ_IMPORT_PREVIEW = null;
+    document.getElementById('eqImportSummary').innerHTML =
+      '<div class="import-summary-box"><div class="import-summary-title status-ok">Import terminé</div><div class="import-empty">Les équipements ont été mis à jour et ref_equipements.js a été sauvegardé.</div></div>';
+    showToast('✅ Import équipements appliqué (' + appliedCount + ' changement(s))');
+  } catch (err) {
+    showToast('❌ ' + err.message + ' — utilisez le bouton Sauvegarder pour réessayer.', true);
+  } finally {
+    setEqImportSavingState(false);
+  }
+}
+window.applyEqImportPreview = applyEqImportPreview;
+
+// ════════════════════════════════════════════════════════════
 // TOAST + MODE NUIT
 // ════════════════════════════════════════════════════════════
 function showToast(msg, isErr) {
@@ -1193,6 +1672,673 @@ function saveDataUpdate() {
   }
 }
 window.saveDataUpdate = saveDataUpdate;
+
+// ════════════════════════════════════════════════════════════
+// CONSIGNES TYPE — GESTION DÉDIÉE
+// (structure spéciale : placements est un array, textes longs)
+// ════════════════════════════════════════════════════════════
+
+var CONS_STORE  = (typeof REF_CONSIGNES_TYPE !== 'undefined' ? REF_CONSIGNES_TYPE : [])
+  .map(function(c) { return Object.assign({}, c, { placements: (c.placements || []).slice() }); });
+var CONS_DIRTY  = false;
+var CONS_EDIT_I = null; // index en cours d'édition (-1 = nouveau)
+
+var CONS_PLACEMENTS_ALL = ['Avant','Pendant','Après','Logistique','Spécifique','Participant'];
+
+function consTypesOptions() {
+  return (typeof REF_TYPES !== 'undefined' ? REF_TYPES : []).map(function(t) { return t.value; });
+}
+
+function renderConsignesType() {
+  var tbody = document.getElementById('tbody-consignes_type');
+  if (!tbody) return;
+  if (!CONS_STORE.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne type.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = CONS_STORE.map(function(c, i) {
+    var vFr   = String(c.valueFr || '').length > 55 ? String(c.valueFr).slice(0, 55) + '…' : (c.valueFr || '');
+    var vEn   = String(c.valueEn || '').length > 55 ? String(c.valueEn).slice(0, 55) + '…' : (c.valueEn || '');
+    var desc  = String(c.descriptif || '').length > 55 ? String(c.descriptif).slice(0, 55) + '…' : (c.descriptif || '');
+    var actif = c.actif !== false; // défaut true si absent
+    var typesHtml = (c.types && c.types.length)
+      ? c.types.map(function(t) {
+          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">' + esc(t) + '</span>';
+        }).join(' ')
+      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
+    return '<tr id="row-cons-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
+      '<td style="text-align:center;">' +
+        '<input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="consToggleActif(' + i + ',this.checked)">' +
+      '</td>' +
+      '<td class="td-id">' + esc(c.id) + '</td>' +
+      '<td class="td-val" title="' + esc(c.valueFr||'') + '">' + esc(vFr) + '</td>' +
+      '<td class="td-val" title="' + esc(c.valueEn||'') + '">' + esc(vEn) + '</td>' +
+      '<td class="td-val" title="' + esc(c.descriptif||'') + '">' + esc(desc) + '</td>' +
+      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
+        (c.placements || []).map(function(p) {
+          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">' + esc(p) + '</span>';
+        }).join('') +
+      '</span></td>' +
+      '<td>' + typesHtml + '</td>' +
+      '<td class="td-act">' +
+        '<button class="btn" onclick="editConsigneType(' + i + ')">✏️</button> ' +
+        '<button class="btn btn-del" onclick="deleteConsigneType(' + i + ')">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function consToggleActif(i, checked) {
+  if (!CONS_STORE[i]) return;
+  CONS_STORE[i].actif = !!checked;
+  var row = document.getElementById('row-cons-' + i);
+  if (row) row.style.opacity = checked ? '' : '0.5';
+  markConsDirty();
+}
+window.consToggleActif = consToggleActif;
+
+function editConsigneType(i) {
+  CONS_EDIT_I = i;
+  var c = CONS_STORE[i];
+  var row = document.getElementById('row-cons-' + i);
+  if (!row) return;
+
+  var checkboxes = CONS_PLACEMENTS_ALL.map(function(p) {
+    var checked = (c.placements || []).indexOf(p) !== -1 ? ' checked' : '';
+    return '<label style="display:inline-flex;align-items:center;gap:4px;font-size:12px;margin-right:8px;white-space:nowrap;">' +
+      '<input type="checkbox" value="' + p + '"' + checked + ' style="margin:0"> ' + esc(p) + '</label>';
+  }).join('');
+
+  var actif = c.actif !== false;
+  var typesList = consTypesOptions();
+  var typeCheckboxes = typesList.map(function(t) {
+    var checked = (c.types || []).indexOf(t) !== -1 ? ' checked' : '';
+    return '<label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;margin-right:6px;white-space:nowrap;">' +
+      '<input type="checkbox" value="' + esc(t) + '"' + checked + ' style="margin:0"> ' + esc(t) + '</label>';
+  }).join('');
+
+  row.innerHTML =
+    '<td style="text-align:center;"><input type="checkbox" id="inp-cons-actif-' + i + '" ' + (actif ? 'checked' : '') + '></td>' +
+    '<td style="min-width:90px"><input class="inp" id="inp-cons-id-' + i + '" value="' + esc(c.id) + '" style="font-family:monospace;font-size:12px;" placeholder="CONS_…"></td>' +
+    '<td><input class="inp" id="inp-cons-vfr-' + i + '" value="' + esc(c.valueFr||'') + '" placeholder="Texte FR…"></td>' +
+    '<td><input class="inp" id="inp-cons-ven-' + i + '" value="' + esc(c.valueEn||'') + '" placeholder="Text EN…"></td>' +
+    '<td><input class="inp" id="inp-cons-desc-' + i + '" value="' + esc(c.descriptif||'') + '" placeholder="Descriptif…"></td>' +
+    '<td><div style="display:flex;flex-wrap:wrap;gap:2px;" id="inp-cons-pl-' + i + '">' + checkboxes + '</div></td>' +
+    '<td><div style="display:flex;flex-wrap:wrap;gap:2px;max-height:120px;overflow-y:auto;" id="inp-cons-types-' + i + '">' + typeCheckboxes + '</div></td>' +
+    '<td class="td-act">' +
+      '<button class="btn btn-ok" onclick="saveConsigneTypeEdit(' + i + ')">✔</button> ' +
+      '<button class="btn" onclick="cancelConsigneTypeEdit(' + i + ')">✖</button>' +
+    '</td>';
+
+  var el = document.getElementById('inp-cons-vfr-' + i);
+  if (el) { el.focus(); el.select(); }
+}
+window.editConsigneType = editConsigneType;
+
+function saveConsigneTypeEdit(i) {
+  var idEl   = document.getElementById('inp-cons-id-' + i);
+  var vfrEl  = document.getElementById('inp-cons-vfr-' + i);
+  var venEl  = document.getElementById('inp-cons-ven-' + i);
+  var descEl = document.getElementById('inp-cons-desc-' + i);
+  var plCont = document.getElementById('inp-cons-pl-' + i);
+
+  var newId = (idEl ? idEl.value.trim().toUpperCase().replace(/\s+/g, '_') : CONS_STORE[i].id);
+  if (!newId) { if (idEl) { idEl.style.borderColor = '#dc2626'; idEl.focus(); } return; }
+  var isDupe = CONS_STORE.some(function(c, idx) { return idx !== i && c.id === newId; });
+  if (isDupe) { if (idEl) { idEl.style.borderColor = '#dc2626'; idEl.title = 'ID déjà utilisé'; idEl.focus(); } return; }
+
+  var placements = [];
+  if (plCont) {
+    plCont.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) { placements.push(cb.value); });
+  }
+
+  var typesCont = document.getElementById('inp-cons-types-' + i);
+  var types = [];
+  if (typesCont) {
+    typesCont.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) { types.push(cb.value); });
+  }
+
+  var actifEl = document.getElementById('inp-cons-actif-' + i);
+  var actif = actifEl ? actifEl.checked : true;
+
+  CONS_STORE[i] = {
+    id: newId,
+    valueFr:    vfrEl  ? vfrEl.value  : CONS_STORE[i].valueFr,
+    valueEn:    venEl  ? venEl.value  : CONS_STORE[i].valueEn,
+    descriptif: descEl ? descEl.value : CONS_STORE[i].descriptif,
+    placements: placements,
+    actif:      actif,
+    types:      types,
+  };
+  CONS_EDIT_I = null;
+  markConsDirty();
+  renderConsignesType();
+}
+window.saveConsigneTypeEdit = saveConsigneTypeEdit;
+
+function cancelConsigneTypeEdit() {
+  CONS_EDIT_I = null;
+  renderConsignesType();
+}
+window.cancelConsigneTypeEdit = cancelConsigneTypeEdit;
+
+function deleteConsigneType(i) {
+  var c = CONS_STORE[i];
+  if (!confirm('Supprimer "' + (c.valueFr || c.id) + '" (' + c.id + ') ?')) return;
+  CONS_STORE.splice(i, 1);
+  markConsDirty();
+  renderConsignesType();
+  showToast('🗑 Consigne type supprimée.');
+}
+window.deleteConsigneType = deleteConsigneType;
+
+function addConsigneType() {
+  var ids = CONS_STORE.map(function(c) { return c.id; });
+  var n = 1, newId;
+  do { newId = 'CONS_' + String(n).padStart(3, '0'); n++; } while (ids.indexOf(newId) !== -1);
+  CONS_STORE.push({ id: newId, valueFr: '', valueEn: '', descriptif: '', placements: [], actif: true, types: [] });
+  renderConsignesType();
+  editConsigneType(CONS_STORE.length - 1);
+  markConsDirty();
+}
+window.addConsigneType = addConsigneType;
+window.renderConsignesType = renderConsignesType;
+
+function markConsDirty() {
+  CONS_DIRTY = true;
+  var bar = document.getElementById('bar-consignes_type');
+  if (bar) bar.classList.add('on');
+}
+
+function genConsignesTypeJs() {
+  var lines = CONS_STORE.map(function(c) {
+    var pl = (c.placements || []).map(function(p) { return '"' + escJs(p) + '"'; }).join(',');
+    var ty = (c.types || []).map(function(t) { return '"' + escJs(t) + '"'; }).join(',');
+    return '  {\n' +
+      '    id: "' + escJs(c.id) + '",\n' +
+      '    valueFr: "' + escJs(c.valueFr||'') + '",\n' +
+      '    valueEn: "' + escJs(c.valueEn||'') + '",\n' +
+      '    descriptif: "' + escJs(c.descriptif||'') + '",\n' +
+      '    placements: [' + pl + '],\n' +
+      '    actif: ' + (c.actif !== false ? 'true' : 'false') + ',\n' +
+      '    types: [' + ty + ']\n' +
+      '  },';
+  }).join('\n');
+  return '/**\n' +
+    ' * TANTRAMOUR 2026 — Référentiel : Consignes Type\n' +
+    ' * Chaque entrée : { id, valueFr, valueEn, descriptif, placements, actif, types }\n' +
+    ' *   id          : identifiant unique (préfixe CONS_)\n' +
+    ' *   valueFr     : libellé / texte en français\n' +
+    ' *   valueEn     : libellé / texte en anglais\n' +
+    ' *   descriptif  : description interne (usage, contexte)\n' +
+    ' *   placements  : tableau de valeurs parmi :\n' +
+    ' *                 "Avant"       → Consignes helpers : avant l\'atelier\n' +
+    ' *                 "Pendant"     → Consignes helpers : pendant l\'atelier\n' +
+    ' *                 "Après"       → Consignes helpers : après l\'atelier\n' +
+    ' *                 "Logistique"  → Informations logistiques\n' +
+    ' *                 "Spécifique"  → Besoins logistiques spécifiques\n' +
+    ' *                 "Participant" → Instructions participants\n' +
+    ' *   actif       : true = consigne active, false = désactivée globalement\n' +
+    ' *   types       : tableau de valeurs REF_TYPES (vide = tous les types)\n' +
+    ' */\n' +
+    'var REF_CONSIGNES_TYPE = [\n' + lines + '\n];\n';
+}
+
+async function saveConsignesType() {
+  try {
+    await saveToServer('ref_consignes_type.js', genConsignesTypeJs());
+    CONS_DIRTY = false;
+    var bar = document.getElementById('bar-consignes_type');
+    if (bar) bar.classList.remove('on');
+    showToast('✅ ref_consignes_type.js sauvegardé.', false);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.saveConsignesType = saveConsignesType;
+
+// ════════════════════════════════════════════════════════════
+// EXPORT EXCEL — CONSIGNES TYPE
+// Colonnes : ID | Texte FR | Texte EN | Descriptif
+//          | Avant | Pendant | Après | Logistique | Spécifique | Participant (Oui/Non)
+//          | Types (dropdown — un seul type ou vide = tous)
+// ════════════════════════════════════════════════════════════
+function exportConsignesTypeExcel() {
+  if (typeof ExcelJS === 'undefined') { showToast('❌ Bibliothèque Excel indisponible', true); return; }
+  var wb = new ExcelJS.Workbook();
+
+  // ── 1. Feuille principale : Consignes (en premier) ──
+  var sheet = wb.addWorksheet('Consignes');
+  var COLS = ['ID', 'Texte FR', 'Texte EN', 'Descriptif',
+              'Avant', 'Pendant', 'Après', 'Logistique', 'Spécifique', 'Participant',
+              'Types d\'ateliers (vide = tous)'];
+  sheet.addRow(COLS);
+
+  CONS_STORE.forEach(function(c) {
+    var pl = c.placements || [];
+    var typesVal = (c.types && c.types.length) ? c.types.join(', ') : '';
+    sheet.addRow([
+      c.id,
+      c.valueFr || '',
+      c.valueEn || '',
+      c.descriptif || '',
+      pl.indexOf('Avant')      !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Pendant')    !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Après')      !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Logistique') !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Spécifique') !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Participant')!== -1 ? 'Oui' : 'Non',
+      typesVal
+    ]);
+  });
+
+  var colWidths = [16, 38, 38, 28, 8, 9, 8, 12, 13, 13, 36];
+  sheet.columns.forEach(function(col, i) { col.width = colWidths[i] || 14; });
+
+  // En-tête
+  sheet.getRow(1).eachCell(function(cell) {
+    cell.font = { bold: true };
+    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFF3CD'} };
+  });
+  // Colonne ID : fond gris (lecture seule)
+  for (var r = 2; r <= 1000; r++) {
+    sheet.getCell('A' + r).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF3F4F6'} };
+  }
+  sheet.autoFilter = { from:{row:1,column:1}, to:{row:1,column:COLS.length} };
+  sheet.views = [{ state:'frozen', ySplit:1 }];
+
+  // Dropdowns Oui/Non pour colonnes E–J (placements)
+  ['E','F','G','H','I','J'].forEach(function(col) {
+    for (var r = 2; r <= 1000; r++) {
+      sheet.getCell(col + r).dataValidation = { type:'list', allowBlank:true, formulae:['OuiNon!$A$1:$A$2'] };
+    }
+  });
+  // Dropdown Types pour colonne K
+  var lastTypeRow = consTypesOptions().length + 1;
+  for (var r2 = 2; r2 <= 1000; r2++) {
+    sheet.getCell('K' + r2).dataValidation = { type:'list', allowBlank:true, formulae:['Types!$A$2:$A$' + lastTypeRow] };
+  }
+
+  // ── 2. Feuille README ──
+  var readme = wb.addWorksheet('README');
+  readme.properties.tabColor = { argb: 'FF3B82D4' };
+  var readmeRows = [
+    ['TANTRAMOUR 2026 — Consignes Type — Guide d\'utilisation'],
+    [''],
+    ['Ce fichier permet de créer ou modifier des consignes type dans Master Data.'],
+    ['Importez-le via le bouton « Import Excel » de l\'onglet Consignes type dans Master Data.'],
+    [''],
+    ['ONGLET « Consignes »'],
+    ['Colonne', 'Description', 'Règles'],
+    ['A — ID',          'Identifiant unique de la consigne (ex : CONS_001)',     'NE PAS MODIFIER pour une consigne existante. Laisser vide pour créer une nouvelle consigne.'],
+    ['B — Texte FR',    'Texte affiché en français',                              'Obligatoire. Texte libre, peut contenir des sauts de ligne.'],
+    ['C — Texte EN',    'Texte affiché en anglais',                               'Optionnel. Laisser vide si pas de traduction.'],
+    ['D — Descriptif',  'Note interne (usage, contexte)',                          'Optionnel. Non affiché dans les rapports.'],
+    ['E — Avant',       'Consignes helpers : avant l\'atelier',                   'Oui = la consigne apparaît dans cette section / Non = elle n\'y apparaît pas'],
+    ['F — Pendant',     'Consignes helpers : pendant l\'atelier',                 'Oui / Non'],
+    ['G — Après',       'Consignes helpers : après l\'atelier',                   'Oui / Non'],
+    ['H — Logistique',  'Section Informations logistiques',                       'Oui / Non'],
+    ['I — Spécifique',  'Section Besoins logistiques spécifiques',                'Oui / Non'],
+    ['J — Participant', 'Section Instructions participants (visible festivaliers)','Oui / Non'],
+    ['K — Types',       'Restreindre à un type d\'atelier (ex : MEDITATION / YOGA)', 'Laisser vide = s\'applique à TOUS les types. Choisir dans le menu déroulant (feuille Types).'],
+    [''],
+    ['RÈGLES D\'IMPORT'],
+    ['1. ID existant   → mise à jour du texte, placements et types. L\'ID et le statut Actif ne sont JAMAIS modifiés.'],
+    ['2. ID vide/inconnu → création d\'une nouvelle consigne avec Actif = NON (à activer manuellement dans Master Data).'],
+    ['3. ID dupliqué dans ce fichier → seule la première occurrence est traitée, les suivantes sont ignorées.'],
+    ['4. Type d\'atelier inconnu → la valeur est ignorée avec un avertissement (l\'import n\'est pas bloqué).'],
+    ['5. Ne supprimez pas les colonnes ni ne modifiez les en-têtes de la ligne 1.'],
+    [''],
+    ['STATUT ACTIF'],
+    ['Le statut Actif (cochée/décochée dans Master Data) n\'est pas gérable via cet import.'],
+    ['Les nouvelles consignes importées sont toujours créées avec Actif = NON.'],
+    ['Activez-les manuellement dans Master Data > Consignes type.'],
+  ];
+  readmeRows.forEach(function(row, i) { readme.addRow(row); });
+
+  // Style README
+  readme.getColumn(1).width = 28;
+  readme.getColumn(2).width = 48;
+  readme.getColumn(3).width = 70;
+  // Titre principal
+  var titleCell = readme.getCell('A1');
+  titleCell.font = { bold:true, size:14, color:{argb:'FF1F2328'} };
+  titleCell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFF3CD'} };
+  readme.mergeCells('A1:C1');
+  // Sous-titres de section (lignes 6, 20, 26)
+  [6, 21, 27].forEach(function(lineNo) {
+    var c = readme.getCell('A' + lineNo);
+    c.font = { bold:true, size:11 };
+    c.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD9EAF7'} };
+    readme.mergeCells('A' + lineNo + ':C' + lineNo);
+  });
+  // En-tête du tableau colonnes (ligne 7)
+  readme.getRow(7).eachCell(function(cell) {
+    cell.font = { bold:true };
+    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF0F4FB'} };
+  });
+  // Lignes de données du tableau colonnes (8-18)
+  for (var rl = 8; rl <= 19; rl++) {
+    readme.getCell('A' + rl).font = { bold:true, color:{argb:'FF92400E'} };
+  }
+  readme.views = [{ state:'frozen', ySplit:0 }];
+
+  // ── 3. Feuille de référence : Types d'ateliers ──
+  var typesSheet = wb.addWorksheet('Types');
+  typesSheet.addRow(['Type']);
+  consTypesOptions().forEach(function(t) { typesSheet.addRow([t]); });
+  typesSheet.getColumn(1).width = 36;
+  typesSheet.getRow(1).font = { bold: true };
+  typesSheet.getRow(1).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD9EAF7'} };
+
+  // ── 4. Feuille de référence : Oui/Non ──
+  var ouiNonSheet = wb.addWorksheet('OuiNon');
+  ouiNonSheet.addRow(['Oui']); ouiNonSheet.addRow(['Non']);
+
+  var now = new Date();
+  var yyyy = now.getFullYear(), mm = String(now.getMonth()+1).padStart(2,'0'), dd = String(now.getDate()).padStart(2,'0');
+  wb.xlsx.writeBuffer().then(function(buffer) {
+    var blob = new Blob([buffer], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'TAF2026_CONSIGNES_TYPE_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Export Excel généré');
+  }).catch(function(err) { showToast('❌ ' + err.message, true); });
+}
+window.exportConsignesTypeExcel = exportConsignesTypeExcel;
+
+// ════════════════════════════════════════════════════════════
+// IMPORT EXCEL — CONSIGNES TYPE
+// Règles :
+//  - ID existant → mise à jour textes + placements + types (pas ID, pas actif)
+//  - ID absent/nouveau → création avec actif = false (non actif par défaut)
+//  - Pas de duplication d'ID dans le fichier importé
+//  - Validation avant application (preview avec Accepter/Ignorer par champ)
+// ════════════════════════════════════════════════════════════
+var CONS_IMPORT_PREVIEW = null;
+var CONS_IMPORT_HEADERS = ['ID', 'Texte FR', 'Texte EN', 'Descriptif',
+  'Avant', 'Pendant', 'Après', 'Logistique', 'Spécifique', 'Participant',
+  'Types d\'ateliers (vide = tous)'];
+
+function toggleConsImportPanel() {
+  document.getElementById('consImportPanel').classList.toggle('open');
+}
+window.toggleConsImportPanel = toggleConsImportPanel;
+
+function closeConsImportPanel() {
+  document.getElementById('consImportPanel').classList.remove('open');
+}
+window.closeConsImportPanel = closeConsImportPanel;
+
+function triggerConsImportFile() {
+  document.getElementById('consImportInput').click();
+}
+window.triggerConsImportFile = triggerConsImportFile;
+
+function consNormCell(value) {
+  if (value == null) return '';
+  if (typeof value === 'object') {
+    if (value.text  != null) return consNormCell(value.text);
+    if (value.richText && value.richText.length) return consNormCell(value.richText.map(function(p){return p.text||'';}).join(''));
+    if (value.result != null) return consNormCell(value.result);
+  }
+  return String(value).replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+}
+
+function handleConsImportFile(event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (!/\.xlsx$/i.test(file.name)) { showToast('❌ Le fichier doit être au format .xlsx', true); return; }
+  if (typeof ExcelJS === 'undefined') { showToast('❌ Bibliothèque Excel indisponible', true); return; }
+  document.getElementById('consImportPanel').classList.add('open');
+  consRenderImportLoading(file.name);
+  file.arrayBuffer().then(function(buffer) {
+    return new ExcelJS.Workbook().xlsx.load(buffer);
+  }).then(function(wb) {
+    var sheet = wb.getWorksheet('Consignes') || wb.worksheets[0];
+    if (!sheet) throw new Error('Feuille « Consignes » introuvable dans le fichier.');
+    // Vérification colonnes A et B (minimum)
+    var h1 = consNormCell(sheet.getRow(1).getCell(1).value);
+    var h2 = consNormCell(sheet.getRow(1).getCell(2).value);
+    if (h1 !== 'ID' || h2 !== 'Texte FR') throw new Error('Structure invalide : attendu « ID » en col A, « Texte FR » en col B.');
+    var preview = consBuildImportPreview(sheet);
+    CONS_IMPORT_PREVIEW = preview;
+    consRenderImportPreview(preview, file.name);
+    if (!preview.items.length) showToast('ℹ️ Aucune modification détectée');
+  }).catch(function(err) {
+    CONS_IMPORT_PREVIEW = null;
+    consRenderImportError(err.message || 'Import impossible.');
+    showToast('❌ ' + (err.message || 'Import impossible'), true);
+  });
+}
+window.handleConsImportFile = handleConsImportFile;
+
+function consBuildImportPreview(sheet) {
+  // Index ID → position dans CONS_STORE
+  var idMap = {};
+  CONS_STORE.forEach(function(c, idx) { idMap[c.id] = idx; });
+  var usedIds = {};
+  CONS_STORE.forEach(function(c) { usedIds[c.id] = true; });
+
+  var items = [], warnings = [], seenIds = {};
+
+  for (var rn = 2; rn <= sheet.rowCount; rn++) {
+    var row = sheet.getRow(rn);
+    var rawId  = consNormCell(row.getCell(1).value);
+    var vFr    = consNormCell(row.getCell(2).value);
+    var vEn    = consNormCell(row.getCell(3).value);
+    var desc   = consNormCell(row.getCell(4).value);
+    var avant      = consNormCell(row.getCell(5).value);
+    var pendant    = consNormCell(row.getCell(6).value);
+    var apres      = consNormCell(row.getCell(7).value);
+    var logistique = consNormCell(row.getCell(8).value);
+    var specifique = consNormCell(row.getCell(9).value);
+    var participant= consNormCell(row.getCell(10).value);
+    var typesRaw   = consNormCell(row.getCell(11).value);
+
+    // Ligne vide → ignorée
+    if (!rawId && !vFr && !vEn && !desc && !avant && !pendant && !apres && !logistique && !specifique && !participant && !typesRaw) continue;
+
+    // Construire tableau placements depuis colonnes Oui/Non
+    var newPlacements = [];
+    if (/^oui$/i.test(avant))       newPlacements.push('Avant');
+    if (/^oui$/i.test(pendant))     newPlacements.push('Pendant');
+    if (/^oui$/i.test(apres))       newPlacements.push('Après');
+    if (/^oui$/i.test(logistique))  newPlacements.push('Logistique');
+    if (/^oui$/i.test(specifique))  newPlacements.push('Spécifique');
+    if (/^oui$/i.test(participant)) newPlacements.push('Participant');
+
+    // Construire tableau types (séparateur virgule ou point-virgule)
+    var newTypes = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
+    var validTypeVals = consTypesOptions();
+    newTypes = newTypes.filter(function(t) {
+      if (validTypeVals.indexOf(t) === -1) {
+        warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.');
+        return false;
+      }
+      return true;
+    });
+
+    var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
+
+    if (existingIdx !== -1) {
+      // ── Mise à jour — ID existant (ID et actif non modifiables) ──
+      if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
+      seenIds[rawId] = true;
+      var cur = CONS_STORE[existingIdx];
+      var curPl = (cur.placements || []).slice().sort().join('|');
+      var newPl = newPlacements.slice().sort().join('|');
+      var curTy = (cur.types || []).slice().sort().join('|');
+      var newTy = newTypes.slice().sort().join('|');
+      var changes = [];
+      [
+        { key:'valueFr',    label:'Texte FR',    cur: cur.valueFr    || '', next: vFr },
+        { key:'valueEn',    label:'Texte EN',    cur: cur.valueEn    || '', next: vEn },
+        { key:'descriptif', label:'Descriptif',  cur: cur.descriptif || '', next: desc },
+        { key:'placements', label:'Placements',  cur: curPl, next: newPl, _pl: newPlacements },
+        { key:'types',      label:'Types',        cur: curTy, next: newTy, _ty: newTypes }
+      ].forEach(function(f) {
+        if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
+      });
+      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:existingIdx, label:vFr||rawId, changes:changes });
+    } else {
+      // ── Création — ID absent ou inconnu → nouveau CONS_NEWxxx, actif = false ──
+      if (rawId && seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
+      if (rawId) seenIds[rawId] = true;
+      var n2 = 1, newId2;
+      do { newId2 = 'CONS_NEW' + String(n2).padStart(3,'0'); n2++; } while (usedIds[newId2] && n2 <= 999);
+      usedIds[newId2] = true;
+      var newPl2 = newPlacements.slice().sort().join('|');
+      var newTy2 = newTypes.slice().sort().join('|');
+      var changes2 = [
+        { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:vFr,  choice:'apply' },
+        { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:vEn,  choice:'apply' },
+        { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:desc, choice:'apply' },
+        { key:'placements', label:'Placements', currentValue:'', nextValue:newPl2.replace(/\|/g,', '), choice:'apply', _pl:newPlacements },
+        { key:'types',      label:'Types',       currentValue:'', nextValue:newTy2.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:newTypes }
+      ];
+      items.push({ mode:'create', id:newId2, originalId:rawId, storeIdx:-1, label:vFr||rawId||newId2, changes:changes2 });
+    }
+  }
+  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){return s+it.changes.length;},0) };
+}
+
+function consRenderImportLoading(filename) {
+  document.getElementById('consImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title">Lecture du fichier</div><div class="import-empty">Analyse en cours : ' + esc(filename) + '</div></div>';
+}
+function consRenderImportError(message) {
+  document.getElementById('consImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
+}
+function consRenderImportPreview(preview, filename) {
+  var el = document.getElementById('consImportSummary');
+  var warningsHtml = (preview.warnings && preview.warnings.length)
+    ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;line-height:1.6;">' +
+        '<strong>⚠️ ' + preview.warnings.length + ' avertissement(s)</strong>' +
+        '<ul style="margin:6px 0 0 18px;">' + preview.warnings.map(function(w){return '<li>'+esc(w)+'</li>';}).join('') + '</ul>' +
+      '</div>'
+    : '';
+  if (!preview.items.length) {
+    el.innerHTML = '<div class="import-summary-box">' + warningsHtml +
+      '<div class="import-summary-title status-ok">Fichier analysé</div>' +
+      '<div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
+    return;
+  }
+  var updateCount = preview.items.filter(function(it){return it.mode==='update';}).length;
+  var createCount = preview.items.filter(function(it){return it.mode==='create';}).length;
+  el.innerHTML =
+    '<div class="import-summary-box">' +
+      warningsHtml +
+      '<div class="import-summary-title">Validation des modifications</div>' +
+      '<div class="import-help">ID et statut Actif ne sont jamais modifiés. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement dans le tableau.</div>' +
+      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        var badge = item.mode === 'create'
+          ? '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouveau · Actif = NON · ID : ' + esc(item.id) + '</span>'
+          : '<span class="import-item-meta">ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+        return '<div class="import-item">' +
+          '<div class="import-item-head">' +
+            '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+          '</div>' +
+          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
+            return '<div class="import-field">' +
+              '<div class="import-field-name">' + esc(change.label) + '</div>' +
+              '<div class="import-field-values">' +
+                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
+                '<div class="import-field-arrow">→</div>' +
+                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
+              '</div>' +
+              '<div class="import-choice">' +
+                '<label><input type="radio" name="cons-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setConsImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
+                '<label><input type="radio" name="cons-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setConsImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
+              '</div>' +
+            '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+      }).join('') + '</div>' +
+      '<div class="import-actions">' +
+        '<button class="btn" id="consImportApplyBtn" onclick="applyConsImportPreview()">✅ Valider l\'import</button>' +
+        '<button class="btn btn-sm" id="consImportCancelBtn" onclick="clearConsImportPreview()">✕ Annuler</button>' +
+      '</div>' +
+    '</div>';
+}
+function clearConsImportPreview() {
+  CONS_IMPORT_PREVIEW = null;
+  document.getElementById('consImportSummary').innerHTML = '';
+}
+window.clearConsImportPreview = clearConsImportPreview;
+function setConsImportChoice(itemIdx, changeIdx, choice) {
+  if (!CONS_IMPORT_PREVIEW || !CONS_IMPORT_PREVIEW.items[itemIdx] || !CONS_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx]) return;
+  CONS_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx].choice = choice;
+}
+window.setConsImportChoice = setConsImportChoice;
+
+function setConsImportSavingState(isSaving) {
+  var applyBtn  = document.getElementById('consImportApplyBtn');
+  var cancelBtn = document.getElementById('consImportCancelBtn');
+  if (applyBtn)  { applyBtn.disabled = isSaving;  applyBtn.textContent  = isSaving ? '⏳ Enregistrement…' : '✅ Valider l\'import'; }
+  if (cancelBtn) { cancelBtn.disabled = isSaving; }
+}
+
+async function applyConsImportPreview() {
+  if (!CONS_IMPORT_PREVIEW || !CONS_IMPORT_PREVIEW.items.length) return;
+  var appliedCount = 0;
+
+  CONS_IMPORT_PREVIEW.items.forEach(function(item) {
+    var selected = item.changes.filter(function(c){ return c.choice !== 'skip'; });
+    if (!selected.length) return;
+
+    if (item.mode === 'update') {
+      var cur = CONS_STORE[item.storeIdx];
+      if (!cur) return;
+      selected.forEach(function(c) {
+        if (c.key === 'placements' && c._pl) { cur.placements = c._pl.slice(); }
+        else if (c.key === 'types' && c._ty !== undefined) { cur.types = c._ty.slice(); }
+        else { cur[c.key] = c.nextValue; }
+        appliedCount++;
+      });
+    } else {
+      // Nouvelle consigne — actif = false
+      var newCons = { id:item.id, valueFr:'', valueEn:'', descriptif:'', placements:[], actif:false, types:[] };
+      selected.forEach(function(c) {
+        if (c.key === 'placements' && c._pl) { newCons.placements = c._pl.slice(); }
+        else if (c.key === 'types' && c._ty !== undefined) { newCons.types = c._ty.slice(); }
+        else { newCons[c.key] = c.nextValue; }
+        appliedCount++;
+      });
+      CONS_STORE.push(newCons);
+    }
+  });
+
+  if (!appliedCount) { showToast('ℹ️ Aucune valeur sélectionnée pour l\'import'); return; }
+
+  markConsDirty();
+  renderConsignesType();
+  setConsImportSavingState(true);
+  try {
+    await saveToServer('ref_consignes_type.js', genConsignesTypeJs());
+    CONS_DIRTY = false;
+    var bar = document.getElementById('bar-consignes_type');
+    if (bar) bar.classList.remove('on');
+    CONS_IMPORT_PREVIEW = null;
+    document.getElementById('consImportSummary').innerHTML =
+      '<div class="import-summary-box"><div class="import-summary-title status-ok">Import terminé</div><div class="import-empty">Les consignes ont été mises à jour et ref_consignes_type.js a été sauvegardé.</div></div>';
+    showToast('✅ Import consignes type appliqué (' + appliedCount + ' changement(s))');
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  } finally {
+    setConsImportSavingState(false);
+  }
+}
+window.applyConsImportPreview = applyConsImportPreview;
+
+// Rendu initial
+renderConsignesType();
 
 }); // fin loadData
 </script>
@@ -1316,14 +2462,16 @@ window.saveTrans = saveTrans;
 // car showTab() est défini dans un bloc loadData() séparé et peut ne pas
 // encore être disponible au moment où ce script s'exécute.
 document.addEventListener('DOMContentLoaded', function() {
-  // Trouver le bouton onglet Traductions et écouter son clic
   document.querySelectorAll('.tab').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      // Détecter si c'est l'onglet Traductions par son contenu ou par l'appel onclick
       var onc = btn.getAttribute('onclick') || '';
       if (onc.indexOf("'translations'") !== -1 || onc.indexOf('"translations"') !== -1) {
-        // Petit délai pour laisser showTab() masquer/afficher les sections d'abord
         setTimeout(initTranslations, 0);
+      }
+      if (onc.indexOf("'consignes_type'") !== -1 || onc.indexOf('"consignes_type"') !== -1) {
+        setTimeout(function() {
+          if (typeof renderConsignesType === 'function') renderConsignesType();
+        }, 0);
       }
     });
   });
