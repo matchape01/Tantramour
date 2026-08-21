@@ -1203,11 +1203,12 @@ function renderModalBody() {
     // Regrouper par type puis par catégorie
     var TYPE_LABELS = { 'Hameau': 'Stock Hameau', 'Tantramour': 'Stock Tantramour', 'Animateur': 'Apporté par animateur', 'Autre': 'Autre', 'NEW': 'Nouveau' };
     var TYPE_ORDER  = ['Hameau', 'Tantramour', 'Animateur', 'NEW', 'Autre'];
+    var CAT_ORDER   = ['Animation','Pratique','Ambiance & décoration','Hygiène & entretien','Consommables & fournitures','Mobilier & aménagement','Cuisine','Divers'];
     var byType = {};
     eqKeys.forEach(function(eqId) {
       var ref = (typeof REF_EQUIPEMENTS !== 'undefined') ? REF_EQUIPEMENTS.find(function(r){ return r.id === eqId; }) : null;
       var type = (ref && ref.type) || 'Autre';
-      var cat  = (ref && ref.categorie) || '';
+      var cat  = (ref && ref.categorie) || 'Divers';
       var nom  = (ref && ref.value) || eqId;
       if (!byType[type]) byType[type] = {};
       if (!byType[type][cat]) byType[type][cat] = [];
@@ -1218,7 +1219,10 @@ function renderModalBody() {
       if (!byType[type]) return;
       html += '<div style="margin-bottom:10px;">';
       html += '<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:'+(dark?'#2dd4bf':'#0f766e')+';margin-bottom:6px;">'+(TYPE_LABELS[type]||type)+' :</div>';
-      Object.keys(byType[type]).sort().forEach(function(cat) {
+      // Catégories dans l'ordre défini, puis les inconnues à la fin
+      var cats = CAT_ORDER.filter(function(c){ return byType[type][c]; })
+        .concat(Object.keys(byType[type]).filter(function(c){ return CAT_ORDER.indexOf(c) === -1; }).sort());
+      cats.forEach(function(cat) {
         html += '<div style="margin-left:8px;margin-bottom:4px;">';
         html += '<span style="font-size:12px;font-weight:600;color:var(--text)">• '+(cat||'—')+' : </span>';
         html += '<span style="font-size:13px;color:var(--text)">'+byType[type][cat].join(' ; ')+'</span>';
