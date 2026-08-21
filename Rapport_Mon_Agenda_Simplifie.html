@@ -349,7 +349,7 @@ function buildIndex() {
     if (!idx[key]) idx[key] = [];
     var arr = idx[key];
     var found = arr.find(function(x){
-      return x.entry.id === entry.id || (x.entry.atelier===entry.atelier && x.entry.jour===entry.jour && x.entry.heure===entry.heure);
+      return x.entry === entry || (x.entry.atelier===entry.atelier && x.entry.jour===entry.jour && x.entry.heure===entry.heure);
     });
     if (found) { if (found.roles.indexOf(role)===-1) found.roles.push(role); }
     else arr.push({ entry: entry, roles: [role] });
@@ -441,8 +441,8 @@ function getPersonEntries(nom, jour) {
   return all;
 }
 
-// ── Jours qui ont des entrées pour cette personne ────────────────────────────
-function getJoursForPerson(nom) {
+// ── Jours qui ont des entrées pour cette personne (pour les chips) ────────────
+function getJoursWithEntries(nom) {
   var entries = FULL_INDEX[nom] || [];
   var s = new Set(entries.map(function(x){ return x.entry.jour; }));
   return JOUR_ORDER.filter(function(j){ return s.has(j); });
@@ -454,7 +454,7 @@ function renderChips() {
     document.getElementById('jourChips').innerHTML = '';
     return;
   }
-  var jours = getJoursForPerson(activeNom);
+  var jours = getJoursWithEntries(activeNom);
   var _t = (typeof I18n !== 'undefined') ? function(k){ return I18n.t(k); } : function(k){ return k; };
   var html = '<span class="chip'+(activeJour===''?' on':'')+'" onclick="setJour(\'\')">'+_t('mas_tous')+'</span>';
   jours.forEach(function(j) {
@@ -480,26 +480,25 @@ function render() {
     return;
   }
 
-  var jours = activeJour ? [activeJour] : getJoursForPerson(activeNom);
-  if (!jours.length) {
-    mainContent.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>'+t('mas_empty_notfound')+' <strong>'+esc(activeNom)+'</strong>.</p></div>';
-    document.getElementById('filterHint').textContent = '';
-    return;
-  }
+  var jours = activeJour ? [activeJour] : JOUR_ORDER;
 
   // Total ateliers
   var total = (FULL_INDEX[activeNom] || []).length;
-  var txt = jours.length === 1
+  var joursAvecEntrees = getJoursWithEntries(activeNom);
+  var txt = activeJour
     ? 'Affichage pour ' + activeJour
-    : jours.length + ' ' + t('mas_hint_jours');
+    : joursAvecEntrees.length + ' ' + t('mas_hint_jours') + ' avec ateliers';
   document.getElementById('filterHint').textContent = total + ' ' + t('mas_hint_total') + ' · ' + txt;
 
   // ── En-tête (1 colonne par jour) ─────────────────────────────────────────────
+  var joursAvecEntreesSet = new Set(joursAvecEntrees);
   var headHtml = '<div class="cal-head">';
   headHtml += '<div class="head-hour"></div>';
   jours.forEach(function(j) {
-    headHtml += '<div class="head-day-group" style="flex:1 1 0;min-width:120px;">';
-    headHtml += '<div class="hd-jour"><span class="hd-name">'+esc(j)+'</span><span class="hd-date">'+esc(jourDate(j))+'</span></div>';
+    var isEmpty = !joursAvecEntreesSet.has(j);
+    var emptyStyle = isEmpty ? 'opacity:.45;' : '';
+    headHtml += '<div class="head-day-group" style="flex:1 1 0;min-width:120px;'+emptyStyle+'">';
+    headHtml += '<div class="hd-jour"><span class="hd-name">'+esc(j)+'</span><span class="hd-date">'+esc(jourDate(j))+'</span>'+(isEmpty?'<span style="display:block;font-size:8px;opacity:.7;margin-top:1px;">—</span>':'')+'</div>';
     headHtml += '</div>';
   });
   headHtml += '</div>';
@@ -584,7 +583,7 @@ function render() {
     if (reunionEvts.length >= 2) {
       var personIsColibri   = isColibri(activeNom);
       var personIsMiColibri = isMiColibri(activeNom);
-      var toRemove = [];
+      var toRemove = []; // stocke les références d'objets entry (pas .id qui n'existe pas)
 
       for (var i = 0; i < reunionEvts.length; i++) {
         for (var j = i + 1; j < reunionEvts.length; j++) {
@@ -598,34 +597,35 @@ function render() {
 
           // Priorité 1 — la personne est fac direct d'une réunion et pas de l'autre
           // → garder celle où elle est fac, quelle que soit la règle Colibri/Mi-Colibri
-          if (aIsFac && !bIsFac) { toRemove.push(b.item.entry.id); continue; }
-          if (bIsFac && !aIsFac) { toRemove.push(a.item.entry.id); continue; }
+          if (aIsFac && !bIsFac) { toRemove.push(b.item.entry); continue; }
+          if (bIsFac && !aIsFac) { toRemove.push(a.item.entry); continue; }
 
           // Priorité 2 — Colibri → garder la réunion Animateur
           if (personIsColibri) {
             var aIsAnim = isReunionAnimateur(a.item.entry);
             var bIsAnim = isReunionAnimateur(b.item.entry);
-            if (aIsAnim && !bIsAnim) toRemove.push(b.item.entry.id);
-            else if (bIsAnim && !aIsAnim) toRemove.push(a.item.entry.id);
+            if (aIsAnim && !bIsAnim) toRemove.push(b.item.entry);
+            else if (bIsAnim && !aIsAnim) toRemove.push(a.item.entry);
           }
           // Priorité 2 — Mi-Colibri → garder la réunion Helpers
           else if (personIsMiColibri) {
             var aIsHelper = isReunionHelper(a.item.entry);
             var bIsHelper = isReunionHelper(b.item.entry);
-            if (aIsHelper && !bIsHelper) toRemove.push(b.item.entry.id);
-            else if (bIsHelper && !aIsHelper) toRemove.push(a.item.entry.id);
+            if (aIsHelper && !bIsHelper) toRemove.push(b.item.entry);
+            else if (bIsHelper && !aIsHelper) toRemove.push(a.item.entry);
           }
         }
       }
 
       if (toRemove.length) {
         events = events.filter(function(ev) {
-          return toRemove.indexOf(ev.item.entry.id) === -1;
+          return toRemove.indexOf(ev.item.entry) === -1;
         });
       }
     }
 
-    bodyHtml += '<div class="col-day" style="height:'+TOTAL_PX+'px;">';
+    var isDayEmpty = !joursAvecEntreesSet.has(jour);
+    bodyHtml += '<div class="col-day" style="height:'+TOTAL_PX+'px;'+(isDayEmpty?'background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,0,0,.03) 8px,rgba(0,0,0,.03) 9px);opacity:.5;':'')+'">';
 
     // Lignes horaires de fond
     for (var h=H_START; h<=H_END; h++) {

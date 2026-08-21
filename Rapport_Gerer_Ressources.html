@@ -1380,17 +1380,27 @@ function toggleMode() {
 window.toggleMode = toggleMode;
 
 // ── Démarrage ─────────────────────────────────────────────
-loadData(['data.js', 'ref_descriptions.js'], function() {
-  AGENDA_DATA       = AGENDA.map(function(e) { return Object.assign({}, e); });
-  DESCRIPTIONS_DATA = REF_DESCRIPTIONS.map(function(d) { return Object.assign({}, d); });
-  initData();
-  buildRoleMeta();
-  renderTable();
-});
-
+// Si l'URL contient ?v= (ouverture depuis gestion_planning.html), on force un
+// hard-reload UNE SEULE FOIS pour vider le cache — AVANT de lancer loadData,
+// afin d'éviter que le rechargement n'interrompe le chargement dynamique.
 if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
   sessionStorage.setItem('_refreshed_' + location.pathname, '1');
   hardReload();
+} else {
+  loadData(['data.js', 'ref_descriptions.js'], function() {
+    if (typeof AGENDA === 'undefined' || typeof REF_DESCRIPTIONS === 'undefined') {
+      document.getElementById('tableBody').innerHTML =
+        '<tr class="empty-row"><td colspan="7">⚠️ Erreur de chargement des données — cliquez sur 🔄 Refresh.</td></tr>';
+      document.getElementById('stats').textContent = 'Données non disponibles.';
+      console.error('[Rapport_Gerer_Ressources] AGENDA ou REF_DESCRIPTIONS introuvable après loadData.');
+      return;
+    }
+    AGENDA_DATA       = AGENDA.map(function(e) { return Object.assign({}, e); });
+    DESCRIPTIONS_DATA = REF_DESCRIPTIONS.map(function(d) { return Object.assign({}, d); });
+    initData();
+    buildRoleMeta();
+    renderTable();
+  });
 }
 </script>
 </body>

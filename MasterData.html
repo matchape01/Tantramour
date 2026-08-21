@@ -22,7 +22,7 @@
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
-  .wrap { max-width:900px; margin:0 auto; padding:24px 20px 60px; }
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 20px 60px; }
 
   /* HEADER */
   header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
@@ -53,18 +53,49 @@
   .sec-meta  { font-size:11px; color:var(--muted); font-family:monospace; margin-bottom:16px; }
 
   /* TABLE */
-  .tbl-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:16px; }
+  .tbl-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; overflow-x:auto; margin-bottom:16px; }
+  .th-sort { cursor:pointer; user-select:none; white-space:nowrap; }
+  .th-sort:hover { color:var(--accent); }
+  .sort-icon { display:inline-block; margin-left:4px; font-size:10px; opacity:.45; }
+  .th-sort.asc  .sort-icon { opacity:1; color:var(--accent); }
+  .th-sort.desc .sort-icon { opacity:1; color:var(--accent); }
   table { width:100%; border-collapse:collapse; }
-  thead th { background:var(--th-bg); padding:9px 14px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1px solid var(--border); }
+  thead th { background:var(--th-bg); padding:9px 10px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; }
   tbody tr { border-bottom:1px solid var(--border); }
   tbody tr:last-child { border-bottom:none; }
   tbody tr:hover { background:var(--surface); }
-  td { padding:8px 14px; font-size:13px; vertical-align:middle; }
-  .td-id { font-family:monospace; font-size:11px; color:var(--muted); width:150px; white-space:nowrap; }
+  td { padding:7px 10px; font-size:12px; vertical-align:middle; }
+  .td-id { font-family:monospace; font-size:11px; color:var(--muted); }
   .td-val { }
   .td-lbl { font-size:12px; color:var(--muted); font-style:italic; }
-  .td-act { width:90px; text-align:right; white-space:nowrap; }
+  .td-act { text-align:right; white-space:nowrap; }
   .empty { padding:28px; text-align:center; color:var(--muted); font-style:italic; }
+
+  /* ── COLONNES ÉQUIPEMENTS — responsive sans table-layout:fixed ── */
+  /* Ordi ≥1024px */
+  #sec-equipements .tbl-wrap { overflow-x:auto; }
+  #sec-equipements th:nth-child(1) { width:9%;  min-width:80px; }   /* Type */
+  #sec-equipements th:nth-child(2) { width:15%; min-width:120px; }  /* Catégorie */
+  #sec-equipements th:nth-child(3) { width:11%; min-width:90px; }   /* ID */
+  #sec-equipements th:nth-child(4) { width:16%; min-width:110px; }  /* Équipement */
+  #sec-equipements th:nth-child(5) { width:5%;  min-width:55px; }   /* Ordre */
+  #sec-equipements th:nth-child(6) { width:6%;  min-width:50px; }   /* Stock */
+  #sec-equipements th:nth-child(7) { width:18%; min-width:110px; }  /* Description */
+  #sec-equipements th:nth-child(8) { width:9%;  min-width:70px; }   /* Remarque */
+  #sec-equipements th:nth-child(9) { width:6%;  min-width:90px; }   /* Actions */
+
+  /* Tablette ≤1023px : masquer Description + Remarque */
+  @media(max-width:1023px) {
+    #sec-equipements th.col-hide-tab,
+    #sec-equipements td.col-hide-tab { display:none; }
+  }
+
+  /* Mobile ≤640px : masquer aussi ID, Stock, Catégorie */
+  @media(max-width:640px) {
+    #sec-equipements th.col-hide-mob,
+    #sec-equipements td.col-hide-mob { display:none; }
+    .wrap { padding:12px 10px 60px; }
+  }
 
   /* BOUTONS */
   .btn { cursor:pointer; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; font-family:inherit; border:1px solid var(--border); background:var(--surface); color:var(--text); transition:filter .15s; }
@@ -85,6 +116,11 @@
   .save-bar { background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:8px; padding:14px 18px; margin-top:20px; display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   .save-bar.on { display:flex; }
   .save-bar-msg { font-size:13px; font-weight:600; color:var(--warn); }
+
+  /* BARRE DE SAUVEGARDE FIXE (sticky) — apparaît en bas de l'écran */
+  .save-bar-sticky { position:fixed; bottom:0; left:0; right:0; z-index:90; border-radius:0; border-left:none; border-right:none; border-bottom:none; margin-top:0; box-shadow:0 -4px 16px rgba(0,0,0,.12); padding:12px 32px; display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background:var(--warn-bg); border-top:2px solid var(--warn-border); }
+  .save-bar-sticky.on { display:flex; }
+  .save-bar-sticky .save-bar-msg { font-size:13px; font-weight:600; color:var(--warn); }
 
   /* CONFIRM */
   .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; align-items:center; justify-content:center; }
@@ -162,6 +198,7 @@
     <button class="tab"        onclick="showTab('piment')">🌶️ <span data-i18n="md_tab_piment">Piment</span></button>
     <button class="tab"        onclick="showTab('resource_types')">🎭 <span data-i18n="md_tab_res_types">Types de ressource</span></button>
     <button class="tab"        onclick="showTab('heures')">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
+    <button class="tab"        onclick="showTab('equipements')">🔧 Équipements</button>
     <button class="tab"        onclick="showTab('translations')">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
   </div>
 
@@ -171,10 +208,10 @@
   ════════════════════════════════════════════════ -->
   <div class="section visible" id="sec-lieux">
     <div class="sec-title">📍 <span data-i18n="md_sec_lieux">Lieux / Salles</span></div>
-    <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label, nomOfficiel, description</div>
+    <div class="sec-meta">ref_lieux.js — REF_LIEUX — colonnes : id, value, label, nomOfficiel, description, capacite</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th>Nom officiel</th><th>Description</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th data-i18n="md_col_label">Label affiché</th><th>Nom officiel</th><th>Description</th><th>Capacité</th><th></th></tr></thead>
         <tbody id="tbody-lieux"></tbody>
       </table>
     </div>
@@ -325,6 +362,45 @@
   </div>
 
   <!-- ════════════════════════════════════════════════
+       SECTION : ÉQUIPEMENTS
+       Fichier : ref_equipements.js  |  { id, value, type, categorie, ordre, stock, description, remarque }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-equipements">
+    <div class="sec-title">🔧 Équipements</div>
+    <div class="sec-meta">ref_equipements.js — REF_EQUIPEMENTS — colonnes : type, categorie, id, value, ordre, stock, description, remarque</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr id="thead-equipements-row">
+          <th class="th-sort" onclick="eqSort('type')"        >Type        <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="eqSort('categorie')"   >Catégorie   <span class="sort-icon">⇅</span></th>
+          <th class="th-sort col-hide-mob" onclick="eqSort('id')"          >ID          <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="eqSort('value')"       >Équipement  <span class="sort-icon">⇅</span></th>
+          <th class="th-sort col-hide-mob" onclick="eqSort('ordre')"       >Ordre       <span class="sort-icon">⇅</span></th>
+          <th class="th-sort col-hide-mob" onclick="eqSort('stock')"       >Stock       <span class="sort-icon">⇅</span></th>
+          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('description')" >Description <span class="sort-icon">⇅</span></th>
+          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('remarque')"    >Remarque    <span class="sort-icon">⇅</span></th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tbody-equipements"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addRow('equipements')">+ Ajouter un équipement</button>
+    <div class="save-bar" id="bar-equipements">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('equipements')">💾 Sauvegarder ref_equipements.js</button>
+      </div>
+    </div>
+    <!-- Barre sticky dupliquée pour accès rapide depuis n'importe où dans la section -->
+    <div class="save-bar-sticky" id="bar-equipements-sticky">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées — Équipements</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="save('equipements')">💾 Sauvegarder ref_equipements.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
        SECTION : TRADUCTIONS
        Fichier : ref_translations.js  |  { key, fr, en }
        Édition de la colonne "en" uniquement
@@ -398,6 +474,7 @@
 <script src="ref_notes.js"></script>
 <script src="ref_resource_types.js"></script>
 <script src="ref_ressources.js"></script>
+<script src="ref_equipements.js"></script>
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
@@ -412,8 +489,9 @@ var CFG = {
     varName:   'REF_LIEUX',
     fileName:  'ref_lieux.js',
     prefix:    'L_',
-    cols:      ['id','value','label','nomOfficiel','description'],
+    cols:      ['id','value','label','nomOfficiel','description','capacite'],
     textareaCols: ['description'],
+    numericCols: ['capacite'],
     dataField: ['lieu'],
   },
   types: {
@@ -460,6 +538,20 @@ var CFG = {
     cols:     ['id','value'],
     dataField: [],
   },
+  equipements: {
+    varName:      'REF_EQUIPEMENTS',
+    fileName:     'ref_equipements.js',
+    prefix:       'EQ_',
+    cols:         ['type','categorie','id','value','ordre','stock','description','remarque'],
+    textareaCols: ['description','remarque'],
+    selectCols:   {
+      type:      ['Hameau','Tantramour','NEW','Animateur','Autre'],
+      categorie: ['Ambiance & décoration','Animation','Pratique','Hygiène & entretien','Consommables & fournitures','Mobilier & aménagement','Cuisine','Divers'],
+    },
+    ordreCol:     'ordre',
+    stockCol:     'stock',
+    dataField:    [],
+  },
 };
 
 // ── Copies de travail
@@ -479,6 +571,9 @@ Object.keys(CFG).forEach(function(k) { DIRTY[k] = false; });
 // ── Agenda de travail
 var SESSION_AGENDA = AGENDA.map(function(e) { return Object.assign({}, e); });
 
+// ── État édition inline (déclaré tôt car référencé par renderTable/eqSort)
+var editKey = null, editIdx = null;
+
 // ════════════════════════════════════════════════════════════
 // ONGLETS
 // ════════════════════════════════════════════════════════════
@@ -495,7 +590,31 @@ window.showTab = showTab;
 // ════════════════════════════════════════════════════════════
 function esc(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// Classes responsive par colonne équipements
+var EQ_COL_CLASS = {
+  id:          'td-id col-hide-mob',
+  ordre:       'td-val col-hide-mob',
+  stock:       'td-val col-hide-mob',
+  description: 'td-val col-hide-tab col-hide-mob',
+  remarque:    'td-val col-hide-tab col-hide-mob',
+};
+
 function renderTable(key) {
+  // Pour les équipements, toujours passer par eqSort (tri par défaut ou actif)
+  // SAUF si une édition est en cours sur cette table (ne pas écraser les inputs)
+  if (key === 'equipements') {
+    if (editKey === 'equipements' && editIdx !== null) {
+      // Édition en cours : ne rien faire — ne pas écraser la ligne d'inputs
+      return;
+    }
+    _renderTableInner(key);
+    eqSort(EQ_SORT && EQ_SORT.col ? EQ_SORT.col : null, true);
+    return;
+  }
+  _renderTableInner(key);
+}
+
+function _renderTableInner(key) {
   var cfg   = CFG[key];
   var items = STORE[key];
   var tbody = document.getElementById('tbody-' + key);
@@ -507,35 +626,173 @@ function renderTable(key) {
   }
 
   tbody.innerHTML = items.map(function(item, i) {
-    // Cellules de données (toutes les colonnes sauf 'id' qui est en première)
     var cells = cfg.cols.map(function(col) {
-      if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
+      var cls = (key === 'equipements' && EQ_COL_CLASS[col]) ? EQ_COL_CLASS[col] : (col === 'id' ? 'td-id' : 'td-val');
       var v = item[col] !== undefined ? item[col] : '';
       // Colonnes textarea : tronquer l'affichage en lecture
       if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
         var short = String(v).length > 60 ? String(v).slice(0, 60) + '…' : v;
-        return '<td class="td-val" style="max-width:200px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + esc(v) + '">' + esc(short) + '</td>';
+        return '<td class="' + cls + '" title="' + esc(v) + '">' + esc(short) + '</td>';
       }
-      return '<td class="td-val">' + esc(v) + '</td>';
+      return '<td class="' + cls + '">' + esc(v) + '</td>';
     }).join('');
 
+    // Bouton dupliquer uniquement si le CFG le prévoit (présence de selectCols)
+    var dupBtn = cfg.selectCols
+      ? '<button class="btn" onclick="duplicateRow(\'' + key + '\',' + i + ')" title="Dupliquer">⧉</button> '
+      : '';
+
+    var actStyle = dupBtn ? ' style="width:130px"' : '';
     return '<tr id="row-' + key + '-' + i + '">' +
       cells +
-      '<td class="td-act">' +
+      '<td class="td-act"' + actStyle + '>' +
         '<button class="btn" onclick="editRow(\'' + key + '\',' + i + ')">✏️</button> ' +
+        dupBtn +
         '<button class="btn btn-del" onclick="askDelete(\'' + key + '\',' + i + ')">🗑</button>' +
       '</td>' +
     '</tr>';
   }).join('');
 }
 
+// ════════════════════════════════════════════════════════════
+// TRI COLONNES — section Équipements uniquement
+// ════════════════════════════════════════════════════════════
+var EQ_SORT = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
+
 // Rendu initial de tous les tableaux
 Object.keys(CFG).forEach(function(k) { renderTable(k); });
+// Appliquer le tri par défaut sur les équipements dès le chargement
+eqSort(null, true);
+
+// ── Validation ID en temps réel ──────────────────────────────────────────────
+function eqValidateId(el, i) {
+  var val = el.value.trim();
+  var isDupe = val && STORE['equipements'].some(function(it, idx) {
+    return idx !== i && it.id === val.toUpperCase().replace(/\s+/g, '_');
+  });
+  var isEmpty = !val;
+  var btnOk = document.getElementById('btn-ok-equipements-' + i);
+  if (isEmpty || isDupe) {
+    el.style.borderColor = '#dc2626';
+    el.style.boxShadow   = '0 0 0 3px rgba(220,38,38,.15)';
+    el.title = isEmpty ? 'L\'ID ne peut pas être vide.' : 'Cet ID existe déjà.';
+    if (btnOk) btnOk.disabled = true;
+  } else {
+    el.style.borderColor = '';
+    el.style.boxShadow   = '';
+    el.title = '';
+    if (btnOk) btnOk.disabled = false;
+  }
+}
+window.eqValidateId = eqValidateId;
+
+function eqMarkIdError(el, msg) {
+  el.style.borderColor = '#dc2626';
+  el.style.boxShadow   = '0 0 0 3px rgba(220,38,38,.15)';
+  el.title = msg;
+  el.focus();
+  el.select();
+}
+
+// Comparaison d'une colonne (retourne -1/0/1)
+function _eqCmp(a, b, c, d) {
+  var va = String(a[c] !== undefined ? a[c] : '').toLowerCase();
+  var vb = String(b[c] !== undefined ? b[c] : '').toLowerCase();
+  if (c === 'stock') {
+    var na = parseFloat(va), nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return d * (na - nb);
+  }
+  if (va < vb) return -d;
+  if (va > vb) return  d;
+  return 0;
+}
+
+// Tri par défaut : Type → Catégorie → Équipement (A→Z)
+function _eqDefaultSort(a, b) {
+  return _eqCmp(a, b, 'type', 1) || _eqCmp(a, b, 'categorie', 1) || _eqCmp(a, b, 'value', 1);
+}
+
+function eqSort(col, reapply) {
+  // Si une édition est en cours sur les équipements, ne pas trier (ne pas écraser les inputs)
+  if (editKey === 'equipements' && editIdx !== null) return;
+  // Annuler une édition en cours sur une autre table (clic utilisateur seulement)
+  if (!reapply && editKey !== null) cancelEdit(editKey, editIdx);
+
+  if (!reapply) {
+    // Bascule : aucun/défaut → asc → desc → défaut
+    if (EQ_SORT.col === col) {
+      EQ_SORT.dir = EQ_SORT.dir === 1 ? -1 : EQ_SORT.dir === -1 ? 0 : 1;
+    } else {
+      EQ_SORT.col = col;
+      EQ_SORT.dir = 1;
+    }
+    if (EQ_SORT.dir === 0) EQ_SORT.col = null;
+  }
+
+  // Trier une copie de STORE pour l'affichage (sans modifier l'ordre réel de STORE)
+  var sorted = STORE['equipements'].slice();
+  if (EQ_SORT.col && EQ_SORT.dir !== 0) {
+    // Tri sur la colonne cliquée + secondaires Type → Catégorie → Équipement
+    var c = EQ_SORT.col, d = EQ_SORT.dir;
+    sorted.sort(function(a, b) {
+      return _eqCmp(a, b, c, d)
+          || _eqCmp(a, b, 'type', 1)
+          || _eqCmp(a, b, 'categorie', 1)
+          || _eqCmp(a, b, 'value', 1);
+    });
+  } else {
+    // Tri par défaut
+    sorted.sort(_eqDefaultSort);
+  }
+
+  // Mettre à jour l'affichage du tbody avec les index STORE réels (pour edit/delete)
+  var cfg   = CFG['equipements'];
+  var tbody = document.getElementById('tbody-equipements');
+  tbody.innerHTML = sorted.map(function(item) {
+    // Retrouver l'index réel dans STORE pour les boutons edit/delete
+    var i = STORE['equipements'].indexOf(item);
+    var cells = cfg.cols.map(function(col) {
+      var cls = EQ_COL_CLASS[col] || 'td-val';
+      var v = item[col] !== undefined ? item[col] : '';
+      if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
+        var short = String(v).length > 60 ? String(v).slice(0, 60) + '…' : v;
+        return '<td class="' + cls + '" title="' + esc(v) + '">' + esc(short) + '</td>';
+      }
+      return '<td class="' + cls + '">' + esc(v) + '</td>';
+    }).join('');
+    var dupBtn = '<button class="btn" onclick="duplicateRow(\'equipements\',' + i + ')" title="Dupliquer">⧉</button> ';
+    return '<tr id="row-equipements-' + i + '">' +
+      cells +
+      '<td class="td-act" style="width:130px">' +
+        '<button class="btn" onclick="editRow(\'equipements\',' + i + ')">✏️</button> ' +
+        dupBtn +
+        '<button class="btn btn-del" onclick="askDelete(\'equipements\',' + i + ')">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+
+  // Mettre à jour les indicateurs visuels dans les en-têtes
+  var cols = ['type','categorie','id','value','ordre','stock','description','remarque'];
+  var thRow = document.getElementById('thead-equipements-row');
+  if (thRow) {
+    var ths = thRow.querySelectorAll('.th-sort');
+    ths.forEach(function(th, idx) {
+      th.classList.remove('asc', 'desc');
+      var icon = th.querySelector('.sort-icon');
+      if (cols[idx] === EQ_SORT.col) {
+        if (EQ_SORT.dir === 1)  { th.classList.add('asc');  if (icon) icon.textContent = '↑'; }
+        if (EQ_SORT.dir === -1) { th.classList.add('desc'); if (icon) icon.textContent = '↓'; }
+      } else {
+        if (icon) icon.textContent = '⇅';
+      }
+    });
+  }
+}
+window.eqSort = eqSort;
 
 // ════════════════════════════════════════════════════════════
 // ÉDITION INLINE
 // ════════════════════════════════════════════════════════════
-var editKey = null, editIdx = null;
 
 function editRow(key, i) {
   // Annule édition précédente si besoin
@@ -546,12 +803,45 @@ function editRow(key, i) {
   var item = STORE[key][i];
   var row  = document.getElementById('row-' + key + '-' + i);
 
-  // Remplace chaque cellule par un input ou textarea (sauf id)
+  // Remplace chaque cellule par un input, select ou textarea (id éditable avec validation unicité)
   var cells = cfg.cols.map(function(col) {
-    if (col === 'id') return '<td class="td-id">' + esc(item.id) + '</td>';
+    if (col === 'id') {
+      var idOninput = key === 'equipements'
+        ? 'oninput="eqValidateId(this,' + i + ')"'
+        : 'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"';
+      return '<td style="min-width:100px"><input class="inp" id="inp-' + key + '-' + i + '-id" value="' + esc(item.id) + '" ' +
+        idOninput + ' style="font-family:monospace;font-size:12px;" placeholder="ID unique…"></td>';
+    }
     var v = item[col] !== undefined ? item[col] : '';
+    // Colonne avec liste déroulante (selectCols)
+    if (cfg.selectCols && cfg.selectCols[col]) {
+      var selectOpts = cfg.selectCols[col].map(function(opt) {
+        return '<option value="' + esc(opt) + '"' + (String(v) === opt ? ' selected' : '') + '>' + esc(opt) + '</option>';
+      }).join('');
+      return '<td style="min-width:110px"><select class="inp" id="inp-' + key + '-' + i + '-' + col + '">' + selectOpts + '</select></td>';
+    }
+    // Colonne ordre : select dynamique 1…N+1 selon le type courant de l'item
+    if (cfg.ordreCol && cfg.ordreCol === col) {
+      var currentType = item.type || '';
+      var maxOrdre = STORE[key].reduce(function(m, it) {
+        return it.type === currentType ? Math.max(m, parseInt(it.ordre) || 0) : m;
+      }, 0);
+      var ordreOpts = '';
+      for (var o = 1; o <= maxOrdre + 1; o++) {
+        ordreOpts += '<option value="' + o + '"' + (parseInt(v) === o ? ' selected' : '') + '>' + o + '</option>';
+      }
+      return '<td style="width:60px"><select class="inp" id="inp-' + key + '-' + i + '-' + col + '" style="width:56px">' + ordreOpts + '</select></td>';
+    }
+    // Colonne stock : input texte (nombre 0-1000 ou "N/A")
+    if (cfg.stockCol && cfg.stockCol === col) {
+      return '<td style="width:70px"><input class="inp" id="inp-' + key + '-' + i + '-' + col + '" value="' + esc(v) + '" ' +
+        'placeholder="0 ou N/A" style="width:60px" ' +
+        'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"></td>';
+    }
+    // Colonne textarea → input simple en édition inline pour ne pas élargir la ligne
     if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
-      return '<td style="min-width:220px"><textarea class="inp" id="inp-' + key + '-' + i + '-' + col + '" rows="3" style="width:100%;resize:vertical;font-family:inherit;font-size:12px;">' + esc(v) + '</textarea></td>';
+      return '<td style="min-width:100px"><input class="inp" id="inp-' + key + '-' + i + '-' + col + '" value="' + esc(v) + '" ' +
+        'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"></td>';
     }
     return '<td><input class="inp" id="inp-' + key + '-' + i + '-' + col + '" value="' + esc(v) + '" ' +
       'onkeydown="keyEdit(event,\'' + key + '\',' + i + ')"></td>';
@@ -559,15 +849,15 @@ function editRow(key, i) {
 
   row.innerHTML = cells +
     '<td class="td-act">' +
-      '<button class="btn btn-ok"  onclick="saveEdit(\'' + key + '\',' + i + ')">✔</button> ' +
-      '<button class="btn"         onclick="cancelEdit(\'' + key + '\',' + i + ')">✖</button>' +
+      '<button class="btn btn-ok" id="btn-ok-' + key + '-' + i + '" onclick="saveEdit(\'' + key + '\',' + i + ')">✔</button> ' +
+      '<button class="btn"        onclick="cancelEdit(\'' + key + '\',' + i + ')">✖</button>' +
     '</td>';
 
-  // Focus sur le premier input éditable
-  var firstCol = cfg.cols.find(function(c) { return c !== 'id'; });
-  if (firstCol) {
-    var el = document.getElementById('inp-' + key + '-' + i + '-' + firstCol);
-    if (el) el.focus();
+  // Focus sur l'ID en premier pour les équipements, sinon premier champ éditable
+  var focusCol = (key === 'equipements') ? 'id' : cfg.cols.find(function(c) { return c !== 'id'; });
+  if (focusCol) {
+    var el = document.getElementById('inp-' + key + '-' + i + '-' + focusCol);
+    if (el) { el.focus(); el.select(); }
   }
 }
 window.editRow = editRow;
@@ -582,6 +872,22 @@ function saveEdit(key, i) {
   var cfg  = CFG[key];
   var item = STORE[key][i];
 
+  // Vérifier l'ID si éditable
+  var idEl = document.getElementById('inp-' + key + '-' + i + '-id');
+  if (idEl) {
+    var newId = idEl.value.trim().toUpperCase().replace(/\s+/g, '_');
+    if (!newId) {
+      eqMarkIdError(idEl, 'L\'ID ne peut pas être vide.');
+      return;
+    }
+    var duplicate = STORE[key].some(function(it, idx) { return idx !== i && it.id === newId; });
+    if (duplicate) {
+      eqMarkIdError(idEl, 'Cet ID existe déjà — choisissez un autre.');
+      return;
+    }
+    item.id = newId;
+  }
+
   cfg.cols.forEach(function(col) {
     if (col === 'id') return;
     var el = document.getElementById('inp-' + key + '-' + i + '-' + col);
@@ -595,8 +901,10 @@ function saveEdit(key, i) {
       if (!RENAMES[key][i]) RENAMES[key][i] = item.value;
     }
 
-    // Conversion numérique si nécessaire
-    var isNum = (col === 'value' && cfg.numericValue) || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1);
+    // Conversion numérique si nécessaire (inclut la colonne ordre)
+    var isNum = (col === 'value' && cfg.numericValue)
+             || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1)
+             || (cfg.ordreCol && cfg.ordreCol === col);
     item[col] = isNum ? Number(newVal) : newVal;
   });
 
@@ -618,13 +926,33 @@ window.cancelEdit = cancelEdit;
 function addRow(key) {
   var cfg = CFG[key];
   var ids = STORE[key].map(function(x) { return x.id; });
-  var n = 1, newId;
-  do { newId = cfg.prefix + 'NEW' + n; n++; } while (ids.indexOf(newId) !== -1);
+  var n, newId;
+  if (key === 'equipements') {
+    // Format EQ_NEW01, EQ_NEW02, …
+    n = 1;
+    do { newId = 'EQ_NEW' + (n < 10 ? '0' : '') + n; n++; } while (ids.indexOf(newId) !== -1);
+  } else {
+    n = 1;
+    do { newId = cfg.prefix + 'NEW' + n; n++; } while (ids.indexOf(newId) !== -1);
+  }
 
   var newItem = { id: newId };
   cfg.cols.forEach(function(col) {
     if (col === 'id') return;
-    newItem[col] = (col === 'value' && cfg.numericValue) ? 0 : '';
+    if (cfg.selectCols && cfg.selectCols[col]) {
+      newItem[col] = cfg.selectCols[col][0]; // première valeur par défaut
+    } else if (cfg.ordreCol && cfg.ordreCol === col) {
+      // Prochaine valeur disponible pour le type par défaut
+      var defaultType = cfg.selectCols && cfg.selectCols.type ? cfg.selectCols.type[0] : '';
+      var maxO = STORE[key].reduce(function(m, it) {
+        return it.type === defaultType ? Math.max(m, parseInt(it.ordre) || 0) : m;
+      }, 0);
+      newItem[col] = maxO + 1;
+    } else if (cfg.stockCol && cfg.stockCol === col) {
+      newItem[col] = 'N/A';
+    } else {
+      newItem[col] = (col === 'value' && cfg.numericValue) ? 0 : '';
+    }
   });
 
   STORE[key].push(newItem);
@@ -633,6 +961,21 @@ function addRow(key) {
   markDirty(key);
 }
 window.addRow = addRow;
+
+function duplicateRow(key, i) {
+  var cfg = CFG[key];
+  var src = STORE[key][i];
+  var ids = STORE[key].map(function(x) { return x.id; });
+  var n = 1, newId;
+  do { newId = cfg.prefix + 'COPY' + n; n++; } while (ids.indexOf(newId) !== -1);
+
+  var copy = Object.assign({}, src, { id: newId });
+  STORE[key].splice(i + 1, 0, copy);
+  renderTable(key);
+  editRow(key, i + 1);
+  markDirty(key);
+}
+window.duplicateRow = duplicateRow;
 
 // ════════════════════════════════════════════════════════════
 // SUPPRESSION
@@ -649,11 +992,11 @@ function askDelete(key, i) {
 window.askDelete = askDelete;
 
 function doDelete() {
-  closeConfirm();
   if (!pendingDel) return;
   var key = pendingDel.key, i = pendingDel.i;
   STORE[key].splice(i, 1);
   pendingDel = null;
+  closeConfirm();
   markDirty(key);
   renderTable(key);
   showToast('🗑 Entrée supprimée.');
@@ -676,6 +1019,8 @@ function markDirty(key) {
   DIRTY[key] = true;
   var bar = document.getElementById('bar-' + key);
   if (bar) bar.classList.add('on');
+  var sticky = document.getElementById('bar-' + key + '-sticky');
+  if (sticky) sticky.classList.add('on');
 }
 
 // ════════════════════════════════════════════════════════════
@@ -684,13 +1029,14 @@ function markDirty(key) {
 function escJs(v) { return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"'); }
 
 var FILE_COMMENTS = {
-  lieux:          'Référentiel : Lieux / Salles\n * Chaque entrée : { id, value, label, nomOfficiel, description }\n *   value       : identifiant technique utilisé dans data.js\n *   label       : libellé court affiché dans les rapports\n *   nomOfficiel : nom complet / officiel du lieu\n *   description : description du lieu (capacité, équipements, usage...)',
+  lieux:          'Référentiel : Lieux / Salles\n * Chaque entrée : { id, value, label, nomOfficiel, description, capacite }\n *   value       : identifiant technique utilisé dans data.js\n *   label       : libellé court affiché dans les rapports\n *   nomOfficiel : nom complet / officiel du lieu\n *   description : description du lieu (équipements, usage...)\n *   capacite    : capacité d\'accueil (nombre de personnes)',
   types:          'Référentiel : Types d\'ateliers\n * Chaque entrée : { id, value, label, minRes, minHelpers, minTrad, tradCounts }\n *   minRes     : nb total minimum de ressources\n *   minHelpers : nb minimum de helpers\n *   minTrad    : 1 = traducteur requis si anglophone\n *   tradCounts : 1 = le traducteur compte dans minRes',
   notes:          'Référentiel : Notes\n * Chaque entrée : { id, value, valueEn }\n *   value   : libellé français (référence)\n *   valueEn : traduction anglaise',
   jours:          'Référentiel : Jours\n * Chaque entrée : { id, value, label, date }',
   piment:         'Référentiel : Piment\n * Chaque entrée : { id, value (number), label }',
   resource_types: 'Référentiel : Types de ressource\n * Chaque entrée : { id, value, label, icon }',
   heures:         'Référentiel : Heures\n * Chaque entrée : { id, value } — format HH:MM',
+  equipements:    'Référentiel : Équipements\n * Chaque entrée : { id, value, type, categorie, ordre, stock, description, remarque }\n *   value       : nom de l\'équipement\n *   type        : "Hameau" | "Tantramour" | "NEW" | "Animateur" | "Autre"\n *   categorie   : "Ambiance & décoration" | "Animation" | "Pratique" | etc.\n *   ordre       : ordre d\'affichage au sein du type (1, 2, 3…)\n *   stock       : nombre (0-1000) ou "N/A"\n *   description : texte libre\n *   remarque    : texte libre',
 };
 
 function genRefFile(key) {
@@ -699,8 +1045,18 @@ function genRefFile(key) {
   var lines = items.map(function(item) {
     var parts = cfg.cols.map(function(col) {
       var v = item[col] !== undefined ? item[col] : '';
-      var isNum = (col === 'value' && cfg.numericValue) || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1);
+      var isNum = (col === 'value' && cfg.numericValue)
+               || (cfg.numericCols && cfg.numericCols.indexOf(col) !== -1)
+               || (cfg.ordreCol && cfg.ordreCol === col);
       if (isNum) return col + ': ' + Number(v);
+      // stock : peut être un nombre ou la chaîne "N/A"
+      if (cfg.stockCol && cfg.stockCol === col) {
+        var sv = String(v).trim();
+        if (sv === 'N/A' || sv === '' ) return col + ': "N/A"';
+        var sn = Number(sv);
+        return col + ': ' + (isNaN(sn) ? '"N/A"' : sn);
+      }
+      // texte multiligne : les \n sont stockés comme \n dans le JS
       return col + ': "' + escJs(v) + '"';
     });
     return '  { ' + parts.join(', ') + ' },';
@@ -768,6 +1124,10 @@ async function saveToServer(filename, content) {
 
 async function save(key, withData) {
   var cfg = CFG[key];
+  // Si une ligne est encore en mode édition pour ce référentiel, la valider avant de sauvegarder
+  if (editKey === key && editIdx !== null) {
+    saveEdit(editKey, editIdx);
+  }
   try {
     if (withData) applyRenames(key);
     await saveToServer(cfg.fileName, genRefFile(key));
@@ -776,6 +1136,8 @@ async function save(key, withData) {
     RENAMES[key] = {};
     var bar = document.getElementById('bar-' + key);
     if (bar) bar.classList.remove('on');
+    var sticky = document.getElementById('bar-' + key + '-sticky');
+    if (sticky) sticky.classList.remove('on');
     showToast('✅ ' + cfg.fileName + ' sauvegardé' + (withData ? ' + data.js' : '') + '.', false);
   } catch(err) {
     showToast('❌ ' + err.message, true);

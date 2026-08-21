@@ -331,12 +331,9 @@ allLieux.forEach(function(l) {
 var activeLieu = '';
 var activeJour = '';
 
-// ── Jours qui ont des entrées pour cette salle ────────────────────────────────
+// ── Tous les jours du festival (même si la salle est vide ce jour-là) ─────────
 function getJoursForLieu(lieu) {
-  var entries = LIEUX_INDEX[lieu] || [];
-  var s = {};
-  entries.forEach(function(e){ if (e.jour) s[e.jour] = true; });
-  return JOUR_ORDER.filter(function(j){ return s[j]; });
+  return JOUR_ORDER;
 }
 
 // ── Rendu chips jours ─────────────────────────────────────────────────────────
@@ -361,12 +358,7 @@ function render() {
     return;
   }
 
-  var jours = activeJour ? [activeJour] : getJoursForLieu(activeLieu);
-  if (!jours.length) {
-    mainContent.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>Aucun atelier trouvé pour <strong>'+esc(lieuLabel(activeLieu))+'</strong>.</p></div>';
-    document.getElementById('filterHint').textContent = '';
-    return;
-  }
+  var jours = activeJour ? [activeJour] : JOUR_ORDER;
 
   var total = (LIEUX_INDEX[activeLieu] || []).length;
   var txt = jours.length === 1

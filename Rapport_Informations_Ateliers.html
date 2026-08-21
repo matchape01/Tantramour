@@ -163,6 +163,7 @@
     <div class="header-actions">
       <a class="btn" href="index.html" data-i18n="nav_accueil">🏠 Accueil</a>
       <a class="btn" href="index_bis.html" data-i18n="nav_dreamteam">🌀 DreamTeam</a>
+      <a class="btn" href="gestion_planning.html" data-i18n="nav_admin">⚙️ Admin</a>
       <button class="btn" onclick="hardReload()">🔄 <span data-i18n="nav_refresh">Refresh</span></button>
       <button class="btn" onclick="exportAteliersDetailsExcel()">📥 Export Excel</button>
       <button class="btn" onclick="toggleImportPanel()">📤 Import Excel</button>
@@ -1068,7 +1069,8 @@ function buildImportPreview(sheet, colOffset) {
     seenIds[id] = true;
     var agendaInfo = agendaById[id];
     if (!agendaInfo) {
-      throw new Error('ID atelier inconnu : ' + id + ' (ligne ' + rowNumber + ').');
+      warnings.push('⚠️ ID atelier inconnu ignoré : « ' + id + ' » (ligne ' + rowNumber + ') — cet atelier n\'existe plus dans le planning actuel.');
+      continue;
     }
     var entry = agendaInfo.entry;
     var desc = getDesc(entry.atelier) || {};
@@ -1135,7 +1137,7 @@ function renderImportPreview(preview, filename) {
   var summary = document.getElementById('importSummary');
   var warningsHtml = (preview.warnings && preview.warnings.length)
     ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;line-height:1.6;">' +
-        '<strong>⚠️ ' + preview.warnings.length + ' valeur(s) Piment non reconnue(s) — champ ignoré, import non bloqué</strong>' +
+        '<strong>⚠️ ' + preview.warnings.length + ' avertissement(s) — lignes ou valeurs ignorées, import non bloqué</strong>' +
         '<ul style="margin:6px 0 0 18px;padding:0;">' +
           preview.warnings.map(function(w){ return '<li>' + esc(w) + '</li>'; }).join('') +
         '</ul>' +
