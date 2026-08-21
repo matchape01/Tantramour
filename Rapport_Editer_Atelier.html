@@ -672,8 +672,29 @@ function onHeureChange() {
     prev.textContent = 'Choisir début et fin';
     prev.classList.add('empty');
   }
+  // Mettre à jour les indicateurs dispo dans tous les selects de l'équipe
+  refreshBusyIndicators();
 }
 window.onHeureChange = onHeureChange;
+
+// Met à jour les préfixes 🟢/🔴 dans les selects de l'équipe sans les reconstruire
+function refreshBusyIndicators() {
+  const busy = getBusyPersons();
+  const ids  = ['f-fac1','f-fac2','f-fac3','f-fac4','f-traduction',
+                 'f-helper1','f-helper2','f-helper3','f-helper4','f-angel'];
+  ids.forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    Array.from(sel.options).forEach(function(opt) {
+      if (!opt.value) return; // option "— aucun —"
+      const isBusy = !!(busy[opt.value]);
+      // Remplacer le préfixe existant (🟢 ou 🔴) ou en ajouter un
+      opt.text    = (isBusy ? '🔴 ' : '🟢 ') + opt.value;
+      opt.title   = isBusy ? 'Déjà assigné sur ce créneau' : 'Disponible';
+    });
+  });
+}
+window.refreshBusyIndicators = refreshBusyIndicators;
 
 function buildSelect(id, refArr, val, allowEmpty) {
   const opts = (allowEmpty ? `<option value="">— aucun —</option>` : '') +
@@ -681,9 +702,56 @@ function buildSelect(id, refArr, val, allowEmpty) {
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
 
-function buildPersonSelect(id, refArr, val) {
+// ── Calcule l'ensemble des personnes déjà assignées au même créneau ──────────
+// Retourne { name: 'occupé' | 'multiple' } pour tous les noms qui chevauchent
+// le créneau de editedData, en excluant l'atelier en cours d'édition.
+function getBusyPersons() {
+  const e = editedData;
+  if (!e || !e.jour || !e.heure) return {};
+  // Intervalles en minutes
+  function toMin(hStr) {
+    if (!hStr) return null;
+    const m = String(hStr).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
+    return m ? parseInt(m[1],10)*60 + parseInt(m[2],10) : null;
+  }
+  function parseInterval(hStr) {
+    if (!hStr) return null;
+    const norm = String(hStr).replace(/\./g,':');
+    const all  = norm.match(/(\d{1,2}:\d{2})/g);
+    if (!all || all.length < 2) return null;
+    const s = toMin(all[0]), end = toMin(all[1]);
+    return (s !== null && end !== null) ? { s, e: end } : null;
+  }
+  const myIv = parseInterval(e.heure);
+  if (!myIv) return {};
+  // Exclure l'atelier courant (même id ou même position dans AGENDA)
+  const myId = e.id || '';
+  const busy = {};
+  AGENDA.forEach(function(a) {
+    if (!a || !a.jour || a.jour !== e.jour) return;
+    if (myId && a.id === myId) return;
+    const iv = parseInterval(a.heure);
+    if (!iv) return;
+    // Chevauchement si les intervalles se superposent (strictement)
+    if (iv.s >= myIv.e || iv.e <= myIv.s) return;
+    // Collecter toutes les personnes assignées sur ce créneau
+    [a.helper1, a.helper2, a.helper3, a.helper4, a.traduction, a.angel].forEach(function(p) {
+      if (p && p.trim()) busy[p.trim()] = true;
+    });
+  });
+  return busy;
+}
+
+function buildPersonSelect(id, refArr, val, busySet) {
+  const busy = busySet || {};
   const opts = `<option value="">— aucun —</option>` +
-    refArr.map(r => `<option value="${esc(r.value)}"${r.value===val?' selected':''}>${esc(r.value)}</option>`).join('');
+    refArr.map(r => {
+      const isBusy   = !!(busy[r.value]);
+      const isCurrent = r.value === val;
+      const prefix    = isBusy ? '🔴 ' : '🟢 ';
+      const title     = isBusy ? 'Déjà assigné sur ce créneau' : 'Disponible';
+      return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${esc(r.value)}</option>`;
+    }).join('');
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
 
@@ -753,6 +821,9 @@ function renderEditor() {
   // Validation & horodatage
   const isValidated = !!(desc && desc.validatedByFac) || !!(logEntry && logEntry.validatedByFac);
   const updatedAt   = [desc && desc.updatedAt, logEntry && logEntry.updatedAt].filter(Boolean).sort().pop() || '';
+
+  // Disponibilités des personnes sur ce créneau
+  const busy = getBusyPersons();
 
   // Boutons piment
   const pimentBtns = REF_PIMENT.map(p =>
@@ -850,53 +921,53 @@ function renderEditor() {
 
         <div class="form-group">
           <label>Animateur principal</label>
-          ${buildPersonSelect('f-fac1', REF_ANIMATEURS, e.fac1||'')}
+          ${buildPersonSelect('f-fac1', REF_ANIMATEURS, e.fac1||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Animateur secondaire</label>
-          ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'')}
+          ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Animateur 3</label>
-          ${buildPersonSelect('f-fac3', REF_ANIMATEURS, e.fac3||'')}
+          ${buildPersonSelect('f-fac3', REF_ANIMATEURS, e.fac3||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Animateur 4</label>
-          ${buildPersonSelect('f-fac4', REF_ANIMATEURS, e.fac4||'')}
+          ${buildPersonSelect('f-fac4', REF_ANIMATEURS, e.fac4||'', busy)}
         </div>
 
         <div class="form-group">
           <label data-i18n="filter_traducteur">Traducteur</label>
-          ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'')}
+          ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Helper 1</label>
-          ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'')}
+          ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Helper 2</label>
-          ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'')}
+          ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Helper 3</label>
-          ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'')}
+          ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'', busy)}
         </div>
 
         <div class="form-group">
           <label>Helper 4</label>
-          ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'')}
+          ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'', busy)}
         </div>
 
         <div class="form-group">
           <label data-i18n="col_angel">Angel${e.type !== 'SHIFT ANGEL' ? `<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">(calculé automatiquement)</span>` : ''}</label>
           ${e.type === 'SHIFT ANGEL'
-            ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'')
+            ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'', busy)
             : `<div style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:13px;min-height:34px">${(()=>{const a=resolveAngelEdit(e.jour,e.heure)||e.angel||'';return a?`<span class="pill pill-a" style="font-size:12px">${a}</span>`:'<em>Aucun shift Angel sur cette période</em>';})()}</div>`
           }
         </div>

@@ -41,7 +41,8 @@
     --c-prepa-bg:#1a1d20;   --c-prepa-bd:#4b5563;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:12px; line-height:1.4; background:var(--bg); color:var(--text); }
+  html, body { height:100%; overflow:hidden; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:12px; line-height:1.4; background:var(--bg); color:var(--text); display:flex; flex-direction:column; }
 
   /* ── HEADER ── */
   .topbar { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:8px; }
@@ -61,7 +62,7 @@
   .leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
 
   /* ── SCROLL WRAPPER ── */
-  .cal-scroll { overflow-x:auto; overflow-y:auto; width:100%; }
+  .cal-scroll { overflow-x:auto; overflow-y:auto; width:100%; flex:1; min-height:0; }
 
   /* ── GRILLE CALENDRIER ── */
   /* Layout: colonne heures + groupes jours proportionnels sur toute la largeur */

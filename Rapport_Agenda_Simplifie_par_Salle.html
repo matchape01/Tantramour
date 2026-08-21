@@ -28,7 +28,8 @@
     --c-other:#9ca3af;      --c-other-bg:#1c1f26;     --c-other-bd:#4b5563;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:12px; line-height:1.4; background:var(--bg); color:var(--text); }
+  html, body { height:100%; overflow:hidden; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:12px; line-height:1.4; background:var(--bg); color:var(--text); display:flex; flex-direction:column; }
 
   /* ── HEADER ── */
   .topbar { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:8px; }
@@ -60,6 +61,8 @@
 
   /* ── SCROLL WRAPPER ── */
   .cal-scroll { overflow-x:auto; overflow-y:auto; width:100%; }
+  #mainContent { flex:1; min-height:0; display:flex; flex-direction:column; }
+  #mainContent .cal-scroll { flex:1; min-height:0; }
 
   /* ── GRILLE CALENDRIER ── */
   .cal-wrap { display:flex; flex-direction:column; width:100%; }
