@@ -317,8 +317,8 @@ function renderDreamTeamReports() {
 
   var html = '';
   dtReports.forEach(function(r) {
-    var title = (r.titleKey && _t(r.titleKey)) ? _t(r.titleKey) : (r.title || '');
-    var desc  = (r.descKey && _t(r.descKey)) ? _t(r.descKey) : (r.desc || '');
+    var title = (r.titleKey && _t(r.titleKey) !== r.titleKey) ? _t(r.titleKey) : (r.title || r.titleKey || '');
+    var desc  = (r.descKey && _t(r.descKey) !== r.descKey) ? _t(r.descKey) : (r.desc || r.descKey || '');
     var icon  = r.icon || '📄';
     var cardStyle  = r.cardStyle || '';
     var iconStyle  = r.iconStyle || '';
