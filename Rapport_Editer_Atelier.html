@@ -331,7 +331,7 @@
 <script>
 // Initialisation par défaut — écrasée si logistics.helpers.js se charge correctement
 if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
-loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.js', 'logistics.helpers.js', 'ref_consignes_type.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.js', 'logistics.helpers.js', 'ref_consignes_type.js', 'ref_equipements.js', 'ref_equip_cat.js'], function() {
 
 // ══════════════════════════════════════════════
 // ÉTAT
@@ -1062,7 +1062,7 @@ function renderEditor() {
         <div class="res-row" style="margin-bottom:0;">
           <label>⏱ Durée préparation</label>
           <select id="f-prepDuration" style="width:90px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;">
-            ${[0,15,30,45,60].map(v => `<option value="${v}"${(logEntry && logEntry.prepDuration===v)?'  selected':''}>${v} min</option>`).join('')}
+            ${[0,10,15,20,25,30,35,40,45,50,55,60,75,80,90,100,110,120].map(v => `<option value="${v}"${(logEntry && logEntry.prepDuration===v)?'  selected':''}>${v} min</option>`).join('')}
           </select>
           <span class="res-hint">Avant l'atelier</span>
         </div>
@@ -2052,7 +2052,7 @@ function logRenderForAtelier(logId) {
       '<div style="' + (isShiftAngel ? 'display:none;' : 'display:flex;align-items:center;gap:10px;') + 'margin-bottom:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">' +
         '<label for="log-prep-duration" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap;">⏱ Estimation durée préparation</label>' +
         '<select id="log-prep-duration" ' + (isShiftAngel ? 'disabled ' : '') + 'style="width:90px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;">' +
-          [0,15,30,45,60].map(function(v){ return '<option value="'+v+'"'+(prepVal===v?' selected':'')+'>'+v+' min</option>'; }).join('') +
+          [0,10,15,20,25,30,35,40,45,50,55,60,75,80,90,100,110,120].map(function(v){ return '<option value="'+v+'"'+(prepVal===v?' selected':'')+'>'+v+' min</option>'; }).join('') +
         '</select>' +
       '</div>' +
       toolbar +

@@ -59,6 +59,35 @@
   .sort-icon { display:inline-block; margin-left:4px; font-size:10px; opacity:.45; }
   .th-sort.asc  .sort-icon { opacity:1; color:var(--accent); }
   .th-sort.desc .sort-icon { opacity:1; color:var(--accent); }
+  .th-content { display:inline-flex; align-items:center; gap:4px; width:100%; justify-content:space-between; }
+  .th-label { display:inline-flex; align-items:center; gap:4px; }
+  .th-filter-btn { cursor:pointer; background:transparent; border:none; padding:2px 4px; border-radius:4px; font-size:11px; opacity:.45; color:var(--text); transition:all .15s; line-height:1; }
+  .th-filter-btn:hover { opacity:1; background:var(--border); }
+  .th-filter-btn.active { opacity:1; color:#fff; background:var(--accent); }
+
+  /* POPOVER FILTRE MULTI-VALEURS */
+  .eq-filter-popover { position:fixed; z-index:500; background:var(--bg); border:1px solid var(--border); border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2); width:260px; max-width:90vw; display:flex; flex-direction:column; padding:10px; font-size:12px; }
+  .eq-fp-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); }
+  .eq-fp-search { width:100%; padding:5px 8px; border:1px solid var(--border); border-radius:5px; font-size:12px; background:var(--surface); color:var(--text); font-family:inherit; margin-bottom:8px; outline:none; }
+  .eq-fp-search:focus { border-color:var(--accent); }
+  .eq-fp-actions { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:11px; }
+  .eq-fp-link { color:var(--accent); cursor:pointer; background:none; border:none; padding:0; font-family:inherit; font-size:11px; }
+  .eq-fp-link:hover { text-decoration:underline; }
+  .eq-fp-list { max-height:180px; overflow-y:auto; display:flex; flex-direction:column; gap:2px; border:1px solid var(--border); border-radius:5px; padding:4px; background:var(--surface); margin-bottom:8px; }
+  .eq-fp-item { display:flex; align-items:center; gap:6px; padding:3px 4px; border-radius:4px; cursor:pointer; user-select:none; }
+  .eq-fp-item:hover { background:var(--border); }
+  .eq-fp-item input[type="checkbox"] { cursor:pointer; }
+  .eq-fp-item-text { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .eq-fp-item-count { font-size:10px; color:var(--muted); margin-left:auto; }
+  .eq-fp-footer { display:flex; justify-content:flex-end; gap:6px; }
+
+  /* BARRE ACTIVE DES FILTRES */
+  .eq-active-filters-bar { display:none; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:8px; font-size:12px; }
+  .eq-active-filters-bar.on { display:flex; }
+  .eq-af-badge { display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--accent); color:var(--accent); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:600; }
+  .eq-af-remove { cursor:pointer; font-weight:bold; margin-left:2px; border:none; background:transparent; color:inherit; font-size:12px; line-height:1; }
+  .eq-af-reset { cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; padding:3px 8px; font-size:11px; font-weight:600; color:var(--err); margin-left:auto; }
+  .eq-af-reset:hover { background:var(--err-bg); border-color:var(--err-border); }
   table { width:100%; border-collapse:collapse; }
   thead th { background:var(--th-bg); padding:9px 10px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; }
   tbody tr { border-bottom:1px solid var(--border); }
@@ -415,16 +444,17 @@
       </div>
       <div class="import-summary" id="eqImportSummary"></div>
     </div>
+    <div class="eq-active-filters-bar" id="eqActiveFiltersBar"></div>
     <div class="tbl-wrap">
       <table>
         <thead><tr id="thead-equipements-row">
-          <th class="th-sort" onclick="eqSort('type')"        >Fournisseur <span class="sort-icon">⇅</span></th>
-          <th class="th-sort" onclick="eqSort('categorie')"   >Catégorie   <span class="sort-icon">⇅</span></th>
-          <th class="th-sort col-hide-mob" onclick="eqSort('id')"          >ID          <span class="sort-icon">⇅</span></th>
-          <th class="th-sort" onclick="eqSort('value')"       >Équipement  <span class="sort-icon">⇅</span></th>
-          <th class="th-sort col-hide-mob" onclick="eqSort('stock')"       >Stock       <span class="sort-icon">⇅</span></th>
-          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('description')" >Description <span class="sort-icon">⇅</span></th>
-          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqSort('remarque')"    >Remarque    <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="eqThClick(event, 'type')"><div class="th-content"><span class="th-label">Fournisseur <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-type" onclick="openEqFilter(event, 'type')" title="Filtrer par Fournisseur">🔍</button></div></th>
+          <th class="th-sort" onclick="eqThClick(event, 'categorie')"><div class="th-content"><span class="th-label">Catégorie <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-categorie" onclick="openEqFilter(event, 'categorie')" title="Filtrer par Catégorie">🔍</button></div></th>
+          <th class="th-sort col-hide-mob" onclick="eqThClick(event, 'id')"><div class="th-content"><span class="th-label">ID <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-id" onclick="openEqFilter(event, 'id')" title="Filtrer par ID">🔍</button></div></th>
+          <th class="th-sort" onclick="eqThClick(event, 'value')"><div class="th-content"><span class="th-label">Équipement <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-value" onclick="openEqFilter(event, 'value')" title="Filtrer par Équipement">🔍</button></div></th>
+          <th class="th-sort col-hide-mob" onclick="eqThClick(event, 'stock')"><div class="th-content"><span class="th-label">Stock <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-stock" onclick="openEqFilter(event, 'stock')" title="Filtrer par Stock">🔍</button></div></th>
+          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqThClick(event, 'description')"><div class="th-content"><span class="th-label">Description <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-description" onclick="openEqFilter(event, 'description')" title="Filtrer par Description">🔍</button></div></th>
+          <th class="th-sort col-hide-tab col-hide-mob" onclick="eqThClick(event, 'remarque')"><div class="th-content"><span class="th-label">Remarque <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="eq-fbtn-remarque" onclick="openEqFilter(event, 'remarque')" title="Filtrer par Remarque">🔍</button></div></th>
           <th></th>
         </tr></thead>
         <tbody id="tbody-equipements"></tbody>
@@ -455,7 +485,12 @@
     <div class="sec-meta">ref_equip_cat.js — REF_EQUIP_CAT — colonnes : id, value, ordre</div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th data-i18n="md_col_value">Value</th><th>Ordre affichage</th><th></th></tr></thead>
+        <thead><tr id="thead-equip_cat-row">
+          <th class="th-sort" onclick="equipCatSort('id')"><span data-i18n="md_col_id">ID</span> <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="equipCatSort('value')"><span data-i18n="md_col_value">Value</span> <span class="sort-icon">⇅</span></th>
+          <th class="th-sort" onclick="equipCatSort('ordre')">Ordre affichage <span class="sort-icon">⇅</span></th>
+          <th></th>
+        </tr></thead>
         <tbody id="tbody-equip_cat"></tbody>
       </table>
     </div>
@@ -748,6 +783,15 @@ function renderTable(key) {
     eqSort(EQ_SORT && EQ_SORT.col ? EQ_SORT.col : null, true);
     return;
   }
+  // Pour equip_cat, passer par equipCatSort
+  if (key === 'equip_cat') {
+    if (editKey === 'equip_cat' && editIdx !== null) {
+      return;
+    }
+    _renderTableInner(key);
+    equipCatSort(EQUIP_CAT_SORT && EQUIP_CAT_SORT.col ? EQUIP_CAT_SORT.col : null, true);
+    return;
+  }
   _renderTableInner(key);
 }
 
@@ -792,13 +836,32 @@ function _renderTableInner(key) {
 }
 
 // ════════════════════════════════════════════════════════════
-// TRI COLONNES — section Équipements uniquement
+// TRI & FILTRES COLONNES — section Équipements uniquement
 // ════════════════════════════════════════════════════════════
 var EQ_SORT = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
+var EQ_FILTERS = {}; // { colName: Set of selected values }
+var activeFilterPopover = null;
+
+var EQ_COL_NAMES = {
+  type: 'Fournisseur',
+  categorie: 'Catégorie',
+  id: 'ID',
+  value: 'Équipement',
+  stock: 'Stock',
+  description: 'Description',
+  remarque: 'Remarque'
+};
+
+function eqThClick(e, col) {
+  // Si le clic provient du bouton filtre, ne pas déclencher le tri
+  if (e.target.closest('.th-filter-btn')) return;
+  eqSort(col, false);
+}
+window.eqThClick = eqThClick;
 
 // Rendu initial de tous les tableaux
 Object.keys(CFG).forEach(function(k) { renderTable(k); });
-// Appliquer le tri par défaut sur les équipements dès le chargement
+// Appliquer le tri et filtres par défaut sur les équipements dès le chargement
 eqSort(null, true);
 
 // ── Validation ID en temps réel ──────────────────────────────────────────────
@@ -855,8 +918,8 @@ function eqSort(col, reapply) {
   // Annuler une édition en cours sur une autre table (clic utilisateur seulement)
   if (!reapply && editKey !== null) cancelEdit(editKey, editIdx);
 
-  if (!reapply) {
-    // Bascule : aucun/défaut → asc → desc → défaut
+  if (!reapply && col) {
+    // Bascule : aucun/défaut → asc (A→Z) → desc (Z→A) → défaut
     if (EQ_SORT.col === col) {
       EQ_SORT.dir = EQ_SORT.dir === 1 ? -1 : EQ_SORT.dir === -1 ? 0 : 1;
     } else {
@@ -866,12 +929,24 @@ function eqSort(col, reapply) {
     if (EQ_SORT.dir === 0) EQ_SORT.col = null;
   }
 
-  // Trier une copie de STORE pour l'affichage (sans modifier l'ordre réel de STORE)
-  var sorted = STORE['equipements'].slice();
+  // Filtrer les éléments selon EQ_FILTERS
+  var filtered = STORE['equipements'].filter(function(item) {
+    var cols = Object.keys(EQ_FILTERS);
+    for (var k = 0; k < cols.length; k++) {
+      var c = cols[k];
+      var selectedSet = EQ_FILTERS[c];
+      if (selectedSet && selectedSet.size > 0) {
+        var rawVal = item[c] !== undefined && item[c] !== null ? String(item[c]).trim() : '';
+        if (!selectedSet.has(rawVal)) return false;
+      }
+    }
+    return true;
+  });
+
+  // Trier les éléments filtrés
   if (EQ_SORT.col && EQ_SORT.dir !== 0) {
-    // Tri sur la colonne cliquée + secondaires Type → Catégorie → Équipement
     var c = EQ_SORT.col, d = EQ_SORT.dir;
-    sorted.sort(function(a, b) {
+    filtered.sort(function(a, b) {
       return _eqCmp(a, b, c, d)
           || _eqCmp(a, b, 'type', 1)
           || _eqCmp(a, b, 'categorie', 1)
@@ -879,36 +954,40 @@ function eqSort(col, reapply) {
     });
   } else {
     // Tri par défaut
-    sorted.sort(_eqDefaultSort);
+    filtered.sort(_eqDefaultSort);
   }
 
   // Mettre à jour l'affichage du tbody avec les index STORE réels (pour edit/delete)
   var cfg   = CFG['equipements'];
   var tbody = document.getElementById('tbody-equipements');
-  tbody.innerHTML = sorted.map(function(item) {
-    // Retrouver l'index réel dans STORE pour les boutons edit/delete
-    var i = STORE['equipements'].indexOf(item);
-    var cells = cfg.cols.map(function(col) {
-      var cls = EQ_COL_CLASS[col] || 'td-val';
-      var v = item[col] !== undefined ? item[col] : '';
-      if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
-        var short = String(v).length > 60 ? String(v).slice(0, 60) + '…' : v;
-        return '<td class="' + cls + '" title="' + esc(v) + '">' + esc(short) + '</td>';
-      }
-      return '<td class="' + cls + '">' + esc(v) + '</td>';
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun équipement ne correspond aux filtres sélectionnés.</td></tr>';
+  } else {
+    tbody.innerHTML = filtered.map(function(item) {
+      // Retrouver l'index réel dans STORE pour les boutons edit/delete
+      var i = STORE['equipements'].indexOf(item);
+      var cells = cfg.cols.map(function(col) {
+        var cls = EQ_COL_CLASS[col] || 'td-val';
+        var v = item[col] !== undefined ? item[col] : '';
+        if (cfg.textareaCols && cfg.textareaCols.indexOf(col) !== -1) {
+          var short = String(v).length > 60 ? String(v).slice(0, 60) + '…' : v;
+          return '<td class="' + cls + '" title="' + esc(v) + '">' + esc(short) + '</td>';
+        }
+        return '<td class="' + cls + '">' + esc(v) + '</td>';
+      }).join('');
+      var dupBtn = '<button class="btn" onclick="duplicateRow(\'equipements\',' + i + ')" title="Dupliquer">⧉</button> ';
+      return '<tr id="row-equipements-' + i + '">' +
+        cells +
+        '<td class="td-act" style="width:130px">' +
+          '<button class="btn" onclick="editRow(\'equipements\',' + i + ')">✏️</button> ' +
+          dupBtn +
+          '<button class="btn btn-del" onclick="askDelete(\'equipements\',' + i + ')">🗑</button>' +
+        '</td>' +
+      '</tr>';
     }).join('');
-    var dupBtn = '<button class="btn" onclick="duplicateRow(\'equipements\',' + i + ')" title="Dupliquer">⧉</button> ';
-    return '<tr id="row-equipements-' + i + '">' +
-      cells +
-      '<td class="td-act" style="width:130px">' +
-        '<button class="btn" onclick="editRow(\'equipements\',' + i + ')">✏️</button> ' +
-        dupBtn +
-        '<button class="btn btn-del" onclick="askDelete(\'equipements\',' + i + ')">🗑</button>' +
-      '</td>' +
-    '</tr>';
-  }).join('');
+  }
 
-  // Mettre à jour les indicateurs visuels dans les en-têtes
+  // Mettre à jour les indicateurs visuels de tri dans les en-têtes
   var cols = ['type','categorie','id','value','stock','description','remarque'];
   var thRow = document.getElementById('thead-equipements-row');
   if (thRow) {
@@ -924,21 +1003,358 @@ function eqSort(col, reapply) {
       }
     });
   }
+
+  // Mettre à jour l'état des boutons filtres
+  cols.forEach(function(c) {
+    var btn = document.getElementById('eq-fbtn-' + c);
+    if (btn) {
+      var isFilterActive = EQ_FILTERS[c] && EQ_FILTERS[c].size > 0;
+      btn.classList.toggle('active', isFilterActive);
+    }
+  });
+
+  // Mettre à jour la barre de filtres actifs
+  updateEqActiveFiltersBar();
 }
 window.eqSort = eqSort;
+
+// ── Gestion de la barre des filtres actifs ────────────────────────────────────
+function updateEqActiveFiltersBar() {
+  var bar = document.getElementById('eqActiveFiltersBar');
+  if (!bar) return;
+  var filterCols = Object.keys(EQ_FILTERS).filter(function(c) {
+    return EQ_FILTERS[c] && EQ_FILTERS[c].size > 0;
+  });
+
+  if (filterCols.length === 0) {
+    bar.classList.remove('on');
+    bar.innerHTML = '';
+    return;
+  }
+
+  bar.classList.add('on');
+  var html = '<span style="font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;">Filtres actifs :</span>';
+  filterCols.forEach(function(c) {
+    var count = EQ_FILTERS[c].size;
+    var colName = EQ_COL_NAMES[c] || c;
+    var preview = Array.from(EQ_FILTERS[c]).slice(0, 2).map(function(v){ return v === '' ? '(vide)' : v; }).join(', ');
+    if (count > 2) preview += ' +' + (count - 2);
+    html += '<span class="eq-af-badge">'
+      + esc(colName) + ': <strong>' + esc(preview) + '</strong>'
+      + '<button class="eq-af-remove" onclick="removeEqFilterCol(\'' + c + '\')" title="Supprimer ce filtre">×</button>'
+      + '</span>';
+  });
+
+  html += '<button class="eq-af-reset" onclick="resetAllEqFilters()">✕ Réinitialiser tous les filtres</button>';
+  bar.innerHTML = html;
+}
+window.updateEqActiveFiltersBar = updateEqActiveFiltersBar;
+
+function removeEqFilterCol(col) {
+  delete EQ_FILTERS[col];
+  eqSort(null, true);
+}
+window.removeEqFilterCol = removeEqFilterCol;
+
+function resetAllEqFilters() {
+  EQ_FILTERS = {};
+  eqSort(null, true);
+}
+window.resetAllEqFilters = resetAllEqFilters;
+
+// ── Popover de filtre multi-valeurs ──────────────────────────────────────────
+function openEqFilter(e, col) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  closeEqFilterPopover();
+
+  var btn = document.getElementById('eq-fbtn-' + col);
+  if (!btn) return;
+  var rect = btn.getBoundingClientRect();
+
+  // Calculer toutes les valeurs distinctes possibles pour cette colonne dans STORE['equipements']
+  var counts = {};
+  STORE['equipements'].forEach(function(item) {
+    var v = item[col] !== undefined && item[col] !== null ? String(item[col]).trim() : '';
+    counts[v] = (counts[v] || 0) + 1;
+  });
+
+  var distinctVals = Object.keys(counts).sort(function(a, b) {
+    if (col === 'stock') {
+      var na = parseFloat(a), nb = parseFloat(b);
+      if (!isNaN(na) && !isNaN(nb)) return na - nb;
+    }
+    return a.localeCompare(b, 'fr', { sensitivity: 'base' });
+  });
+
+  var selectedSet = new Set(EQ_FILTERS[col] ? Array.from(EQ_FILTERS[col]) : []);
+
+  var popover = document.createElement('div');
+  popover.className = 'eq-filter-popover';
+  popover.id = 'eqFilterPopover';
+
+  // Positionnement dynamique
+  var popLeft = rect.left;
+  if (popLeft + 270 > window.innerWidth) {
+    popLeft = window.innerWidth - 280;
+  }
+  if (popLeft < 10) popLeft = 10;
+  popover.style.left = popLeft + 'px';
+  popover.style.top = (rect.bottom + 6) + 'px';
+
+  var colTitle = EQ_COL_NAMES[col] || col;
+
+  popover.innerHTML =
+    '<div class="eq-fp-head">' +
+      '<span>Filtrer : ' + esc(colTitle) + '</span>' +
+      '<button class="eq-af-remove" style="cursor:pointer;font-size:14px;" onclick="closeEqFilterPopover()">×</button>' +
+    '</div>' +
+    '<input type="text" class="eq-fp-search" id="eqFpSearch" placeholder="Rechercher une valeur..." oninput="filterEqFpItems()">' +
+    '<div class="eq-fp-actions">' +
+      '<button class="eq-fp-link" type="button" onclick="eqFpSelectAll(true)">Tout cocher</button>' +
+      '<button class="eq-fp-link" type="button" onclick="eqFpSelectAll(false)">Tout décocher</button>' +
+    '</div>' +
+    '<div class="eq-fp-list" id="eqFpList"></div>' +
+    '<div class="eq-fp-footer">' +
+      '<button class="btn btn-sm" type="button" onclick="closeEqFilterPopover()">Annuler</button>' +
+      '<button class="btn btn-sm btn-ok" type="button" onclick="applyEqFilter(\'' + col + '\')">Appliquer</button>' +
+    '</div>';
+
+  document.body.appendChild(popover);
+  activeFilterPopover = { popover: popover, col: col, distinctVals: distinctVals, counts: counts };
+
+  renderEqFpList('', selectedSet);
+
+  setTimeout(function() {
+    var searchInp = document.getElementById('eqFpSearch');
+    if (searchInp) searchInp.focus();
+  }, 50);
+
+  // Fermeture si clic à l'extérieur
+  function onDocClick(ev) {
+    if (!popover.contains(ev.target) && ev.target !== btn && !btn.contains(ev.target)) {
+      closeEqFilterPopover();
+    }
+  }
+  popover._onDocClick = onDocClick;
+  setTimeout(function() {
+    document.addEventListener('click', onDocClick);
+  }, 10);
+}
+window.openEqFilter = openEqFilter;
+
+function closeEqFilterPopover() {
+  if (activeFilterPopover && activeFilterPopover.popover) {
+    if (activeFilterPopover.popover._onDocClick) {
+      document.removeEventListener('click', activeFilterPopover.popover._onDocClick);
+    }
+    if (activeFilterPopover.popover.parentNode) {
+      activeFilterPopover.popover.parentNode.removeChild(activeFilterPopover.popover);
+    }
+    activeFilterPopover = null;
+  }
+}
+window.closeEqFilterPopover = closeEqFilterPopover;
+
+function renderEqFpList(query, selectedSet) {
+  if (!activeFilterPopover) return;
+  var list = document.getElementById('eqFpList');
+  if (!list) return;
+
+  var q = (query || '').toLowerCase().trim();
+  var vals = activeFilterPopover.distinctVals.filter(function(v) {
+    if (!q) return true;
+    var display = v === '' ? '(vide)' : v;
+    return display.toLowerCase().indexOf(q) !== -1;
+  });
+
+  if (vals.length === 0) {
+    list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:6px;text-align:center;">Aucune valeur trouvée</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  vals.forEach(function(v, idx) {
+    var isChecked = selectedSet ? selectedSet.has(v) : false;
+    var label = document.createElement('label');
+    label.className = 'eq-fp-item';
+
+    var chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.className = 'eq-fp-chk';
+    chk.value = v;
+    chk.checked = isChecked;
+
+    var spanText = document.createElement('span');
+    spanText.className = 'eq-fp-item-text';
+    if (v === '') {
+      spanText.innerHTML = '<em>(Vide)</em>';
+    } else {
+      spanText.textContent = v;
+    }
+
+    var spanCount = document.createElement('span');
+    spanCount.className = 'eq-fp-item-count';
+    spanCount.textContent = '(' + (activeFilterPopover.counts[v] || 0) + ')';
+
+    label.appendChild(chk);
+    label.appendChild(spanText);
+    label.appendChild(spanCount);
+    list.appendChild(label);
+  });
+}
+
+function filterEqFpItems() {
+  var searchInp = document.getElementById('eqFpSearch');
+  var query = searchInp ? searchInp.value : '';
+  // Récupérer les cases actuellement cochées
+  var currentChecked = new Set();
+  var chks = document.querySelectorAll('.eq-fp-chk');
+  chks.forEach(function(chk) {
+    if (chk.checked) currentChecked.add(chk.value);
+  });
+  renderEqFpList(query, currentChecked);
+}
+window.filterEqFpItems = filterEqFpItems;
+
+function eqFpSelectAll(check) {
+  var chks = document.querySelectorAll('.eq-fp-chk');
+  chks.forEach(function(chk) { chk.checked = check; });
+}
+window.eqFpSelectAll = eqFpSelectAll;
+
+function applyEqFilter(col) {
+  if (!activeFilterPopover) return;
+  var chks = document.querySelectorAll('.eq-fp-chk');
+  var selected = new Set();
+  chks.forEach(function(chk) {
+    if (chk.checked) selected.add(chk.value);
+  });
+
+  // Si rien n'est coché, ou si toutes les valeurs existantes sont cochées (pas de filtrage)
+  if (selected.size === 0 || selected.size === activeFilterPopover.distinctVals.length) {
+    delete EQ_FILTERS[col];
+  } else {
+    EQ_FILTERS[col] = selected;
+  }
+
+  closeEqFilterPopover();
+  eqSort(null, true);
+}
+window.applyEqFilter = applyEqFilter;
+
+// ════════════════════════════════════════════════════════════
+// TRI COLONNES — section Catégories d'équipements (equip_cat)
+// ════════════════════════════════════════════════════════════
+var EQUIP_CAT_SORT = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
+
+function _equipCatCmp(a, b, c, d) {
+  var va = a[c] !== undefined && a[c] !== null ? a[c] : '';
+  var vb = b[c] !== undefined && b[c] !== null ? b[c] : '';
+  if (c === 'ordre') {
+    var na = parseInt(va, 10), nb = parseInt(vb, 10);
+    if (isNaN(na)) na = 999999;
+    if (isNaN(nb)) nb = 999999;
+    if (na !== nb) return d * (na - nb);
+    return 0;
+  }
+  return d * String(va).localeCompare(String(vb), 'fr', { numeric: true, sensitivity: 'base' });
+}
+
+function _equipCatDefaultSort(a, b) {
+  return _equipCatCmp(a, b, 'ordre', 1) || _equipCatCmp(a, b, 'value', 1);
+}
+
+function equipCatSort(col, reapply) {
+  if (editKey === 'equip_cat' && editIdx !== null) return;
+  if (!reapply && editKey !== null) cancelEdit(editKey, editIdx);
+
+  if (!reapply && col) {
+    if (EQUIP_CAT_SORT.col === col) {
+      EQUIP_CAT_SORT.dir = EQUIP_CAT_SORT.dir === 1 ? -1 : EQUIP_CAT_SORT.dir === -1 ? 0 : 1;
+    } else {
+      EQUIP_CAT_SORT.col = col;
+      EQUIP_CAT_SORT.dir = 1;
+    }
+    if (EQUIP_CAT_SORT.dir === 0) EQUIP_CAT_SORT.col = null;
+  }
+
+  var sorted = STORE['equip_cat'].slice();
+  if (EQUIP_CAT_SORT.col && EQUIP_CAT_SORT.dir !== 0) {
+    var c = EQUIP_CAT_SORT.col, d = EQUIP_CAT_SORT.dir;
+    sorted.sort(function(a, b) {
+      return _equipCatCmp(a, b, c, d) || _equipCatCmp(a, b, 'ordre', 1) || _equipCatCmp(a, b, 'value', 1);
+    });
+  } else {
+    sorted.sort(_equipCatDefaultSort);
+  }
+
+  var cfg = CFG['equip_cat'];
+  var tbody = document.getElementById('tbody-equip_cat');
+  if (!tbody) return;
+
+  if (sorted.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucune catégorie.</td></tr>';
+  } else {
+    tbody.innerHTML = sorted.map(function(item) {
+      var i = STORE['equip_cat'].indexOf(item);
+      var cells = cfg.cols.map(function(c) {
+        var cls = (c === 'id') ? 'td-id' : 'td-val';
+        var v = item[c] !== undefined ? item[c] : '';
+        return '<td class="' + cls + '">' + esc(v) + '</td>';
+      }).join('');
+      return '<tr id="row-equip_cat-' + i + '">' +
+        cells +
+        '<td class="td-act">' +
+          '<button class="btn" onclick="editRow(\'equip_cat\',' + i + ')">✏️</button> ' +
+          '<button class="btn btn-del" onclick="askDelete(\'equip_cat\',' + i + ')">🗑</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  // Mettre à jour les indicateurs visuels dans les en-têtes
+  var cols = ['id', 'value', 'ordre'];
+  var thRow = document.getElementById('thead-equip_cat-row');
+  if (thRow) {
+    var ths = thRow.querySelectorAll('.th-sort');
+    ths.forEach(function(th, idx) {
+      th.classList.remove('asc', 'desc');
+      var icon = th.querySelector('.sort-icon');
+      if (cols[idx] === EQUIP_CAT_SORT.col) {
+        if (EQUIP_CAT_SORT.dir === 1)  { th.classList.add('asc');  if (icon) icon.textContent = '↑'; }
+        if (EQUIP_CAT_SORT.dir === -1) { th.classList.add('desc'); if (icon) icon.textContent = '↓'; }
+      } else {
+        if (icon) icon.textContent = '⇅';
+      }
+    });
+  }
+}
+window.equipCatSort = equipCatSort;
 
 // ════════════════════════════════════════════════════════════
 // ÉDITION INLINE
 // ════════════════════════════════════════════════════════════
 
 function editRow(key, i) {
-  // Annule édition précédente si besoin
-  if (editKey !== null) cancelEdit(editKey, editIdx);
+  // Annule édition précédente si besoin sur une autre ligne/clé
+  if (editKey !== null && (editKey !== key || editIdx !== i)) {
+    editKey = null; editIdx = null;
+    renderTable(key);
+  }
 
   editKey = key; editIdx = i;
   var cfg  = CFG[key];
   var item = STORE[key][i];
   var row  = document.getElementById('row-' + key + '-' + i);
+  if (!row) {
+    // Si la ligne n'est pas dans le DOM (ex : filtrée), on réaffiche la table pour la faire apparaître
+    renderTable(key);
+    row = document.getElementById('row-' + key + '-' + i);
+    if (!row) return;
+  }
 
   // Remplace chaque cellule par un input, select ou textarea (id éditable avec validation unicité)
   var cells = cfg.cols.map(function(col) {
@@ -1092,7 +1508,14 @@ function addRow(key) {
   });
 
   STORE[key].push(newItem);
-  renderTable(key);
+  if (key === 'equipements') {
+    // Réinitialiser les filtres pour que le nouvel élément soit visible et éditable
+    EQ_FILTERS = {};
+  }
+  // Forcer l'édition sans que renderTable ne l'annule
+  editKey = key;
+  editIdx = STORE[key].length - 1;
+  _renderTableInner(key);
   editRow(key, STORE[key].length - 1);
   markDirty(key);
 }
@@ -1107,7 +1530,12 @@ function duplicateRow(key, i) {
 
   var copy = Object.assign({}, src, { id: newId });
   STORE[key].splice(i + 1, 0, copy);
-  renderTable(key);
+  if (key === 'equipements') {
+    EQ_FILTERS = {};
+  }
+  editKey = key;
+  editIdx = i + 1;
+  _renderTableInner(key);
   editRow(key, i + 1);
   markDirty(key);
 }

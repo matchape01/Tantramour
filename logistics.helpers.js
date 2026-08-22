@@ -16,7 +16,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-20 00:04"
+    updatedAt: "2026-08-22 16:38"
   },
 
   "JOUR1_REUNION_D_EQUIPE__HELPERS_": {
@@ -103,18 +103,46 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-18 23:48"
   },
 
+  "JOUR2_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C": {
+    avant: "vérifier le son, matelas sur le cote de la salle",
+    pendant: "aider a sortir les matelas et à les ranger",
+    apres: "Ranger matelas",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR2_SHAKTI_PUJA___LE_MYSTERE_DES_M": {
+    avant: "1 a 2 personnes pour m'aider à faire le set up dans la salle pendant le petit dej si possible.<br><br>30 minutes. Comme c'est le premier atelier après la 1ere rencontre en famille, j'aimerai avoir accès à la salle avant, pendant le petit dej, pour faire le set up avec les assistants.",
+    pendant: "Normallement juste 1 personne sera suffisantes au cas ou... mais pas de tache particulière",
+    apres: "Nettoyer la salle. Attention avec le riz coloré : même si normalement tout reste sur la bâche du yantra, il se peut qu’il soit nécessaire de passer le balai. Il peut aussi y avoir quelques traces de couleur.",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR2_SHIBARI_PERFORMANCE___INTERACT": {
+    avant: "mise en place vers 19h30",
+    pendant: "",
+    apres: "Ranger les tapis de yoga et les remettre dans la salle d'orgine<br>Ranger les spots",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR2_VIBRATION___L_UNISSON__T_TE___": {
     avant: "Faire en sorte que les personnes entrent par multiple de trois dans la salle. <br>Ils n'ont pas besoin de se connaitre car le choix du trio se fera naturellement en début d'atelier.",
     pendant: "Merci d'aider pour faciliter le changement de configuration au sein de chaque trio, afin de rester coordonnés au niveau timing.",
     apres: "Juste d'éteindre les spots et de les remettre à disposition au QG. Merci",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 14:25"
   },
 
   "JOUR2_YABYUM___LET_LOVE_HAPPEN": {
     avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Installer les tapis de yoga (soit en cercles concentriques, soit en étoile autour du centre, selon la salle et la jauge du nombre de personnes)<br>• Nombreux coussins proches des tapis de yoga (2 dessus, et d'autres autour)<br>• Aide branchement sono si besoin (généralement, je gère ;-) )",
     pendant: "• Tenir l'espace avec moi<br>• Si besoin entrer dans la pratique avec une personne si nb. impair<br>• Démo des variantes de posture du Yabyum avec moi (idéalement 1 SkyDancer·euse 🩷)<br>• Aider à l'exploration de l'installation en Yabyum<br>• Être dispo si qq'1 lève la main pour besoin logistique ou d'ajustement de la position Yabyum / coussin / besoin émotionnel, etc.<br>• Gestion aération et température (clim et/ou aération)",
     apres: "Aérer la salle à nouveau ;-)<br>Ranger tapis de yoga et coussins<br>Remettre l'espace dispo pour la suite",
-    updatedAt: "2026-08-21 23:42"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR2__CALL__POUR_RASSEMBLEMENT": {
@@ -177,7 +205,7 @@ var LOGISTICS_HELPERS = {
     avant: "Entrée par DUO (qui se composent devant l'entrée ou au préalable)<br><br>Préparation temple : <br>-autel au centre (tissus + statuette) <br>-20 matelas (+2 coussins par matelas) en étoile (on en ajoutera si plus de monde)  <br>-au centre : 30 petites coupelles + pots huile de coco  (chacun prend une coupelle et y met de l'huile à son arrivée) + -plusieurs cuillères<br>Besoin d’un traducteur",
     pendant: "Etre là en contenant et si process",
     apres: "Rangement matelas et coussins par les participants.es",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR3_LOVE_TEMPLE_DES_EROTYPES__R": {
@@ -192,6 +220,13 @@ var LOGISTICS_HELPERS = {
     pendant: "1 person to be there and assist, if I need something.",
     apres: "Ranger la sono (voir avec Felix et le DJ)",
     updatedAt: "2026-08-20 19:42"
+  },
+
+  "JOUR3_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
   },
 
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
@@ -216,10 +251,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR3_YONI___LINGAM_PUJA": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-17 10:56"
+    avant: "besoin de 30 min pour faire le set up",
+    pendant: "1 personne pour la petite démo - 1 personne pour passer récupérer les encens pendant la pratique (mais si beaucoup de monde 2 assistants).",
+    apres: "nettoyage",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR3__CALL__POUR_RASSEMBLEMENT": {
@@ -289,7 +324,14 @@ var LOGISTICS_HELPERS = {
     avant: "Préparation temple : <br>.au sol : dessiner la merkaba avec ruban adhésif <br>.autel central (tissus colorées qq décos) <br>.suspendre au dessus du centre les 2 pyramides + merkaba en carton <br><br>.20 matelas en étoile autour de l’autel (on ajoutera d'autres si besoin) - 2 coussins par matelas<br><br>Fournitures : ruban adhésif + fil pour suspendre les 2 pyramides et la merkaba en carton<br><br>On viendra avant le rassemblement du matin pour aider à la préparation (pas le temps à 11h vu qu'on sera au Chapiteau)<br><br>Besoin de traducteur.trice",
     pendant: "Contenant du groupe et aider pour les postures si besoin",
     apres: "Retirer autel + fil et objets suspendues / rangement matelas et coussins par les participants.es",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR4_LOVE_TEMPLE_DEVOTIONNEL": {
+    avant: "je propose de faire le set up de la salle pendant la pause diner, comme ca on peut tous profiter du concert. MAis aussi de se retrouver tous 20 min avant l'ouverture des portes pour finaliser et que je distribue les roles pour les mini demo du départ.",
+    pendant: "au début, helper pour demo dans chaque station. ET ensuite 2 ou 3 personnes avec toujours 1 à l'entré pour expliquer aux qui arrive si pas eu les explications. et 1 ou 2 autre dans le temple en cas de questions et maintiens du cadre.",
+    apres: "démontage et nettoyage",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
@@ -299,6 +341,13 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 17:08"
   },
 
+  "JOUR4_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:23"
+  },
+
   "JOUR4_PREPA_TEMPLE__CHENREZIG____DEV": {
     avant: "",
     pendant: "",
@@ -306,11 +355,32 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-14 23:07"
   },
 
+  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+    avant: "aider à installer",
+    pendant: "participer",
+    apres: "ranger<br>Ramener le pied de micro à Chapiteau",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR4_ROUE_DE_L_EAU___ROUE_DU_CONSEN": {
+    avant: "tracer au sol la roue du consentement (scotch papier ?)",
+    pendant: "faire une ronde de matelas pour la partie 2, <br><br>1ere partie : debout dans le cercle tracé<br>2 ieme partie A deux sur les matelas avec circulations<br>3ieme partie massage a 2",
+    apres: "ranger",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR4_SACRED_MIRRORS__GRIEF_CEREMONY": {
     avant: "I would love 3-4 space holders with trauma informed care if possible to be there with me to hold energetic space. If they could check in with me day before or early morning of event this will be helpful, and not only at set up time. I would love dedicated helper for saging, and doing palo santo cleanse during ceremony when I need, also a few space holders at door to tell people to not bring anything any other than their offerings, and water, and to do light cleansing with sage as they come in. So if there is sage at festival this will be needed in each of my spaces.",
     pendant: "I would love dedicated helper for saging, and doing palo santo cleanse during ceremony when I need, also a few space holders at door to tell people to not bring anything any other than their offerings, and water, and to do light cleansing with sage as they come in. So if there is sage at festival this will be needed in each of my spaces.",
     apres: "-",
     updatedAt: "2026-08-18 23:48"
+  },
+
+  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 18:26"
   },
 
   "JOUR4_THE_ART_OF_KISSING_": {
@@ -331,7 +401,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Bougies, enscens, peut-être qq déco<br>• Aide branchement sono si besoin (généralement, je gère ;-) )",
     pendant: "• Tenir l'espace avec moi<br>• Si besoin entrer dans la pratique pour compléter binomes ou petits groupes<br>• Au retour de la pause, démo avec cordes (idéalement 2 personnes, solo — ce n'est pas du Shibari, aucune connaissance requise mais expérience positive bienvenue)<br>• Être dispo si qq'1 lève la main pour besoin logistique ou émotionnel<br>• Peut-être d'autres petites missions de structure fine (j'ajuste encore les détails du déroulé)<br>• Gestion aération et température (clim et/ou aération)",
     apres: "Rangement matériel<br>Aération, nettoyage sauge &amp; +<br>Remettre l'espace dispo pour la suite",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR5_ALCHIMIE_FLUIDE__DANSE_DES_DAU": {
@@ -355,11 +425,25 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-18 23:48"
   },
 
+  "JOUR5_CONCERT__MITSCH_KOHN____ARTIST": {
+    avant: "Avant et pendant l'entrée : <br>- une purification par la fumée serait appréciable ; <br>- Acceuillir et les entrer dans un espace cérémoniel<br>- Rappeler aux personnes de NE PAS PARLER",
+    pendant: "Avant et pendant l'entrée : <br>- une purification par la fumée serait appréciable ; <br>- Acceuillir et les entrer dans un espace cérémoniel<br>- Rappeler aux personnes de NE PAS PARLER",
+    apres: "Ranger l'espace. Regrouper les cousins et matelas",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR5_EMBRASSER_LE_MYSTERE": {
+    avant: "installation sous la supervision de Vera",
+    pendant: "être attentifs au respect du consentement et aux règles du Temple (espace de paroles notamment)<br>recueillir les récits à la sortie du temple",
+    apres: "ranger !<br>Ranger les matelas, cousins, tapis de yoga",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_": {
     avant: "Installer des matelas au sol + 2 coussins par matelas. <br>Suivant la place disponible, mettre les matelas en étoile autour du centre.",
     pendant: "Observation des particaipant·e·s. Nous prévenir si des personnes sont en difficultés ou si manquement à nos consignes",
     apres: "Ranger les matelas et coussins.",
-    updatedAt: "2026-08-21 20:35"
+    updatedAt: "2026-08-22 14:32"
   },
 
   "JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO": {
@@ -411,11 +495,25 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 03:30"
   },
 
+  "JOUR6_ATELIER_ARTISTIQUE___FREE_YOUR": {
+    avant: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène.<br>Emmener le matos à l'entrée de la salle.<br><br>Installer le matériel technique (voir en amount avec Felix)<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    pendant: "Verifier le volume sonore",
+    apres: "Remener le matériel à Felix (Chapiteau)<br>Ranger la salle (oreillers, matelas)",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR6_BAIN_MANTRIQUE___SOIN_SONORE_C": {
     avant: "installer matelas pour participants <br>aider à emmener le matériel de musique<br>passer enscens<br>allumer bougies",
     pendant: "",
     apres: "Ranger les matelas<br>Aider à ramener le matériel de musique",
     updatedAt: "2026-08-21 03:30"
+  },
+
+  "JOUR6_DANSE_DE_SUBLIMATION_ET_YI_KIN": {
+    avant: "",
+    pendant: "prendre soin des participants tout simplement&nbsp;",
+    apres: "",
+    updatedAt: "2026-08-22 15:22"
   },
 
   "JOUR6_LOVING_LEADERSHIP_": {
@@ -432,6 +530,27 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-18 23:13"
   },
 
+  "JOUR6_PRANAM___DANSE_DEVOTIONNELLE": {
+    avant: "Set up, grand cercle de coussins au sol, avec petit autel central (je ramène)",
+    pendant: "N/A",
+    apres: "Ranger la salle",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR6_PREPARATION_RASSEMBLEMENT": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR6_SOIREE_SURPRISE_POUR_ENFLAMMER": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: ""
+  },
+
   "JOUR6_THE_TEMPLE_OF_EROTIC_INNOCENCE": {
     avant: "It would be helpful to have two extra space angels in the space in case of any emotional needs, and also someone available to do cleansing with sage and palosanto.",
     pendant: "cleansing space with palo santo and sage",
@@ -443,14 +562,14 @@ var LOGISTICS_HELPERS = {
     avant: "ACCUEIL / ENTREE:  les personnes entrent par 3 dans la salle. <br>Ils n'ont pas besoin de se connaitre et à l'intérieur le choix du trio se fera naturellement.  <br><br>CONSIGNE: <br>- Se mettre en paréo. <br>- Mettre les affaires / vêtement à l'extérieur des ilots;<br><br> <br>FACILITER: la mise en place des trios sur chaque matelas.",
     pendant: "Veiller au bon déroulement de chaque soin, si quelqu'un venait à \"partir en vrille\". Au signal du changement de place pour recevoir le soin, ce sera le moment de tourner. S'il y a des retardataires, merci d'aider pour le changement car Il y aura 20 mn de soin par personne.",
     apres: "Merci de ranger les matelas et les coussins, s'ils ne sont pas utilisés après. <br>Eteindre les lumières violettes et les ramener au QG ;-D (Demander à Felix ou Echo Clem)<br>Ramener les bougies à LED à la salle HELPERS",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR6_VOYAGE_AU_PAYS_DE_MON_SEXE": {
     avant: "Installer des matelas au sol + 2 coussins par matelas. Suivant la place disponible, mettre les matelas en étoile autour du centre.",
     pendant: "Observation des particaipant·e·s. Nous prévenir si des personnes sont en difficultés ou si manquement à nos consignes",
     apres: "Ranger les matelas et coussins.",
-    updatedAt: "2026-08-21 20:36"
+    updatedAt: "2026-08-22 14:32"
   },
 
   "JOUR6__CALL__POUR_RASSEMBLEMENT": {
@@ -460,11 +579,39 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-01 14:53"
   },
 
+  "JOUR7_CEREMONIE_DE_CLOTURE": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: ""
+  },
+
+  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:24"
+  },
+
+  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-21 20:50"
+  },
+
   "LOG_Jour1_TEST_MATT_3": {
     avant: "AVANT 1<p></p>",
     pendant: "PENDANT 2<p></p>",
     apres: "APRES 3<p></p>",
     updatedAt: "2026-08-01 10:08"
+  },
+
+  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
+    avant: "mise en place de coussins au sols, je serai la pour guider le placement.",
+    pendant: "Besoin de 8 helpers pour servirs le cacao",
+    apres: "Ranger ramener les casserols en cuisines",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "LOG_Jour2_ECSTATIC_DANCE_NIVEAU_1_": {
@@ -478,7 +625,7 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir la salle et l'espace",
     pendant: "Déposer des coussins vers la fin de la méditation<br>Soutenir émotionnellement si nécessaire",
     apres: "Ranger les coussins et nettoyer la salle",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:43"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
@@ -499,14 +646,14 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir l'espace, s'assurer que tout est ok<br>Vérifier la sono",
     pendant: "Participer si nombre impair",
     apres: "Ranger les tapis de yoga",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:40"
   },
 
   "LOG_Jour3_MEDITATION_ACTIVE_D_OSHO___LAU": {
     avant: "• Aérer la salle au maximum avant de commencer<br>• Rien à installer, au contraire libérer l'espace au maximum + un coup de balais si besoin<br>• Aide branchement sono si besoin (généralement, je gère ;-) )",
     pendant: "• Tenir l'espace avec moi, soutien émotionnel si nécessaire<br>• Veiller à éviter les collisions entre personnes si certain·es bougent avec leur bandeau<br>• Être dispo si qq'1 lève la main pour besoin logistique ou émotionnel<br>• Gestion aération et température (clim et/ou aération)",
     apres: "Aérer la salle à nouveau ;-)<br>Remettre l'espace dispo pour la suite",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "LOG_Jour3_RASSEMBLEMENT": {
@@ -537,6 +684,13 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 03:30"
   },
 
+  "LOG_Jour5_MYSTIC_SHIBARI___L_ART_DE_LA_T": {
+    avant: "Placer les yoga mat en suivant les instructions de l'animateur",
+    pendant: "soutiens dans l'Observation du repsect du cadres.",
+    apres: "Ranger les yogas mats et les ramener à leur emplacement d'origine",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour5_RASSEMBLEMENT": {
     avant: "",
     pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
@@ -544,11 +698,18 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 10:05"
   },
 
+  "LOG_Jour5_ROUE_DU_FEU___LIBERATION_EMOTI": {
+    avant: "préparer tapis et oreillers sur le cote",
+    pendant: "installation des tapis et coussins en lignes avec espacement pour la partie 2<br>écarter les tapis pour la dernière partie<br><br>1/ Echauffement de l'énergie, dynamiques synergétiques, ancrages et puissance 20'<br>2/ Demo et pratique des outils de libération 30'<br>3/ partage 10'<br>4/ haka kali 25'<br>5/ Intégration 5'",
+    apres: "bien ranger",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour5_YOGA_NIDRA": {
     avant: "Le silence et la tranquillité de l’espace sont essentiels avant, pendant et dans les premières minutes suivant la pratique afin de préserver l’expérience du Yoga Nidra.<br><br>Préparer l’espace, disposer le matériel et accueillir les participants.<br>Prévoir suffisamment d’espace entre les tapis pour que chaque participant puisse rester confortablement allongé en Shavasana.<br><br>Installer et disposer les tapis avant l’arrivée des participants.<br><br>Préparer les couvertures, bolsters et coussins à proximité afin qu’ils puissent être facilement proposés aux personnes qui en ont besoin.<br><br>Accueillir les participants dans le calme et les inviter à entrer et à s’installer en silence.<br><br>Aider si nécessaire à distribuer le matériel et à installer confortablement les participants avant le début de la pratique.",
     pendant: "Le silence et la tranquillité de l’espace sont essentiels avant, pendant et dans les premières minutes suivant la pratique afin de préserver l’expérience du Yoga Nidra.<br><br>Aucune intervention particulière n’est nécessaire pendant la pratique.<br><br>Rester silencieux et discret, éviter les déplacements inutiles et préserver le calme de l’espace pendant toute la séance.",
     apres: "À la fin de la pratique, préserver le silence et laisser les participants revenir progressivement à eux-mêmes.<br><br>Leur laisser le temps de reprendre conscience de leur corps, de se remettre doucement en mouvement et de se relever à leur propre rythme.<br><br>Une fois les participants sortis, aider au rangement des tapis, couvertures, bolsters et coussins.",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:41"
   },
 
   "LOG_Jour6_ACROYOGA_": {
@@ -593,6 +754,13 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 03:30"
   },
 
+  "LOG_Jour6_MYSTIC_SHIBARI__THE_ART_OF_SUR": {
+    avant: "Filtrer l'entrée selon instructions qui vous sera communiquer le jours de l'atelier.",
+    pendant: "soutiens dans l'Observation du repsect du cadres.",
+    apres: "Ranger les yogas mats et les ramener à leur emplacement d'origine",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour6_RASSEMBLEMENT": {
     avant: "",
     pendant: "<div>Regrouper au maximum les festivaliers anglophones ensemble proche du traducteur.</div><div><br></div><div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\"><br></span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">Traduction:&nbsp;</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">- 1er partie (Sabryna/ShivaChris): Sandrine - Amana ou Selma</span></span></div><div><span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\"><span style=\"mso-spacerun:yes\">-\n 2eme partie (Jivan/Clochette): Linda - si besoin d'un 2eme traducteur \nalors le traducteur du jour (Sandrine/Amana ou Selma) viendra en aide.</span></span></div></div>",
@@ -607,67 +775,18 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-21 03:30"
   },
 
-  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
+  "JOUR2_REUNION_D_EQUIPE__ANIMATEURS_E": {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-21 18:26"
+    updatedAt: "2026-08-22 16:45"
   },
 
-  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+  "JOUR2_MEETING_YOUR_DEITY___HYPNOSIS_": {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-21 19:24"
-  },
-
-  "JOUR2_PREPARATION_RASSEMBLEMENT": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR3_PREPARATION_RASSEMBLEMENT": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR6_PREPARATION_RASSEMBLEMENT": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR4_PREPARATION_RASSEMBLEMENT": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:23"
-  },
-
-  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:24"
-  },
-
-  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 20:50"
-  },
-
-  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-21 00:21"
+    updatedAt: "2026-08-22 16:46"
   }
 
 };

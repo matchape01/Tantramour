@@ -50,6 +50,7 @@ const ALLOWED = new Set([
   'ref_consignes_type.js',
   'ref_piment.js',
   'ref_heures.js',
+  'ref_display_reports.js',
 ]);
 
 // ── SERVEUR ───────────────────────────────────────────────────

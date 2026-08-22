@@ -32,6 +32,9 @@ var REF_TRANSLATIONS = [
   { key: "home_subtitle",      fr: "Page destinée à la DreamTeam", en: "Page for the DreamTeam" },
   { key: "home_group_general", fr: "DreamTeam",                  en: "DreamTeam" },
   { key: "home_group_planning",fr: "Gestion planning",           en: "Schedule Management" },
+  { key: "home_group_logistique", fr: "Logistique",              en: "Logistics" },
+  { key: "home_group_controle",fr: "Contrôle & Vérification",    en: "Control & Verification" },
+  { key: "home_group_admin",   fr: "Admin",                      en: "Admin" },
 
   // Cartes index
   { key: "card_agenda_jour_title",    fr: "Planning par Jour",                       en: "Planning by Day" },
@@ -62,6 +65,8 @@ var REF_TRANSLATIONS = [
   { key: "card_problemes_desc",       fr: "Ateliers anglophones sans traducteur · Ressources insuffisantes — correction inline", en: "English-language workshops without translator · Insufficient resources — inline fix" },
   { key: "card_trad_affect_title",    fr: "Affectation Traducteur",                 en: "Translator Assignment" },
   { key: "card_trad_affect_desc",     fr: "Ateliers anglophones sans traducteur — détection TBC et affectation guidée", en: "English-language workshops without translator — TBC detection and guided assignment" },
+  { key: "card_gestion_affichage_title", fr: "Gestion Affichage",                    en: "Display Management" },
+  { key: "card_gestion_affichage_desc",  fr: "Organiser, activer ou déplacer les rapports dans les sections", en: "Organize, activate or move reports in sections" },
 
   // Modale mot de passe
   { key: "pw_acces_restreint",        fr: "🔒 Accès restreint",                    en: "🔒 Restricted Access" },

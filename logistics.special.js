@@ -15,7 +15,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-20 00:04"
+    updatedAt: "2026-08-22 16:38"
   },
 
   "JOUR1_REUNION_D_EQUIPE__HELPERS_": {
@@ -90,28 +90,46 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-18 23:48"
   },
 
+  "JOUR2_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
   "JOUR2_REUNION_D_EQUIPE__HELPERS_": {
     html: "<br><p><br></p>",
     text: "",
     updatedAt: "2026-07-28"
   },
 
+  "JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C": {
+    html: "diffusion son bluetooth",
+    text: "diffusion son bluetooth",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR2_SHAKTI_PUJA___LE_MYSTERE_DES_M": {
-    html: "o Micro casque si possible, sinon normal<br><div>o Tableau blanc pour écrire un mantra</div><div><br></div><div><b>Temps de préparation :</b><br>o Il y a besoin d’un temps de préparation et comme c’est le premier atelier le<br>matin après le meeting, j’aimerai bien accéder à la salle pendant le petit déj<br>pour faire la mise en place et avoir 1 ou 2 assistants à ce moment-là.</div><p></p>",
-    text: "o Micro casque si possible, sinon normal\n\no Tableau blanc pour écrire un mantra\n\n\nTemps de préparation :\no Il y a besoin d’un temps de préparation et comme c’est le premier atelier le\nmatin après le meeting, j’aimerai bien accéder à la salle pendant le petit déj\npour faire la mise en place et avoir 1 ou 2 assistants à ce moment-là.",
-    updatedAt: "2026-07-21"
+    html: "Lingettes humides - 3kg de riz blanc (le moins chere possible)",
+    text: "Lingettes humides - 3kg de riz blanc (le moins chere possible)",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR2_SHIBARI_PERFORMANCE___INTERACT": {
+    html: "mise en place point de suspension ( je prends soin de cela)<br>60 tapis de yoga<br>12 spots (Voir avec Felix)",
+    text: "mise en place point de suspension ( je prends soin de cela)\n60 tapis de yoga\n12 spots (Voir avec Felix)",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR2_VIBRATION___L_UNISSON__T_TE___": {
     html: "MATOS: Spots qui enveloppent toute la pièce de Lumière orangée douce (Voir avec Felix) - Quantité: 6<br>STAFF: 1 Helper, 1 Angel et 1 traducteur =&gt; A valider avec Sabryna/Chris",
     text: "MATOS: Spots qui enveloppent toute la pièce de Lumière orangée douce (Voir avec Felix) - Quantité: 6\nSTAFF: 1 Helper, 1 Angel et 1 traducteur => A valider avec Sabryna/Chris",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR2_YABYUM___LET_LOVE_HAPPEN": {
     html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Tapis de yoga : 1 pour 2 <br>• BEAUCOUP de coussins : au moins 2 par personne",
-    text: "• Sono & table de mix\n• Micro main sans fil\n• Tapis de yoga : 1 pour 2\n• BEAUCOUP de coussins : au moins 2 par personne",
-    updatedAt: "2026-08-21 23:42"
+    text: "• Sono & table de mix\n• Micro main sans fil\n• Tapis de yoga : 1 pour 2 \n• BEAUCOUP de coussins : au moins 2 par personne",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR2__CALL__POUR_RASSEMBLEMENT": {
@@ -180,6 +198,12 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-20 19:42"
   },
 
+  "JOUR3_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
     html: "-",
     text: "-",
@@ -199,9 +223,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR3_YONI___LINGAM_PUJA": {
-    html: "Besoin de 2 assistants avant pour la mise en place qui prend un peu de temps<br>(30 min si les assistants sont efficaces)<p></p>",
-    text: "Besoin de 2 assistants avant pour la mise en place qui prend un peu de temps\n(30 min si les assistants sont efficaces)",
-    updatedAt: "2026-08-17 10:56"
+    html: "Besoin de 2 assistants avant pour la mise en place qui prend un peu de temps(30 min si les assistants sont efficaces). besoin d'acheter des fleurs (peu prendre des fleurs pas chère comme plusieurs bouquets au supermarché) et aussi quelques roses (pour les casser et utiliser juste les pétales)",
+    text: "Besoin de 2 assistants avant pour la mise en place qui prend un peu de temps(30 min si les assistants sont efficaces). besoin d'acheter des fleurs (peu prendre des fleurs pas chère comme plusieurs bouquets au supermarché) et aussi quelques roses (pour les casser et utiliser juste les pétales)",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR3__CALL__POUR_RASSEMBLEMENT": {
@@ -265,9 +289,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR4_LOVE_TEMPLE_DEVOTIONNEL": {
-    html: "<ul><li><font face=\"verdana, sans-serif\">3 grandes bassines (suffisamment larges pour les deux pieds).</font></li><li><font face=\"verdana, sans-serif\">3 Chaises associées.</font></li><li><font face=\"verdana, sans-serif\">6 petites serviettes</font></li><li><font face=\"verdana, sans-serif\">3 ou 4 tables basses</font></li><li><font face=\"verdana, sans-serif\">3 grands miroirs pleins pieds</font></li><li><font face=\"verdana, sans-serif\">Abondance d'encens, de bougies et de fleurs pour les offrandes</font></li><li><font face=\"verdana, sans-serif\">Une grande chaise type \"trône\"</font></li></ul><p></p>",
-    text: "3 grandes bassines (suffisamment larges pour les deux pieds).\n3 Chaises associées.\n6 petites serviettes\n3 ou 4 tables basses\n3 grands miroirs pleins pieds\nAbondance d'encens, de bougies et de fleurs pour les offrandes\nUne grande chaise type \"trône\"",
-    updatedAt: "2026-07-21"
+    html: "3 grandes bassines (suffisamment larges pour les deux pieds) <br>- 3 Chaises associées <br>- 6 petites serviettes <br>- 3 ou 4 tables basses <br>- 3 grands miroirs pleins pieds <br>- Abondance d'encens, <br>de bougies <br>et de fleurs pour les offrandes <br>- Une grande chaise type \"trône\"",
+    text: "3 grandes bassines (suffisamment larges pour les deux pieds) \n- 3 Chaises associées \n- 6 petites serviettes \n- 3 ou 4 tables basses \n- 3 grands miroirs pleins pieds \n- Abondance d'encens, \nde bougies \net de fleurs pour les offrandes \n- Une grande chaise type \"trône\"",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
@@ -276,16 +300,40 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-21 17:08"
   },
 
+  "JOUR4_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:23"
+  },
+
   "JOUR4_PREPA_TEMPLE__CHENREZIG____DEV": {
     html: "",
     text: "",
     updatedAt: "2026-08-14 23:07"
   },
 
+  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+    html: "1 Pied de micro",
+    text: "1 Pied de micro",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR4_ROUE_DE_L_EAU___ROUE_DU_CONSEN": {
+    html: "diffusion son bluetooth<br><br>1ere partie : debout dans le cercle tracé / <br>2 ieme partie A deux sur les matelas avec circulations / <br>3ieme partie massage a 2",
+    text: "diffusion son bluetooth\n\n1ere partie : debout dans le cercle tracé / \n2 ieme partie A deux sur les matelas avec circulations / \n3ieme partie massage a 2",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR4_SACRED_MIRRORS__GRIEF_CEREMONY": {
     html: "Full sound system required for electronic music to drive the energy of ceremony, and mics and system set up for Misch to play live for the last hour. I will also need a sturdy microphone for opening ceremony of this, prefereably with mic stand while I sit so I do not have to hold the mic. Scheduling note: best placed after lunch and before dinner so participants are not carrying a full belly into depth work. Day Three or 4 placement is intentional to allow the earlier ceremonies to have done their work first, and to give ample time after for the remaining days to integrate.",
     text: "Full sound system required for electronic music to drive the energy of ceremony, and mics and system set up for Misch to play live for the last hour. I will also need a sturdy microphone for opening ceremony of this, prefereably with mic stand while I sit so I do not have to hold the mic. Scheduling note: best placed after lunch and before dinner so participants are not carrying a full belly into depth work. Day Three or 4 placement is intentional to allow the earlier ceremonies to have done their work first, and to give ample time after for the remaining days to integrate.",
     updatedAt: "2026-08-18 23:48"
+  },
+
+  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
+    html: "<br>",
+    text: "",
+    updatedAt: "2026-08-21 18:26"
   },
 
   "JOUR4_THE_ART_OF_KISSING_": {
@@ -303,7 +351,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
     html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
     text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR5_ALCHIMIE_FLUIDE__DANSE_DES_DAU": {
@@ -324,10 +372,22 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-21 03:30"
   },
 
+  "JOUR5_CONCERT__MITSCH_KOHN____ARTIST": {
+    html: "Enregistreur multipiste pour cet événement. Merci d'en faire la demande à l'ingénieur du son à l'avance afin qu'il puisse préparer l'enregistrement (clé USB, disque dur, ordinateur portable).<br><br>Would be amazing to have a MULTITRACK RECORDING for this event. Please request this for the soundengineer beforehand so he can prepare the recording (stick, HD, Laptop)",
+    text: "Enregistreur multipiste pour cet événement. Merci d'en faire la demande à l'ingénieur du son à l'avance afin qu'il puisse préparer l'enregistrement (clé USB, disque dur, ordinateur portable).\n\nWould be amazing to have a MULTITRACK RECORDING for this event. Please request this for the soundengineer beforehand so he can prepare the recording (stick, HD, Laptop)",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR5_EMBRASSER_LE_MYSTERE": {
+    html: "8 à 10 spots (Demander à Felix)",
+    text: "8 à 10 spots (Demander à Felix)",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_": {
     html: "3 helpers svp<br>- 2 micros sans fils",
     text: "3 helpers svp\n- 2 micros sans fils",
-    updatedAt: "2026-08-21 20:35"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO": {
@@ -372,10 +432,22 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-18 23:48"
   },
 
+  "JOUR6_ATELIER_ARTISTIQUE___FREE_YOUR": {
+    html: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    text: "Demander à Echo Clem et/ou Felix le materriel suivant:\n1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "JOUR6_BAIN_MANTRIQUE___SOIN_SONORE_C": {
     html: "enscens / bougies",
     text: "enscens / bougies",
     updatedAt: "2026-08-18 23:48"
+  },
+
+  "JOUR6_DANSE_DE_SUBLIMATION_ET_YI_KIN": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-22 15:22"
   },
 
   "JOUR6_LOVING_LEADERSHIP_": {
@@ -391,9 +463,21 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR6_PRANAM___DANSE_DEVOTIONNELLE": {
-    html: "o Micro casque<p></p>",
-    text: "o Micro casque",
-    updatedAt: "2026-07-21"
+    html: "Micro casque",
+    text: "Micro casque",
+    updatedAt: "2026-08-22 16:10"
+  },
+
+  "JOUR6_PREPARATION_RASSEMBLEMENT": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:22"
+  },
+
+  "JOUR6_SOIREE_SURPRISE_POUR_ENFLAMMER": {
+    html: "",
+    text: "",
+    updatedAt: ""
   },
 
   "JOUR6_THE_TEMPLE_OF_EROTIC_INNOCENCE": {
@@ -405,19 +489,37 @@ var LOGISTICS_SPECIAL = {
   "JOUR6_UN_BAIN_DE_GUERISON_CORPS_ET_A": {
     html: "MATOS: 40 bougies à LED (Voir avec Sabryna<br>MATOS: spots puissants qui enveloppent toute la pièce de Lumière violette (Voir avec Felix) - Quantité: 6",
     text: "MATOS: 40 bougies à LED (Voir avec Sabryna\nMATOS: spots puissants qui enveloppent toute la pièce de Lumière violette (Voir avec Felix) - Quantité: 6",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR6_VOYAGE_AU_PAYS_DE_MON_SEXE": {
-    html: "<ul><li>Quatre (4) flacons de talc.</li></ul><ul><li>2 micros sans fil HF mains</li></ul>",
-    text: "Quatre (4) flacons de talc.\n2 micros sans fil HF mains",
-    updatedAt: "2026-08-21 20:36"
+    html: "Quatre (4) flacons de talc.<br>- 2 micros sans fil HF mains",
+    text: "Quatre (4) flacons de talc.\n- 2 micros sans fil HF mains",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "JOUR6__CALL__POUR_RASSEMBLEMENT": {
     html: "",
     text: "",
     updatedAt: "2026-08-01 14:53"
+  },
+
+  "JOUR7_CEREMONIE_DE_CLOTURE": {
+    html: "",
+    text: "",
+    updatedAt: ""
+  },
+
+  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:24"
+  },
+
+  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-21 20:50"
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
@@ -438,6 +540,12 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-01 10:08"
   },
 
+  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
+    html: "besoin de <br>- 4 casserols / <br>- 4 louche / <br>- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.<br><br>Besoin de 8 helpers pour servirs le cacao",
+    text: "besoin de \n- 4 casserols / \n- 4 louche / \n- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.\n\nBesoin de 8 helpers pour servirs le cacao",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour2_ECSTATIC_DANCE_NIVEAU_1_": {
     html: "",
     text: "",
@@ -447,7 +555,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour2_MEDITATION_ACTIVE": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:43"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
@@ -465,7 +573,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour2_YOGA2": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:40"
   },
 
   "LOG_Jour3_LOVE_TEMPLE_DES_EROTYPES__R": {
@@ -477,7 +585,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour3_MEDITATION_ACTIVE_D_OSHO___LAU": {
     html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Blindfols à prêter si besoin",
     text: "• Sono & table de mix\n• Micro main sans fil\n• Blindfols à prêter si besoin",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "LOG_Jour3_RASSEMBLEMENT": {
@@ -510,6 +618,12 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-07-28"
   },
 
+  "LOG_Jour5_MYSTIC_SHIBARI___L_ART_DE_LA_T": {
+    html: "40 Yoga Mats",
+    text: "40 Yoga Mats",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour5_POOL_PARTY___DJ_JUAN_FELIX": {
     html: "",
     text: "",
@@ -522,10 +636,16 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-21 10:05"
   },
 
+  "LOG_Jour5_ROUE_DU_FEU___LIBERATION_EMOTI": {
+    html: "tambours, mouchoirs, quelques serviettes de toilettes éventuellement.<br>diffusion son bluetooth",
+    text: "tambours, mouchoirs, quelques serviettes de toilettes éventuellement.\ndiffusion son bluetooth",
+    updatedAt: "2026-08-22 16:10"
+  },
+
   "LOG_Jour5_YOGA_NIDRA": {
     html: "-",
     text: "-",
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-22 16:41"
   },
 
   "LOG_Jour6_ACROYOGA_": {
@@ -543,7 +663,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour6_CONFERENCE___POUR_UN_TANTRA_D_": {
     html: "- 2 micros sans fils<br>Besoin d'une traduction de qualité avec quelqu'un de rapide et d'un.e seul.e helper",
     text: "- 2 micros sans fils\nBesoin d'une traduction de qualité avec quelqu'un de rapide et d'un.e seul.e helper",
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-22 16:10"
   },
 
   "LOG_Jour6_CONTACT_MEETS_TANTRA": {
@@ -562,6 +682,12 @@ var LOGISTICS_SPECIAL = {
     html: "- 1 Bol tibétain<br>- papier d'arménie à la rose<br>(PHOTOS &amp; VIDEO)",
     text: "- 1 Bol tibétain\n- papier d'arménie à la rose\n(PHOTOS & VIDEO)",
     updatedAt: "2026-08-21 03:30"
+  },
+
+  "LOG_Jour6_MYSTIC_SHIBARI__THE_ART_OF_SUR": {
+    html: "40 Yoga Mats",
+    text: "40 Yoga Mats",
+    updatedAt: "2026-08-22 16:10"
   },
 
   "LOG_Jour6_RASSEMBLEMENT": {
@@ -594,58 +720,16 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-21 03:30"
   },
 
-  "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
-    html: "<br>",
-    text: "",
-    updatedAt: "2026-08-21 18:26"
-  },
-
-  "JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN": {
+  "JOUR2_REUNION_D_EQUIPE__ANIMATEURS_E": {
     html: "",
     text: "",
-    updatedAt: "2026-08-21 19:24"
+    updatedAt: "2026-08-22 16:45"
   },
 
-  "JOUR2_PREPARATION_RASSEMBLEMENT": {
+  "JOUR2_MEETING_YOUR_DEITY___HYPNOSIS_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR3_PREPARATION_RASSEMBLEMENT": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR6_PREPARATION_RASSEMBLEMENT": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 20:22"
-  },
-
-  "JOUR4_PREPARATION_RASSEMBLEMENT": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 20:23"
-  },
-
-  "JOUR7_PREPARATION_CEREMONIE_DE_CLOTU": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 20:24"
-  },
-
-  "JOUR7_REUNION_D_EQUIPE___FINAL_DEBRI": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 20:50"
-  },
-
-  "LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-21 00:21"
+    updatedAt: "2026-08-22 16:46"
   }
 
 };

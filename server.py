@@ -39,6 +39,7 @@ ALLOWED = {
     'ref_consignes_type.js',
     'ref_piment.js',
     'ref_heures.js',
+    'ref_display_reports.js',
 }
 
 mimetypes.add_type('text/javascript; charset=utf-8', '.js')

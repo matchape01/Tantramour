@@ -5,7 +5,7 @@
  *   ordre : ordre d'affichage des catégories (1, 2, 3…)
  */
 var REF_EQUIP_CAT = [
-  { id: "CAT_01", value: "Ambiance & décoration", ordre: 1 },
+  { id: "CAT_01", value: "Ambiance & décoration", ordre: 3 },
   { id: "CAT_02", value: "Animation", ordre: 2 },
   { id: "CAT_03", value: "Pratique", ordre: 1 },
   { id: "CAT_04", value: "Hygiène & entretien", ordre: 4 },

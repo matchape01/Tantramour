@@ -152,9 +152,10 @@
   }
   .footer-btn:hover { background: var(--border); }
 </style>
-<script src="ref_translations.js"></script>
-<script src="i18n.js"></script>
 <script src="loader.js"></script>
+<script src="ref_translations.js"></script>
+<script src="ref_display_reports.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 
@@ -203,74 +204,14 @@
   </div>
 
   <!-- ══════════════════════════════════
-       GROUPE 1 — DREAMTEAM
+       GROUPE 1 — DREAMTEAM (DYNAMIQUE)
   ══════════════════════════════════ -->
   <div class="group">
     <div class="group-label" style="display:flex;align-items:center;justify-content:space-between;">
       <div><span>📆</span><span data-i18n="home_group_general">DREAMTEAM</span></div>
       <a href="user-manual.html" style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;text-decoration:none;line-height:1;transition:color .15s,border-color .15s;">📖 <span data-i18n="nav_manuel">Manuel</span></a>
     </div>
-    <div class="grid">
-
-      <!-- Programme Festival -->
-      <a class="card" href="Rapport_Programme.html" style="background:#3b82d4;border-color:#3b82d4;color:#fff;gap:16px;">
-        <div class="card-icon" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);">🎪</div>
-        <div class="card-body">
-          <div class="card-title" style="color:#fff;" data-i18n="card_programme_title">Programme Festival</div>
-          <div class="card-desc" style="color:rgba(255,255,255,.8);" data-i18n="card_programme_desc">Ateliers publics par jour — descriptions &amp; détails</div>
-        </div>
-        <div class="card-arrow" style="color:rgba(255,255,255,.7);">›</div>
-      </a>
-
-      <!-- Mon Planning V2 -->
-      <a class="card" href="Rapport_Mon_Planning_V2.html" style="background:#fef9c3;border-color:#fde68a;color:#111;gap:16px;">
-        <div class="card-icon" style="background:rgba(255,255,255,.45);border-color:rgba(17,17,17,.12);">📋</div>
-        <div class="card-body">
-          <div class="card-title" style="color:#111;" data-i18n="card_mon_planning_v2_title">Mon Planning V2</div>
-          <div class="card-desc" style="color:rgba(17,17,17,.78);" data-i18n="card_mon_planning_v2_desc">Vue par ressource — détails ateliers, logistique, popup FR/EN</div>
-        </div>
-        <div class="card-arrow" style="color:rgba(17,17,17,.7);">›</div>
-      </a>
-
-      <!-- Mon Agenda Simplifié -->
-      <a class="card" href="Rapport_Mon_Agenda_Simplifie.html" style="background:#f0fdf4;border-color:#86efac;color:#111;gap:16px;">
-        <div class="card-icon" style="background:rgba(255,255,255,.6);border-color:#86efac;">🗓️</div>
-        <div class="card-body">
-          <div class="card-title" style="color:#166534;">Mon Agenda Simplifié</div>
-          <div class="card-desc" style="color:#166534cc;">Agenda visuel filtré par nom — couleur selon votre rôle dans chaque atelier</div>
-        </div>
-        <div class="card-arrow" style="color:#16a34a;">›</div>
-      </a>
-
-      <!-- Ligne 5 : Planning Angel + Planning Traducteurs + Planning Colibri -->
-      <a class="card" href="Rapport_Angels_Shifts.html" style="border-color:#f9a8d4;">
-        <div class="card-icon">👼</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_angel_title">Planning Angel</div>
-          <div class="card-desc" data-i18n="card_angel_desc">Vue du planning des Angels ainsi que leur contact</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Traducteurs.html">
-        <div class="card-icon">🌐</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_traducteurs_title">Planning Traducteurs</div>
-          <div class="card-desc" data-i18n="card_traducteurs_desc">Vue par traducteur — shifts regroupés, filtres Jour/Traducteur</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-      <a class="card" href="Rapport_Colibri.html" style="border-color:#c4b5fd;">
-        <div class="card-icon">🐦</div>
-        <div class="card-body">
-          <div class="card-title" data-i18n="card_colibri_title">Planning Colibri</div>
-          <div class="card-desc" data-i18n="card_colibri_desc">Ateliers avec animateur ayant le rôle Shift Colibri</div>
-        </div>
-        <div class="card-arrow">›</div>
-      </a>
-
-    </div>
+    <div class="grid" id="dtReportsGrid"></div>
   </div>
 
   <footer>
@@ -355,22 +296,93 @@ loadData(['ref_news.js'], function() {
 
 // ── FIN MESSAGE IMPORTANT ────────────────────────────────────────────────────
 
+// ── RENDU DYNAMIQUE DREAMTEAM ────────────────────────────────────────────────
+function renderDreamTeamReports() {
+  var grid = document.getElementById('dtReportsGrid');
+  if (!grid) return;
+
+  var reports = (typeof REF_DISPLAY_REPORTS !== 'undefined' && Array.isArray(REF_DISPLAY_REPORTS))
+    ? REF_DISPLAY_REPORTS
+    : [];
+
+  var _t = (typeof I18n !== 'undefined') ? function(k){ return I18n.t(k); } : function(k){ return k; };
+
+  var dtReports = reports.filter(function(r) {
+    return r.showInDreamTeam === true && r.active !== false;
+  });
+
+  dtReports.sort(function(a, b) {
+    return (a.order || 999) - (b.order || 999);
+  });
+
+  var html = '';
+  dtReports.forEach(function(r) {
+    var title = (r.titleKey && _t(r.titleKey)) ? _t(r.titleKey) : (r.title || '');
+    var desc  = (r.descKey && _t(r.descKey)) ? _t(r.descKey) : (r.desc || '');
+    var icon  = r.icon || '📄';
+    var cardStyle  = r.cardStyle || '';
+    var iconStyle  = r.iconStyle || '';
+    var titleStyle = r.titleStyle || '';
+    var descStyle  = r.descStyle || '';
+    var arrowStyle = r.arrowStyle || '';
+    var isProtected = !!r.isProtected;
+
+    var dataI18nTitle = r.titleKey ? ' data-i18n="' + esc(r.titleKey) + '"' : '';
+    var dataI18nDesc  = r.descKey  ? ' data-i18n="' + esc(r.descKey)  + '"' : '';
+
+    if (isProtected) {
+      html += '<button class="card" onclick="openPw(\'' + esc(r.url) + '\',\'' + esc(icon + ' ' + title) + '\')" style="' + esc(cardStyle) + '">';
+      html += '  <div class="card-icon" style="' + esc(iconStyle) + '">' + icon + '</div>';
+      html += '  <div class="card-body">';
+      html += '    <div class="card-title" style="' + esc(titleStyle) + '"' + dataI18nTitle + '>' + esc(title) + '</div>';
+      html += '    <div class="card-desc" style="' + esc(descStyle) + '"' + dataI18nDesc + '>' + esc(desc) + '</div>';
+      html += '  </div>';
+      html += '  <div class="card-arrow" style="' + esc(arrowStyle) + '">🔒</div>';
+      html += '</button>';
+    } else {
+      html += '<a class="card" href="' + esc(r.url) + '" style="' + esc(cardStyle) + '">';
+      html += '  <div class="card-icon" style="' + esc(iconStyle) + '">' + icon + '</div>';
+      html += '  <div class="card-body">';
+      html += '    <div class="card-title" style="' + esc(titleStyle) + '"' + dataI18nTitle + '>' + esc(title) + '</div>';
+      html += '    <div class="card-desc" style="' + esc(descStyle) + '"' + dataI18nDesc + '>' + esc(desc) + '</div>';
+      html += '  </div>';
+      html += '  <div class="card-arrow" style="' + esc(arrowStyle) + '">›</div>';
+      html += '</a>';
+    }
+  });
+
+  grid.innerHTML = html;
+
+  grid.querySelectorAll('a.card[href]').forEach(function(a) {
+    var base = a.getAttribute('href');
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      location.href = withTs(base);
+    });
+  });
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+loadData(['ref_display_reports.js'], function() {
+  renderDreamTeamReports();
+});
+
 const PW = '007';
 let _dest = '';
 
 // Ajoute un timestamp à l'URL pour forcer un rechargement sans cache
 function withTs(url) {
-  return url + '?v=' + Date.now();
+  return url + (url.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now();
 }
-
-// Navigation directe vers les rapports avec timestamp
-document.querySelectorAll('a.card[href]').forEach(a => {
-  const base = a.getAttribute('href');
-  a.addEventListener('click', function(e) {
-    e.preventDefault();
-    location.href = withTs(base);
-  });
-});
 
 function openPw(url, label) {
   _dest = url;
