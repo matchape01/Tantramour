@@ -191,6 +191,7 @@
   .legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); }
   .legend-dot { width:10px; height:10px; border-radius:3px; }
 </style>
+<script src="loader.js"></script>
 <script src="ref_translations.js"></script>
 <script src="i18n.js"></script>
 </head>
@@ -298,10 +299,7 @@
 </div>
 
 <!-- ── RÉFÉRENTIELS ── -->
-<script src="ref_resource_types.js"></script>
-<script src="ref_ressources.js"></script>
 <script src="github-api.js"></script>
-<script src="loader.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════════
@@ -1380,28 +1378,24 @@ function toggleMode() {
 window.toggleMode = toggleMode;
 
 // ── Démarrage ─────────────────────────────────────────────
-// Si l'URL contient ?v= (ouverture depuis gestion_planning.html), on force un
-// hard-reload UNE SEULE FOIS pour vider le cache — AVANT de lancer loadData,
-// afin d'éviter que le rechargement n'interrompe le chargement dynamique.
-if (location.search.includes('v=') && !sessionStorage.getItem('_refreshed_' + location.pathname)) {
-  sessionStorage.setItem('_refreshed_' + location.pathname, '1');
-  hardReload();
-} else {
-  loadData(['data.js', 'ref_descriptions.js'], function() {
-    if (typeof AGENDA === 'undefined' || typeof REF_DESCRIPTIONS === 'undefined') {
-      document.getElementById('tableBody').innerHTML =
-        '<tr class="empty-row"><td colspan="7">⚠️ Erreur de chargement des données — cliquez sur 🔄 Refresh.</td></tr>';
-      document.getElementById('stats').textContent = 'Données non disponibles.';
-      console.error('[Rapport_Gerer_Ressources] AGENDA ou REF_DESCRIPTIONS introuvable après loadData.');
-      return;
-    }
-    AGENDA_DATA       = AGENDA.map(function(e) { return Object.assign({}, e); });
+loadData(['ref_resource_types.js', 'ref_ressources.js', 'data.js', 'ref_descriptions.js'], function() {
+  if (typeof REF_RESSOURCES === 'undefined' || typeof REF_RESOURCE_TYPES === 'undefined') {
+    document.getElementById('tableBody').innerHTML =
+      '<tr class="empty-row"><td colspan="7">⚠️ Erreur de chargement des ressources — cliquez sur 🔄 Refresh.</td></tr>';
+    document.getElementById('stats').textContent = 'Données non disponibles.';
+    console.error('[Rapport_Gerer_Ressources] REF_RESSOURCES ou REF_RESOURCE_TYPES introuvable après loadData.');
+    return;
+  }
+  if (typeof AGENDA !== 'undefined') {
+    AGENDA_DATA = AGENDA.map(function(e) { return Object.assign({}, e); });
+  }
+  if (typeof REF_DESCRIPTIONS !== 'undefined') {
     DESCRIPTIONS_DATA = REF_DESCRIPTIONS.map(function(d) { return Object.assign({}, d); });
-    initData();
-    buildRoleMeta();
-    renderTable();
-  });
-}
+  }
+  initData();
+  buildRoleMeta();
+  renderTable();
+});
 </script>
 </body>
 </html>
