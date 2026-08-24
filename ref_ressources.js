@@ -30,7 +30,7 @@ var REF_RESSOURCES = [
   { id: "R_DAMIEN",          value: "Damien Eissen",                             roles: ["animateur", "helper", "Mi-Colibri"],                    langues: ["FR"], tel: "06 85 47 56 55", email: "damien.eissen@gmail.com" },
   { id: "R_DANIEL",          value: "Daniel Latapie",                            roles: ["animateur", "helper", "traducteur", "angel", "Mi-Colibri"], langues: ["FR", "EN"], tel: "06 26 81 51 07", email: "daniel@daniel-latapie.com" },
   { id: "R_DAVID",           value: "David Llorca",                              roles: ["animateur", "helper", "colibri", "artist"],             langues: ["FR", "EN"], tel: "07 66 62 00 37", email: "llorca.david@gmail.com" },
-  { id: "R_DELPHINE",        value: "Delphine Del Dupre",                        roles: ["helper", "traducteur"],                                 langues: ["FR", "EN"], tel: "", email: "" },
+  { id: "R_DELPHINE",        value: "Delphine Dupré",                            roles: ["helper", "traducteur"],                                 langues: ["FR", "EN"], tel: "", email: "" },
   { id: "R_DIPTI",           value: "Dipti - Mirabai India Sagrada",             roles: ["stand"],                                                langues: ["FR"], tel: "", email: "" },
   { id: "R_SURPRISE",        value: "DJ Surprise",                               roles: ["animateur", "artist"],                                  langues: ["FR", "EN"], tel: "", email: "" },
   { id: "R_DORIAN",          value: "Dorian Vallet",                             roles: ["animateur", "helper", "traducteur", "manager", "Mi-Colibri"], langues: ["FR", "EN"], tel: "06 27 91 88 51", email: "onemovevallet@gmail.com" },
