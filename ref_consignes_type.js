@@ -45,12 +45,12 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_003",
-    valueFr: "Consignes test AVANT",
-    valueEn: "Consignes test AVANT",
+    valueFr: "Aérer la salle",
+    valueEn: "Air the room",
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: []
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
     id: "CONS_004",
