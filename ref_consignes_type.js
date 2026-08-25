@@ -88,4 +88,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","POOL PARTY","CONFERENCE"]
   },
+  {
+    id: "CONS_008",
+    valueFr: "Fermer la salle et déposer les clés au QG",
+    valueEn: "Lock up the room and hand in the keys at HQ",
+    descriptif: "",
+    placements: ["Après"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","CONFERENCE"]
+  },
 ];
