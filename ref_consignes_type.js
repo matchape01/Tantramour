@@ -79,4 +79,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: []
   },
+  {
+    id: "CONS_007",
+    valueFr: "Accueillir les participants et filtrer si besoin (état émotionnel)",
+    valueEn: "Welcome participants and screen if necessary (emotional state)",
+    descriptif: "",
+    placements: ["Pendant"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","POOL PARTY","CONFERENCE"]
+  },
 ];
