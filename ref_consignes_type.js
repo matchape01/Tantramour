@@ -36,12 +36,12 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_002",
-    valueFr: "Récupérer la clé de la salle au QG et ouvrir la salle",
-    valueEn: "Collect the room key from HQ and open the room",
+    valueFr: "• Récupérer la clé de la salle au QG et ouvrir la salle",
+    valueEn: "• Collect the room key from HQ and open the room",
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
+    types: []
   },
   {
     id: "CONS_003",
