@@ -318,6 +318,7 @@
 
 <!-- Référentiels et données (synchrones, chargés avant loadData) -->
 <script src="ref_consignes_type.js"></script>
+<script src="ref_consignes_recurrentes.js"></script>
 <script src="ref_jours.js"></script>
 <script src="ref_lieux.js"></script>
 <script src="ref_resource_types.js"></script>
@@ -385,19 +386,41 @@ function buildConsignesTypeWidget(placement) {
   '</div>';
 }
 
+// Génère le panneau central "Consignes récurrentes" (sélection multiple) pour un placement
+function buildConsignesRecurrentesWidget(placement) {
+  if (typeof REF_CONSIGNES_RECURRENTES === 'undefined') return '';
+  var items = REF_CONSIGNES_RECURRENTES.filter(function(c) {
+    return c.actif !== false && c.placements && c.placements.indexOf(placement) !== -1;
+  });
+  if (!items.length) return '';
+  // IDs déjà sélectionnées pour cet atelier/placement
+  var selected = (editedData && editedData._corecSelected && editedData._corecSelected[placement]) || [];
+  var rows = items.map(function(c) {
+    var isOn = selected.indexOf(c.id) !== -1;
+    return '<label style="display:flex;align-items:flex-start;gap:7px;cursor:pointer;padding:5px 10px;border-bottom:1px solid var(--border);">' +
+      '<input type="checkbox" id="corec-toggle-' + esc(placement) + '-' + esc(c.id) + '" ' + (isOn ? 'checked' : '') +
+        ' onchange="corecToggle(\'' + esc(placement) + '\',\'' + esc(c.id) + '\', this.checked)"' +
+        ' style="flex-shrink:0;margin-top:2px;">' +
+      '<span style="font-size:11px;line-height:1.5;color:var(--text);">' + esc(c.valueFr || '') + '</span>' +
+    '</label>';
+  }).join('');
+  return '<div style="border:1px solid #86efac;border-radius:7px;overflow:hidden;background:#f0fdf4;height:100%;box-sizing:border-box;">' +
+    '<div style="background:#dcfce7;padding:5px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#166534;border-bottom:1px solid #86efac;">🔁 Consignes récurrentes</div>' +
+    rows +
+  '</div>';
+}
+
 // Génère une section logistique avec layout côte-à-côte : [label + RTE | consignes type]
 function buildLogSection(label, rteId, content, placement) {
   var widget = buildConsignesTypeWidget(placement);
   var labelHtml = '<label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">' + label + '</label>';
   if (!widget) {
-    // Pas de consignes type → pleine largeur
     return '<div class="form-group" style="margin-bottom:14px;">' +
       labelHtml +
       rteToolbar(rteId) +
       '<div class="rte-editor" id="' + rteId + '" contenteditable="true">' + (content || '') + '</div>' +
     '</div>';
   }
-  // Avec consignes type → layout 2 colonnes
   return '<div style="margin-bottom:14px;">' +
     labelHtml +
     '<div style="display:grid;grid-template-columns:1fr 260px;gap:12px;align-items:start;">' +
@@ -410,22 +433,33 @@ function buildLogSection(label, rteId, content, placement) {
   '</div>';
 }
 
-// Génère une section helper (Avant/Pendant/Après) avec label de section + layout côte-à-côte
+// Génère une section helper (Avant/Pendant/Après) avec layout 3 colonnes :
+// [RTE texte libre | consignes récurrentes | consignes type]
 function buildHelperSection(headerLabel, rteId, content, placement, borderTop) {
-  var widget = buildConsignesTypeWidget(placement);
+  var widgetType  = buildConsignesTypeWidget(placement);
+  var widgetRec   = buildConsignesRecurrentesWidget(placement);
   var headerStyle = 'background:var(--surface);padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);' + (borderTop ? 'border-top:1px solid var(--border);' : '');
-  if (!widget) {
+
+  var hasRec  = !!widgetRec;
+  var hasType = !!widgetType;
+
+  if (!hasRec && !hasType) {
+    // Pas de panneaux → pleine largeur
     return '<div style="' + headerStyle + '">' + headerLabel + '</div>' +
       rteToolbar(rteId) +
       '<div class="rte-editor" id="' + rteId + '" contenteditable="true" style="border-radius:0;border-top:none;border-bottom:none;">' + (content || '') + '</div>';
   }
+
+  // Colonnes dynamiques : texte toujours présent, + récurrentes si dispo, + type si dispo
+  var cols = '1fr' + (hasRec ? ' 220px' : '') + (hasType ? ' 220px' : '');
   return '<div style="' + headerStyle + '">' + headerLabel + '</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 260px;gap:12px;align-items:start;padding:10px 12px;background:var(--bg);">' +
+    '<div style="display:grid;grid-template-columns:' + cols + ';gap:10px;align-items:start;padding:10px 12px;background:var(--bg);">' +
       '<div>' +
         rteToolbar(rteId) +
         '<div class="rte-editor" id="' + rteId + '" contenteditable="true" style="border-top:none;">' + (content || '') + '</div>' +
       '</div>' +
-      '<div>' + widget + '</div>' +
+      (hasRec  ? '<div>' + widgetRec  + '</div>' : '') +
+      (hasType ? '<div>' + widgetType + '</div>' : '') +
     '</div>';
 }
 window.consigneTypeToggle = function(id, checked) {
@@ -436,6 +470,17 @@ window.consigneTypeToggle = function(id, checked) {
   } else {
     delete editedData._consignesDisabled[id];
   }
+};
+
+// Gestion sélection consignes récurrentes (cochées = actives pour cet atelier)
+window.corecToggle = function(placement, id, checked) {
+  if (!editedData) return;
+  if (!editedData._corecSelected) editedData._corecSelected = {};
+  if (!editedData._corecSelected[placement]) editedData._corecSelected[placement] = [];
+  var arr = editedData._corecSelected[placement];
+  var idx = arr.indexOf(id);
+  if (checked && idx === -1) arr.push(id);
+  if (!checked && idx !== -1) arr.splice(idx, 1);
 };
 
 // ══════════════════════════════════════════════
@@ -582,6 +627,7 @@ function selectAtelier(idx) {
   editedData  = Object.assign({}, AGENDA[idx]); // copie superficielle
   if (AGENDA[idx]._equipements) editedData._equipements = Object.assign({}, AGENDA[idx]._equipements);
   if (AGENDA[idx]._consignesDisabled) editedData._consignesDisabled = Object.assign({}, AGENDA[idx]._consignesDisabled);
+  if (AGENDA[idx]._corecSelected) editedData._corecSelected = JSON.parse(JSON.stringify(AGENDA[idx]._corecSelected));
 
   // Mettre à jour la classe selected dans la liste
   document.querySelectorAll('.list-item').forEach(el => el.classList.remove('selected'));
@@ -1320,7 +1366,9 @@ async function saveLogistique() {
   if (selectedIdx === null || selectedIdx === -1) return;
   const a = AGENDA[selectedIdx];
   const ind = document.getElementById('logSaving');
+  const btn = document.querySelector('[onclick="saveLogistique()"]');
   if (ind) ind.classList.add('show');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Sauvegarde en cours…'; }
 
   const today = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
 
@@ -1368,6 +1416,13 @@ async function saveLogistique() {
       ? Object.assign({}, editedData._consignesDisabled)
       : undefined;
   }
+  // Synchroniser les consignes récurrentes sélectionnées sur l'entrée AGENDA
+  if (editedData._corecSelected !== undefined) {
+    var hasSel = Object.keys(editedData._corecSelected).some(function(pl) {
+      return editedData._corecSelected[pl] && editedData._corecSelected[pl].length > 0;
+    });
+    a._corecSelected = hasSel ? JSON.parse(JSON.stringify(editedData._corecSelected)) : undefined;
+  }
 
   if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
   LOGISTICS_HELPERS[logId] = {
@@ -1385,8 +1440,10 @@ async function saveLogistique() {
       saveFile('data.js',              genererDataJs()),
     ]);
     showToast('✅ Informations logistiques sauvegardées !');
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Sauvegarder les infos logistiques'; }
   } catch(err) {
     showToast('❌ ' + err.message, true);
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Sauvegarder les infos logistiques'; }
   } finally {
     if (ind) ind.classList.remove('show');
   }
@@ -1681,6 +1738,10 @@ var AGENDA = [`;
     }
     if (e._consignesDisabled && Object.keys(e._consignesDisabled).length > 0) {
       customParts.push(`_consignesDisabled:${JSON.stringify(e._consignesDisabled)}`);
+    }
+    if (e._corecSelected) {
+      const hasSel = Object.keys(e._corecSelected).some(pl => e._corecSelected[pl] && e._corecSelected[pl].length > 0);
+      if (hasSel) customParts.push(`_corecSelected:${JSON.stringify(e._corecSelected)}`);
     }
     // Si l'atelier n'a pas d'ID (ne devrait pas arriver), en générer un unique
     let eid = e.id;

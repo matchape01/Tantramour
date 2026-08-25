@@ -268,12 +268,13 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
 <script src="ref_notes.js"></script>
 <script src="ref_lieux.js"></script>
 <script src="ref_consignes_type.js"></script>
+<script src="ref_consignes_recurrentes.js"></script>
 <script src="ref_ressources.js"></script>
 <script src="ref_equipements.js"></script>
 
 <script src="loader.js"></script>
 <script>
-loadData(['data.js','ref_descriptions.js','logistics.js','logistics.helpers.js','logistics.special.js','ref_consignes_type.js'], function() {
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.helpers.js','logistics.special.js','ref_consignes_type.js','ref_consignes_recurrentes.js'], function() {
 
 // ════════════════════════════════════════════
 // UTILITAIRES
@@ -1107,6 +1108,24 @@ function renderModalBody() {
     return html ? '<span>' + html + '</span>' : '';
   }
 
+  // ── Consignes récurrentes sélectionnées pour cet atelier ─────────────────
+  var _corecSel = e._corecSelected || {};
+  function _consignesRecurrentesBlock(placement) {
+    if (typeof REF_CONSIGNES_RECURRENTES === 'undefined') return '';
+    var selectedIds = (_corecSel[placement] || []);
+    if (!selectedIds.length) return '';
+    var items = REF_CONSIGNES_RECURRENTES.filter(function(c) {
+      return c.actif !== false && selectedIds.indexOf(c.id) !== -1;
+    });
+    if (!items.length) return '';
+    var html = '';
+    items.forEach(function(c) {
+      var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+    return html ? '<span>' + html + '</span>' : '';
+  }
+
   // ── Palettes blocs (identiques à Saisie Ateliers) ───────────────────────
   // Jaune  : INFO GÉNÉRAL
   var S_INFO   = dark
@@ -1272,17 +1291,20 @@ function renderModalBody() {
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
         _consignesTypeBlock('Avant')+
+        _consignesRecurrentesBlock('Avant')+
         '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
         _consignesTypeBlock('Pendant')+
+        _consignesRecurrentesBlock('Pendant')+
         '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
         (range > 0 ? '<div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:3px 8px;margin-bottom:6px;">🧹 '+(lang==='en'?'Tidying up':'Rangement')+' : <strong style="color:var(--text)">'+range+' min</strong></div>' : '')+
         _consignesTypeBlock('Après')+
+        _consignesRecurrentesBlock('Après')+
         '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+

@@ -36,12 +36,12 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_002",
-    valueFr: "Consigne LOG",
-    valueEn: "TEST 1 UK",
+    valueFr: "Consigne TEST Logistique",
+    valueEn: "test PENDANT TEST UK",
     descriptif: "",
-    placements: ["Logistique"],
-    actif: false,
-    types: []
+    placements: ["Avant","Pendant","Après","Logistique","Spécifique"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
     id: "CONS_003",
@@ -49,34 +49,34 @@ var REF_CONSIGNES_TYPE = [
     valueEn: "Consignes test AVANT",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: []
   },
   {
     id: "CONS_004",
     valueFr: "Consignes test PENDANT",
-    valueEn: "",
+    valueEn: "test PENDANT ENG",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: []
   },
   {
     id: "CONS_005",
     valueFr: "Consignes test APRES",
-    valueEn: "",
+    valueEn: "test APRES ENG",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: []
   },
   {
     id: "CONS_006",
-    valueFr: "Consignes SPE",
-    valueEn: "",
+    valueFr: "Consignes TEST Spécifique",
+    valueEn: "TEST Spécifique ENG",
     descriptif: "",
     placements: ["Spécifique"],
-    actif: false,
+    actif: true,
     types: []
   },
 ];

@@ -758,11 +758,40 @@ function render() {
         if (descEntry && descEntry.nomEn && descEntry.nomEn.trim()) atelierName = descEntry.nomEn.trim();
       }
 
+      // ── Résolution des animateurs et angel (avec héritage pour Prépa & Logistique / Extra Staff) ──
+      var facsList = [entry.fac1,entry.fac2,entry.fac3,entry.fac4].filter(Boolean);
+      var angelVal = entry.angel || '';
+
+      // Si atelier PREPA & LOGISTICS (ou atelier sans animateur/angel), chercher l'atelier principal associé
+      if (typeof AGENDA !== 'undefined' && (!facsList.length || !angelVal)) {
+        var cleanName = (entry.atelier || '')
+          .replace(/^(?:EXTRA\s+(?:STAFF|SUPPORT)\s*(?:\(\d+\))?\s*[-–:]*|PREPA\s+(?:TEMPLE\s*\([^)]+\)|CONCERT\s*\([^)]+\)|CONCERT|CEREMONIE\s+CACAO\s*\([^)]+\)|CEREMONIE\s+CACAO|CEREMONIE\s+DE\s+CLOTURE|OPENING\s+CEREMONY|Rassemblement)?\s*[-–:]*)/i, '')
+          .replace(/@.*$/, '')
+          .trim().toLowerCase();
+
+        if (cleanName.length >= 4) {
+          var parentMatch = AGENDA.find(function(a) {
+            if (a === entry || a.type === 'PREPA & LOGISTICS' || a.type === 'REPAS & PAUSE') return false;
+            if (a.jour !== entry.jour) return false;
+            var aName = (a.atelier || '').replace(/@.*$/, '').trim().toLowerCase();
+            return (aName.indexOf(cleanName) !== -1 || cleanName.indexOf(aName) !== -1);
+          });
+          if (parentMatch) {
+            if (!facsList.length) {
+              facsList = [parentMatch.fac1, parentMatch.fac2, parentMatch.fac3, parentMatch.fac4].filter(Boolean);
+            }
+            if (!angelVal && parentMatch.angel) {
+              angelVal = parentMatch.angel;
+            }
+          }
+        }
+      }
+
       // Noms des participants pour le tooltip
-      var ttFacs    = [entry.fac1,entry.fac2,entry.fac3,entry.fac4].filter(Boolean).join(', ');
+      var ttFacs    = facsList.join(', ');
       var ttHelpers = [entry.helper1,entry.helper2,entry.helper3,entry.helper4].filter(Boolean).join(', ');
       var ttTrad    = entry.traduction || '';
-      var ttAngel   = entry.angel || '';
+      var ttAngel   = angelVal;
 
       // ── Bloc rangement ────────────────────────────────────────────────────
       var rangeMin = (entry.type === 'REUNION' || entry.type === 'PREPA & LOGISTICS' || entry.type === 'SHIFT ANGEL') ? 0 : (logEntry && logEntry.rangeDuration != null) ? logEntry.rangeDuration : 0;

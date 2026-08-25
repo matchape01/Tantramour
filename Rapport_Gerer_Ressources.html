@@ -697,7 +697,7 @@ window.confirmDelete = confirmDelete;
 // ══════════════════════════════════════════════════════════
 function propagateRename(oldName, newName) {
   // Mettre à jour AGENDA_DATA (tous les champs texte qui peuvent contenir un nom)
-  var fields = ['fac1','fac2','traduction','helper1','helper2','helper3','helper4','angel'];
+  var fields = ['fac1','fac2','fac3','fac4','traduction','helper1','helper2','helper3','helper4','angel'];
   AGENDA_DATA.forEach(function(e) {
     fields.forEach(function(f) {
       if (e[f] === oldName) e[f] = newName;
@@ -707,7 +707,6 @@ function propagateRename(oldName, newName) {
   DESCRIPTIONS_DATA.forEach(function(d) {
     if (d.fac1 === oldName) d.fac1 = newName;
     if (d.fac2 === oldName) d.fac2 = newName;
-    // Mettre à jour les références dans le texte des descriptions si besoin
   });
 }
 
@@ -716,25 +715,46 @@ function propagateRename(oldName, newName) {
 // ══════════════════════════════════════════════════════════
 function buildDataJs() {
   var lines = AGENDA_DATA.map(function(e) {
-    return '  {jour:"'       + escJs(e.jour||'') +
-      '",date:"'             + escJs(e.date||'') +
-      '",heure:"'            + escJs(e.heure||'') +
-      '",type:"'             + escJs(e.type||'') +
-      '",atelier:"'          + escJs(e.atelier||'') +
-      '",lieu:"'             + escJs(e.lieu||'') +
-      '",fac1:"'             + escJs(e.fac1||'') +
-      '",fac2:"'             + escJs(e.fac2||'') +
-      '",traduction:"'       + escJs(e.traduction||'') +
-      '",helper1:"'          + escJs(e.helper1||'') +
-      '",helper2:"'          + escJs(e.helper2||'') +
-      '",helper3:"'          + escJs(e.helper3||'') +
-      '",helper4:"'          + escJs(e.helper4||'') +
-      '",angel:"'            + escJs(e.angel||'') +
-      '",note:"'             + escJs(e.note||'') +
-      '",piment:'            + (e.piment||0) +
-      ',logisticId:"'        + escJs(e.logisticId||'') + '"}';
+    var s = '  {';
+    if (e.id)           s += 'id:"'          + escJs(e.id)          + '",';
+    s += 'jour:"'                             + escJs(e.jour||'')    + '"';
+    s += ',date:"'                            + escJs(e.date||'')    + '"';
+    s += ',heure:"'                           + escJs(e.heure||'')   + '"';
+    s += ',type:"'                            + escJs(e.type||'')    + '"';
+    s += ',atelier:"'                         + escJs(e.atelier||'') + '"';
+    s += ',lieu:"'                            + escJs(e.lieu||'')    + '"';
+    s += ',fac1:"'                            + escJs(e.fac1||'')    + '"';
+    s += ',fac2:"'                            + escJs(e.fac2||'')    + '"';
+    s += ',fac3:"'                            + escJs(e.fac3||'')    + '"';
+    s += ',fac4:"'                            + escJs(e.fac4||'')    + '"';
+    s += ',traduction:"'                      + escJs(e.traduction||'') + '"';
+    s += ',helper1:"'                         + escJs(e.helper1||'') + '"';
+    s += ',helper2:"'                         + escJs(e.helper2||'') + '"';
+    s += ',helper3:"'                         + escJs(e.helper3||'') + '"';
+    s += ',helper4:"'                         + escJs(e.helper4||'') + '"';
+    s += ',angel:"'                           + escJs(e.angel||'')   + '"';
+    s += ',note:"'                            + escJs(e.note||'')    + '"';
+    s += ',piment:'                           + (e.piment||0);
+    s += ',colibri:'                          + (e.colibri ? 'true' : 'false');
+    s += ',logisticId:"'                      + escJs(e.logisticId||'') + '"';
+    s += ',meetingRoles:"'                    + escJs(e.meetingRoles||'') + '"';
+    if (e._minRes !== undefined) s += ',_minRes:' + (e._minRes||0);
+    if (e._minTrad !== undefined) s += ',_minTrad:' + (e._minTrad||0);
+    if (e._tradCounts !== undefined) s += ',_tradCounts:' + (e._tradCounts||0);
+    if (e._equipements && Object.keys(e._equipements).length > 0) {
+      s += ',_equipements:' + JSON.stringify(e._equipements);
+    }
+    if (e._consignesDisabled && Object.keys(e._consignesDisabled).length > 0) {
+      s += ',_consignesDisabled:' + JSON.stringify(e._consignesDisabled);
+    }
+    if (e._corecSelected) {
+      var hasSel = Object.keys(e._corecSelected).some(function(pl){ return e._corecSelected[pl] && e._corecSelected[pl].length > 0; });
+      if (hasSel) s += ',_corecSelected:' + JSON.stringify(e._corecSelected);
+    }
+    s += '}';
+    return s;
   }).join(',\n');
-  return '/**\n * TANTRAMOUR 2026 \u2014 Donn\u00e9es AGENDA\n */\nvar AGENDA = [\n\n' + lines + '\n];\n';
+  return '/**\n * TANTRAMOUR 2026 \u2014 Donn\u00e9es AGENDA\n */\nvar AGENDA = [\n\n' + lines + '\n];\n\nfunction agendaToRaw(entries) {\n  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4||"",e.angel,e.note,e.logisticId||"",e.piment||0]; });\n}';
 }
 
 // ══════════════════════════════════════════════════════════

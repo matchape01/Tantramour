@@ -10,10 +10,12 @@ Endpoints :
   GET  /*       → sert les fichiers statiques du dossier
 """
 
+import base64
 import http.server
 import json
 import mimetypes
 import os
+import socketserver
 import urllib.parse
 from pathlib import Path
 
@@ -37,6 +39,7 @@ ALLOWED = {
     'ref_equipements.js',
     'ref_equip_cat.js',
     'ref_consignes_type.js',
+    'ref_consignes_recurrentes.js',
     'ref_piment.js',
     'ref_heures.js',
     'ref_display_reports.js',
@@ -97,6 +100,46 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
             except Exception as e:
                 print(f'[SAVE ERROR] {e}')
+                self.send_response(500)
+                self.send_cors()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
+            return
+
+        # ── POST /save-import ──────────────────────────────────────────────────
+        if parsed.path == '/save-import':
+            length = int(self.headers.get('Content-Length', 0))
+            body   = self.rfile.read(length)
+            try:
+                payload  = json.loads(body)
+                filename = payload.get('filename', '')
+                b64      = payload.get('content_b64', '')
+
+                # Sécurité : nom de fichier simple, extension .xlsx uniquement
+                base = os.path.basename(filename)
+                if not base or not base.lower().endswith('.xlsx') or '/' in base or '\\' in base:
+                    self.send_response(403)
+                    self.send_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': False, 'error': f'Nom de fichier non autorisé : {base}'}).encode('utf-8'))
+                    return
+
+                import_dir = ROOT / 'IMPORT'
+                import_dir.mkdir(exist_ok=True)
+                file_path = import_dir / base
+                file_path.write_bytes(base64.b64decode(b64))
+                print(f'[SAVE-IMPORT] {base} ({file_path.stat().st_size} octets)')
+
+                self.send_response(200)
+                self.send_cors()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'file': base}).encode('utf-8'))
+
+            except Exception as e:
+                print(f'[SAVE-IMPORT ERROR] {e}')
                 self.send_response(500)
                 self.send_cors()
                 self.send_header('Content-Type', 'application/json')
@@ -178,7 +221,9 @@ if __name__ == '__main__':
     print('╚══════════════════════════════════════════════╝')
     print()
 
-    server = http.server.HTTPServer(('127.0.0.1', PORT), Handler)
+    class ThreadingHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+        daemon_threads = True
+    server = ThreadingHTTPServer(('127.0.0.1', PORT), Handler)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

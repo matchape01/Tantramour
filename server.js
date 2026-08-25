@@ -48,6 +48,7 @@ const ALLOWED = new Set([
   'ref_equipements.js',
   'ref_equip_cat.js',
   'ref_consignes_type.js',
+  'ref_consignes_recurrentes.js',
   'ref_piment.js',
   'ref_heures.js',
   'ref_display_reports.js',

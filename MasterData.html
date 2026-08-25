@@ -251,17 +251,18 @@
 
   <!-- ONGLETS -->
   <div class="tabs">
-    <button class="tab active" onclick="showTab('lieux')">📍 <span data-i18n="md_tab_lieux">Lieux</span></button>
-    <button class="tab"        onclick="showTab('types')">🏷️ <span data-i18n="md_tab_types">Types</span></button>
-    <button class="tab"        onclick="showTab('notes')">📝 <span data-i18n="md_tab_notes">Notes</span></button>
-    <button class="tab"        onclick="showTab('jours')">📆 <span data-i18n="md_tab_jours">Jours</span></button>
-    <button class="tab"        onclick="showTab('piment')">🌶️ <span data-i18n="md_tab_piment">Piment</span></button>
-    <button class="tab"        onclick="showTab('resource_types')">🎭 <span data-i18n="md_tab_res_types">Types de ressource</span></button>
-    <button class="tab"        onclick="showTab('heures')">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
-    <button class="tab"        onclick="showTab('equipements')">🔧 Équipements</button>
-    <button class="tab"        onclick="showTab('equip_cat')">📂 Catégories équip.</button>
-    <button class="tab"        onclick="showTab('consignes_type')">📋 Consignes type</button>
-    <button class="tab"        onclick="showTab('translations')">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
+    <button class="tab active" onclick="showTab('lieux',this)">📍 <span data-i18n="md_tab_lieux">Lieux</span></button>
+    <button class="tab"        onclick="showTab('types',this)">🏷️ <span data-i18n="md_tab_types">Types</span></button>
+    <button class="tab"        onclick="showTab('notes',this)">📝 <span data-i18n="md_tab_notes">Notes</span></button>
+    <button class="tab"        onclick="showTab('jours',this)">📆 <span data-i18n="md_tab_jours">Jours</span></button>
+    <button class="tab"        onclick="showTab('piment',this)">🌶️ <span data-i18n="md_tab_piment">Piment</span></button>
+    <button class="tab"        onclick="showTab('resource_types',this)">🎭 <span data-i18n="md_tab_res_types">Types de ressource</span></button>
+    <button class="tab"        onclick="showTab('heures',this)">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
+    <button class="tab"        onclick="showTab('equipements',this)">🔧 Équipements</button>
+    <button class="tab"        onclick="showTab('equip_cat',this)">📂 Catégories équip.</button>
+    <button class="tab"        onclick="showTab('consignes_type',this)">📋 Consignes type</button>
+    <button class="tab"        onclick="showTab('consignes_recurrentes',this)">🔁 Consignes récurrentes</button>
+    <button class="tab"        onclick="showTab('translations',this)">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
   </div>
 
   <!-- ════════════════════════════════════════════════
@@ -558,6 +559,41 @@
   </div>
 
   <!-- ════════════════════════════════════════════════
+       SECTION : CONSIGNES RÉCURRENTES
+       Fichier : ref_consignes_recurrentes.js  |  { id, valueFr, valueEn, descriptif, placements[], actif }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-consignes_recurrentes">
+    <div class="sec-title">🔁 Consignes récurrentes</div>
+    <div class="sec-meta">ref_consignes_recurrentes.js — REF_CONSIGNES_RECURRENTES — colonnes : id, valueFr, valueEn, descriptif, placements, actif</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;line-height:1.6;">
+      Les <strong>consignes récurrentes</strong> s'affichent automatiquement dans chaque atelier, dans le bloc « Consignes pour Helpers ».<br>
+      <strong>Avant / Pendant / Après</strong> → détermine dans quel sous-bloc elles apparaissent.<br>
+      <strong>Actif</strong> : décoché = consigne désactivée globalement pour tous les ateliers.
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:7%;min-width:60px">Actif</th>
+          <th style="width:11%;min-width:90px">ID</th>
+          <th style="min-width:140px">Texte FR</th>
+          <th style="min-width:140px">Texte EN</th>
+          <th style="min-width:110px">Descriptif</th>
+          <th style="min-width:160px">Placements</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tbody-consignes_recurrentes"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addConsigneRecurrente()">+ Ajouter une consigne récurrente</button>
+    <div class="save-bar" id="bar-consignes_recurrentes">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="saveConsignesRecurrentes()">💾 Sauvegarder ref_consignes_recurrentes.js</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
        SECTION : TRADUCTIONS
        Fichier : ref_translations.js  |  { key, fr, en }
        Édition de la colonne "en" uniquement
@@ -634,6 +670,7 @@
 <script src="ref_equipements.js"></script>
 <script src="ref_equip_cat.js"></script>
 <script src="ref_consignes_type.js"></script>
+<script src="ref_consignes_recurrentes.js"></script>
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
@@ -723,7 +760,9 @@ var CFG = {
 // ── Copies de travail
 var STORE = {};
 Object.keys(CFG).forEach(function(k) {
-  STORE[k] = window[CFG[k].varName].map(function(x) { return Object.assign({}, x); });
+  var src = window[CFG[k].varName];
+  if (!src) { console.error('[MasterData] Variable manquante :', CFG[k].varName, '— vérifiez que', CFG[k].fileName, 'est chargé.'); src = []; }
+  STORE[k] = src.map(function(x) { return Object.assign({}, x); });
 });
 
 // ── Renommages (pour propagation dans data.js)
@@ -743,11 +782,15 @@ var editKey = null, editIdx = null;
 // ════════════════════════════════════════════════════════════
 // ONGLETS
 // ════════════════════════════════════════════════════════════
-function showTab(key) {
+function showTab(key, btn) {
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('visible'); });
-  event.currentTarget.classList.add('active');
+  if (btn) btn.classList.add('active');
   document.getElementById('sec-' + key).classList.add('visible');
+  // Rendu spécifique à l'onglet
+  if (key === 'consignes_type' && typeof renderConsignesType === 'function') renderConsignesType();
+  if (key === 'consignes_recurrentes' && typeof renderConsignesRecurrentes === 'function') renderConsignesRecurrentes();
+  if (key === 'translations' && typeof window.initTranslations === 'function') setTimeout(window.initTranslations, 0);
 }
 window.showTab = showTab;
 
@@ -838,9 +881,10 @@ function _renderTableInner(key) {
 // ════════════════════════════════════════════════════════════
 // TRI & FILTRES COLONNES — section Équipements uniquement
 // ════════════════════════════════════════════════════════════
-var EQ_SORT = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
-var EQ_FILTERS = {}; // { colName: Set of selected values }
+var EQ_SORT       = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
+var EQ_FILTERS    = {}; // { colName: Set of selected values }
 var activeFilterPopover = null;
+var EQUIP_CAT_SORT = { col: null, dir: 0 }; // déclaré ici pour être disponible avant renderTable()
 
 var EQ_COL_NAMES = {
   type: 'Fournisseur',
@@ -1248,8 +1292,6 @@ window.applyEqFilter = applyEqFilter;
 // ════════════════════════════════════════════════════════════
 // TRI COLONNES — section Catégories d'équipements (equip_cat)
 // ════════════════════════════════════════════════════════════
-var EQUIP_CAT_SORT = { col: null, dir: 0 }; // dir : 0=défaut 1=asc -1=desc
-
 function _equipCatCmp(a, b, c, d) {
   var va = a[c] !== undefined && a[c] !== null ? a[c] : '';
   var vb = b[c] !== undefined && b[c] !== null ? b[c] : '';
@@ -1664,7 +1706,8 @@ function genDataJs() {
       section = '\n  // ─── ' + e.jour + ' — ' + dl + ' ' + '─'.repeat(Math.max(0, 56 - e.jour.length - dl.length)) + '\n';
     }
     var v = escJs;
-    return section + '  {jour:"' + v(e.jour) + '",date:"' + v(e.date) + '",heure:"' + v(e.heure) + '",type:"' + v(e.type) + '",atelier:"' + v(e.atelier) + '",lieu:"' + v(e.lieu) + '",fac1:"' + v(e.fac1) + '",fac2:"' + v(e.fac2) + '",traduction:"' + v(e.traduction) + '",helper1:"' + v(e.helper1) + '",helper2:"' + v(e.helper2) + '",helper3:"' + v(e.helper3) + '",helper4:"' + v(e.helper4||'') + '",angel:"' + v(e.angel) + '",note:"' + v(e.note) + '",piment:' + (e.piment||0) + ',logisticId:"' + v(e.logisticId||'') + '"},';
+    var idPart = e.id ? 'id:"' + v(e.id) + '",' : '';
+    return section + '  {' + idPart + 'jour:"' + v(e.jour) + '",date:"' + v(e.date) + '",heure:"' + v(e.heure) + '",type:"' + v(e.type) + '",atelier:"' + v(e.atelier) + '",lieu:"' + v(e.lieu) + '",fac1:"' + v(e.fac1) + '",fac2:"' + v(e.fac2) + '",fac3:"' + v(e.fac3||'') + '",fac4:"' + v(e.fac4||'') + '",traduction:"' + v(e.traduction) + '",helper1:"' + v(e.helper1) + '",helper2:"' + v(e.helper2) + '",helper3:"' + v(e.helper3) + '",helper4:"' + v(e.helper4||'') + '",angel:"' + v(e.angel) + '",note:"' + v(e.note) + '",piment:' + (e.piment||0) + ',colibri:' + (e.colibri?true:false) + ',logisticId:"' + v(e.logisticId||'') + '",meetingRoles:"' + v(e.meetingRoles||'') + '"},';
   }).join('\n');
 
   return '/**\n * TANTRAMOUR 2026 — Données AGENDA\n */\nvar AGENDA = [\n' + lines + '\n];\n\nfunction agendaToRaw(entries) {\n  return entries.map(function(e) { return [e.jour,e.date,e.heure,e.type,e.atelier,e.lieu,e.fac1,e.fac2,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4||"",e.angel,e.note,e.logisticId||"",e.piment||0]; });\n}';
@@ -2326,6 +2369,199 @@ async function saveConsignesType() {
 window.saveConsignesType = saveConsignesType;
 
 // ════════════════════════════════════════════════════════════
+// CONSIGNES RÉCURRENTES — GESTION DÉDIÉE
+// (structure : id, valueFr, valueEn, descriptif, placements[], actif)
+// ════════════════════════════════════════════════════════════
+
+var COREC_STORE = (typeof REF_CONSIGNES_RECURRENTES !== 'undefined' ? REF_CONSIGNES_RECURRENTES : [])
+  .map(function(c) { return Object.assign({}, c, { placements: (c.placements || []).slice() }); });
+var COREC_DIRTY  = false;
+var COREC_EDIT_I = null;
+
+var COREC_PLACEMENTS_ALL = ['Avant', 'Pendant', 'Après'];
+
+function renderConsignesRecurrentes() {
+  var tbody = document.getElementById('tbody-consignes_recurrentes');
+  if (!tbody) return;
+  if (!COREC_STORE.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Aucune consigne récurrente.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = COREC_STORE.map(function(c, i) {
+    var vFr  = String(c.valueFr || '').length > 55 ? String(c.valueFr).slice(0, 55) + '…' : (c.valueFr || '');
+    var vEn  = String(c.valueEn || '').length > 55 ? String(c.valueEn).slice(0, 55) + '…' : (c.valueEn || '');
+    var desc = String(c.descriptif || '').length > 55 ? String(c.descriptif).slice(0, 55) + '…' : (c.descriptif || '');
+    var actif = c.actif !== false;
+    return '<tr id="row-corec-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
+      '<td style="text-align:center;">' +
+        '<input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="corecToggleActif(' + i + ',this.checked)">' +
+      '</td>' +
+      '<td class="td-id">' + esc(c.id) + '</td>' +
+      '<td class="td-val" title="' + esc(c.valueFr || '') + '">' + esc(vFr) + '</td>' +
+      '<td class="td-val" title="' + esc(c.valueEn || '') + '">' + esc(vEn) + '</td>' +
+      '<td class="td-val" title="' + esc(c.descriptif || '') + '">' + esc(desc) + '</td>' +
+      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
+        (c.placements || []).map(function(p) {
+          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">' + esc(p) + '</span>';
+        }).join('') +
+      '</span></td>' +
+      '<td class="td-act">' +
+        '<button class="btn" onclick="editConsigneRecurrente(' + i + ')">✏️</button> ' +
+        '<button class="btn btn-del" onclick="deleteConsigneRecurrente(' + i + ')">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+window.renderConsignesRecurrentes = renderConsignesRecurrentes;
+
+function corecToggleActif(i, checked) {
+  if (!COREC_STORE[i]) return;
+  COREC_STORE[i].actif = !!checked;
+  var row = document.getElementById('row-corec-' + i);
+  if (row) row.style.opacity = checked ? '' : '0.5';
+  markCorecDirty();
+}
+window.corecToggleActif = corecToggleActif;
+
+function editConsigneRecurrente(i) {
+  COREC_EDIT_I = i;
+  var c = COREC_STORE[i];
+  var row = document.getElementById('row-corec-' + i);
+  if (!row) return;
+
+  var checkboxes = COREC_PLACEMENTS_ALL.map(function(p) {
+    var checked = (c.placements || []).indexOf(p) !== -1 ? ' checked' : '';
+    return '<label style="display:inline-flex;align-items:center;gap:4px;font-size:12px;margin-right:8px;white-space:nowrap;">' +
+      '<input type="checkbox" value="' + p + '"' + checked + ' style="margin:0"> ' + esc(p) + '</label>';
+  }).join('');
+
+  var actif = c.actif !== false;
+  row.innerHTML =
+    '<td style="text-align:center;"><input type="checkbox" id="inp-corec-actif-' + i + '" ' + (actif ? 'checked' : '') + '></td>' +
+    '<td style="min-width:90px"><input class="inp" id="inp-corec-id-' + i + '" value="' + esc(c.id) + '" style="font-family:monospace;font-size:12px;" placeholder="COREC_…"></td>' +
+    '<td><input class="inp" id="inp-corec-vfr-' + i + '" value="' + esc(c.valueFr || '') + '" placeholder="Texte FR…"></td>' +
+    '<td><input class="inp" id="inp-corec-ven-' + i + '" value="' + esc(c.valueEn || '') + '" placeholder="Text EN…"></td>' +
+    '<td><input class="inp" id="inp-corec-desc-' + i + '" value="' + esc(c.descriptif || '') + '" placeholder="Descriptif…"></td>' +
+    '<td><div style="display:flex;flex-wrap:wrap;gap:2px;" id="inp-corec-pl-' + i + '">' + checkboxes + '</div></td>' +
+    '<td class="td-act">' +
+      '<button class="btn btn-ok" onclick="saveConsigneRecurrenteEdit(' + i + ')">✔</button> ' +
+      '<button class="btn" onclick="cancelConsigneRecurrenteEdit()">✖</button>' +
+    '</td>';
+
+  var el = document.getElementById('inp-corec-vfr-' + i);
+  if (el) { el.focus(); el.select(); }
+}
+window.editConsigneRecurrente = editConsigneRecurrente;
+
+function saveConsigneRecurrenteEdit(i) {
+  var idEl   = document.getElementById('inp-corec-id-' + i);
+  var vfrEl  = document.getElementById('inp-corec-vfr-' + i);
+  var venEl  = document.getElementById('inp-corec-ven-' + i);
+  var descEl = document.getElementById('inp-corec-desc-' + i);
+  var plCont = document.getElementById('inp-corec-pl-' + i);
+  var actifEl = document.getElementById('inp-corec-actif-' + i);
+
+  var newId = (idEl ? idEl.value.trim().toUpperCase().replace(/\s+/g, '_') : COREC_STORE[i].id);
+  if (!newId) { if (idEl) { idEl.style.borderColor = '#dc2626'; idEl.focus(); } return; }
+  var isDupe = COREC_STORE.some(function(c, idx) { return idx !== i && c.id === newId; });
+  if (isDupe) { if (idEl) { idEl.style.borderColor = '#dc2626'; idEl.title = 'ID déjà utilisé'; idEl.focus(); } return; }
+
+  var placements = [];
+  if (plCont) {
+    plCont.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) { placements.push(cb.value); });
+  }
+
+  COREC_STORE[i] = {
+    id:         newId,
+    valueFr:    vfrEl  ? vfrEl.value  : COREC_STORE[i].valueFr,
+    valueEn:    venEl  ? venEl.value  : COREC_STORE[i].valueEn,
+    descriptif: descEl ? descEl.value : COREC_STORE[i].descriptif,
+    placements: placements,
+    actif:      actifEl ? actifEl.checked : true,
+  };
+  COREC_EDIT_I = null;
+  markCorecDirty();
+  renderConsignesRecurrentes();
+}
+window.saveConsigneRecurrenteEdit = saveConsigneRecurrenteEdit;
+
+function cancelConsigneRecurrenteEdit() {
+  COREC_EDIT_I = null;
+  renderConsignesRecurrentes();
+}
+window.cancelConsigneRecurrenteEdit = cancelConsigneRecurrenteEdit;
+
+function deleteConsigneRecurrente(i) {
+  var c = COREC_STORE[i];
+  if (!confirm('Supprimer "' + (c.valueFr || c.id) + '" (' + c.id + ') ?')) return;
+  COREC_STORE.splice(i, 1);
+  markCorecDirty();
+  renderConsignesRecurrentes();
+  showToast('🗑 Consigne récurrente supprimée.');
+}
+window.deleteConsigneRecurrente = deleteConsigneRecurrente;
+
+function addConsigneRecurrente() {
+  var ids = COREC_STORE.map(function(c) { return c.id; });
+  var n = 1, newId;
+  do { newId = 'COREC_' + String(n).padStart(3, '0'); n++; } while (ids.indexOf(newId) !== -1);
+  COREC_STORE.push({ id: newId, valueFr: '', valueEn: '', descriptif: '', placements: [], actif: true });
+  renderConsignesRecurrentes();
+  editConsigneRecurrente(COREC_STORE.length - 1);
+  markCorecDirty();
+}
+window.addConsigneRecurrente = addConsigneRecurrente;
+
+function markCorecDirty() {
+  COREC_DIRTY = true;
+  var bar = document.getElementById('bar-consignes_recurrentes');
+  if (bar) bar.classList.add('on');
+}
+
+function genConsignesRecurrentesJs() {
+  var lines = COREC_STORE.map(function(c) {
+    var pl = (c.placements || []).map(function(p) { return '"' + escJs(p) + '"'; }).join(',');
+    return '  {\n' +
+      '    id: "' + escJs(c.id) + '",\n' +
+      '    valueFr: "' + escJs(c.valueFr || '') + '",\n' +
+      '    valueEn: "' + escJs(c.valueEn || '') + '",\n' +
+      '    descriptif: "' + escJs(c.descriptif || '') + '",\n' +
+      '    placements: [' + pl + '],\n' +
+      '    actif: ' + (c.actif !== false ? 'true' : 'false') + '\n' +
+      '  },';
+  }).join('\n');
+  return '/**\n' +
+    ' * TANTRAMOUR 2026 — Référentiel : Consignes Récurrentes\n' +
+    ' * Chaque entrée : { id, valueFr, valueEn, descriptif, placements, actif }\n' +
+    ' *   id          : identifiant unique (préfixe COREC_)\n' +
+    ' *   valueFr     : texte de la consigne en français\n' +
+    ' *   valueEn     : texte de la consigne en anglais\n' +
+    ' *   descriptif  : description interne (usage, contexte)\n' +
+    ' *   placements  : tableau parmi "Avant", "Pendant", "Après"\n' +
+    ' *   actif       : true = consigne active\n' +
+    ' */\n' +
+    'var REF_CONSIGNES_RECURRENTES = [\n' + lines + '\n];\n';
+}
+
+async function saveConsignesRecurrentes() {
+  try {
+    await saveToServer('ref_consignes_recurrentes.js', genConsignesRecurrentesJs());
+    COREC_DIRTY = false;
+    var bar = document.getElementById('bar-consignes_recurrentes');
+    if (bar) bar.classList.remove('on');
+    showToast('✅ ref_consignes_recurrentes.js sauvegardé.', false);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.saveConsignesRecurrentes = saveConsignesRecurrentes;
+
+// Rendu initial consignes récurrentes
+renderConsignesRecurrentes();
+
+
+
+// ════════════════════════════════════════════════════════════
 // EXPORT EXCEL — CONSIGNES TYPE
 // Colonnes : ID | Texte FR | Texte EN | Descriptif
 //          | Avant | Pendant | Après | Logistique | Spécifique | Participant (Oui/Non)
@@ -2766,7 +3002,9 @@ async function applyConsImportPreview() {
 window.applyConsImportPreview = applyConsImportPreview;
 
 // Rendu initial
-renderConsignesType();
+try { renderConsignesType(); } catch(e) { console.error('[MasterData] renderConsignesType init error:', e); }
+try { renderConsignesRecurrentes(); } catch(e) { console.error('[MasterData] renderConsignesRecurrentes init error:', e); }
+console.log('[MasterData] loadData callback OK — CONS_STORE:', (typeof CONS_STORE !== 'undefined' ? CONS_STORE.length : 'UNDEFINED'), 'COREC_STORE:', (typeof COREC_STORE !== 'undefined' ? COREC_STORE.length : 'UNDEFINED'));
 
 }); // fin loadData
 </script>
@@ -2794,6 +3032,7 @@ function initTranslations() {
   var searchEl = document.getElementById('transSearch');
   if (searchEl) searchEl.value = '';
 }
+window.initTranslations = initTranslations;
 
 function esc2(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -2885,25 +3124,6 @@ async function saveTrans() {
 }
 window.saveTrans = saveTrans;
 
-// ── Accrochage sur l'onglet Traductions ──────────────────────────────────────
-// On intercepte les clics directement sur le bouton de l'onglet,
-// car showTab() est défini dans un bloc loadData() séparé et peut ne pas
-// encore être disponible au moment où ce script s'exécute.
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.tab').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var onc = btn.getAttribute('onclick') || '';
-      if (onc.indexOf("'translations'") !== -1 || onc.indexOf('"translations"') !== -1) {
-        setTimeout(initTranslations, 0);
-      }
-      if (onc.indexOf("'consignes_type'") !== -1 || onc.indexOf('"consignes_type"') !== -1) {
-        setTimeout(function() {
-          if (typeof renderConsignesType === 'function') renderConsignesType();
-        }, 0);
-      }
-    });
-  });
-});
 </script>
 </body>
 </html>

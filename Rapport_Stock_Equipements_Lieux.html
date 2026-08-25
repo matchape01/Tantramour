@@ -316,13 +316,14 @@ loadData(['data.js', 'logistics.js', 'ref_equipements.js', 'ref_equip_cat.js'], 
     item.globalMaxInstant = maxGlobal;
   });
 
+  // Exposer les données AVANT d'appeler render() et initFilterOptions()
+  window.EQ_DATA = EQ_MAP;
+
   // Initialiser les options des filtres Catégorie et Lieux
   initFilterOptions();
 
   // Rendu initial
   render();
-
-  window.EQ_DATA = EQ_MAP;
 });
 
 // ══════════════════════════════════════════════════════════════════

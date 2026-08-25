@@ -259,9 +259,10 @@
 <script src="loader.js"></script>
 <script src="ref_piment.js"></script>
 <script src="ref_consignes_type.js"></script>
+<script src="ref_consignes_recurrentes.js"></script>
 <script>
 if (typeof LOGISTICS_HELPERS === 'undefined') window.LOGISTICS_HELPERS = {};
-loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js','ref_notes.js','ref_consignes_type.js'], function() {
+loadData(['data.js','ref_descriptions.js','logistics.js','logistics.special.js','logistics.helpers.js','ref_jours.js','ref_notes.js','ref_consignes_type.js','ref_consignes_recurrentes.js'], function() {
 
 // ════════════════════════════════════════════
 // CONSTANTES
@@ -599,6 +600,24 @@ function renderModalBody() {
     return html ? '<span>' + html + '</span>' : '';
   }
 
+  // ── Consignes récurrentes sélectionnées pour cet atelier ─────────────────
+  var _corecSel = e._corecSelected || {};
+  function _consignesRecurrentesBlock(placement) {
+    if (typeof REF_CONSIGNES_RECURRENTES === 'undefined') return '';
+    var selectedIds = (_corecSel[placement] || []);
+    if (!selectedIds.length) return '';
+    var items = REF_CONSIGNES_RECURRENTES.filter(function(c) {
+      return c.actif !== false && selectedIds.indexOf(c.id) !== -1;
+    });
+    if (!items.length) return '';
+    var html = '';
+    items.forEach(function(c) {
+      var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+    return html ? '<span>' + html + '</span>' : '';
+  }
+
   var S_INFO = dark
     ? 'background:#2d2500;border:2px solid #92400e;border-radius:12px;padding:16px 18px;margin-bottom:0'
     : 'background:#fefce8;border:2px solid #fde68a;border-radius:12px;padding:16px 18px;margin-bottom:0';
@@ -686,16 +705,19 @@ function renderModalBody() {
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
         _consignesTypeBlock('Avant')+
+        _consignesRecurrentesBlock('Avant')+
         '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
         _consignesTypeBlock('Pendant')+
+        _consignesRecurrentesBlock('Pendant')+
         '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
         _consignesTypeBlock('Après')+
+        _consignesRecurrentesBlock('Après')+
         '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+
@@ -1024,6 +1046,16 @@ function getAgendaByIdMap() {
   });
   return map;
 }
+
+// Index de fallback : clé = "atelier|jour" normalisé → pour matcher même si l'ID a changé
+function getAgendaByKeyMap() {
+  var map = {};
+  AGENDA.forEach(function(entry, idx) {
+    var key = normalizeComparableValue((entry.atelier||'') + '|' + (entry.jour||''));
+    if (key && !map[key]) map[key] = { entry:entry, idx:idx };
+  });
+  return map;
+}
 function getImportHeaderError(row) {
   // Détecte le format : si la colonne 5 est "Animateur 3" → format 26 cols (TRANSFORM_UPLOAD)
   var col5 = normalizeComparableValue(row.getCell(5).value);
@@ -1082,7 +1114,8 @@ window.handleImportFile = handleImportFile;
 
 function buildImportPreview(sheet, colOffset) {
   colOffset = colOffset || 0;
-  var agendaById = getAgendaByIdMap();
+  var agendaById  = getAgendaByIdMap();
+  var agendaByKey = getAgendaByKeyMap();
   var items = [];
   var warnings = [];
   var seenIds = {};
@@ -1096,8 +1129,19 @@ function buildImportPreview(sheet, colOffset) {
     seenIds[id] = true;
     var agendaInfo = agendaById[id];
     if (!agendaInfo) {
-      warnings.push('⚠️ ID atelier inconnu ignoré : « ' + id + ' » (ligne ' + rowNumber + ') — cet atelier n\'existe plus dans le planning actuel.');
-      continue;
+      // Fallback : chercher par atelier + jour + heure si l'ID a changé
+      // Fallback par nom d'atelier + jour (les heures peuvent avoir changé)
+      // Format 23 : Atelier=col2, Jour=col7 ; Format 26 : Jour=col9 (colOffset=2)
+      var xlsAtelier = normalizeCellValue(row.getCell(2).value);
+      var xlsJour    = normalizeCellValue(row.getCell(7 + colOffset).value);
+      var fallbackKey = normalizeComparableValue(xlsAtelier + '|' + xlsJour);
+      agendaInfo = agendaByKey[fallbackKey];
+      if (agendaInfo) {
+        warnings.push('ℹ️ ID « ' + id + ' » introuvable (ligne ' + rowNumber + '), correspondance trouvée par nom+jour+heure : « ' + agendaInfo.entry.atelier + ' ».');
+      } else {
+        warnings.push('⚠️ ID atelier inconnu ignoré : « ' + id + ' » (ligne ' + rowNumber + ') — cet atelier n\'existe plus dans le planning actuel.');
+        continue;
+      }
     }
     var entry = agendaInfo.entry;
     var desc = getDesc(entry.atelier) || {};
