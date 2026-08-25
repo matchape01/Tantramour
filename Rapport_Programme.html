@@ -431,8 +431,9 @@
 <script src="ref_piment.js"></script>
 <script src="ref_notes.js"></script>
 <script src="ref_consignes_type.js"></script>
+<script src="ref_consignes_recurrentes.js"></script>
 <script>
-loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js', 'ref_consignes_type.js'], function() {
+loadData(['data.js', 'ref_descriptions.js', 'ref_ressources.js', 'ref_consignes_type.js', 'ref_consignes_recurrentes.js'], function() {
 
 // ════════════════════════════════════════════
 // CONFIG
@@ -975,7 +976,24 @@ function renderModalContent() {
   var consigneLabel = lang === 'en' ? '💡 Good to Know' : '💡 Bon à Savoir';
   var noInfoTxt     = lang === 'en' ? 'Nothing specific to note.' : 'Rien de particulier à signaler.';
 
-  // Consignes type actives — placement Participant uniquement
+  // Consignes spécifiques sélectionnées — placement Participant
+  var _corecSel = e._corecSelected || {};
+  var _corecHtml = '';
+  if (typeof REF_CONSIGNES_RECURRENTES !== 'undefined') {
+    var _selectedIds = (_corecSel['Participant'] || []);
+    var _corecItems = REF_CONSIGNES_RECURRENTES.filter(function(c) {
+      if (c.actif === false) return false;
+      if (_selectedIds.indexOf(c.id) === -1) return false;
+      if (c.types && c.types.length > 0 && e.type && c.types.indexOf(e.type) === -1) return false;
+      return true;
+    });
+    _corecItems.forEach(function(c) {
+      var txt = (lang === 'en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
+      if (txt) _corecHtml += esc(txt).replace(/\n/g,'<br>') + '<br>';
+    });
+  }
+
+  // Consignes génériques actives — placement Participant uniquement
   var _consDisabled = e._consignesDisabled || {};
   var _consTypeHtml = '';
   if (typeof REF_CONSIGNES_TYPE !== 'undefined') {
@@ -994,6 +1012,7 @@ function renderModalContent() {
 
   consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#7dd3fc;background:#f0f9ff">' +
     '<div class="modal-desc-label" style="color:#0369a1">' + consigneLabel + '</div>' +
+    _corecHtml +
     _consTypeHtml +
     '<div>' + (consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noInfoTxt + '</span>') + '</div>' +
   '</div>';

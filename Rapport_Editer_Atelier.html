@@ -381,7 +381,7 @@ function buildConsignesTypeWidget(placement) {
     '</label>';
   }).join('');
   return '<div style="border:1px solid #fcd34d;border-radius:7px;overflow:hidden;background:#fffbeb;height:100%;box-sizing:border-box;">' +
-    '<div style="background:#fef3c7;padding:5px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#92400e;border-bottom:1px solid #fcd34d;">📋 Consignes type</div>' +
+    '<div style="background:#fef3c7;padding:5px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#92400e;border-bottom:1px solid #fcd34d;">📋 Consignes génériques</div>' +
     rows +
   '</div>';
 }
@@ -405,30 +405,34 @@ function buildConsignesRecurrentesWidget(placement) {
     '</label>';
   }).join('');
   return '<div style="border:1px solid #86efac;border-radius:7px;overflow:hidden;background:#f0fdf4;height:100%;box-sizing:border-box;">' +
-    '<div style="background:#dcfce7;padding:5px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#166534;border-bottom:1px solid #86efac;">🔁 Consignes récurrentes</div>' +
+    '<div style="background:#dcfce7;padding:5px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#166534;border-bottom:1px solid #86efac;">🔁 Consignes spécifiques</div>' +
     rows +
   '</div>';
 }
 
-// Génère une section logistique avec layout côte-à-côte : [label + RTE | consignes type]
+// Génère une section logistique avec layout côte-à-côte :
+// [label + RTE | consignes spécifiques | consignes génériques]
 function buildLogSection(label, rteId, content, placement) {
-  var widget = buildConsignesTypeWidget(placement);
+  var widgetType = buildConsignesTypeWidget(placement);
+  var widgetRec  = buildConsignesRecurrentesWidget(placement);
   var labelHtml = '<label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">' + label + '</label>';
-  if (!widget) {
+  if (!widgetType && !widgetRec) {
     return '<div class="form-group" style="margin-bottom:14px;">' +
       labelHtml +
       rteToolbar(rteId) +
       '<div class="rte-editor" id="' + rteId + '" contenteditable="true">' + (content || '') + '</div>' +
     '</div>';
   }
+  var cols = '1fr' + (widgetRec ? ' 220px' : '') + (widgetType ? ' 260px' : '');
   return '<div style="margin-bottom:14px;">' +
     labelHtml +
-    '<div style="display:grid;grid-template-columns:1fr 260px;gap:12px;align-items:start;">' +
+    '<div style="display:grid;grid-template-columns:' + cols + ';gap:12px;align-items:start;">' +
       '<div>' +
         rteToolbar(rteId) +
         '<div class="rte-editor" id="' + rteId + '" contenteditable="true">' + (content || '') + '</div>' +
       '</div>' +
-      '<div>' + widget + '</div>' +
+      (widgetRec  ? '<div>' + widgetRec  + '</div>' : '') +
+      (widgetType ? '<div>' + widgetType + '</div>' : '') +
     '</div>' +
   '</div>';
 }
@@ -1167,7 +1171,15 @@ function renderEditor() {
     <!-- ══ BLOC 5 — INSTRUCTIONS PARTICIPANTS FR + EN côte à côte ══ -->
     <div class="section-block">
       <div class="section-block-title">⚠️ Instructions participants</div>
-      ${buildConsignesTypeWidget('Participant')}
+      ${(function(){
+        var wRec  = buildConsignesRecurrentesWidget('Participant');
+        var wType = buildConsignesTypeWidget('Participant');
+        if (!wRec && !wType) return '';
+        return '<div style="display:grid;grid-template-columns:' + (wRec && wType ? '1fr 1fr' : '1fr') + ';gap:12px;margin-bottom:12px;">' +
+          (wRec  ? '<div>' + wRec  + '</div>' : '') +
+          (wType ? '<div>' + wType + '</div>' : '') +
+        '</div>';
+      })()}
       <div class="form-grid-2">
         <div class="form-group">
           <label>🇫🇷 Instructions (FR)</label>
@@ -1333,6 +1345,15 @@ function fieldChange(id) {
   };
   const key = map[field];
   if (key) editedData[key] = val;
+
+  // Si un champ d'équipe change, recalculer les couleurs de disponibilité
+  // pour que tous les selects reflètent immédiatement tous les rôles possibles
+  // de chaque personne (animateur, helper, angel, traducteur).
+  const TEAM_FIELDS = ['fac1','fac2','fac3','fac4','traduction',
+                       'helper1','helper2','helper3','helper4','angel'];
+  if (TEAM_FIELDS.indexOf(field) !== -1) {
+    refreshBusyIndicators();
+  }
 
   // Champs personnalisés (stockés sur editedData avec préfixe _)
   if (field === 'minRes')      { editedData._minRes      = parseInt(val,10)||0; }
@@ -1694,10 +1715,39 @@ async function saveUpdate() {
       await sauvegarder(content);
       await saveDescIfNeeded();
       renderList();
-      const msg = propagated > 0
-        ? `✅ data.js mis à jour — ${propagated} atelier(s) mis à jour avec angel : ${newEntry.angel}`
-        : '✅ data.js mis à jour avec succès !';
-      showToast(msg, false);
+      const baseMsg = propagated > 0
+        ? `✅ Sauvegardé — ${propagated} atelier(s) angel mis à jour.`
+        : '✅ Sauvegardé sur GitHub !';
+      showToast(baseMsg, false);
+
+      // ── Vérification propagation GitHub Pages ──────────────────────────────
+      // GitHub API accepte le PUT instantanément, mais le CDN GitHub Pages peut
+      // mettre jusqu'à 10 min à servir le nouveau fichier. On sonde data.js
+      // jusqu'à ce que le contenu soit cohérent, avec un max de 30 tentatives.
+      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        const savedId    = newEntry.id;
+        const savedHeure = newEntry.heure;
+        (async function pollPropagation() {
+          const MAX = 30;
+          const DELAY = 8000; // 8s entre chaque sonde
+          for (let i = 0; i < MAX; i++) {
+            await new Promise(r => setTimeout(r, DELAY));
+            try {
+              const r = await fetch('data.js?_=' + Date.now(), { cache: 'no-store' });
+              if (!r.ok) continue;
+              const text = await r.text();
+              // Cherche l'ID et l'heure tels qu'ils apparaissent dans la ligne générée
+              const ok = text.includes(`"${savedId}"`) && text.includes(`"${savedHeure}"`);
+              if (ok) {
+                showToast('🌐 GitHub Pages propagé — données à jour !', false);
+                return;
+              }
+            } catch(_) { /* réseau indispo, on réessaie */ }
+          }
+          // Timeout : on prévient l'utilisateur
+          showToast('⚠️ GitHub Pages n\'a pas encore propagé la mise à jour. Patientez quelques minutes puis rafraîchissez.', true);
+        })();
+      }
     } catch(err) {
       // Rollback
       AGENDA[selectedIdx] = originalEntry;

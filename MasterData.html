@@ -260,8 +260,8 @@
     <button class="tab"        onclick="showTab('heures',this)">🕐 <span data-i18n="md_tab_heures">Heures</span></button>
     <button class="tab"        onclick="showTab('equipements',this)">🔧 Équipements</button>
     <button class="tab"        onclick="showTab('equip_cat',this)">📂 Catégories équip.</button>
-    <button class="tab"        onclick="showTab('consignes_type',this)">📋 Consignes type</button>
-    <button class="tab"        onclick="showTab('consignes_recurrentes',this)">🔁 Consignes récurrentes</button>
+    <button class="tab"        onclick="showTab('consignes_type',this)">📋 Consignes génériques</button>
+    <button class="tab"        onclick="showTab('consignes_recurrentes',this)">🔁 Consignes spécifiques</button>
     <button class="tab"        onclick="showTab('translations',this)">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
   </div>
 
@@ -509,7 +509,7 @@
        Fichier : ref_consignes_type.js  |  { id, valueFr, valueEn, descriptif, placements[], actif, types[] }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-consignes_type">
-    <div class="sec-title">📋 Consignes type</div>
+    <div class="sec-title">📋 Consignes génériques</div>
     <div class="sec-meta">ref_consignes_type.js — REF_CONSIGNES_TYPE — colonnes : id, valueFr, valueEn, descriptif, placements, actif, types</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
       <button class="btn" onclick="exportConsignesTypeExcel()">📥 Export Excel</button>
@@ -517,7 +517,7 @@
       <input class="hidden-file-input" id="consImportInput" type="file" accept=".xlsx" onchange="handleConsImportFile(event)">
     </div>
     <div class="import-panel" id="consImportPanel">
-      <div class="import-title">Import des consignes type</div>
+      <div class="import-title">Import des consignes génériques</div>
       <div class="import-help">Importe un fichier Excel exporté depuis cet onglet (feuille « Consignes »). Les lignes avec un ID existant permettent de modifier le texte, les placements, les types — mais jamais l'ID ni le statut Actif. Les lignes sans ID existant créent une nouvelle consigne (Actif = NON par défaut). Aucune suppression n'est effectuée.</div>
       <div class="import-actions">
         <button class="btn" onclick="triggerConsImportFile()">Choisir un fichier .xlsx</button>
@@ -549,7 +549,7 @@
         <tbody id="tbody-consignes_type"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addConsigneType()">+ Ajouter une consigne type</button>
+    <button class="btn-add" onclick="addConsigneType()">+ Ajouter une consigne générique</button>
     <div class="save-bar" id="bar-consignes_type">
       <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -563,11 +563,29 @@
        Fichier : ref_consignes_recurrentes.js  |  { id, valueFr, valueEn, descriptif, placements[], actif }
   ════════════════════════════════════════════════ -->
   <div class="section" id="sec-consignes_recurrentes">
-    <div class="sec-title">🔁 Consignes récurrentes</div>
-    <div class="sec-meta">ref_consignes_recurrentes.js — REF_CONSIGNES_RECURRENTES — colonnes : id, valueFr, valueEn, descriptif, placements, actif</div>
+    <div class="sec-title">🔁 Consignes spécifiques</div>
+    <div class="sec-meta">ref_consignes_recurrentes.js — REF_CONSIGNES_RECURRENTES — colonnes : id, valueFr, valueEn, descriptif, placements, actif, types</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn" onclick="exportConsignesRecurrentesExcel()">📥 Export Excel</button>
+      <button class="btn" onclick="toggleCorecImportPanel()">📤 Import Excel</button>
+      <input class="hidden-file-input" id="corecImportInput" type="file" accept=".xlsx" onchange="handleCorecImportFile(event)">
+    </div>
+    <div class="import-panel" id="corecImportPanel">
+      <div class="import-title">Import des consignes spécifiques</div>
+      <div class="import-help">Importe un fichier Excel exporté depuis cet onglet (feuille « Consignes »). Les lignes avec un ID existant permettent de modifier le texte, les placements, les types — mais jamais l'ID ni le statut Actif. Les lignes sans ID existant créent une nouvelle consigne (Actif = NON par défaut). Aucune suppression n'est effectuée.</div>
+      <div class="import-actions">
+        <button class="btn" onclick="triggerCorecImportFile()">Choisir un fichier .xlsx</button>
+        <button class="btn btn-sm" onclick="closeCorecImportPanel()">Fermer</button>
+      </div>
+      <div class="import-summary" id="corecImportSummary"></div>
+    </div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;line-height:1.6;">
-      Les <strong>consignes récurrentes</strong> s'affichent automatiquement dans chaque atelier, dans le bloc « Consignes pour Helpers ».<br>
-      <strong>Avant / Pendant / Après</strong> → détermine dans quel sous-bloc elles apparaissent.<br>
+      Les <strong>consignes spécifiques</strong> s'affichent automatiquement dans chaque atelier, dans le bloc « Consignes pour Helpers ».<br>
+      <strong>Avant / Pendant / Après</strong> → Consignes helpers &nbsp;|&nbsp;
+      <strong>Logistique</strong> → Informations logistiques &nbsp;|&nbsp;
+      <strong>Spécifique</strong> → Besoins logistiques spécifiques &nbsp;|&nbsp;
+      <strong>Participant</strong> → Instructions participants<br>
+      <strong>Types</strong> : restreint la consigne à certains types d'ateliers (vide = tous les types).<br>
       <strong>Actif</strong> : décoché = consigne désactivée globalement pour tous les ateliers.
     </p>
     <div class="tbl-wrap">
@@ -579,12 +597,13 @@
           <th style="min-width:140px">Texte EN</th>
           <th style="min-width:110px">Descriptif</th>
           <th style="min-width:160px">Placements</th>
+          <th style="min-width:140px">Types d'ateliers</th>
           <th></th>
         </tr></thead>
         <tbody id="tbody-consignes_recurrentes"></tbody>
       </table>
     </div>
-    <button class="btn-add" onclick="addConsigneRecurrente()">+ Ajouter une consigne récurrente</button>
+    <button class="btn-add" onclick="addConsigneRecurrente()">+ Ajouter une consigne spécifique</button>
     <div class="save-bar" id="bar-consignes_recurrentes">
       <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -1946,13 +1965,31 @@ function eqBuildImportPreview(sheet) {
       });
       if (changes.length) items.push({ mode: 'update', id: rawId, storeIdx: existingIdx, label: eq.value, changes: changes });
     } else {
-      // ── Création d'un nouvel équipement — ID temporaire EQ_NEWXXX (000-999) attribué automatiquement ──
-      var n = 0, newId;
-      do {
-        newId = 'EQ_NEW' + String(n).padStart(3, '0');
-        n++;
-      } while (usedIds[newId] && n <= 999);
+      // ── Création d'un nouvel équipement ──
+      // Si un ID est fourni dans le fichier et qu'il n'est pas déjà utilisé → on l'accepte tel quel.
+      // Si l'ID est fourni mais déjà existant dans le store → warning + ID aléatoire unique.
+      // Si aucun ID fourni → ID automatique EQ_NEWXXX.
+      var newId;
+      var idWasForced = false;
+      var idHadConflict = false;
+      if (rawId) {
+        if (!usedIds[rawId] && !seenIds[rawId]) {
+          // ID libre → on l'utilise directement
+          newId = rawId;
+          idWasForced = true;
+        } else {
+          // ID déjà pris → ID aléatoire unique + warning
+          idHadConflict = true;
+          do { newId = 'EQ_' + Math.random().toString(36).slice(2,8).toUpperCase(); } while (usedIds[newId]);
+          warnings.push('⚠️ Ligne ' + rowNumber + ' : l\'ID « ' + rawId + ' » est déjà utilisé — ID alternatif attribué : ' + newId + '.');
+        }
+      } else {
+        // Aucun ID fourni → séquence EQ_NEWXXX
+        var n = 0;
+        do { newId = 'EQ_NEW' + String(n).padStart(3, '0'); n++; } while (usedIds[newId] && n <= 999);
+      }
       usedIds[newId] = true;
+      if (rawId) seenIds[rawId] = true;
       var changes2 = [
         { key: 'type',        label: 'Fournisseur', currentValue: '', nextValue: type,               choice: 'apply' },
         { key: 'categorie',   label: 'Catégorie',    currentValue: '', nextValue: categorie,          choice: 'apply' },
@@ -1961,7 +1998,7 @@ function eqBuildImportPreview(sheet) {
         { key: 'description', label: 'Description',  currentValue: '', nextValue: description,        choice: 'apply' },
         { key: 'remarque',    label: 'Remarque',     currentValue: '', nextValue: remarque,           choice: 'apply' }
       ];
-      items.push({ mode: 'create', id: newId, storeIdx: -1, label: value, changes: changes2 });
+      items.push({ mode: 'create', id: newId, idForced: idWasForced, idConflict: idHadConflict, storeIdx: -1, label: value, changes: changes2 });
     }
   }
   return { items: items, warnings: warnings, totalChanges: items.reduce(function(sum, it) { return sum + it.changes.length; }, 0) };
@@ -1993,12 +2030,21 @@ function eqRenderImportPreview(preview, filename) {
     '<div class="import-summary-box">' +
       warningsHtml +
       '<div class="import-summary-title">Validation des modifications</div>' +
-      '<div class="import-help">Chaque ligne propose les différences détectées. Accepte ou ignore chaque valeur avant l\'enregistrement. L\'ID n\'est jamais modifiable via l\'import ; les nouveaux équipements reçoivent un ID temporaire automatique.</div>' +
+      '<div class="import-help">Chaque ligne propose les différences détectées. Accepte ou ignore chaque valeur avant l\'enregistrement. Pour les nouveaux équipements : si un ID est fourni dans le fichier et qu\'il est libre, il est utilisé tel quel ; sinon un ID automatique est attribué.</div>' +
       '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
       '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
-        var badge = item.mode === 'create'
-          ? '<span style="font-size:11px;font-weight:700;color:#166534;background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:2px 6px;">Nouveau — ' + esc(item.id) + '</span>'
-          : '<span class="import-item-meta">ID : ' + esc(item.id) + '</span>';
+        var badge;
+        if (item.mode === 'create') {
+          if (item.idForced) {
+            badge = '<span style="font-size:11px;font-weight:700;color:#1e40af;background:#dbeafe;border:1px solid #93c5fd;border-radius:4px;padding:2px 6px;">Nouveau — ID forcé : ' + esc(item.id) + '</span>';
+          } else if (item.idConflict) {
+            badge = '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouveau — ID conflit → ' + esc(item.id) + '</span>';
+          } else {
+            badge = '<span style="font-size:11px;font-weight:700;color:#166534;background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:2px 6px;">Nouveau — ' + esc(item.id) + '</span>';
+          }
+        } else {
+          badge = '<span class="import-item-meta">ID : ' + esc(item.id) + '</span>';
+        }
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div>' +
@@ -2164,7 +2210,7 @@ function renderConsignesType() {
   var tbody = document.getElementById('tbody-consignes_type');
   if (!tbody) return;
   if (!CONS_STORE.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne type.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne générique.</td></tr>';
     return;
   }
   tbody.innerHTML = CONS_STORE.map(function(c, i) {
@@ -2374,17 +2420,17 @@ window.saveConsignesType = saveConsignesType;
 // ════════════════════════════════════════════════════════════
 
 var COREC_STORE = (typeof REF_CONSIGNES_RECURRENTES !== 'undefined' ? REF_CONSIGNES_RECURRENTES : [])
-  .map(function(c) { return Object.assign({}, c, { placements: (c.placements || []).slice() }); });
+  .map(function(c) { return Object.assign({}, c, { placements: (c.placements || []).slice(), types: (c.types || []).slice() }); });
 var COREC_DIRTY  = false;
 var COREC_EDIT_I = null;
 
-var COREC_PLACEMENTS_ALL = ['Avant', 'Pendant', 'Après'];
+var COREC_PLACEMENTS_ALL = ['Avant', 'Pendant', 'Après', 'Logistique', 'Spécifique', 'Participant'];
 
 function renderConsignesRecurrentes() {
   var tbody = document.getElementById('tbody-consignes_recurrentes');
   if (!tbody) return;
   if (!COREC_STORE.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty">Aucune consigne récurrente.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne spécifique.</td></tr>';
     return;
   }
   tbody.innerHTML = COREC_STORE.map(function(c, i) {
@@ -2392,6 +2438,11 @@ function renderConsignesRecurrentes() {
     var vEn  = String(c.valueEn || '').length > 55 ? String(c.valueEn).slice(0, 55) + '…' : (c.valueEn || '');
     var desc = String(c.descriptif || '').length > 55 ? String(c.descriptif).slice(0, 55) + '…' : (c.descriptif || '');
     var actif = c.actif !== false;
+    var typesHtml = (c.types && c.types.length)
+      ? c.types.map(function(t) {
+          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">' + esc(t) + '</span>';
+        }).join(' ')
+      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
     return '<tr id="row-corec-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
       '<td style="text-align:center;">' +
         '<input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="corecToggleActif(' + i + ',this.checked)">' +
@@ -2405,6 +2456,7 @@ function renderConsignesRecurrentes() {
           return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">' + esc(p) + '</span>';
         }).join('') +
       '</span></td>' +
+      '<td>' + typesHtml + '</td>' +
       '<td class="td-act">' +
         '<button class="btn" onclick="editConsigneRecurrente(' + i + ')">✏️</button> ' +
         '<button class="btn btn-del" onclick="deleteConsigneRecurrente(' + i + ')">🗑</button>' +
@@ -2436,6 +2488,13 @@ function editConsigneRecurrente(i) {
   }).join('');
 
   var actif = c.actif !== false;
+  var typesList = consTypesOptions();
+  var typeCheckboxes = typesList.map(function(t) {
+    var checked = (c.types || []).indexOf(t) !== -1 ? ' checked' : '';
+    return '<label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;margin-right:6px;white-space:nowrap;">' +
+      '<input type="checkbox" value="' + esc(t) + '"' + checked + ' style="margin:0"> ' + esc(t) + '</label>';
+  }).join('');
+
   row.innerHTML =
     '<td style="text-align:center;"><input type="checkbox" id="inp-corec-actif-' + i + '" ' + (actif ? 'checked' : '') + '></td>' +
     '<td style="min-width:90px"><input class="inp" id="inp-corec-id-' + i + '" value="' + esc(c.id) + '" style="font-family:monospace;font-size:12px;" placeholder="COREC_…"></td>' +
@@ -2443,6 +2502,7 @@ function editConsigneRecurrente(i) {
     '<td><input class="inp" id="inp-corec-ven-' + i + '" value="' + esc(c.valueEn || '') + '" placeholder="Text EN…"></td>' +
     '<td><input class="inp" id="inp-corec-desc-' + i + '" value="' + esc(c.descriptif || '') + '" placeholder="Descriptif…"></td>' +
     '<td><div style="display:flex;flex-wrap:wrap;gap:2px;" id="inp-corec-pl-' + i + '">' + checkboxes + '</div></td>' +
+    '<td><div style="display:flex;flex-wrap:wrap;gap:2px;max-height:120px;overflow-y:auto;" id="inp-corec-types-' + i + '">' + typeCheckboxes + '</div></td>' +
     '<td class="td-act">' +
       '<button class="btn btn-ok" onclick="saveConsigneRecurrenteEdit(' + i + ')">✔</button> ' +
       '<button class="btn" onclick="cancelConsigneRecurrenteEdit()">✖</button>' +
@@ -2454,11 +2514,11 @@ function editConsigneRecurrente(i) {
 window.editConsigneRecurrente = editConsigneRecurrente;
 
 function saveConsigneRecurrenteEdit(i) {
-  var idEl   = document.getElementById('inp-corec-id-' + i);
-  var vfrEl  = document.getElementById('inp-corec-vfr-' + i);
-  var venEl  = document.getElementById('inp-corec-ven-' + i);
-  var descEl = document.getElementById('inp-corec-desc-' + i);
-  var plCont = document.getElementById('inp-corec-pl-' + i);
+  var idEl    = document.getElementById('inp-corec-id-' + i);
+  var vfrEl   = document.getElementById('inp-corec-vfr-' + i);
+  var venEl   = document.getElementById('inp-corec-ven-' + i);
+  var descEl  = document.getElementById('inp-corec-desc-' + i);
+  var plCont  = document.getElementById('inp-corec-pl-' + i);
   var actifEl = document.getElementById('inp-corec-actif-' + i);
 
   var newId = (idEl ? idEl.value.trim().toUpperCase().replace(/\s+/g, '_') : COREC_STORE[i].id);
@@ -2471,6 +2531,12 @@ function saveConsigneRecurrenteEdit(i) {
     plCont.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) { placements.push(cb.value); });
   }
 
+  var typesCont = document.getElementById('inp-corec-types-' + i);
+  var types = [];
+  if (typesCont) {
+    typesCont.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) { types.push(cb.value); });
+  }
+
   COREC_STORE[i] = {
     id:         newId,
     valueFr:    vfrEl  ? vfrEl.value  : COREC_STORE[i].valueFr,
@@ -2478,6 +2544,7 @@ function saveConsigneRecurrenteEdit(i) {
     descriptif: descEl ? descEl.value : COREC_STORE[i].descriptif,
     placements: placements,
     actif:      actifEl ? actifEl.checked : true,
+    types:      types,
   };
   COREC_EDIT_I = null;
   markCorecDirty();
@@ -2497,7 +2564,7 @@ function deleteConsigneRecurrente(i) {
   COREC_STORE.splice(i, 1);
   markCorecDirty();
   renderConsignesRecurrentes();
-  showToast('🗑 Consigne récurrente supprimée.');
+  showToast('🗑 Consigne spécifique supprimée.');
 }
 window.deleteConsigneRecurrente = deleteConsigneRecurrente;
 
@@ -2505,7 +2572,7 @@ function addConsigneRecurrente() {
   var ids = COREC_STORE.map(function(c) { return c.id; });
   var n = 1, newId;
   do { newId = 'COREC_' + String(n).padStart(3, '0'); n++; } while (ids.indexOf(newId) !== -1);
-  COREC_STORE.push({ id: newId, valueFr: '', valueEn: '', descriptif: '', placements: [], actif: true });
+  COREC_STORE.push({ id: newId, valueFr: '', valueEn: '', descriptif: '', placements: [], actif: true, types: [] });
   renderConsignesRecurrentes();
   editConsigneRecurrente(COREC_STORE.length - 1);
   markCorecDirty();
@@ -2521,24 +2588,27 @@ function markCorecDirty() {
 function genConsignesRecurrentesJs() {
   var lines = COREC_STORE.map(function(c) {
     var pl = (c.placements || []).map(function(p) { return '"' + escJs(p) + '"'; }).join(',');
+    var ty = (c.types || []).map(function(t) { return '"' + escJs(t) + '"'; }).join(',');
     return '  {\n' +
       '    id: "' + escJs(c.id) + '",\n' +
       '    valueFr: "' + escJs(c.valueFr || '') + '",\n' +
       '    valueEn: "' + escJs(c.valueEn || '') + '",\n' +
       '    descriptif: "' + escJs(c.descriptif || '') + '",\n' +
       '    placements: [' + pl + '],\n' +
-      '    actif: ' + (c.actif !== false ? 'true' : 'false') + '\n' +
+      '    actif: ' + (c.actif !== false ? 'true' : 'false') + ',\n' +
+      '    types: [' + ty + ']\n' +
       '  },';
   }).join('\n');
   return '/**\n' +
     ' * TANTRAMOUR 2026 — Référentiel : Consignes Récurrentes\n' +
-    ' * Chaque entrée : { id, valueFr, valueEn, descriptif, placements, actif }\n' +
+    ' * Chaque entrée : { id, valueFr, valueEn, descriptif, placements, actif, types }\n' +
     ' *   id          : identifiant unique (préfixe COREC_)\n' +
     ' *   valueFr     : texte de la consigne en français\n' +
     ' *   valueEn     : texte de la consigne en anglais\n' +
     ' *   descriptif  : description interne (usage, contexte)\n' +
-    ' *   placements  : tableau parmi "Avant", "Pendant", "Après"\n' +
+    ' *   placements  : tableau parmi "Avant", "Pendant", "Après", "Logistique", "Spécifique", "Participant"\n' +
     ' *   actif       : true = consigne active\n' +
+    ' *   types       : tableau de types d\'ateliers (vide = tous)\n' +
     ' */\n' +
     'var REF_CONSIGNES_RECURRENTES = [\n' + lines + '\n];\n';
 }
@@ -2559,7 +2629,430 @@ window.saveConsignesRecurrentes = saveConsignesRecurrentes;
 // Rendu initial consignes récurrentes
 renderConsignesRecurrentes();
 
+// ════════════════════════════════════════════════════════════
+// EXPORT EXCEL — CONSIGNES SPÉCIFIQUES
+// Colonnes : ID | Texte FR | Texte EN | Descriptif
+//          | Avant | Pendant | Après | Logistique | Spécifique | Participant (Oui/Non)
+//          | Types (dropdown — un seul type ou vide = tous)
+// ════════════════════════════════════════════════════════════
+function exportConsignesRecurrentesExcel() {
+  if (typeof ExcelJS === 'undefined') { showToast('❌ Bibliothèque Excel indisponible', true); return; }
+  var wb = new ExcelJS.Workbook();
 
+  // ── 1. Feuille principale : Consignes ──
+  var sheet = wb.addWorksheet('Consignes');
+  var COLS = ['ID', 'Texte FR', 'Texte EN', 'Descriptif',
+              'Avant', 'Pendant', 'Après', 'Logistique', 'Spécifique', 'Participant',
+              'Types d\'ateliers (vide = tous)'];
+  sheet.addRow(COLS);
+
+  COREC_STORE.forEach(function(c) {
+    var pl = c.placements || [];
+    var typesVal = (c.types && c.types.length) ? c.types.join(', ') : '';
+    sheet.addRow([
+      c.id,
+      c.valueFr || '',
+      c.valueEn || '',
+      c.descriptif || '',
+      pl.indexOf('Avant')      !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Pendant')    !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Après')      !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Logistique') !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Spécifique') !== -1 ? 'Oui' : 'Non',
+      pl.indexOf('Participant')!== -1 ? 'Oui' : 'Non',
+      typesVal
+    ]);
+  });
+
+  var colWidths = [16, 38, 38, 28, 8, 9, 8, 12, 13, 13, 36];
+  sheet.columns.forEach(function(col, i) { col.width = colWidths[i] || 14; });
+
+  // En-tête
+  sheet.getRow(1).eachCell(function(cell) {
+    cell.font = { bold: true };
+    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD1FAE5'} };
+  });
+  // Colonne ID : fond gris (lecture seule)
+  for (var r = 2; r <= 1000; r++) {
+    sheet.getCell('A' + r).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF3F4F6'} };
+  }
+  sheet.autoFilter = { from:{row:1,column:1}, to:{row:1,column:COLS.length} };
+  sheet.views = [{ state:'frozen', ySplit:1 }];
+
+  // Dropdowns Oui/Non pour colonnes E–J (placements)
+  ['E','F','G','H','I','J'].forEach(function(col) {
+    for (var r = 2; r <= 1000; r++) {
+      sheet.getCell(col + r).dataValidation = { type:'list', allowBlank:true, formulae:['OuiNon!$A$1:$A$2'] };
+    }
+  });
+  // Dropdown Types pour colonne K
+  var lastTypeRow = consTypesOptions().length + 1;
+  for (var r2 = 2; r2 <= 1000; r2++) {
+    sheet.getCell('K' + r2).dataValidation = { type:'list', allowBlank:true, formulae:['Types!$A$2:$A$' + lastTypeRow] };
+  }
+
+  // ── 2. Feuille README ──
+  var readme = wb.addWorksheet('README');
+  readme.properties.tabColor = { argb: 'FF7C5CD8' };
+  var readmeRows = [
+    ['TANTRAMOUR 2026 — Consignes Spécifiques — Guide d\'utilisation'],
+    [''],
+    ['Ce fichier permet de créer ou modifier des consignes spécifiques dans Master Data.'],
+    ['Importez-le via le bouton « Import Excel » de l\'onglet Consignes spécifiques dans Master Data.'],
+    [''],
+    ['ONGLET « Consignes »'],
+    ['Colonne', 'Description', 'Règles'],
+    ['A — ID',          'Identifiant unique de la consigne (ex : COREC_001)',   'NE PAS MODIFIER pour une consigne existante. Laisser vide pour créer une nouvelle consigne.'],
+    ['B — Texte FR',    'Texte affiché en français',                             'Obligatoire. Texte libre, peut contenir des sauts de ligne.'],
+    ['C — Texte EN',    'Texte affiché en anglais',                              'Optionnel. Laisser vide si pas de traduction.'],
+    ['D — Descriptif',  'Note interne (usage, contexte)',                         'Optionnel. Non affiché dans les rapports.'],
+    ['E — Avant',       'Section helpers : avant l\'atelier',                    'Oui = la consigne apparaît dans cette section / Non = elle n\'y apparaît pas'],
+    ['F — Pendant',     'Section helpers : pendant l\'atelier',                  'Oui / Non'],
+    ['G — Après',       'Section helpers : après l\'atelier',                    'Oui / Non'],
+    ['H — Logistique',  'Section Informations logistiques',                      'Oui / Non'],
+    ['I — Spécifique',  'Section Besoins logistiques spécifiques',               'Oui / Non'],
+    ['J — Participant', 'Section Instructions participants (visible festivaliers)','Oui / Non'],
+    ['K — Types',       'Restreindre à un type d\'atelier (ex : MEDITATION / YOGA)', 'Laisser vide = s\'applique à TOUS les types. Choisir dans le menu déroulant (feuille Types).'],
+    [''],
+    ['RÈGLES D\'IMPORT'],
+    ['1. ID existant   → mise à jour du texte, placements et types. L\'ID et le statut Actif ne sont JAMAIS modifiés.'],
+    ['2. ID vide/inconnu → création d\'une nouvelle consigne avec Actif = NON (à activer manuellement dans Master Data).'],
+    ['3. ID dupliqué dans ce fichier → seule la première occurrence est traitée, les suivantes sont ignorées.'],
+    ['4. Type d\'atelier inconnu → la valeur est ignorée avec un avertissement (l\'import n\'est pas bloqué).'],
+    ['5. Ne supprimez pas les colonnes ni ne modifiez les en-têtes de la ligne 1.'],
+    [''],
+    ['STATUT ACTIF'],
+    ['Le statut Actif (cochée/décochée dans Master Data) n\'est pas gérable via cet import.'],
+    ['Les nouvelles consignes importées sont toujours créées avec Actif = NON.'],
+    ['Activez-les manuellement dans Master Data > Consignes spécifiques.'],
+  ];
+  readmeRows.forEach(function(row) { readme.addRow(row); });
+
+  // Style README
+  readme.getColumn(1).width = 28;
+  readme.getColumn(2).width = 48;
+  readme.getColumn(3).width = 70;
+  var titleCell = readme.getCell('A1');
+  titleCell.font = { bold:true, size:14, color:{argb:'FF1F2328'} };
+  titleCell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD1FAE5'} };
+  readme.mergeCells('A1:C1');
+  [6, 21, 27].forEach(function(lineNo) {
+    var c = readme.getCell('A' + lineNo);
+    c.font = { bold:true, size:11 };
+    c.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD1FAE5'} };
+    readme.mergeCells('A' + lineNo + ':C' + lineNo);
+  });
+  readme.getRow(7).eachCell(function(cell) {
+    cell.font = { bold:true };
+    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF0FDF4'} };
+  });
+  for (var rl = 8; rl <= 19; rl++) {
+    readme.getCell('A' + rl).font = { bold:true, color:{argb:'FF065F46'} };
+  }
+  readme.views = [{ state:'frozen', ySplit:0 }];
+
+  // ── 3. Feuille de référence : Types d'ateliers ──
+  var typesSheet = wb.addWorksheet('Types');
+  typesSheet.addRow(['Type']);
+  consTypesOptions().forEach(function(t) { typesSheet.addRow([t]); });
+  typesSheet.getColumn(1).width = 36;
+  typesSheet.getRow(1).font = { bold: true };
+  typesSheet.getRow(1).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFD1FAE5'} };
+
+  // ── 4. Feuille de référence : Oui/Non ──
+  var ouiNonSheet = wb.addWorksheet('OuiNon');
+  ouiNonSheet.addRow(['Oui']); ouiNonSheet.addRow(['Non']);
+
+  var now = new Date();
+  var yyyy = now.getFullYear(), mm = String(now.getMonth()+1).padStart(2,'0'), dd = String(now.getDate()).padStart(2,'0');
+  wb.xlsx.writeBuffer().then(function(buffer) {
+    var blob = new Blob([buffer], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'TAF2026_CONSIGNES_SPECIFIQUES_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Export Excel généré');
+  }).catch(function(err) { showToast('❌ ' + err.message, true); });
+}
+window.exportConsignesRecurrentesExcel = exportConsignesRecurrentesExcel;
+
+// ════════════════════════════════════════════════════════════
+// IMPORT EXCEL — CONSIGNES SPÉCIFIQUES
+// Règles :
+//  - ID existant → mise à jour textes + placements + types (pas ID, pas actif)
+//  - ID absent/nouveau → création avec actif = false (non actif par défaut)
+//  - Pas de duplication d'ID dans le fichier importé
+//  - Validation avant application (preview avec Accepter/Ignorer par champ)
+// ════════════════════════════════════════════════════════════
+var COREC_IMPORT_PREVIEW = null;
+
+function toggleCorecImportPanel() {
+  document.getElementById('corecImportPanel').classList.toggle('open');
+}
+window.toggleCorecImportPanel = toggleCorecImportPanel;
+
+function closeCorecImportPanel() {
+  document.getElementById('corecImportPanel').classList.remove('open');
+}
+window.closeCorecImportPanel = closeCorecImportPanel;
+
+function triggerCorecImportFile() {
+  document.getElementById('corecImportInput').click();
+}
+window.triggerCorecImportFile = triggerCorecImportFile;
+
+function corecNormCell(value) {
+  if (value == null) return '';
+  if (typeof value === 'object') {
+    if (value.text  != null) return corecNormCell(value.text);
+    if (value.richText && value.richText.length) return corecNormCell(value.richText.map(function(p){return p.text||'';}).join(''));
+    if (value.result != null) return corecNormCell(value.result);
+  }
+  return String(value).replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+}
+
+function handleCorecImportFile(event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (!/\.xlsx$/i.test(file.name)) { showToast('❌ Le fichier doit être au format .xlsx', true); return; }
+  if (typeof ExcelJS === 'undefined') { showToast('❌ Bibliothèque Excel indisponible', true); return; }
+  document.getElementById('corecImportPanel').classList.add('open');
+  corecRenderImportLoading(file.name);
+  file.arrayBuffer().then(function(buffer) {
+    return new ExcelJS.Workbook().xlsx.load(buffer);
+  }).then(function(wb) {
+    var sheet = wb.getWorksheet('Consignes') || wb.worksheets[0];
+    if (!sheet) throw new Error('Feuille « Consignes » introuvable dans le fichier.');
+    var h1 = corecNormCell(sheet.getRow(1).getCell(1).value);
+    var h2 = corecNormCell(sheet.getRow(1).getCell(2).value);
+    if (h1 !== 'ID' || h2 !== 'Texte FR') throw new Error('Structure invalide : attendu « ID » en col A, « Texte FR » en col B.');
+    var preview = corecBuildImportPreview(sheet);
+    COREC_IMPORT_PREVIEW = preview;
+    corecRenderImportPreview(preview, file.name);
+    if (!preview.items.length) showToast('ℹ️ Aucune modification détectée');
+  }).catch(function(err) {
+    COREC_IMPORT_PREVIEW = null;
+    corecRenderImportError(err.message || 'Import impossible.');
+    showToast('❌ ' + (err.message || 'Import impossible'), true);
+  });
+}
+window.handleCorecImportFile = handleCorecImportFile;
+
+function corecBuildImportPreview(sheet) {
+  var idMap = {};
+  COREC_STORE.forEach(function(c, idx) { idMap[c.id] = idx; });
+  var usedIds = {};
+  COREC_STORE.forEach(function(c) { usedIds[c.id] = true; });
+
+  var items = [], warnings = [], seenIds = {};
+
+  for (var rn = 2; rn <= sheet.rowCount; rn++) {
+    var row = sheet.getRow(rn);
+    var rawId      = corecNormCell(row.getCell(1).value);
+    var vFr        = corecNormCell(row.getCell(2).value);
+    var vEn        = corecNormCell(row.getCell(3).value);
+    var desc       = corecNormCell(row.getCell(4).value);
+    var avant      = corecNormCell(row.getCell(5).value);
+    var pendant    = corecNormCell(row.getCell(6).value);
+    var apres      = corecNormCell(row.getCell(7).value);
+    var logistique = corecNormCell(row.getCell(8).value);
+    var specifique = corecNormCell(row.getCell(9).value);
+    var participant= corecNormCell(row.getCell(10).value);
+    var typesRaw   = corecNormCell(row.getCell(11).value);
+
+    if (!rawId && !vFr && !vEn && !desc && !avant && !pendant && !apres && !logistique && !specifique && !participant && !typesRaw) continue;
+
+    var newPlacements = [];
+    if (/^oui$/i.test(avant))       newPlacements.push('Avant');
+    if (/^oui$/i.test(pendant))     newPlacements.push('Pendant');
+    if (/^oui$/i.test(apres))       newPlacements.push('Après');
+    if (/^oui$/i.test(logistique))  newPlacements.push('Logistique');
+    if (/^oui$/i.test(specifique))  newPlacements.push('Spécifique');
+    if (/^oui$/i.test(participant)) newPlacements.push('Participant');
+
+    var newTypes = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
+    var validTypeVals = consTypesOptions();
+    newTypes = newTypes.filter(function(t) {
+      if (validTypeVals.indexOf(t) === -1) {
+        warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.');
+        return false;
+      }
+      return true;
+    });
+
+    var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
+
+    if (existingIdx !== -1) {
+      if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
+      seenIds[rawId] = true;
+      var cur = COREC_STORE[existingIdx];
+      var curPl = (cur.placements || []).slice().sort().join('|');
+      var newPl = newPlacements.slice().sort().join('|');
+      var curTy = (cur.types || []).slice().sort().join('|');
+      var newTy = newTypes.slice().sort().join('|');
+      var changes = [];
+      [
+        { key:'valueFr',    label:'Texte FR',    cur: cur.valueFr    || '', next: vFr },
+        { key:'valueEn',    label:'Texte EN',    cur: cur.valueEn    || '', next: vEn },
+        { key:'descriptif', label:'Descriptif',  cur: cur.descriptif || '', next: desc },
+        { key:'placements', label:'Placements',  cur: curPl, next: newPl, _pl: newPlacements },
+        { key:'types',      label:'Types',        cur: curTy, next: newTy, _ty: newTypes }
+      ].forEach(function(f) {
+        if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
+      });
+      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:existingIdx, label:vFr||rawId, changes:changes });
+    } else {
+      if (rawId && seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
+      if (rawId) seenIds[rawId] = true;
+      var n2 = 1, newId2;
+      do { newId2 = 'COREC_NEW' + String(n2).padStart(3,'0'); n2++; } while (usedIds[newId2] && n2 <= 999);
+      usedIds[newId2] = true;
+      var newPl2 = newPlacements.slice().sort().join('|');
+      var newTy2 = newTypes.slice().sort().join('|');
+      var changes2 = [
+        { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:vFr,  choice:'apply' },
+        { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:vEn,  choice:'apply' },
+        { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:desc, choice:'apply' },
+        { key:'placements', label:'Placements', currentValue:'', nextValue:newPl2.replace(/\|/g,', '), choice:'apply', _pl:newPlacements },
+        { key:'types',      label:'Types',       currentValue:'', nextValue:newTy2.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:newTypes }
+      ];
+      items.push({ mode:'create', id:newId2, originalId:rawId, storeIdx:-1, label:vFr||rawId||newId2, changes:changes2 });
+    }
+  }
+  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){return s+it.changes.length;},0) };
+}
+
+function corecRenderImportLoading(filename) {
+  document.getElementById('corecImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title">Lecture du fichier</div><div class="import-empty">Analyse en cours : ' + esc(filename) + '</div></div>';
+}
+function corecRenderImportError(message) {
+  document.getElementById('corecImportSummary').innerHTML =
+    '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
+}
+function corecRenderImportPreview(preview, filename) {
+  var el = document.getElementById('corecImportSummary');
+  var warningsHtml = (preview.warnings && preview.warnings.length)
+    ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;line-height:1.6;">' +
+        '<strong>⚠️ ' + preview.warnings.length + ' avertissement(s)</strong>' +
+        '<ul style="margin:6px 0 0 18px;">' + preview.warnings.map(function(w){return '<li>'+esc(w)+'</li>';}).join('') + '</ul>' +
+      '</div>'
+    : '';
+  if (!preview.items.length) {
+    el.innerHTML = '<div class="import-summary-box">' + warningsHtml +
+      '<div class="import-summary-title status-ok">Fichier analysé</div>' +
+      '<div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
+    return;
+  }
+  var updateCount = preview.items.filter(function(it){return it.mode==='update';}).length;
+  var createCount = preview.items.filter(function(it){return it.mode==='create';}).length;
+  el.innerHTML =
+    '<div class="import-summary-box">' +
+      warningsHtml +
+      '<div class="import-summary-title">Validation des modifications</div>' +
+      '<div class="import-help">ID et statut Actif ne sont jamais modifiés. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement dans le tableau.</div>' +
+      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        var badge = item.mode === 'create'
+          ? '<span style="font-size:11px;font-weight:700;color:#065F46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouveau · Actif = NON · ID : ' + esc(item.id) + '</span>'
+          : '<span class="import-item-meta">ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+        return '<div class="import-item">' +
+          '<div class="import-item-head">' +
+            '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+          '</div>' +
+          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
+            return '<div class="import-field">' +
+              '<div class="import-field-name">' + esc(change.label) + '</div>' +
+              '<div class="import-field-values">' +
+                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
+                '<div class="import-field-arrow">→</div>' +
+                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
+              '</div>' +
+              '<div class="import-choice">' +
+                '<label><input type="radio" name="corec-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setCorecImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
+                '<label><input type="radio" name="corec-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setCorecImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
+              '</div>' +
+            '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+      }).join('') + '</div>' +
+      '<div class="import-actions">' +
+        '<button class="btn" id="corecImportApplyBtn" onclick="applyCorecImportPreview()">✅ Valider l\'import</button>' +
+        '<button class="btn btn-sm" id="corecImportCancelBtn" onclick="clearCorecImportPreview()">✕ Annuler</button>' +
+      '</div>' +
+    '</div>';
+}
+function clearCorecImportPreview() {
+  COREC_IMPORT_PREVIEW = null;
+  document.getElementById('corecImportSummary').innerHTML = '';
+}
+window.clearCorecImportPreview = clearCorecImportPreview;
+function setCorecImportChoice(itemIdx, changeIdx, choice) {
+  if (!COREC_IMPORT_PREVIEW || !COREC_IMPORT_PREVIEW.items[itemIdx] || !COREC_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx]) return;
+  COREC_IMPORT_PREVIEW.items[itemIdx].changes[changeIdx].choice = choice;
+}
+window.setCorecImportChoice = setCorecImportChoice;
+
+function setCorecImportSavingState(isSaving) {
+  var applyBtn  = document.getElementById('corecImportApplyBtn');
+  var cancelBtn = document.getElementById('corecImportCancelBtn');
+  if (applyBtn)  { applyBtn.disabled = isSaving;  applyBtn.textContent  = isSaving ? '⏳ Enregistrement…' : '✅ Valider l\'import'; }
+  if (cancelBtn) { cancelBtn.disabled = isSaving; }
+}
+
+async function applyCorecImportPreview() {
+  if (!COREC_IMPORT_PREVIEW || !COREC_IMPORT_PREVIEW.items.length) return;
+  var appliedCount = 0;
+
+  COREC_IMPORT_PREVIEW.items.forEach(function(item) {
+    var selected = item.changes.filter(function(c){ return c.choice !== 'skip'; });
+    if (!selected.length) return;
+
+    if (item.mode === 'update') {
+      var cur = COREC_STORE[item.storeIdx];
+      if (!cur) return;
+      selected.forEach(function(c) {
+        if (c.key === 'placements' && c._pl) { cur.placements = c._pl.slice(); }
+        else if (c.key === 'types' && c._ty !== undefined) { cur.types = c._ty.slice(); }
+        else { cur[c.key] = c.nextValue; }
+        appliedCount++;
+      });
+    } else {
+      var newCorec = { id:item.id, valueFr:'', valueEn:'', descriptif:'', placements:[], actif:false, types:[] };
+      selected.forEach(function(c) {
+        if (c.key === 'placements' && c._pl) { newCorec.placements = c._pl.slice(); }
+        else if (c.key === 'types' && c._ty !== undefined) { newCorec.types = c._ty.slice(); }
+        else { newCorec[c.key] = c.nextValue; }
+        appliedCount++;
+      });
+      COREC_STORE.push(newCorec);
+    }
+  });
+
+  if (!appliedCount) { showToast('ℹ️ Aucune valeur sélectionnée pour l\'import'); return; }
+
+  markCorecDirty();
+  renderConsignesRecurrentes();
+  setCorecImportSavingState(true);
+  try {
+    await saveToServer('ref_consignes_recurrentes.js', genConsignesRecurrentesJs());
+    COREC_DIRTY = false;
+    var bar = document.getElementById('bar-consignes_recurrentes');
+    if (bar) bar.classList.remove('on');
+    COREC_IMPORT_PREVIEW = null;
+    document.getElementById('corecImportSummary').innerHTML =
+      '<div class="import-summary-box"><div class="import-summary-title status-ok">Import terminé</div><div class="import-empty">Les consignes spécifiques ont été mises à jour et ref_consignes_recurrentes.js a été sauvegardé.</div></div>';
+    showToast('✅ Import consignes spécifiques appliqué (' + appliedCount + ' changement(s))');
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  } finally {
+    setCorecImportSavingState(false);
+  }
+}
+window.applyCorecImportPreview = applyCorecImportPreview;
 
 // ════════════════════════════════════════════════════════════
 // EXPORT EXCEL — CONSIGNES TYPE
@@ -2656,7 +3149,7 @@ function exportConsignesTypeExcel() {
     ['STATUT ACTIF'],
     ['Le statut Actif (cochée/décochée dans Master Data) n\'est pas gérable via cet import.'],
     ['Les nouvelles consignes importées sont toujours créées avec Actif = NON.'],
-    ['Activez-les manuellement dans Master Data > Consignes type.'],
+    ['Activez-les manuellement dans Master Data > Consignes génériques.'],
   ];
   readmeRows.forEach(function(row, i) { readme.addRow(row); });
 
@@ -2705,7 +3198,7 @@ function exportConsignesTypeExcel() {
     var blob = new Blob([buffer], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = url; a.download = 'TAF2026_CONSIGNES_TYPE_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
+    a.href = url; a.download = 'TAF2026_CONSIGNES_GENERIQUES_' + yyyy + '_' + mm + '_' + dd + '.xlsx';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showToast('✅ Export Excel généré');

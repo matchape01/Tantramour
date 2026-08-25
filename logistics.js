@@ -264,10 +264,10 @@ var LOGISTICS = {
 
   "JOUR3_DANSE_DES_PORTES_MULTIDIMENSIO": {
     html: "- System audio pour plunger mon IPhone 13 (musique) <br>- micro casque",
-    text: "- System audio pour plunger mon IPhone 13 (musique) \n- micro casque",
+    text: "- System audio pour plunger mon IPhone 13 (musique)\n- micro casque",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-18 23:13"
+    updatedAt: "2026-08-25 21:01"
   },
 
   "JOUR3_DANSE_ORGASMIQUE___DANSER_LA_J": {
@@ -291,7 +291,7 @@ var LOGISTICS = {
     text: "matelas, coussins, micro, sono",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-20 20:47"
+    updatedAt: "2026-08-25 19:32"
   },
 
   "JOUR3_INITIATION_A__LA_DANSE_FUSION": {

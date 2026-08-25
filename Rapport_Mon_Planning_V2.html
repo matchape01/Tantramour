@@ -1169,6 +1169,7 @@ function renderModalBody() {
     '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box" style="border-color:'+(dark?'#92400e':'#fcd34d')+';background:'+(dark?'#2d2006':'#fffbeb')+'">'+
         '<div class="modal-desc-lbl" style="color:#92400e">'+consigneLabel+'</div>'+
+        _consignesRecurrentesBlock('Participant')+
         _consignesTypeBlock('Participant')+
         '<div>'+(consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : noTxt)+'</div>'+
       '</div>'+
@@ -1214,6 +1215,7 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        _consignesRecurrentesBlock('Logistique')+
         _consignesTypeBlock('Logistique')+
         '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
       '</div>'+
@@ -1225,6 +1227,7 @@ function renderModalBody() {
     '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
       '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
     '</div>'+
+    _consignesRecurrentesBlock('Spécifique')+
     _consignesTypeBlock('Spécifique')+
     '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
   '</div>';

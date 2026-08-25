@@ -170,7 +170,7 @@ var LOGISTICS_HELPERS = {
     avant: "placer les matelas et les coussins dans la salle, avec un matelas bien visible au centre. smudger les participants lorsqu'ils arrivent et les aider à trouver un.e partenaire si nécesssaire. test son.",
     pendant: "tenir l'espace, me faire remarquer les besoins des participants et les éventuels débordements",
     apres: "distribuer les cartes et ranger la salle",
-    updatedAt: "2026-08-25 03:58"
+    updatedAt: "2026-08-25 19:32"
   },
 
   "JOUR3_INITIATION_A__LA_DANSE_FUSION": {
@@ -710,6 +710,13 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-08-25 10:19"
+  },
+
+  "JOUR3_DANSE_DES_PORTES_MULTIDIMENSIO": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-25 21:01"
   }
 
 };

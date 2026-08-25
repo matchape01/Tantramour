@@ -64,5 +64,6 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Animation", id: "EQ_NEW010", value: "Zafou", stock: 32, description: "Zafu", remarque: "" },
   { type: "Hameau", categorie: "Mobilier & aménagement", id: "EQ_NEW011", value: "Grande table pliante #1 (122 cm)", stock: 58, description: "Grande table pliante #1 (122 cm)", remarque: "Table grise pliante  (122cm/60cm/74cm hauteur)" },
   { type: "Tantramour", categorie: "Ambiance & décoration", id: "EQ_NEW02", value: "Encens", stock: 0, description: "Encens", remarque: "" },
-  { type: "Tantramour", categorie: "Animation", id: "EQ_NEW03", value: "Masque", stock: 0, description: "Masque", remarque: "" }
+  { type: "Tantramour", categorie: "Animation", id: "EQ_NEW03", value: "Masque", stock: 0, description: "Masque", remarque: "" },
+  { type: "Autre", categorie: "Animation", id: "TEST_EQMATT", value: "TEST ITEM UPLAOD", stock: 56, description: "TEST ITEM UPLAOD", remarque: "" },
 ];

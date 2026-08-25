@@ -147,7 +147,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3_ENTRE_DANS_LA_CARESSE_COMME_DA": {
     html: "25 Masques",
     text: "25 Masques",
-    updatedAt: "2026-08-25 03:58"
+    updatedAt: "2026-08-25 19:32"
   },
 
   "JOUR3_INITIATION_A__LA_DANSE_FUSION": {
@@ -610,6 +610,12 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-08-25 10:19"
+  },
+
+  "JOUR3_DANSE_DES_PORTES_MULTIDIMENSIO": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-25 21:01"
   }
 
 };
