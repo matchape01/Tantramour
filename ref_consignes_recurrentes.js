@@ -57,10 +57,10 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_006",
-    valueFr: "Fermer la salle et déposer les clés au QG",
-    valueEn: "Lock up the room and hand in the keys at HQ",
+    valueFr: "Entrer dans la pratique si besoin",
+    valueEn: "Step into the practice if required",
     descriptif: "",
-    placements: ["Après"],
+    placements: ["Pendant"],
     actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
   },
