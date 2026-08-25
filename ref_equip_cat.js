@@ -13,4 +13,5 @@ var REF_EQUIP_CAT = [
   { id: "CAT_06", value: "Mobilier & aménagement", ordre: 6 },
   { id: "CAT_07", value: "Cuisine", ordre: 7 },
   { id: "CAT_08", value: "Divers", ordre: 8 },
+  { id: "CAT_09", value: "Test", ordre: 9 },
 ];
