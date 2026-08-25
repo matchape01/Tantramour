@@ -45,8 +45,8 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_003",
-    valueFr: "Aérer la salle",
-    valueEn: "Air the room",
+    valueFr: "• Aérer la salle",
+    valueEn: "• Air the room",
     descriptif: "",
     placements: ["Avant"],
     actif: true,
