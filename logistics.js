@@ -87,11 +87,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
-    html: "Système son <br>3 pieds de micro <br>3 micro",
-    text: "Système son \n3 pieds de micro \n3 micro",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-25 23:20"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
