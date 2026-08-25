@@ -49,19 +49,19 @@
 
   /* ── LISTE ATELIERS ── */
   .list-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:28px; }
-  .list-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .1s; }
+  .list-item { display:grid; grid-template-columns:52px 116px 1fr 200px 56px 160px 80px 20px; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .1s; }
   .list-item:last-child { border-bottom:none; }
   .list-item:hover { background:var(--row-alt); }
   .list-item.selected { background:#eff6ff; border-left:3px solid var(--accent); }
   .dark .list-item.selected { background:#0c2d48; }
-  .li-jour { font-size:11px; font-weight:700; color:var(--accent); min-width:52px; white-space:nowrap; }
-  .li-heure { font-size:11px; color:var(--muted); min-width:108px; white-space:nowrap; font-variant-numeric:tabular-nums; }
-  .li-atelier { font-size:13px; font-weight:600; flex:1; }
-  .li-fac { font-size:11px; color:var(--muted); min-width:140px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .li-piment { font-size:12px; letter-spacing:-1px; min-width:52px; text-align:center; }
-  .li-type { font-size:10px; font-weight:600; padding:1px 7px; border-radius:4px; background:var(--tag-bg); color:var(--tag-text); white-space:nowrap; max-width:160px; overflow:hidden; text-overflow:ellipsis; }
-  .li-lieu { font-size:11px; color:var(--muted); min-width:70px; }
-  .li-arrow { font-size:14px; color:var(--muted); }
+  .li-jour { font-size:11px; font-weight:700; color:var(--accent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .li-heure { font-size:11px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .li-atelier { font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .li-fac { font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .li-piment { font-size:12px; letter-spacing:-1px; text-align:center; }
+  .li-type { font-size:10px; font-weight:600; padding:1px 7px; border-radius:4px; background:var(--tag-bg); color:var(--tag-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .li-lieu { font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .li-arrow { font-size:14px; color:var(--muted); text-align:right; }
   .empty { padding:40px; text-align:center; color:var(--muted); }
 
   /* ── FORMULAIRE D'ÉDITION ── */
@@ -723,20 +723,36 @@ function onHeureChange() {
 }
 window.onHeureChange = onHeureChange;
 
-// Met à jour les préfixes 🟢/🔴 dans les selects de l'équipe sans les reconstruire
+// Met à jour les préfixes 🟢/🟠/🔴 dans les selects de l'équipe sans les reconstruire.
+// Chaque select est rafraîchi avec sa propre map de disponibilité (tenant compte de son
+// champ de données associé) pour que la couleur reflète tous les rôles possibles.
 function refreshBusyIndicators() {
-  const busy = getBusyPersons();
-  const ids  = ['f-fac1','f-fac2','f-fac3','f-fac4','f-traduction',
-                 'f-helper1','f-helper2','f-helper3','f-helper4','f-angel'];
-  ids.forEach(function(id) {
-    const sel = document.getElementById(id);
+  // Correspondance select HTML → clé de champ dans editedData
+  const SELECT_FIELDS = [
+    { id: 'f-fac1',       field: 'fac1'       },
+    { id: 'f-fac2',       field: 'fac2'       },
+    { id: 'f-fac3',       field: 'fac3'       },
+    { id: 'f-fac4',       field: 'fac4'       },
+    { id: 'f-traduction', field: 'traduction'  },
+    { id: 'f-helper1',    field: 'helper1'    },
+    { id: 'f-helper2',    field: 'helper2'    },
+    { id: 'f-helper3',    field: 'helper3'    },
+    { id: 'f-helper4',    field: 'helper4'    },
+    { id: 'f-angel',      field: 'angel'      },
+  ];
+  SELECT_FIELDS.forEach(function(sf) {
+    const sel = document.getElementById(sf.id);
     if (!sel) return;
+    const avail = getAvailability(sf.field);
     Array.from(sel.options).forEach(function(opt) {
       if (!opt.value) return; // option "— aucun —"
-      const isBusy = !!(busy[opt.value]);
-      // Remplacer le préfixe existant (🟢 ou 🔴) ou en ajouter un
-      opt.text    = (isBusy ? '🔴 ' : '🟢 ') + opt.value;
-      opt.title   = isBusy ? 'Déjà assigné sur ce créneau' : 'Disponible';
+      const status = avail[opt.value] || 'green';
+      const prefix = status === 'red' ? '🔴 ' : status === 'orange' ? '🟠 ' : '🟢 ';
+      const title  = status === 'red'    ? 'Non disponible — déjà assigné sur ce créneau'
+                   : status === 'orange' ? 'Disponible — atelier dans les 90 min avant ou après'
+                   :                       'Disponible';
+      opt.text  = prefix + opt.value;
+      opt.title = title;
     });
   });
 }
@@ -748,13 +764,23 @@ function buildSelect(id, refArr, val, allowEmpty) {
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
 
-// ── Calcule l'ensemble des personnes déjà assignées au même créneau ──────────
-// Retourne { name: 'occupé' | 'multiple' } pour tous les noms qui chevauchent
-// le créneau de editedData, en excluant l'atelier en cours d'édition.
-function getBusyPersons() {
+// ── Calcule la disponibilité de chaque personne par rapport au créneau en cours ──
+// Retourne { name: 'red' | 'orange' } — les absents du map sont 'green'.
+//
+//   red    : chevauchement direct avec un autre atelier (tous rôles confondus)
+//             OU personne déjà affectée à l'atelier en cours dans un AUTRE champ
+//             (pas le champ courant — permet de voir la vraie dispo selon le rôle)
+//   orange : aucun chevauchement, mais atelier se terminant dans les 90 min avant le début
+//             OU débutant dans les 90 min après la fin du créneau en cours (tous rôles)
+//   green  : aucun atelier dans la fenêtre de 90 min autour du créneau
+//
+// excludeField : clé du champ de l'atelier courant correspondant au select en cours
+//   (ex: 'fac1', 'helper1', 'traduction', 'angel')
+//   La personne dans ce champ n'est PAS pré-marquée rouge, son statut vient de l'AGENDA.
+function getAvailability(excludeField) {
   const e = editedData;
   if (!e || !e.jour || !e.heure) return {};
-  // Intervalles en minutes
+
   function toMin(hStr) {
     if (!hStr) return null;
     const m = String(hStr).replace(/\./g,':').match(/(\d{1,2}):(\d{2})/);
@@ -768,34 +794,89 @@ function getBusyPersons() {
     const s = toMin(all[0]), end = toMin(all[1]);
     return (s !== null && end !== null) ? { s, e: end } : null;
   }
+
   const myIv = parseInterval(e.heure);
   if (!myIv) return {};
-  // Exclure l'atelier courant (même id ou même position dans AGENDA)
-  const myId = e.id || '';
-  const busy = {};
+  const myId   = e.id || '';
+  const BUFFER = 90; // minutes — fenêtre "proche" avant/après
+
+  // Personnes déjà assignées à l'atelier en cours dans les AUTRES champs → rouge
+  // On exclut le champ courant (excludeField) pour voir la vraie dispo de la personne
+  // qui y est déjà affectée (son statut viendra de l'AGENDA, pas du doublon sur soi-même)
+  const ALL_FIELDS = ['fac1','fac2','fac3','fac4','traduction',
+                      'helper1','helper2','helper3','helper4','angel'];
+  const onOtherFields = new Set(
+    ALL_FIELDS
+      .filter(function(f) { return f !== excludeField; })
+      .map(function(f) { return e[f]; })
+      .filter(Boolean)
+      .map(function(p) { return p.trim(); })
+  );
+
+  const result = {};
+
+  // Marquer rouge les personnes dans les autres champs de l'atelier courant
+  onOtherFields.forEach(function(p) { result[p] = 'red'; });
+
   AGENDA.forEach(function(a) {
     if (!a || !a.jour || a.jour !== e.jour) return;
-    if (myId && a.id === myId) return;
+    if (myId && a.id === myId) return; // exclure l'atelier courant
     const iv = parseInterval(a.heure);
     if (!iv) return;
-    // Chevauchement si les intervalles se superposent (strictement)
-    if (iv.s >= myIv.e || iv.e <= myIv.s) return;
-    // Collecter toutes les personnes assignées sur ce créneau
-    [a.helper1, a.helper2, a.helper3, a.helper4, a.traduction, a.angel].forEach(function(p) {
-      if (p && p.trim()) busy[p.trim()] = true;
+
+    const overlaps = !(iv.s >= myIv.e || iv.e <= myIv.s);
+    // Orange : atelier qui se termine dans les 90 min avant le début
+    //          OU qui commence dans les 90 min après la fin
+    const isNear = !overlaps && (
+      (iv.e > myIv.s - BUFFER && iv.e <= myIv.s) ||
+      (iv.s >= myIv.e          && iv.s < myIv.e + BUFFER)
+    );
+
+    if (!overlaps && !isNear) return;
+
+    // Tous les rôles sont pris en compte : animateur, helper, traducteur, angel
+    const persons = [a.fac1, a.fac2, a.fac3, a.fac4,
+                     a.helper1, a.helper2, a.helper3, a.helper4,
+                     a.traduction, a.angel];
+    persons.forEach(function(p) {
+      if (!p || !p.trim()) return;
+      const name = p.trim();
+      if (overlaps) {
+        result[name] = 'red';                          // chevauchement → rouge (priorité max)
+      } else if (isNear && result[name] !== 'red') {
+        result[name] = 'orange';                       // proche → orange
+      }
     });
   });
+
+  return result;
+}
+
+// Alias conservé pour compatibilité avec les appels existants éventuels
+function getBusyPersons() {
+  const av = getAvailability();
+  const busy = {};
+  Object.keys(av).forEach(function(k){ if (av[k] === 'red') busy[k] = true; });
   return busy;
 }
 
-function buildPersonSelect(id, refArr, val, busySet) {
-  const busy = busySet || {};
+function buildPersonSelect(id, refArr, val, availMap) {
+  // availMap : objet { name: 'red' | 'orange' } — les absents sont 'green'
+  const avail = availMap || {};
+  const getStatus = function(name) {
+    const v = avail[name];
+    if (v === 'red'    || v === true) return 'red';
+    if (v === 'orange')               return 'orange';
+    return 'green';
+  };
   const opts = `<option value="">— aucun —</option>` +
     refArr.map(r => {
-      const isBusy   = !!(busy[r.value]);
+      const status    = getStatus(r.value);
       const isCurrent = r.value === val;
-      const prefix    = isBusy ? '🔴 ' : '🟢 ';
-      const title     = isBusy ? 'Déjà assigné sur ce créneau' : 'Disponible';
+      const prefix    = status === 'red' ? '🔴 ' : status === 'orange' ? '🟠 ' : '🟢 ';
+      const title     = status === 'red'    ? 'Non disponible — déjà assigné sur ce créneau'
+                      : status === 'orange' ? 'Disponible — atelier dans les 90 min avant ou après'
+                      :                       'Disponible';
       return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${esc(r.value)}</option>`;
     }).join('');
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
@@ -868,8 +949,22 @@ function renderEditor() {
   const isValidated = !!(desc && desc.validatedByFac) || !!(logEntry && logEntry.validatedByFac);
   const updatedAt   = [desc && desc.updatedAt, logEntry && logEntry.updatedAt].filter(Boolean).sort().pop() || '';
 
-  // Disponibilités des personnes sur ce créneau
-  const busy = getBusyPersons();
+  // Disponibilités par champ — chaque select reçoit sa propre map pour tenir compte
+  // de tous les rôles possibles d'une personne (animateur, helper, angel, traducteur).
+  // La map exclut uniquement les doublons dans les AUTRES champs du même atelier,
+  // pas la personne déjà dans le champ courant (son statut vient de l'AGENDA).
+  const busyByField = {
+    fac1:       getAvailability('fac1'),
+    fac2:       getAvailability('fac2'),
+    fac3:       getAvailability('fac3'),
+    fac4:       getAvailability('fac4'),
+    traduction: getAvailability('traduction'),
+    helper1:    getAvailability('helper1'),
+    helper2:    getAvailability('helper2'),
+    helper3:    getAvailability('helper3'),
+    helper4:    getAvailability('helper4'),
+    angel:      getAvailability('angel'),
+  };
 
   // Boutons piment
   const pimentBtns = REF_PIMENT.map(p =>
@@ -960,6 +1055,11 @@ function renderEditor() {
     <!-- ══ BLOC 3 — ÉQUIPE ══ -->
     <div class="section-block">
       <div class="section-block-title">👥 Équipe</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:12px;">
+        <span style="display:flex;align-items:center;gap:5px;">🔴 <strong>Non disponible</strong> — chevauchement direct sur ce créneau</span>
+        <span style="display:flex;align-items:center;gap:5px;">🟠 <strong>Proche</strong> — atelier dans les 90 min avant ou après</span>
+        <span style="display:flex;align-items:center;gap:5px;">🟢 <strong>Disponible</strong> — aucun atelier dans la fenêtre de 90 min</span>
+      </div>
 
       ${buildMeetingRolesBlock(e)}
 
@@ -967,53 +1067,53 @@ function renderEditor() {
 
         <div class="form-group">
           <label>Animateur principal</label>
-          ${buildPersonSelect('f-fac1', REF_ANIMATEURS, e.fac1||'', busy)}
+          ${buildPersonSelect('f-fac1', REF_ANIMATEURS, e.fac1||'', busyByField.fac1)}
         </div>
 
         <div class="form-group">
           <label>Animateur secondaire</label>
-          ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'', busy)}
+          ${buildPersonSelect('f-fac2', REF_ANIMATEURS, e.fac2||'', busyByField.fac2)}
         </div>
 
         <div class="form-group">
           <label>Animateur 3</label>
-          ${buildPersonSelect('f-fac3', REF_ANIMATEURS, e.fac3||'', busy)}
+          ${buildPersonSelect('f-fac3', REF_ANIMATEURS, e.fac3||'', busyByField.fac3)}
         </div>
 
         <div class="form-group">
           <label>Animateur 4</label>
-          ${buildPersonSelect('f-fac4', REF_ANIMATEURS, e.fac4||'', busy)}
+          ${buildPersonSelect('f-fac4', REF_ANIMATEURS, e.fac4||'', busyByField.fac4)}
         </div>
 
         <div class="form-group">
           <label data-i18n="filter_traducteur">Traducteur</label>
-          ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'', busy)}
+          ${buildPersonSelect('f-traduction', REF_TRADUCTEURS, e.traduction||'', busyByField.traduction)}
         </div>
 
         <div class="form-group">
           <label>Helper 1</label>
-          ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'', busy)}
+          ${buildPersonSelect('f-helper1', REF_HELPERS, e.helper1||'', busyByField.helper1)}
         </div>
 
         <div class="form-group">
           <label>Helper 2</label>
-          ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'', busy)}
+          ${buildPersonSelect('f-helper2', REF_HELPERS, e.helper2||'', busyByField.helper2)}
         </div>
 
         <div class="form-group">
           <label>Helper 3</label>
-          ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'', busy)}
+          ${buildPersonSelect('f-helper3', REF_HELPERS, e.helper3||'', busyByField.helper3)}
         </div>
 
         <div class="form-group">
           <label>Helper 4</label>
-          ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'', busy)}
+          ${buildPersonSelect('f-helper4', REF_HELPERS, e.helper4||'', busyByField.helper4)}
         </div>
 
         <div class="form-group">
           <label data-i18n="col_angel">Angel${e.type !== 'SHIFT ANGEL' ? `<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">(calculé automatiquement)</span>` : ''}</label>
           ${e.type === 'SHIFT ANGEL'
-            ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'', busy)
+            ? buildPersonSelect('f-angel', REF_ANGELS, e.angel||'', busyByField.angel)
             : `<div style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:13px;min-height:34px">${(()=>{const a=resolveAngelEdit(e.jour,e.heure)||e.angel||'';return a?`<span class="pill pill-a" style="font-size:12px">${a}</span>`:'<em>Aucun shift Angel sur cette période</em>';})()}</div>`
           }
         </div>

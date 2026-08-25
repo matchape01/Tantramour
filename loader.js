@@ -6,6 +6,53 @@
  * Compatible CSP strict (pas d'eval, pas de blob).
  */
 
+// ── Anti-cache pour les fichiers de référence chargés en <script src> statique ──
+// Ces fichiers sont éditables depuis l'interface (ressources, descriptions, etc.)
+// et peuvent donc changer entre deux visites. On les recharge avec un timestamp
+// pour contourner le cache navigateur, sans avoir à modifier chaque rapport.
+(function() {
+  // Liste des fichiers de référence modifiables par l'interface
+  var REFRESHABLE = [
+    'ref_ressources.js',
+    'ref_descriptions.js',
+    'ref_consignes_type.js',
+    'ref_consignes_recurrentes.js',
+    'ref_notes.js',
+    'ref_lieux.js',
+    'ref_types.js',
+    'ref_heures.js',
+    'ref_jours.js',
+    'ref_piment.js',
+    'ref_resource_types.js',
+    'ref_translations.js',
+  ];
+
+  function bustStaticScripts() {
+    var ts = Date.now();
+    var scripts = document.querySelectorAll('script[src]');
+    scripts.forEach(function(s) {
+      var src = s.getAttribute('src') || '';
+      // Ne traiter que les scripts statiques sans timestamp déjà présent
+      if (src.indexOf('?') !== -1) return;
+      var basename = src.split('/').pop();
+      if (REFRESHABLE.indexOf(basename) === -1) return;
+
+      // Créer un nouveau script avec timestamp et remplacer l'original
+      var fresh = document.createElement('script');
+      fresh.src = src + '?_=' + ts;
+      // Conserver les éventuels attributs (defer, async) — en pratique absents ici
+      s.parentNode.insertBefore(fresh, s.nextSibling);
+      s.remove();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bustStaticScripts);
+  } else {
+    bustStaticScripts();
+  }
+})();
+
 function loadData(files, callback) {
   var index = 0;
 
