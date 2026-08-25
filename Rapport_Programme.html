@@ -746,7 +746,7 @@ function cardHtml(e, globalIdx, opts) {
   // Consigne + note
   var extrasHtml =
     (desc && desc.consigne && desc.consigne.trim()
-      ? '<span class="badge" style="background:#dc2626;color:#fff;border:1px solid #b91c1c">⚠️ ' + (lang === 'en' ? 'Instruction' : 'Consigne') + '</span>'
+      ? '<span class="badge" style="background:#0ea5e9;color:#fff;border:1px solid #0284c7">💡 ' + (lang === 'en' ? 'Good to Know' : 'Bon à Savoir') + '</span>'
       : '') +
     (e.note ? '<span class="badge badge-note">🏷 ' + esc(noteLabel(e.note, lang)) + '</span>' : '');
 
@@ -957,8 +957,8 @@ function renderModalContent() {
   var consigneTxt = (lang === 'en' && d && d.consigneEn && d.consigneEn.trim())
     ? d.consigneEn
     : (d && d.consigne && d.consigne.trim() ? d.consigne : '');
-  var consigneLabel = lang === 'en' ? '⚠️ Participant instructions' : '⚠️ Instructions participants';
-  var noInfoTxt     = lang === 'en' ? 'No specific instructions.' : 'Aucune instruction spécifique.';
+  var consigneLabel = lang === 'en' ? '💡 Good to Know' : '💡 Bon à Savoir';
+  var noInfoTxt     = lang === 'en' ? 'Nothing specific to note.' : 'Rien de particulier à signaler.';
 
   // Consignes type actives — placement Participant uniquement
   var _consDisabled = e._consignesDisabled || {};
@@ -977,8 +977,8 @@ function renderModalContent() {
     });
   }
 
-  consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#fcd34d;background:#fffbeb">' +
-    '<div class="modal-desc-label" style="color:#92400e">' + consigneLabel + '</div>' +
+  consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#7dd3fc;background:#f0f9ff">' +
+    '<div class="modal-desc-label" style="color:#0369a1">' + consigneLabel + '</div>' +
     _consTypeHtml +
     '<div>' + (consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noInfoTxt + '</span>') + '</div>' +
   '</div>';
