@@ -97,4 +97,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","CONFERENCE"]
   },
+  {
+    id: "CONS_009",
+    valueFr: "Signaler tout incident à l'équipe organisatrice.",
+    valueEn: "Report any incident to Organizing team.",
+    descriptif: "",
+    placements: ["Après"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","RASSEMBLEMENT","TANTRA CAFE","POOL PARTY","CONFERENCE"]
+  },
 ];
