@@ -275,6 +275,7 @@
           <th onclick="sortBy('id')" id="th-id">ID <span class="sort-icon">↕</span></th>
           <th>📞 Tél.</th>
           <th>✉️ Email</th>
+          <th>🔗 Lien</th>
           <th></th>
         </tr>
       </thead>
@@ -403,6 +404,7 @@ function renderTable() {
     }).join('');
     var telHtml   = r.tel   ? '<span style="font-size:12px">' + esc(r.tel)   + '</span>' : '<span style="color:var(--muted);font-size:11px">—</span>';
     var emailHtml = r.email ? '<span style="font-size:12px">' + esc(r.email) + '</span>' : '<span style="color:var(--muted);font-size:11px">—</span>';
+    var lienHtml  = r.lien  ? '<a href="' + esc(r.lien) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent)" onclick="event.stopPropagation()">🔗 Lien</a>' : '<span style="color:var(--muted);font-size:11px">—</span>';
     return '<tr' + sel + ' onclick="selectRow(' + realIdx + ')" id="row-' + realIdx + '">' +
       '<td class="td-name">' + esc(r.value) + '</td>' +
       '<td><div class="td-roles">' + badges + '</div></td>' +
@@ -410,6 +412,7 @@ function renderTable() {
       '<td class="td-id">' + esc(r.id) + '</td>' +
       '<td>' + telHtml + '</td>' +
       '<td>' + emailHtml + '</td>' +
+      '<td>' + lienHtml + '</td>' +
       '<td class="td-actions">' +
         '<button class="btn-icon" title="Éditer" onclick="event.stopPropagation();selectRow(' + realIdx + ')">✏️</button>' +
         '<button class="btn-icon" title="Supprimer" onclick="event.stopPropagation();askDelete(' + realIdx + ')">🗑️</button>' +
@@ -533,6 +536,12 @@ function renderEditor(isNew) {
         '<span class="hint">Adresse email de contact</span>' +
       '</div>' +
 
+      '<div class="form-group full">' +
+        '<label>🔗 Lien</label>' +
+        '<input type="text" id="f-lien" value="' + esc(r.lien || '') + '" placeholder="Ex : https://www.exemple.com/profil">' +
+        '<span class="hint">URL du site, profil ou page de l\'intervenant</span>' +
+      '</div>' +
+
     '</div>' +
 
     '<div class="editor-actions">' +
@@ -579,9 +588,11 @@ function collectForm() {
   });
   var telEl   = document.getElementById('f-tel');
   var emailEl = document.getElementById('f-email');
+  var lienEl  = document.getElementById('f-lien');
   var tel     = telEl   ? telEl.value.trim()   : '';
   var email   = emailEl ? emailEl.value.trim() : '';
-  return { val: val, id: id, roles: roles, langues: langues, tel: tel, email: email };
+  var lien    = lienEl  ? lienEl.value.trim()  : '';
+  return { val: val, id: id, roles: roles, langues: langues, tel: tel, email: email, lien: lien };
 }
 
 function validateForm(form, isNew) {
@@ -613,7 +624,7 @@ async function saveResource() {
 
   // Appliquer en mémoire
   if (isNew) {
-    data.push({ id: form.id, value: form.val, roles: form.roles, langues: form.langues, tel: form.tel, email: form.email });
+    data.push({ id: form.id, value: form.val, roles: form.roles, langues: form.langues, tel: form.tel, email: form.email, lien: form.lien });
     editingIdx = data.length - 1;
   } else {
     data[editingIdx].value   = form.val;
@@ -621,6 +632,7 @@ async function saveResource() {
     data[editingIdx].langues = form.langues;
     data[editingIdx].tel     = form.tel;
     data[editingIdx].email   = form.email;
+    data[editingIdx].lien    = form.lien;
   }
 
   // Propager le renommage dans AGENDA et DESCRIPTIONS si nécessaire
@@ -824,6 +836,7 @@ function genererRefRessources() {
            'langues: ' + languesStr +
            ', tel: "' + escJs(r.tel || '') + '"' +
            ', email: "' + escJs(r.email || '') + '"' +
+           ', lien: "' + escJs(r.lien || '') + '"' +
            ' },';
   }).join('\n');
 
@@ -1079,6 +1092,7 @@ function handleImportFile(input) {
     var idxId    = headers.indexOf('id');
     var idxTel   = headers.indexOf('telephone');
     var idxEmail = headers.indexOf('email');
+    var idxLien  = headers.indexOf('lien');
 
     if (idxId === -1 || idxTel === -1 || idxEmail === -1) {
       showToast('❌ Format incorrect — colonnes requises manquantes : ID, Telephone, Email.', true);
@@ -1101,9 +1115,10 @@ function handleImportFile(input) {
       var res     = data[idx];
       var newTel   = (row[idxTel]   || '').trim();
       var newEmail = (row[idxEmail] || '').trim();
+      var newLien  = (idxLien !== -1 ? row[idxLien] || '' : '').trim();
 
-      ['tel','email'].forEach(function(field) {
-        var newVal = field === 'tel' ? newTel : newEmail;
+      ['tel','email','lien'].forEach(function(field) {
+        var newVal = field === 'tel' ? newTel : field === 'email' ? newEmail : newLien;
         var oldVal = res[field] || '';
         if (newVal === oldVal) return;  // rien à faire
         pending.push({
@@ -1223,7 +1238,7 @@ function exportExcel() {
   });
 
   // ── En-têtes ─────────────────────────────────────────────────────────────
-  var HEADERS = ['ID', 'Nom', 'Telephone', 'Email'].concat(allRoles).concat(['Langues']);
+  var HEADERS = ['ID', 'Nom', 'Telephone', 'Email', 'Lien'].concat(allRoles).concat(['Langues']);
 
   // ── Trier les ressources alphabétiquement par nom ─────────────────────────
   var sorted = data.slice().sort(function(a, b) { return a.value.localeCompare(b.value, 'fr'); });
@@ -1259,6 +1274,7 @@ function exportExcel() {
     rowsXml += cellS(ci++, rowNum, r.value);
     rowsXml += cellS(ci++, rowNum, r.tel   || '');
     rowsXml += cellS(ci++, rowNum, r.email || '');
+    rowsXml += cellS(ci++, rowNum, r.lien  || '');
     allRoles.forEach(function(rl) {
       rowsXml += cellN(ci++, rowNum, r.roles && r.roles.indexOf(rl) !== -1 ? 1 : 0);
     });

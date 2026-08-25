@@ -458,6 +458,21 @@ var BILINGUES = new Set(
 );
 function isBilingue(nom) { return nom && BILINGUES.has(nom.trim()); }
 
+// Retourne le lien URL d'une ressource identifiée par son nom (value)
+function lienRessource(nom) {
+  if (!nom || typeof REF_RESSOURCES === 'undefined') return '';
+  var r = REF_RESSOURCES.find(function(r) { return r.value.trim() === nom.trim(); });
+  return (r && r.lien && r.lien.trim()) ? r.lien.trim() : '';
+}
+
+// Enveloppe un nom en lien cliquable si une URL est définie dans REF_RESSOURCES
+function nomAvecLien(nom) {
+  var url = lienRessource(nom);
+  return url
+    ? '<a href="' + url.replace(/"/g,'&quot;') + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;cursor:pointer">' + esc(nom) + '</a>'
+    : esc(nom);
+}
+
 var JOUR_ORDER = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
 var JOUR_META = {
   'Jour 1': { jourEn:'Day 1', date:'Samedi 29 août',    dateEn:'Saturday Aug 29',  emoji:'🌑' },
@@ -933,10 +948,10 @@ function renderModalContent() {
     }
     if (e.lieu)  rows.push([tModal('rp_lieu'), esc(e.lieu)]);
     var facs = [e.fac1, e.fac2].filter(Boolean);
-    if (facs.length) rows.push([facs.length > 1 ? tModal('rp_facilitateurs') : tModal('rp_facilitateur'), facs.map(esc).join(' &amp; ')]);
+    if (facs.length) rows.push([facs.length > 1 ? tModal('rp_facilitateurs') : tModal('rp_facilitateur'), facs.map(nomAvecLien).join(' &amp; ')]);
     var tradLabel = lang === 'en' ? 'Translator' : 'Traducteur';
     var tradVal   = e.traduction
-      ? esc(e.traduction)
+      ? nomAvecLien(e.traduction)
       : (isBilingue(e.fac1) || isBilingue(e.fac2)
           ? (lang === 'en' ? 'Bilingual teacher' : 'Animateur bilingue')
           : '<span class="no-desc">' + (lang === 'en' ? 'None' : 'Aucun') + '</span>');
