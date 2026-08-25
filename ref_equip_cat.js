@@ -6,8 +6,8 @@
  */
 var REF_EQUIP_CAT = [
   { id: "CAT_01", value: "Décoration & Rituel", ordre: 3 },
-  { id: "CAT_02", value: "Matériel de Pratique", ordre: 2 },
-  { id: "CAT_03", value: "Aménagement & Equipements", ordre: 1 },
+  { id: "CAT_02", value: "Matériel de Pratique", ordre: 1 },
+  { id: "CAT_03", value: "Aménagement & Equipements", ordre: 2 },
   { id: "CAT_04", value: "Eclairage", ordre: 4 },
   { id: "CAT_05", value: "Technique & Son", ordre: 5 },
   { id: "CAT_06", value: "Consommables Hygiène", ordre: 6 },
