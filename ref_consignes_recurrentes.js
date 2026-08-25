@@ -30,12 +30,12 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_003",
-    valueFr: "Ranger le matériel, nettoyer la salle et signaler tout incident à l'équipe organisatrice.",
-    valueEn: "Put away equipment, clean the room, and report any incidents to the organizing team.",
+    valueFr: "Signaler tout incident à l'équipe organisatrice.",
+    valueEn: "Report any incidents to the organizing team.",
     descriptif: "Consigne récurrente d'exemple — après l'atelier",
-    placements: ["Pendant","Après"],
+    placements: ["Après"],
     actif: true,
-    types: []
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","POOL PARTY","CONFERENCE"]
   },
   {
     id: "COREC_004",
