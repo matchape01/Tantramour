@@ -5,13 +5,12 @@
  *   ordre : ordre d'affichage des catégories (1, 2, 3…)
  */
 var REF_EQUIP_CAT = [
-  { id: "CAT_01", value: "Décoration & Rituel", ordre: 2 },
-  { id: "CAT_02", value: "Matériel de Pratiques", ordre: 1 },
-  { id: "CAT_03", value: "Aménagement & Equipements", ordre: 3 },
-  { id: "CAT_04", value: "Eclairage", ordre: 4 },
-  { id: "CAT_05", value: "Technique & Son", ordre: 5 },
-  { id: "CAT_06", value: "Consommables Hygiène", ordre: 6 },
-  { id: "CAT_07", value: "Fournitures", ordre: 7 },
-  { id: "CAT_08", value: "Cuisine", ordre: 8 },
-  { id: "CAT_09", value: "Divers", ordre: 9 },
+  { id: "CAT_01", value: "Ambiance & décoration", ordre: 3 },
+  { id: "CAT_02", value: "Animation", ordre: 2 },
+  { id: "CAT_03", value: "Matériel de Pratique", ordre: 1 },
+  { id: "CAT_04", value: "Hygiène & entretien", ordre: 4 },
+  { id: "CAT_05", value: "Consommables & fournitures", ordre: 5 },
+  { id: "CAT_06", value: "Mobilier & aménagement", ordre: 6 },
+  { id: "CAT_07", value: "Cuisine", ordre: 7 },
+  { id: "CAT_08", value: "Divers", ordre: 8 },
 ];
