@@ -40,7 +40,7 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Hygiène & entretien", id: "EQ_MASQUE", value: "Masque", stock: "N/A", description: "Masque", remarque: "" },
   { type: "Hameau", categorie: "Animation", id: "EQ_MICSS", value: "Micro Sans Fil", stock: "N/A", description: "Micro Sans Fil", remarque: "" },
   { type: "Hameau", categorie: "Animation", id: "EQ_MIC", value: "Micro (cable) - Tonor", stock: 1, description: "Micro avec cable", remarque: "" },
-  { type: "Animateur", categorie: "Ambiance & décoration", id: "EQ_TENTURE", value: "Tenture", stock: "N/A", description: "Tenture", remarque: "" },
+  { type: "Animateur", categorie: "Décoration & Rituel", id: "EQ_TENTURE", value: "Tenture", stock: "N/A", description: "Tenture", remarque: "" },
   { type: "Animateur", categorie: "Animation", id: "EQ_TAMBOUR", value: "Tambour", stock: "N/A", description: "Tambour", remarque: "" },
   { type: "Animateur", categorie: "Pratique", id: "EQ_CLOCHETTE", value: "Clochette", stock: "N/A", description: "Clochette", remarque: "" },
   { type: "Tantramour", categorie: "Animation", id: "EQ_ROSER", value: "Rose rouge", stock: "N/A", description: "Rose rouge", remarque: "A ACHETER" },
