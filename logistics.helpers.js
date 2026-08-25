@@ -42,9 +42,9 @@ var LOGISTICS_HELPERS = {
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
     avant: "",
-    pendant: "",
+    pendant: "<ul><li>Changer les draps</li></ul>",
     apres: "Ranger salle et ramener matos au chapiteau (Micro et pied de micro)",
-    updatedAt: "2026-08-25 01:11"
+    updatedAt: "2026-08-25 01:23"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
