@@ -57,12 +57,12 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_006",
-    valueFr: "gdfgdgsd",
-    valueEn: "dgs",
-    descriptif: "dgs",
-    placements: ["Logistique","Spécifique","Participant"],
+    valueFr: "Fermer la salle et déposer les clés au QG",
+    valueEn: "Lock up the room and hand in the keys at HQ",
+    descriptif: "",
+    placements: ["Après"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
   },
   {
     id: "COREC_NEW001",
