@@ -44,7 +44,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "Ranger salle et ramener matos au chapiteau (Micro et pied de micro)",
-    updatedAt: "2026-08-25 23:20"
+    updatedAt: "2026-08-25 01:11"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
