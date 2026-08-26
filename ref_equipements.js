@@ -47,7 +47,7 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_ROSEB", value: "Rose blanche", stock: 0, description: "Rose Blanche", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_FLEUR", value: "Bouquet de fleurs (variées)", stock: 0, description: "Bouquet de fleurs (variées)", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_ROSES", value: "Bouquet de roses", stock: 0, description: "Bouquet de roses", remarque: "A ACHETER" },
-  { type: "Tantramour", categorie: "Technique & Son", id: "EQ_PIEDMIC", value: "Pied Micro (Tantramour)", stock: 0, description: "Pied Micro + pince micro", remarque: "Demander à Felix" },
+  { type: "Tantramour", categorie: "Technique & Son", id: "EQ_PIEDMIC", value: "Pied Micro", stock: 0, description: "Pied Micro + pince micro", remarque: "Demander à Felix" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_GLACON", value: "Glaçons (Kg)", stock: 0, description: "Paquet de glacons", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_PISCINE", value: "Piscine gonflable", stock: 0, description: "Piscine gonflable", remarque: "" },
   { type: "Hameau", categorie: "Aménagement & Equipements", id: "EQ_NEW000", value: "Table mange debout", stock: 3, description: "Table \"mange debout\"", remarque: "" },
@@ -89,4 +89,5 @@ var REF_EQUIPEMENTS = [
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW015", value: "Mini-jack pour iMac", stock: 0, description: "Mini-jack pour iMac", remarque: "" },
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW016", value: "Alimentation électrique 220v (3)", stock: 0, description: "Alimentation électrique 220v (3)", remarque: "" },
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW017", value: "Entrée XLR ou Jack 6,35mm", stock: 0, description: "Entrée XLR ou Jack 6,35mm", remarque: "" },
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW01", value: "Câbles connexion pédalier", stock: 0, description: "pour Stéphane", remarque: "" }
 ];
