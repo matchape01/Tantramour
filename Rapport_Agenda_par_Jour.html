@@ -194,7 +194,7 @@
     <div class="pm-header">
       <div class="pm-sun">🌞</div>
       <div>
-        <div class="pm-title" id="pmTitle">Pose Massage</div>
+        <div class="pm-title" id="pmTitle">Pause Massage</div>
         <div class="pm-day" id="pmDay"></div>
       </div>
     </div>
@@ -769,7 +769,7 @@ function renderCards(data) {
     }
 
     const nb = items.filter(r => r[3] !== 'SHIFT ANGEL').length;
-    // Bouton Pose Massage pour ce jour
+    // Bouton Pause Massage pour ce jour
     const pmBtn = buildMassageBtn(g.jour);
     return `<div class="card-day-group">
       <div class="card-day-header" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">${g.jour}<span class="card-day-sub"> — ${g.date}</span><span class="card-day-sub"> (${nb} atelier${nb>1?'s':''})</span>${pmBtn}</div>
@@ -860,7 +860,7 @@ function buildMassageBtn(jourValue) {
   const entry = pmFindEntry(jourValue);
   if (!entry) return '';
   const lang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
-  const label = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  const label = lang === 'en' ? 'Massage Break' : 'Pause Massage';
   return `<button class="btn-massage" onclick="pmOpen('${jourValue.replace(/'/g,"\\'")}')"><span class="sun-icon">🌞</span>${label}</button>`;
 }
 
@@ -869,7 +869,7 @@ function pmOpen(jourValue) {
   const entry = pmFindEntry(jourValue);
   if (!entry) return;
   const lang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
-  const title = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  const title = lang === 'en' ? 'Massage Break' : 'Pause Massage';
   const body  = lang === 'en' ? (entry.textEn || entry.textFr || '') : (entry.textFr || entry.textEn || '');
   // Label jour
   const jourDef = (typeof REF_JOURS !== 'undefined') ? REF_JOURS.find(j => j.value === jourValue) : null;

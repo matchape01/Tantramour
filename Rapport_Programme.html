@@ -451,7 +451,7 @@
     <div class="pm-header">
       <div class="pm-sun">🌞</div>
       <div>
-        <div class="pm-title" id="pmTitle">Pose Massage</div>
+        <div class="pm-title" id="pmTitle">Pause Massage</div>
         <div class="pm-day"   id="pmDay"></div>
       </div>
     </div>
@@ -766,7 +766,7 @@ function buildProgScreen(jour) {
   var ateliers = getAteliersPublics(jour);
 
   document.getElementById('progTitle').textContent = jourLabel(jour) + ' — ' + jourDate(meta);
-  // Bouton Pose Massage
+  // Bouton Pause Massage
   var pmBtnEl = document.getElementById('progMassageBtn');
   if (pmBtnEl) pmBtnEl.innerHTML = buildMassageBtn(jour);
   var nb2 = ateliers.length;
@@ -1276,7 +1276,7 @@ function buildMassageBtn(jourValue) {
   var entry = pmFindEntry(jourValue);
   if (!entry) return '';
   var lang  = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
-  var label = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  var label = lang === 'en' ? 'Massage Break' : 'Pause Massage';
   return '<button class="btn-massage" onclick="pmOpen(\'' + jourValue.replace(/'/g,"\\'") + '\')"><span class="sun-icon">🌞</span>' + label + '</button>';
 }
 
@@ -1284,7 +1284,7 @@ function pmOpen(jourValue) {
   var entry = pmFindEntry(jourValue);
   if (!entry) return;
   var lang  = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
-  var title = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  var title = lang === 'en' ? 'Massage Break' : 'Pause Massage';
   var body  = lang === 'en' ? (entry.textEn || entry.textFr || '') : (entry.textFr || entry.textEn || '');
   var meta  = JOUR_META[jourValue] || {};
   var dayLabel = (lang === 'en' && meta.dateEn) ? (meta.jourEn + ' — ' + meta.dateEn) : (jourValue + (meta.date ? ' — ' + meta.date : ''));
