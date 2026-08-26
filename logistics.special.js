@@ -255,7 +255,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
     html: "",
     text: "",
-    updatedAt: ""
+    updatedAt: "2026-08-26 21:44"
   },
 
   "JOUR4_DANSE_FUSION___GUIDER___SE_LAI": {
