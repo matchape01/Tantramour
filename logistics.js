@@ -427,7 +427,7 @@ var LOGISTICS = {
     text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-26 22:16"
+    updatedAt: "2026-08-26 22:17"
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
