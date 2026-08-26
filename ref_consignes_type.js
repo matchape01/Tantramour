@@ -252,12 +252,12 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_028",
-    valueFr: "• Ranger les équipements",
-    valueEn: "• Store equipments",
+    valueFr: "• Ranger les équipements et la salle",
+    valueEn: "• Store equipments and clear the room",
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
   },
   {
     id: "CONS_029",
