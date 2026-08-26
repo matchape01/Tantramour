@@ -1,4 +1,4 @@
-// @saved:2026-08-26 22:21:10
+// @saved:2026-08-26 22:34:19
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -318,7 +318,7 @@ var AGENDA = [
   {id:"A_2834",jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 1:00",type:"PREPA & LOGISTICS",atelier:"EXTRA STAFF (2) - Love Temple des Erotypes",lieu:"CHENREZIG",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Amana",helper2:"Echo Clem (Clement)",helper3:"Helene Planquelle",helper4:"",angel:"",note:"",piment:2,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
-  {id:"A_3416",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:00 - 15:00",type:"PREPA & LOGISTICS",atelier:"BALANCE CONCERT Kelly Aura / Claude Brame (SHIVA)",lieu:"SHIVA",fac1:"Kelly Aura",fac2:"Claude Brame",fac3:"",fac4:"",traduction:"",helper1:"Echo Clem (Clement)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_BALANCE_CONCERT_KELLY_AURA___C",meetingRoles:"",_equipements:{"EQ_MIC":4,"EQ_NEW01":1,"EQ_MICSS":4,"EQ_NEW03":2,"EQ_CHAISE":2,"EQ_TAPSOL":1,"EQ_ZAFU":2,"EQ_NEW010":30,"EQ_FLEUR":1,"EQ_CHANDELLE":6,"EQ_SUPCHAND":6,"EQ_WATER":10,"EQ_SONO":1,"EQ_NEW001":9},_corecSelected:{"Participant":["COREC_068"],"Avant":[]}},
+  {id:"A_3416",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:00 - 15:00",type:"PREPA & LOGISTICS",atelier:"BALANCE CONCERT Kelly Aura / Claude Brame (SHIVA)",lieu:"SHIVA",fac1:"Kelly Aura",fac2:"Claude Brame",fac3:"",fac4:"",traduction:"",helper1:"Echo Clem (Clement)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_BALANCE_CONCERT_KELLY_AURA___C",meetingRoles:"",_equipements:{"EQ_MIC":4,"EQ_NEW01":1,"EQ_MICSS":4,"EQ_NEW03":2,"EQ_CHAISE":2,"EQ_TAPSOL":1,"EQ_ZAFU":2,"EQ_NEW010":30,"EQ_FLEUR":1,"EQ_CHANDELLE":6,"EQ_SUPCHAND":6,"EQ_WATER":10,"EQ_SONO":1,"EQ_NEW001":9},_corecSelected:{"Participant":["COREC_068","COREC_053"],"Avant":[]}},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_5171",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:00",type:"PREPA & LOGISTICS",atelier:"BALANCE - CONCERT (SHIVA) - Mitsch",lieu:"SHIVA",fac1:"Mitsch Kohn",fac2:"Kelly Aura",fac3:"",fac4:"",traduction:"",helper1:"Echo Clem (Clement)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
