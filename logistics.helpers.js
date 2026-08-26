@@ -289,7 +289,7 @@ var LOGISTICS_HELPERS = {
     avant: "Preparer l'autel, fleurs, bougies",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-26 21:58"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
