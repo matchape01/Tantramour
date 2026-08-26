@@ -286,4 +286,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
   },
+  {
+    id: "CONS_027",
+    valueFr: "Viens à l'heure. Les admissions ne seront pas autorisées après le démarrage de l'atelier ",
+    valueEn: "Please arrive on time. No late arrivals will be admitted once the workshop has started",
+    descriptif: "",
+    placements: ["Participant"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","CONFERENCE"]
+  },
 ];
