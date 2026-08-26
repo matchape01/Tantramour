@@ -66,5 +66,6 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_NEW02", value: "Encens", stock: "N/A", description: "Encens", remarque: "" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_NEW03", value: "Masque", stock: "N/A", description: "Masque", remarque: "" },
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_TABMIX", value: "Table de mixage", stock: "N/A", description: "Table de mixage", remarque: "" },
-  { type: "Hameau", categorie: "Technique & Son", id: "EQ_SONO", value: "Sono", stock: "N/A", description: "Sono", remarque: "" }
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_SONO", value: "Sono", stock: "N/A", description: "Sono", remarque: "" },
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW04", value: "Stand de guitare", stock: 0, description: "", remarque: "" }
 ];
