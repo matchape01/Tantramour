@@ -47,7 +47,7 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_ROSEB", value: "Rose blanche", stock: 0, description: "Rose Blanche", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_FLEUR", value: "Bouquet de fleurs (variées)", stock: 0, description: "Bouquet de fleurs (variées)", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_ROSES", value: "Bouquet de roses", stock: 0, description: "Bouquet de roses", remarque: "A ACHETER" },
-  { type: "Tantramour", categorie: "Technique & Son", id: "EQ_PIEDMIC", value: "Pied Micro", stock: 0, description: "Pied Micro + pince micro", remarque: "Demander à Felix" },
+  { type: "Tantramour", categorie: "Technique & Son", id: "EQ_PIEDMIC", value: "Pied Micro (Tantramour)", stock: 0, description: "Pied Micro + pince micro", remarque: "Demander à Felix" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_GLACON", value: "Glaçons (Kg)", stock: 0, description: "Paquet de glacons", remarque: "A ACHETER" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_PISCINE", value: "Piscine gonflable", stock: 0, description: "Piscine gonflable", remarque: "" },
   { type: "Hameau", categorie: "Aménagement & Equipements", id: "EQ_NEW000", value: "Table mange debout", stock: 3, description: "Table \"mange debout\"", remarque: "" },
