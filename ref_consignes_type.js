@@ -45,12 +45,12 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_004",
-    valueFr: "• Balayer la salle et laver le sol",
-    valueEn: "• Sweep the room and mop the floor",
+    valueFr: "• Balayer la salle et laver le sol si besoin",
+    valueEn: "• Sweep the room and mop the floor if necessary",
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","RASSEMBLEMENT"]
   },
   {
     id: "CONS_005",
