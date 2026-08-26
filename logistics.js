@@ -423,11 +423,11 @@ var LOGISTICS = {
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    html: "<div>2 guitares, djembe, piano&nbsp;</div><div>2 stands pour guitare.&nbsp;</div><div>Mitsch : micro voix</div><div>Stéphane : micro pour djembe + micro voix +&nbsp;</div><div>Chaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus</div><div>Coussins pour participants si pas de zafus</div><div>30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</div>",
-    text: "2 guitares, djembe, piano \n2 stands pour guitare. \nMitsch : micro voix\nStéphane : micro pour djembe + micro voix + \nChaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus\nCoussins pour participants si pas de zafus\n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    html: "<div>2 guitares, djembe, piano&nbsp;</div><div><span style=\"font-family: inherit;\">4 voix&nbsp;</span></div><div><span style=\"font-family: inherit;\">30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</span></div>",
+    text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-26 22:10"
+    updatedAt: "2026-08-26 22:16"
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
