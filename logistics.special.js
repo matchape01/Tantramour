@@ -248,8 +248,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
     html: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert <br>Prevoir de l'eau pour nous pendant le concert",
-    text: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert \nPrevoir de l'eau pour nous pendant le concert",
-    updatedAt: "2026-08-26 18:36"
+    text: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert\nPrevoir de l'eau pour nous pendant le concert",
+    updatedAt: "2026-08-26 21:58"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
