@@ -279,8 +279,8 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_031",
-    valueFr: "• Ramener les spots lumineux de Felix dans la salle Orion",
-    valueEn: "• Bring Felix's spotlights back into Orion",
+    valueFr: "• Ramener le matériel de Felix dans la salle Orion",
+    valueEn: "• Bring Felix's equipment back into Orion",
     descriptif: "",
     placements: ["Après"],
     actif: true,
