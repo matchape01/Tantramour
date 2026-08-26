@@ -39,7 +39,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-26 09:43"
+    updatedAt: "2026-08-26 09:49"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
