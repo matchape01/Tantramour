@@ -51,7 +51,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "<br>",
-    updatedAt: "2026-08-26 21:12"
+    updatedAt: "2026-08-26 21:13"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
