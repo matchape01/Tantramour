@@ -86,4 +86,5 @@ var REF_EQUIPEMENTS = [
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW016", value: "Alimentation électrique 220v (3)", stock: "N/A", description: "Alimentation électrique 220v (3)", remarque: "" },
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW017", value: "Entrée XLR ou Jack 6,35mm", stock: "N/A", description: "Entrée XLR ou Jack 6,35mm", remarque: "" },
   { type: "_", categorie: "_", id: "_", value: "_", stock: "N/A", description: "_", remarque: "_" },
+  { type: "Tantramour", categorie: "Cuisine", id: "EQ_GOBELET", value: "Gobelets en carton", stock: 200, description: "Gobelets en carton", remarque: "" },
 ];
