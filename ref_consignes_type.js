@@ -260,12 +260,21 @@ var REF_CONSIGNES_TYPE = [
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","POOL PARTY","CONFERENCE"]
   },
   {
-    id: "CONS_NEW029",
+    id: "CONS_NEW030",
     valueFr: "• Fermer la salle et déposer les clés au QG",
     valueEn: "• Lock up the room and hand in the keys at HQ",
     descriptif: "",
     placements: ["Après"],
     actif: true,
     types: ["ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+  },
+  {
+    id: "CONS_NEW29",
+    valueFr: "• Eteindre les lumières",
+    valueEn: " • Switch off the lights",
+    descriptif: "",
+    placements: ["Après"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
 ];
