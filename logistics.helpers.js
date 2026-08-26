@@ -737,7 +737,7 @@ var LOGISTICS_HELPERS = {
     avant: "Preparer l'autel, fleurs, bougies",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:06"
+    updatedAt: "2026-08-26 22:10"
   }
 
 };
