@@ -18,7 +18,7 @@
 var REF_CONSIGNES_TYPE = [
   {
     id: "CONS_EXEMPLE",
-    valueFr: "💧 Pensez à boire un verre d’eau avant l’atelier et évitez le café.",
+    valueFr: "Pensez à boire un verre d’eau avant l’atelier et évitez le café.",
     valueEn: "💧 Please drink a glass of water before the workshop and avoid coffee.",
     descriptif: "Consigne d'exemple — à supprimer ou modifier",
     placements: ["Participant"],
