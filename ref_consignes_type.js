@@ -264,9 +264,9 @@ var REF_CONSIGNES_TYPE = [
     valueFr: "• Eteindre les lumières",
     valueEn: "• Switch off the lights",
     descriptif: "",
-    placements: [],
+    placements: ["Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
   },
   {
     id: "CONS_030",
