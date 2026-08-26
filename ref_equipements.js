@@ -89,5 +89,6 @@ var REF_EQUIPEMENTS = [
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW015", value: "Mini-jack pour iMac", stock: 0, description: "Mini-jack pour iMac", remarque: "" },
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW016", value: "Alimentation électrique 220v (3)", stock: 0, description: "Alimentation électrique 220v (3)", remarque: "" },
   { type: "A définir", categorie: "Technique & Son", id: "EQ_NEW017", value: "Entrée XLR ou Jack 6,35mm", stock: 0, description: "Entrée XLR ou Jack 6,35mm", remarque: "" },
-  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW01", value: "Câbles connexion pédalier", stock: 0, description: "pour Stéphane", remarque: "" }
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW01", value: "Câbles connexion pédalier", stock: 0, description: "pour Stéphane", remarque: "" },
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW03", value: "Stand de guitare", stock: 0, description: "", remarque: "" }
 ];
