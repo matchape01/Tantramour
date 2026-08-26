@@ -498,12 +498,12 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_054",
-    valueFr: "• Mixte, accessible à tous.tes, toux niveaux, sans prérequis",
+    valueFr: "• Mixte, accessible à tous.tes, tous niveaux, sans prérequis",
     valueEn: "• Open to everyone, all levels, no prior experience required",
     descriptif: "",
     placements: ["Participant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","CONFERENCE","TANTRA CAFE"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","MEDITATION / YOGA","TANTRA CAFE","CONFERENCE"]
   },
   {
     id: "COREC_055",
