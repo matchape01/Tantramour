@@ -1,4 +1,4 @@
-// @saved:2026-08-26 21:43:30
+// @saved:2026-08-26 21:44:08
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -148,7 +148,7 @@ var AGENDA = [
   {id:"A_5614",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:30 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_3463",jour:"Jour 4",date:"Mardi 1 septembre",heure:"17.30 - 18.15",type:"REPAS & PAUSE",atelier:"GOUTER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1094",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Fusion : guider / se laisser guider",lieu:"CHENREZIG",fac1:"Stephane Ahmed",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"David Llorca",helper2:"",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:0,colibri:false,logisticId:"JOUR4_DANSE_FUSION___GUIDER___SE_LAI",meetingRoles:""},
-  {id:"A_1095",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Ecstatic Contact #2 ",lieu:"SHAKTI",fac1:"Cedric Vesper",fac2:"Suman (Emmanuelle Cueff)",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Sophie O'Heix",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_ECSTATIC_CONTACT__2_",meetingRoles:"",_corecSelected:{"Participant":["COREC_054","COREC_061","COREC_068"]}},
+  {id:"A_1095",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Ecstatic Contact #2 ",lieu:"SHAKTI",fac1:"Cedric Vesper",fac2:"Suman (Emmanuelle Cueff)",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Sophie O'Heix",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_ECSTATIC_CONTACT__2_",meetingRoles:"",_equipements:{"EQ_SONO":1,"EQ_NEW001":3,"EQ_MICSS":2,"EQ_MIC":1},_corecSelected:{"Participant":["COREC_054","COREC_061","COREC_068"]}},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_1096",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Animal Embodiment ",lieu:"TARA",fac1:"Dorian Vallet",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Virginie Bertrand",helper2:"Veronique Santini Bottemer",helper3:"",helper4:"",angel:"Aurelie Lechardeur",note:"",piment:1,colibri:false,logisticId:"JOUR5_ANIMAL_EMBODIMENT_",meetingRoles:""},
