@@ -633,7 +633,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
     html: "<br>",
     text: "",
-    updatedAt: "2026-08-26 22:16"
+    updatedAt: "2026-08-26 22:17"
   }
 
 };
