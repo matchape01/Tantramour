@@ -69,5 +69,6 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_SONO", value: "Sono", stock: "N/A", description: "Sono", remarque: "" },
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW04", value: "Stand de guitare", stock: 0, description: "", remarque: "" },
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW05", value: "Câble connexion guitare", stock: 0, description: "", remarque: "" },
-  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW06", value: "Câbles connexion pédalier", stock: 0, description: "", remarque: "" }
+  { type: "Hameau", categorie: "Technique & Son", id: "EQ_NEW06", value: "Câbles connexion pédalier", stock: 0, description: "", remarque: "" },
+  { type: "Hameau", categorie: "Aménagement & Equipements", id: "EQ_NEW07", value: "Chaise", stock: 0, description: "", remarque: "" }
 ];
