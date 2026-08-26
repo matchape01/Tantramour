@@ -44,7 +44,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "<span style=\"font-family: inherit;\">• Changer les draps</span><br><ul><li>Changer les tentures</li></ul>",
     apres: "Ranger salle et ramener matos au chapiteau (Micro et pied de micro)",
-    updatedAt: "2026-08-25 01:29"
+    updatedAt: "2026-08-26 09:43"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
