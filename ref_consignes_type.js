@@ -35,7 +35,7 @@ var REF_CONSIGNES_TYPE = [
     types: ["LOVE TEMPLE"]
   },
   {
-    id: "CONS_002",
+    id: "CONS_000",
     valueFr: "• Récupérer la clé de la salle au QG et ouvrir la salle",
     valueEn: "• Collect the room key from HQ and open the room",
     descriptif: "",
