@@ -296,7 +296,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 21:44"
+    updatedAt: "2026-08-26 21:46"
   },
 
   "JOUR4_DANSE_FUSION___GUIDER___SE_LAI": {
