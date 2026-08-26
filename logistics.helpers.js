@@ -737,7 +737,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Préparer l'autel : tapis, fleurs, chandelles<br>• Disposer les zafus artiste + chaises<br>• Installer les bouteilles d'eau proche des artistes",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:16"
+    updatedAt: "2026-08-26 22:17"
   }
 
 };
