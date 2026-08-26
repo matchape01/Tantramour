@@ -43,6 +43,7 @@ ALLOWED = {
     'ref_piment.js',
     'ref_heures.js',
     'ref_display_reports.js',
+    'ref_pause_massage.js',
 }
 
 mimetypes.add_type('text/javascript; charset=utf-8', '.js')

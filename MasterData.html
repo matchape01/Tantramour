@@ -263,6 +263,7 @@
     <button class="tab"        onclick="showTab('consignes_type',this)">📋 Consignes génériques</button>
     <button class="tab"        onclick="showTab('consignes_recurrentes',this)">🔁 Consignes spécifiques</button>
     <button class="tab"        onclick="showTab('translations',this)">🌐 <span data-i18n="md_tab_translations">Traductions</span></button>
+    <button class="tab"        onclick="showTab('pause_massage',this)">🌞 Pause Massage</button>
   </div>
 
   <!-- ════════════════════════════════════════════════
@@ -643,6 +644,42 @@
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════════
+       SECTION : PAUSE MASSAGE
+       Fichier : ref_pause_massage.js  |  { id, jourId, textFr, textEn, actif }
+  ════════════════════════════════════════════════ -->
+  <div class="section" id="sec-pause_massage">
+    <div class="sec-title">🌞 Pause Massage</div>
+    <div class="sec-meta">ref_pause_massage.js — REF_PAUSE_MASSAGE — colonnes : id, jourId, textFr, textEn, actif</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;line-height:1.6;">
+      Configurez ici le texte affiché dans la popup <strong>« Pose Massage »</strong> pour chaque jour du festival.<br>
+      Le texte est affiché en <strong>Français</strong> ou en <strong>Anglais</strong> selon la langue choisie par l'utilisateur.<br>
+      <strong>Actif</strong> : décoché = le bouton est masqué pour ce jour.
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:7%;min-width:60px">Actif</th>
+            <th style="width:10%;min-width:80px">ID</th>
+            <th style="width:12%;min-width:90px">Jour</th>
+            <th style="min-width:180px">Texte FR</th>
+            <th style="min-width:180px">Texte EN</th>
+            <th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-pause_massage"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="pmAddRow()">+ Ajouter une entrée Pause Massage</button>
+    <div class="save-bar" id="bar-pause_massage">
+      <span class="save-bar-msg">⚠️ Modifications non sauvegardées</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-save" onclick="pmSave()">💾 Sauvegarder ref_pause_massage.js</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── DATA UPDATE ── -->
   <div style="margin-top:40px;padding:20px 22px;border:1px solid var(--border);border-radius:10px;background:var(--surface);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:180px;">
@@ -690,6 +727,7 @@
 <script src="ref_equip_cat.js"></script>
 <script src="ref_consignes_type.js"></script>
 <script src="ref_consignes_recurrentes.js"></script>
+<script src="ref_pause_massage.js"></script>
 <script src="github-api.js"></script>
 <script src="loader.js"></script>
 <script>
@@ -810,6 +848,7 @@ function showTab(key, btn) {
   if (key === 'consignes_type' && typeof renderConsignesType === 'function') renderConsignesType();
   if (key === 'consignes_recurrentes' && typeof renderConsignesRecurrentes === 'function') renderConsignesRecurrentes();
   if (key === 'translations' && typeof window.initTranslations === 'function') setTimeout(window.initTranslations, 0);
+  if (key === 'pause_massage' && typeof renderPauseMassage === 'function') renderPauseMassage();
 }
 window.showTab = showTab;
 
@@ -1186,9 +1225,9 @@ function openEqFilter(e, col) {
     '</div>';
 
   document.body.appendChild(popover);
-  activeFilterPopover = { popover: popover, col: col, distinctVals: distinctVals, counts: counts };
+  activeFilterPopover = { popover: popover, col: col, distinctVals: distinctVals, counts: counts, selectedSet: selectedSet };
 
-  renderEqFpList('', selectedSet);
+  renderEqFpList('');
 
   setTimeout(function() {
     var searchInp = document.getElementById('eqFpSearch');
@@ -1221,10 +1260,17 @@ function closeEqFilterPopover() {
 }
 window.closeEqFilterPopover = closeEqFilterPopover;
 
-function renderEqFpList(query, selectedSet) {
+function renderEqFpList(query) {
   if (!activeFilterPopover) return;
   var list = document.getElementById('eqFpList');
   if (!list) return;
+
+  // Sauvegarder l'état des cases visibles avant de reconstruire le DOM
+  var chks = list.querySelectorAll('.eq-fp-chk');
+  chks.forEach(function(chk) {
+    if (chk.checked) activeFilterPopover.selectedSet.add(chk.value);
+    else activeFilterPopover.selectedSet.delete(chk.value);
+  });
 
   var q = (query || '').toLowerCase().trim();
   var vals = activeFilterPopover.distinctVals.filter(function(v) {
@@ -1239,8 +1285,8 @@ function renderEqFpList(query, selectedSet) {
   }
 
   list.innerHTML = '';
-  vals.forEach(function(v, idx) {
-    var isChecked = selectedSet ? selectedSet.has(v) : false;
+  vals.forEach(function(v) {
+    var isChecked = activeFilterPopover.selectedSet.has(v);
     var label = document.createElement('label');
     label.className = 'eq-fp-item';
 
@@ -1272,35 +1318,38 @@ function renderEqFpList(query, selectedSet) {
 function filterEqFpItems() {
   var searchInp = document.getElementById('eqFpSearch');
   var query = searchInp ? searchInp.value : '';
-  // Récupérer les cases actuellement cochées
-  var currentChecked = new Set();
-  var chks = document.querySelectorAll('.eq-fp-chk');
-  chks.forEach(function(chk) {
-    if (chk.checked) currentChecked.add(chk.value);
-  });
-  renderEqFpList(query, currentChecked);
+  renderEqFpList(query);
 }
 window.filterEqFpItems = filterEqFpItems;
 
 function eqFpSelectAll(check) {
+  // Mettre à jour le Set persistant pour toutes les valeurs visibles
   var chks = document.querySelectorAll('.eq-fp-chk');
-  chks.forEach(function(chk) { chk.checked = check; });
+  chks.forEach(function(chk) {
+    chk.checked = check;
+    if (check) activeFilterPopover.selectedSet.add(chk.value);
+    else activeFilterPopover.selectedSet.delete(chk.value);
+  });
 }
 window.eqFpSelectAll = eqFpSelectAll;
 
 function applyEqFilter(col) {
   if (!activeFilterPopover) return;
+
+  // Sauvegarder l'état final des cases visibles dans le Set persistant
   var chks = document.querySelectorAll('.eq-fp-chk');
-  var selected = new Set();
   chks.forEach(function(chk) {
-    if (chk.checked) selected.add(chk.value);
+    if (chk.checked) activeFilterPopover.selectedSet.add(chk.value);
+    else activeFilterPopover.selectedSet.delete(chk.value);
   });
+
+  var selected = activeFilterPopover.selectedSet;
 
   // Si rien n'est coché, ou si toutes les valeurs existantes sont cochées (pas de filtrage)
   if (selected.size === 0 || selected.size === activeFilterPopover.distinctVals.length) {
     delete EQ_FILTERS[col];
   } else {
-    EQ_FILTERS[col] = selected;
+    EQ_FILTERS[col] = new Set(selected);
   }
 
   closeEqFilterPopover();
@@ -1757,15 +1806,49 @@ async function save(key, withData) {
   }
   try {
     if (withData) applyRenames(key);
+
+    // ── Propagation des renommages de catégories vers ref_equipements.js ──
+    // Quand une catégorie est renommée (value modifiée dans equip_cat),
+    // mettre à jour automatiquement le champ `categorie` de tous les équipements concernés.
+    var equipUpdated = false;
+    if (key === 'equip_cat') {
+      var catRenameMap = {};
+      Object.keys(RENAMES['equip_cat']).forEach(function(i) {
+        var oldVal = RENAMES['equip_cat'][i];
+        var item   = STORE['equip_cat'][parseInt(i)];
+        var newVal = item ? String(item.value) : null;
+        if (newVal && newVal !== String(oldVal)) catRenameMap[oldVal] = newVal;
+      });
+      if (Object.keys(catRenameMap).length) {
+        STORE['equipements'].forEach(function(eq) {
+          if (eq.categorie && catRenameMap[eq.categorie]) {
+            eq.categorie = catRenameMap[eq.categorie];
+            equipUpdated = true;
+          }
+        });
+      }
+    }
+
     await saveToServer(cfg.fileName, genRefFile(key));
     if (withData && cfg.dataField.length) await saveToServer('data.js', genDataJs());
+
+    // Sauvegarder ref_equipements.js si des catégories ont été propagées
+    if (equipUpdated) {
+      await saveToServer(CFG['equipements'].fileName, genRefFile('equipements'));
+      DIRTY['equipements'] = false;
+      var eBar = document.getElementById('bar-equipements');
+      if (eBar) eBar.classList.remove('on');
+      var eSticky = document.getElementById('bar-equipements-sticky');
+      if (eSticky) eSticky.classList.remove('on');
+    }
+
     DIRTY[key] = false;
     RENAMES[key] = {};
     var bar = document.getElementById('bar-' + key);
     if (bar) bar.classList.remove('on');
     var sticky = document.getElementById('bar-' + key + '-sticky');
     if (sticky) sticky.classList.remove('on');
-    showToast('✅ ' + cfg.fileName + ' sauvegardé' + (withData ? ' + data.js' : '') + '.', false);
+    showToast('✅ ' + cfg.fileName + ' sauvegardé' + (equipUpdated ? ' + ref_equipements.js mis à jour' : '') + (withData ? ' + data.js' : '') + '.', false);
   } catch(err) {
     showToast('❌ ' + err.message, true);
   }
@@ -2840,88 +2923,112 @@ function handleCorecImportFile(event) {
 }
 window.handleCorecImportFile = handleCorecImportFile;
 
+function _corecParseRow(row, normFn, warnings, rn) {
+  var pl = [];
+  if (/^oui$/i.test(normFn(row.getCell(5).value)))  pl.push('Avant');
+  if (/^oui$/i.test(normFn(row.getCell(6).value)))  pl.push('Pendant');
+  if (/^oui$/i.test(normFn(row.getCell(7).value)))  pl.push('Après');
+  if (/^oui$/i.test(normFn(row.getCell(8).value)))  pl.push('Logistique');
+  if (/^oui$/i.test(normFn(row.getCell(9).value)))  pl.push('Spécifique');
+  if (/^oui$/i.test(normFn(row.getCell(10).value))) pl.push('Participant');
+  var typesRaw = normFn(row.getCell(11).value);
+  var vals = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
+  var valid = consTypesOptions();
+  var types = vals.filter(function(t) {
+    if (valid.indexOf(t) === -1) { warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.'); return false; }
+    return true;
+  });
+  return { id:normFn(row.getCell(1).value), vFr:normFn(row.getCell(2).value), vEn:normFn(row.getCell(3).value), desc:normFn(row.getCell(4).value), pl:pl, types:types };
+}
+function _corecComputeChanges(cur, d) {
+  var curPl=(cur.placements||[]).slice().sort().join('|'), newPl=d.pl.slice().sort().join('|');
+  var curTy=(cur.types||[]).slice().sort().join('|'),      newTy=d.types.slice().sort().join('|');
+  var changes=[];
+  [{key:'valueFr',label:'Texte FR',cur:cur.valueFr||'',next:d.vFr},{key:'valueEn',label:'Texte EN',cur:cur.valueEn||'',next:d.vEn},{key:'descriptif',label:'Descriptif',cur:cur.descriptif||'',next:d.desc},{key:'placements',label:'Placements',cur:curPl,next:newPl,_pl:d.pl},{key:'types',label:'Types',cur:curTy,next:newTy,_ty:d.types}].forEach(function(f){
+    if(f.next!==f.cur) changes.push({key:f.key,label:f.label,currentValue:f.cur.replace(/\|/g,', '),nextValue:f.next.replace(/\|/g,', '),choice:'apply',_pl:f._pl,_ty:f._ty});
+  });
+  return changes;
+}
+
 function corecBuildImportPreview(sheet) {
   var idMap = {};
   COREC_STORE.forEach(function(c, idx) { idMap[c.id] = idx; });
   var usedIds = {};
   COREC_STORE.forEach(function(c) { usedIds[c.id] = true; });
 
-  var items = [], warnings = [], seenIds = {};
-
+  var warnings = [];
+  // Passe 1 : collecter toutes les lignes non vides
+  var allRows = [];
   for (var rn = 2; rn <= sheet.rowCount; rn++) {
     var row = sheet.getRow(rn);
-    var rawId      = corecNormCell(row.getCell(1).value);
-    var vFr        = corecNormCell(row.getCell(2).value);
-    var vEn        = corecNormCell(row.getCell(3).value);
-    var desc       = corecNormCell(row.getCell(4).value);
-    var avant      = corecNormCell(row.getCell(5).value);
-    var pendant    = corecNormCell(row.getCell(6).value);
-    var apres      = corecNormCell(row.getCell(7).value);
-    var logistique = corecNormCell(row.getCell(8).value);
-    var specifique = corecNormCell(row.getCell(9).value);
-    var participant= corecNormCell(row.getCell(10).value);
-    var typesRaw   = corecNormCell(row.getCell(11).value);
-
-    if (!rawId && !vFr && !vEn && !desc && !avant && !pendant && !apres && !logistique && !specifique && !participant && !typesRaw) continue;
-
-    var newPlacements = [];
-    if (/^oui$/i.test(avant))       newPlacements.push('Avant');
-    if (/^oui$/i.test(pendant))     newPlacements.push('Pendant');
-    if (/^oui$/i.test(apres))       newPlacements.push('Après');
-    if (/^oui$/i.test(logistique))  newPlacements.push('Logistique');
-    if (/^oui$/i.test(specifique))  newPlacements.push('Spécifique');
-    if (/^oui$/i.test(participant)) newPlacements.push('Participant');
-
-    var newTypes = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
-    var validTypeVals = consTypesOptions();
-    newTypes = newTypes.filter(function(t) {
-      if (validTypeVals.indexOf(t) === -1) {
-        warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.');
-        return false;
-      }
-      return true;
-    });
-
-    var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
-
-    if (existingIdx !== -1) {
-      if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
-      seenIds[rawId] = true;
-      var cur = COREC_STORE[existingIdx];
-      var curPl = (cur.placements || []).slice().sort().join('|');
-      var newPl = newPlacements.slice().sort().join('|');
-      var curTy = (cur.types || []).slice().sort().join('|');
-      var newTy = newTypes.slice().sort().join('|');
-      var changes = [];
-      [
-        { key:'valueFr',    label:'Texte FR',    cur: cur.valueFr    || '', next: vFr },
-        { key:'valueEn',    label:'Texte EN',    cur: cur.valueEn    || '', next: vEn },
-        { key:'descriptif', label:'Descriptif',  cur: cur.descriptif || '', next: desc },
-        { key:'placements', label:'Placements',  cur: curPl, next: newPl, _pl: newPlacements },
-        { key:'types',      label:'Types',        cur: curTy, next: newTy, _ty: newTypes }
-      ].forEach(function(f) {
-        if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
-      });
-      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:existingIdx, label:vFr||rawId, changes:changes });
-    } else {
-      if (rawId && seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
-      if (rawId) seenIds[rawId] = true;
-      var n2 = 1, newId2;
-      do { newId2 = 'COREC_NEW' + String(n2).padStart(3,'0'); n2++; } while (usedIds[newId2] && n2 <= 999);
-      usedIds[newId2] = true;
-      var newPl2 = newPlacements.slice().sort().join('|');
-      var newTy2 = newTypes.slice().sort().join('|');
-      var changes2 = [
-        { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:vFr,  choice:'apply' },
-        { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:vEn,  choice:'apply' },
-        { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:desc, choice:'apply' },
-        { key:'placements', label:'Placements', currentValue:'', nextValue:newPl2.replace(/\|/g,', '), choice:'apply', _pl:newPlacements },
-        { key:'types',      label:'Types',       currentValue:'', nextValue:newTy2.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:newTypes }
-      ];
-      items.push({ mode:'create', id:newId2, originalId:rawId, storeIdx:-1, label:vFr||rawId||newId2, changes:changes2 });
-    }
+    var d = _corecParseRow(row, corecNormCell, warnings, rn);
+    if (!d.id && !d.vFr && !d.vEn && !d.desc) continue;
+    allRows.push({ rn: rn, d: d });
   }
-  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){return s+it.changes.length;},0) };
+
+  // Passe 2 : détecter les ID en double dans le fichier
+  var idOccurrences = {};
+  allRows.forEach(function(r, i) {
+    if (!r.d.id) return;
+    if (!idOccurrences[r.d.id]) idOccurrences[r.d.id] = [];
+    idOccurrences[r.d.id].push(i);
+  });
+
+  var items = [], handledRows = {};
+
+  allRows.forEach(function(r, i) {
+    if (handledRows[i]) return;
+    var d = r.d, rawId = d.id;
+
+    // ── Cas 1 : ID en double dans le fichier → conflict ──
+    if (rawId && idOccurrences[rawId] && idOccurrences[rawId].length > 1) {
+      var occIdxs = idOccurrences[rawId];
+      occIdxs.forEach(function(idx) { handledRows[idx] = true; });
+      var versions = occIdxs.map(function(idx) { return { rn:allRows[idx].rn, d:allRows[idx].d, chosen:idx===occIdxs[0] }; });
+      var existingIdx = idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
+      items.push({ mode:existingIdx!==-1?'conflict-update':'conflict-create', id:rawId, storeIdx:existingIdx, versions:versions, chosenVersion:0, label:versions[0].d.vFr||rawId });
+      return;
+    }
+
+    // ── Cas 2 : ID existant dans le store → update ──
+    if (rawId && idMap.hasOwnProperty(rawId)) {
+      var changes = _corecComputeChanges(COREC_STORE[idMap[rawId]], d);
+      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:changes });
+      return;
+    }
+
+    // ── Cas 3 : ID libre → création avec ID forcé ──
+    if (rawId) {
+      usedIds[rawId] = true;
+      var plStr=d.pl.slice().sort().join('|'), tyStr=d.types.slice().sort().join('|');
+      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:[
+        {key:'valueFr',   label:'Texte FR',   currentValue:'',nextValue:d.vFr, choice:'apply'},
+        {key:'valueEn',   label:'Texte EN',   currentValue:'',nextValue:d.vEn, choice:'apply'},
+        {key:'descriptif',label:'Descriptif', currentValue:'',nextValue:d.desc,choice:'apply'},
+        {key:'placements',label:'Placements', currentValue:'',nextValue:plStr.replace(/\|/g,', '),choice:'apply',_pl:d.pl},
+        {key:'types',     label:'Types',      currentValue:'',nextValue:tyStr.replace(/\|/g,', ')||'Tous',choice:'apply',_ty:d.types},
+      ]});
+      return;
+    }
+
+    // ── Cas 4 : aucun ID → auto-ID COREC_NEWxxx ──
+    var n2=1, newId2;
+    do { newId2='COREC_NEW'+String(n2).padStart(3,'0'); n2++; } while(usedIds[newId2]&&n2<=999);
+    usedIds[newId2]=true;
+    var plStr4=d.pl.slice().sort().join('|'), tyStr4=d.types.slice().sort().join('|');
+    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:[
+      {key:'valueFr',   label:'Texte FR',   currentValue:'',nextValue:d.vFr, choice:'apply'},
+      {key:'valueEn',   label:'Texte EN',   currentValue:'',nextValue:d.vEn, choice:'apply'},
+      {key:'descriptif',label:'Descriptif', currentValue:'',nextValue:d.desc,choice:'apply'},
+      {key:'placements',label:'Placements', currentValue:'',nextValue:plStr4.replace(/\|/g,', '),choice:'apply',_pl:d.pl},
+      {key:'types',     label:'Types',      currentValue:'',nextValue:tyStr4.replace(/\|/g,', ')||'Tous',choice:'apply',_ty:d.types},
+    ]});
+  });
+
+  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){
+    if(it.mode==='conflict-update'||it.mode==='conflict-create') return s+1;
+    return s+(it.changes?it.changes.length:0);
+  },0) };
 }
 
 function corecRenderImportLoading(filename) {
@@ -2946,18 +3053,25 @@ function corecRenderImportPreview(preview, filename) {
       '<div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
     return;
   }
-  var updateCount = preview.items.filter(function(it){return it.mode==='update';}).length;
-  var createCount = preview.items.filter(function(it){return it.mode==='create';}).length;
+  var updateCount  = preview.items.filter(function(it){return it.mode==='update';}).length;
+  var createCount  = preview.items.filter(function(it){return it.mode==='create';}).length;
+  var conflictCount= preview.items.filter(function(it){return it.mode==='conflict-update'||it.mode==='conflict-create';}).length;
   el.innerHTML =
     '<div class="import-summary-box">' +
       warningsHtml +
+      (conflictCount ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;font-weight:700;">⚠️ ' + conflictCount + ' ID en doublon dans le fichier — choisissez la version à conserver pour chacun.</div>' : '') +
       '<div class="import-summary-title">Validation des modifications</div>' +
-      '<div class="import-help">ID et statut Actif ne sont jamais modifiés. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement dans le tableau.</div>' +
-      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-help">Pour les <strong>nouvelles consignes</strong> : l\'ID fourni est conservé tel quel s\'il est disponible, sinon un ID auto est attribué. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement. Pour les <strong>mises à jour</strong> : l\'ID et le statut Actif ne sont jamais modifiés.</div>' +
+      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s)' + (conflictCount ? ' · ' + conflictCount + ' conflit(s) à résoudre' : '') + ' · ' + preview.totalChanges + ' changement(s)</div>' +
       '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        if (item.mode === 'conflict-update' || item.mode === 'conflict-create') {
+          return _renderConflictItem(item, itemIdx, 'corec');
+        }
         var badge = item.mode === 'create'
-          ? '<span style="font-size:11px;font-weight:700;color:#065F46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouveau · Actif = NON · ID : ' + esc(item.id) + '</span>'
-          : '<span class="import-item-meta">ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+          ? (item.idForced
+              ? '<span style="font-size:11px;font-weight:700;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouvelle · ID forcé : ' + esc(item.id) + ' · Actif = NON</span>'
+              : '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouvelle · ID auto : ' + esc(item.id) + ' · Actif = NON</span>')
+          : '<span class="import-item-meta">Mise à jour · ID : ' + esc(item.id) + ' · Actif inchangé</span>';
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
@@ -3008,6 +3122,23 @@ async function applyCorecImportPreview() {
   var appliedCount = 0;
 
   COREC_IMPORT_PREVIEW.items.forEach(function(item) {
+    // ── Conflit : appliquer la version choisie ──
+    if (item.mode === 'conflict-update' || item.mode === 'conflict-create') {
+      var chosen = item.versions[item.chosenVersion] || item.versions[0];
+      if (!chosen) return;
+      if (item.mode === 'conflict-update') {
+        var cur = COREC_STORE[item.storeIdx];
+        if (!cur) return;
+        _applyConflictVersion(cur, chosen.d, false);
+      } else {
+        var newCorec2 = { id:item.id, valueFr:'', valueEn:'', descriptif:'', placements:[], actif:false, types:[] };
+        _applyConflictVersion(newCorec2, chosen.d, true);
+        COREC_STORE.push(newCorec2);
+      }
+      appliedCount++;
+      return;
+    }
+
     var selected = item.changes.filter(function(c){ return c.choice !== 'skip'; });
     if (!selected.length) return;
 
@@ -3273,94 +3404,150 @@ function handleConsImportFile(event) {
 }
 window.handleConsImportFile = handleConsImportFile;
 
+function _consParsePlacements(row, normFn) {
+  var pl = [];
+  if (/^oui$/i.test(normFn(row.getCell(5).value)))  pl.push('Avant');
+  if (/^oui$/i.test(normFn(row.getCell(6).value)))  pl.push('Pendant');
+  if (/^oui$/i.test(normFn(row.getCell(7).value)))  pl.push('Après');
+  if (/^oui$/i.test(normFn(row.getCell(8).value)))  pl.push('Logistique');
+  if (/^oui$/i.test(normFn(row.getCell(9).value)))  pl.push('Spécifique');
+  if (/^oui$/i.test(normFn(row.getCell(10).value))) pl.push('Participant');
+  return pl;
+}
+function _consParseTypes(row, normFn, warnings, rn) {
+  var typesRaw = normFn(row.getCell(11).value);
+  var vals = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
+  var valid = consTypesOptions();
+  return vals.filter(function(t) {
+    if (valid.indexOf(t) === -1) { warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.'); return false; }
+    return true;
+  });
+}
+// Construit un objet "données de ligne" pour une ligne du sheet
+function _consParseRow(row, normFn, warnings, rn) {
+  return {
+    id:    normFn(row.getCell(1).value),
+    vFr:   normFn(row.getCell(2).value),
+    vEn:   normFn(row.getCell(3).value),
+    desc:  normFn(row.getCell(4).value),
+    pl:    _consParsePlacements(row, normFn),
+    types: _consParseTypes(row, normFn, warnings, rn),
+  };
+}
+// Construit les changes entre un enregistrement STORE et les données de ligne
+function _consComputeChanges(cur, d) {
+  var curPl = (cur.placements || []).slice().sort().join('|');
+  var newPl = d.pl.slice().sort().join('|');
+  var curTy = (cur.types || []).slice().sort().join('|');
+  var newTy = d.types.slice().sort().join('|');
+  var changes = [];
+  [
+    { key:'valueFr',    label:'Texte FR',   cur:cur.valueFr    ||'', next:d.vFr },
+    { key:'valueEn',    label:'Texte EN',   cur:cur.valueEn    ||'', next:d.vEn },
+    { key:'descriptif', label:'Descriptif', cur:cur.descriptif ||'', next:d.desc },
+    { key:'placements', label:'Placements', cur:curPl, next:newPl, _pl:d.pl },
+    { key:'types',      label:'Types',      cur:curTy, next:newTy, _ty:d.types },
+  ].forEach(function(f) {
+    if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
+  });
+  return changes;
+}
+
 function consBuildImportPreview(sheet) {
-  // Index ID → position dans CONS_STORE
   var idMap = {};
   CONS_STORE.forEach(function(c, idx) { idMap[c.id] = idx; });
   var usedIds = {};
   CONS_STORE.forEach(function(c) { usedIds[c.id] = true; });
 
-  var items = [], warnings = [], seenIds = {};
-
+  var warnings = [];
+  // Passe 1 : collecter toutes les lignes non vides
+  var allRows = [];
   for (var rn = 2; rn <= sheet.rowCount; rn++) {
     var row = sheet.getRow(rn);
-    var rawId  = consNormCell(row.getCell(1).value);
-    var vFr    = consNormCell(row.getCell(2).value);
-    var vEn    = consNormCell(row.getCell(3).value);
-    var desc   = consNormCell(row.getCell(4).value);
-    var avant      = consNormCell(row.getCell(5).value);
-    var pendant    = consNormCell(row.getCell(6).value);
-    var apres      = consNormCell(row.getCell(7).value);
-    var logistique = consNormCell(row.getCell(8).value);
-    var specifique = consNormCell(row.getCell(9).value);
-    var participant= consNormCell(row.getCell(10).value);
-    var typesRaw   = consNormCell(row.getCell(11).value);
-
-    // Ligne vide → ignorée
-    if (!rawId && !vFr && !vEn && !desc && !avant && !pendant && !apres && !logistique && !specifique && !participant && !typesRaw) continue;
-
-    // Construire tableau placements depuis colonnes Oui/Non
-    var newPlacements = [];
-    if (/^oui$/i.test(avant))       newPlacements.push('Avant');
-    if (/^oui$/i.test(pendant))     newPlacements.push('Pendant');
-    if (/^oui$/i.test(apres))       newPlacements.push('Après');
-    if (/^oui$/i.test(logistique))  newPlacements.push('Logistique');
-    if (/^oui$/i.test(specifique))  newPlacements.push('Spécifique');
-    if (/^oui$/i.test(participant)) newPlacements.push('Participant');
-
-    // Construire tableau types (séparateur virgule ou point-virgule)
-    var newTypes = typesRaw ? typesRaw.split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean) : [];
-    var validTypeVals = consTypesOptions();
-    newTypes = newTypes.filter(function(t) {
-      if (validTypeVals.indexOf(t) === -1) {
-        warnings.push('⚠️ Ligne ' + rn + ' : type « ' + t + ' » inconnu, ignoré.');
-        return false;
-      }
-      return true;
-    });
-
-    var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
-
-    if (existingIdx !== -1) {
-      // ── Mise à jour — ID existant (ID et actif non modifiables) ──
-      if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
-      seenIds[rawId] = true;
-      var cur = CONS_STORE[existingIdx];
-      var curPl = (cur.placements || []).slice().sort().join('|');
-      var newPl = newPlacements.slice().sort().join('|');
-      var curTy = (cur.types || []).slice().sort().join('|');
-      var newTy = newTypes.slice().sort().join('|');
-      var changes = [];
-      [
-        { key:'valueFr',    label:'Texte FR',    cur: cur.valueFr    || '', next: vFr },
-        { key:'valueEn',    label:'Texte EN',    cur: cur.valueEn    || '', next: vEn },
-        { key:'descriptif', label:'Descriptif',  cur: cur.descriptif || '', next: desc },
-        { key:'placements', label:'Placements',  cur: curPl, next: newPl, _pl: newPlacements },
-        { key:'types',      label:'Types',        cur: curTy, next: newTy, _ty: newTypes }
-      ].forEach(function(f) {
-        if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
-      });
-      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:existingIdx, label:vFr||rawId, changes:changes });
-    } else {
-      // ── Création — ID absent ou inconnu → nouveau CONS_NEWxxx, actif = false ──
-      if (rawId && seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier, ligne ' + rn + ' ignorée : ' + rawId); continue; }
-      if (rawId) seenIds[rawId] = true;
-      var n2 = 1, newId2;
-      do { newId2 = 'CONS_NEW' + String(n2).padStart(3,'0'); n2++; } while (usedIds[newId2] && n2 <= 999);
-      usedIds[newId2] = true;
-      var newPl2 = newPlacements.slice().sort().join('|');
-      var newTy2 = newTypes.slice().sort().join('|');
-      var changes2 = [
-        { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:vFr,  choice:'apply' },
-        { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:vEn,  choice:'apply' },
-        { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:desc, choice:'apply' },
-        { key:'placements', label:'Placements', currentValue:'', nextValue:newPl2.replace(/\|/g,', '), choice:'apply', _pl:newPlacements },
-        { key:'types',      label:'Types',       currentValue:'', nextValue:newTy2.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:newTypes }
-      ];
-      items.push({ mode:'create', id:newId2, originalId:rawId, storeIdx:-1, label:vFr||rawId||newId2, changes:changes2 });
-    }
+    var d = _consParseRow(row, consNormCell, warnings, rn);
+    if (!d.id && !d.vFr && !d.vEn && !d.desc) continue; // ligne vide
+    allRows.push({ rn: rn, d: d });
   }
-  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){return s+it.changes.length;},0) };
+
+  // Passe 2 : détecter les ID en double dans le fichier (uniquement pour les ID non vides)
+  var idOccurrences = {}; // id → [index dans allRows]
+  allRows.forEach(function(r, i) {
+    if (!r.d.id) return;
+    if (!idOccurrences[r.d.id]) idOccurrences[r.d.id] = [];
+    idOccurrences[r.d.id].push(i);
+  });
+
+  var items = [];
+  var handledRows = {}; // index allRows déjà traités (absorbés dans un conflit)
+
+  allRows.forEach(function(r, i) {
+    if (handledRows[i]) return;
+    var d = r.d;
+    var rawId = d.id;
+
+    // ── Cas 1 : ID présent et en double dans le fichier → conflict ──
+    if (rawId && idOccurrences[rawId] && idOccurrences[rawId].length > 1) {
+      var occIdxs = idOccurrences[rawId];
+      // Marquer toutes les occurrences comme traitées
+      occIdxs.forEach(function(idx) { handledRows[idx] = true; });
+      var versions = occIdxs.map(function(idx) {
+        var rd = allRows[idx].d;
+        return { rn: allRows[idx].rn, d: rd, chosen: idx === occIdxs[0] };
+      });
+      var existingIdx = idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
+      items.push({
+        mode: existingIdx !== -1 ? 'conflict-update' : 'conflict-create',
+        id: rawId,
+        storeIdx: existingIdx,
+        versions: versions,       // tableau des occurrences avec leur contenu
+        chosenVersion: 0,         // index dans versions (0 = première par défaut)
+        label: versions[0].d.vFr || rawId,
+      });
+      return;
+    }
+
+    // ── Cas 2 : ID présent et existant dans le store → update ──
+    if (rawId && idMap.hasOwnProperty(rawId)) {
+      var cur = CONS_STORE[idMap[rawId]];
+      var changes = _consComputeChanges(cur, d);
+      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:changes });
+      return;
+    }
+
+    // ── Cas 3 : ID présent et libre → création avec ID forcé ──
+    if (rawId) {
+      var newPl3 = d.pl.slice().sort().join('|');
+      var newTy3 = d.types.slice().sort().join('|');
+      usedIds[rawId] = true;
+      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:[
+        { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:d.vFr,  choice:'apply' },
+        { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:d.vEn,  choice:'apply' },
+        { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:d.desc, choice:'apply' },
+        { key:'placements', label:'Placements', currentValue:'', nextValue:newPl3.replace(/\|/g,', '), choice:'apply', _pl:d.pl },
+        { key:'types',      label:'Types',      currentValue:'', nextValue:newTy3.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:d.types },
+      ]});
+      return;
+    }
+
+    // ── Cas 4 : aucun ID → auto-ID CONS_NEWxxx ──
+    var n2 = 1, newId2;
+    do { newId2 = 'CONS_NEW' + String(n2).padStart(3,'0'); n2++; } while (usedIds[newId2] && n2 <= 999);
+    usedIds[newId2] = true;
+    var newPl4 = d.pl.slice().sort().join('|');
+    var newTy4 = d.types.slice().sort().join('|');
+    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:[
+      { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:d.vFr,  choice:'apply' },
+      { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:d.vEn,  choice:'apply' },
+      { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:d.desc, choice:'apply' },
+      { key:'placements', label:'Placements', currentValue:'', nextValue:newPl4.replace(/\|/g,', '), choice:'apply', _pl:d.pl },
+      { key:'types',      label:'Types',      currentValue:'', nextValue:newTy4.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:d.types },
+    ]});
+  });
+
+  return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){
+    if (it.mode==='conflict-update'||it.mode==='conflict-create') return s+1;
+    return s+(it.changes?it.changes.length:0);
+  },0) };
 }
 
 function consRenderImportLoading(filename) {
@@ -3371,6 +3558,37 @@ function consRenderImportError(message) {
   document.getElementById('consImportSummary').innerHTML =
     '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
 }
+// ── Génère le HTML d'un item "conflict" (doublon dans le fichier) ────────────
+function _renderConflictItem(item, itemIdx, prefix) {
+  var isUpdate = item.mode === 'conflict-update';
+  var badge = isUpdate
+    ? '<span style="font-size:11px;font-weight:700;color:#1e40af;background:#dbeafe;border:1px solid #93c5fd;border-radius:4px;padding:2px 6px;">⚠️ Doublon — ID existant : ' + esc(item.id) + '</span>'
+    : '<span style="font-size:11px;font-weight:700;color:#7c2d12;background:#fff7ed;border:1px solid #fb923c;border-radius:4px;padding:2px 6px;">⚠️ Doublon — Nouvelle consigne : ' + esc(item.id) + '</span>';
+  var versionsHtml = item.versions.map(function(v, vi) {
+    var d = v.d;
+    var plLabel = d.pl.length ? d.pl.join(', ') : '—';
+    var tyLabel = d.types.length ? d.types.join(', ') : 'Tous';
+    return '<label style="display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:2px solid ' + (vi===0?'#3b82d4':'var(--border)') + ';border-radius:8px;cursor:pointer;background:' + (vi===0?'#eff6ff':'var(--surface)') + ';margin-bottom:6px;" id="' + prefix + '-conflict-' + itemIdx + '-label-' + vi + '">' +
+      '<input type="radio" name="' + prefix + '-conflict-' + itemIdx + '" value="' + vi + '" ' + (vi===0?'checked':'') + ' style="margin-top:3px;flex-shrink:0" onchange="setConflictChoice(\'' + prefix + '\',' + itemIdx + ',' + vi + ')">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">Ligne ' + v.rn + ' du fichier</div>' +
+        '<div style="font-size:12px;font-weight:600;margin-bottom:2px;">' + esc(d.vFr||'—') + '</div>' +
+        (d.vEn ? '<div style="font-size:11px;color:var(--muted);margin-bottom:2px;">' + esc(d.vEn) + '</div>' : '') +
+        (d.desc? '<div style="font-size:11px;color:var(--muted);margin-bottom:2px;font-style:italic;">' + esc(d.desc) + '</div>' : '') +
+        '<div style="font-size:11px;color:var(--muted);">Placements : ' + esc(plLabel) + ' · Types : ' + esc(tyLabel) + '</div>' +
+      '</div>' +
+    '</label>';
+  }).join('');
+  return '<div class="import-item" style="border-color:#fb923c;">' +
+    '<div class="import-item-head">' +
+      '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
+      '<div class="import-item-meta">' + item.versions.length + ' occurrences</div>' +
+    '</div>' +
+    '<div style="padding:4px 0 2px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;">Choisissez quelle version conserver :</div>' +
+    versionsHtml +
+  '</div>';
+}
+
 function consRenderImportPreview(preview, filename) {
   var el = document.getElementById('consImportSummary');
   var warningsHtml = (preview.warnings && preview.warnings.length)
@@ -3385,18 +3603,25 @@ function consRenderImportPreview(preview, filename) {
       '<div class="import-empty">Aucune modification détectée dans ' + esc(filename) + '.</div></div>';
     return;
   }
-  var updateCount = preview.items.filter(function(it){return it.mode==='update';}).length;
-  var createCount = preview.items.filter(function(it){return it.mode==='create';}).length;
+  var updateCount  = preview.items.filter(function(it){return it.mode==='update';}).length;
+  var createCount  = preview.items.filter(function(it){return it.mode==='create';}).length;
+  var conflictCount= preview.items.filter(function(it){return it.mode==='conflict-update'||it.mode==='conflict-create';}).length;
   el.innerHTML =
     '<div class="import-summary-box">' +
       warningsHtml +
+      (conflictCount ? '<div style="margin-bottom:12px;padding:10px 14px;border-radius:6px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:13px;font-weight:700;">⚠️ ' + conflictCount + ' ID en doublon dans le fichier — choisissez la version à conserver pour chacun.</div>' : '') +
       '<div class="import-summary-title">Validation des modifications</div>' +
-      '<div class="import-help">ID et statut Actif ne sont jamais modifiés. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement dans le tableau.</div>' +
-      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s) · ' + preview.totalChanges + ' changement(s)</div>' +
+      '<div class="import-help">Pour les <strong>nouvelles consignes</strong> : l\'ID fourni est conservé tel quel s\'il est disponible, sinon un ID auto est attribué. Les nouvelles consignes sont créées avec <strong>Actif = NON</strong> — à activer manuellement. Pour les <strong>mises à jour</strong> : l\'ID et le statut Actif ne sont jamais modifiés.</div>' +
+      '<div class="import-item-meta">' + updateCount + ' mise(s) à jour · ' + createCount + ' création(s)' + (conflictCount ? ' · ' + conflictCount + ' conflit(s) à résoudre' : '') + ' · ' + preview.totalChanges + ' changement(s)</div>' +
       '<div class="import-summary-list">' + preview.items.map(function(item, itemIdx) {
+        if (item.mode === 'conflict-update' || item.mode === 'conflict-create') {
+          return _renderConflictItem(item, itemIdx, 'cons');
+        }
         var badge = item.mode === 'create'
-          ? '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouveau · Actif = NON · ID : ' + esc(item.id) + '</span>'
-          : '<span class="import-item-meta">ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+          ? (item.idForced
+              ? '<span style="font-size:11px;font-weight:700;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouvelle · ID forcé : ' + esc(item.id) + ' · Actif = NON</span>'
+              : '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouvelle · ID auto : ' + esc(item.id) + ' · Actif = NON</span>')
+          : '<span class="import-item-meta">Mise à jour · ID : ' + esc(item.id) + ' · Actif inchangé</span>';
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
@@ -3424,6 +3649,21 @@ function consRenderImportPreview(preview, filename) {
       '</div>' +
     '</div>';
 }
+// Sélection de version pour un conflit (partagée cons + corec)
+function setConflictChoice(prefix, itemIdx, vi) {
+  var preview = prefix === 'cons' ? CONS_IMPORT_PREVIEW : COREC_IMPORT_PREVIEW;
+  if (!preview || !preview.items[itemIdx]) return;
+  preview.items[itemIdx].chosenVersion = vi;
+  // Mettre à jour le style des labels radio
+  preview.items[itemIdx].versions.forEach(function(_, j) {
+    var lbl = document.getElementById(prefix + '-conflict-' + itemIdx + '-label-' + j);
+    if (lbl) {
+      lbl.style.borderColor    = j === vi ? '#3b82d4'       : 'var(--border)';
+      lbl.style.backgroundColor= j === vi ? '#eff6ff'       : 'var(--surface)';
+    }
+  });
+}
+window.setConflictChoice = setConflictChoice;
 function clearConsImportPreview() {
   CONS_IMPORT_PREVIEW = null;
   document.getElementById('consImportSummary').innerHTML = '';
@@ -3442,11 +3682,38 @@ function setConsImportSavingState(isSaving) {
   if (cancelBtn) { cancelBtn.disabled = isSaving; }
 }
 
+// Applique les données d'une version choisie dans un conflit sur un objet cible (update ou create)
+function _applyConflictVersion(target, d, isCreate) {
+  target.valueFr    = d.vFr;
+  target.valueEn    = d.vEn;
+  target.descriptif = d.desc;
+  target.placements = d.pl.slice();
+  target.types      = d.types.slice();
+  if (isCreate) { target.actif = false; }
+}
+
 async function applyConsImportPreview() {
   if (!CONS_IMPORT_PREVIEW || !CONS_IMPORT_PREVIEW.items.length) return;
   var appliedCount = 0;
 
   CONS_IMPORT_PREVIEW.items.forEach(function(item) {
+    // ── Conflit : appliquer la version choisie ──
+    if (item.mode === 'conflict-update' || item.mode === 'conflict-create') {
+      var chosen = item.versions[item.chosenVersion] || item.versions[0];
+      if (!chosen) return;
+      if (item.mode === 'conflict-update') {
+        var cur = CONS_STORE[item.storeIdx];
+        if (!cur) return;
+        _applyConflictVersion(cur, chosen.d, false);
+      } else {
+        var newCons2 = { id:item.id, valueFr:'', valueEn:'', descriptif:'', placements:[], actif:false, types:[] };
+        _applyConflictVersion(newCons2, chosen.d, true);
+        CONS_STORE.push(newCons2);
+      }
+      appliedCount++;
+      return;
+    }
+
     var selected = item.changes.filter(function(c){ return c.choice !== 'skip'; });
     if (!selected.length) return;
 
@@ -3498,6 +3765,156 @@ window.applyConsImportPreview = applyConsImportPreview;
 try { renderConsignesType(); } catch(e) { console.error('[MasterData] renderConsignesType init error:', e); }
 try { renderConsignesRecurrentes(); } catch(e) { console.error('[MasterData] renderConsignesRecurrentes init error:', e); }
 console.log('[MasterData] loadData callback OK — CONS_STORE:', (typeof CONS_STORE !== 'undefined' ? CONS_STORE.length : 'UNDEFINED'), 'COREC_STORE:', (typeof COREC_STORE !== 'undefined' ? COREC_STORE.length : 'UNDEFINED'));
+
+// ════════════════════════════════════════════════════════════
+// PAUSE MASSAGE — GESTION DÉDIÉE
+// Fichier : ref_pause_massage.js  |  { id, jourId, textFr, textEn, actif }
+// ════════════════════════════════════════════════════════════
+
+var PM_STORE = (typeof REF_PAUSE_MASSAGE !== 'undefined' ? REF_PAUSE_MASSAGE : [])
+  .map(function(p) { return Object.assign({}, p); });
+var PM_DIRTY = false;
+var PM_EDIT_I = null;
+
+function pmJourOptions(selected) {
+  var opts = '<option value="">— Tous les jours —</option>';
+  REF_JOURS.forEach(function(j) {
+    opts += '<option value="' + esc(j.id) + '"' + (selected === j.id ? ' selected' : '') + '>' + esc(j.label) + '</option>';
+  });
+  return opts;
+}
+
+function pmJourLabel(jourId) {
+  if (!jourId) return 'Tous les jours';
+  var j = REF_JOURS.find(function(j) { return j.id === jourId; });
+  return j ? j.label : jourId;
+}
+
+function renderPauseMassage() {
+  var tbody = document.getElementById('tbody-pause_massage');
+  if (!tbody) return;
+  if (!PM_STORE.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Aucune entrée Pause Massage.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = PM_STORE.map(function(p, i) {
+    var actif = p.actif !== false;
+    var vFr = String(p.textFr || '').length > 60 ? String(p.textFr).slice(0, 60) + '…' : (p.textFr || '');
+    var vEn = String(p.textEn || '').length > 60 ? String(p.textEn).slice(0, 60) + '…' : (p.textEn || '');
+    return '<tr id="row-pm-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
+      '<td style="text-align:center;"><input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="pmToggleActif(' + i + ',this.checked)"></td>' +
+      '<td class="td-id">' + esc(p.id) + '</td>' +
+      '<td class="td-val" style="font-size:12px;">' + esc(pmJourLabel(p.jourId)) + '</td>' +
+      '<td class="td-val" style="white-space:pre-wrap;" title="' + esc(p.textFr || '') + '">' + esc(vFr) + '</td>' +
+      '<td class="td-val" style="white-space:pre-wrap;" title="' + esc(p.textEn || '') + '">' + esc(vEn) + '</td>' +
+      '<td class="td-act"><button class="btn" onclick="pmEditRow(' + i + ')">✏️</button> <button class="btn btn-del" onclick="pmDeleteRow(' + i + ')">🗑</button></td>' +
+    '</tr>';
+  }).join('');
+}
+window.renderPauseMassage = renderPauseMassage;
+
+function pmToggleActif(i, checked) {
+  if (!PM_STORE[i]) return;
+  PM_STORE[i].actif = !!checked;
+  var row = document.getElementById('row-pm-' + i);
+  if (row) row.style.opacity = checked ? '' : '0.5';
+  pmMarkDirty();
+}
+window.pmToggleActif = pmToggleActif;
+
+function pmEditRow(i) {
+  PM_EDIT_I = i;
+  var p = PM_STORE[i];
+  var row = document.getElementById('row-pm-' + i);
+  if (!row) return;
+  var actif = p.actif !== false;
+  row.innerHTML =
+    '<td style="text-align:center;"><input type="checkbox" id="inp-pm-actif-' + i + '" ' + (actif ? 'checked' : '') + '></td>' +
+    '<td style="min-width:80px"><input class="inp" id="inp-pm-id-' + i + '" value="' + esc(p.id) + '" style="font-family:monospace;font-size:12px;" placeholder="PM_J1"></td>' +
+    '<td style="min-width:110px"><select class="inp" id="inp-pm-jour-' + i + '">' + pmJourOptions(p.jourId || '') + '</select></td>' +
+    '<td style="min-width:200px"><textarea class="inp" id="inp-pm-tfr-' + i + '" rows="4" style="resize:vertical;min-height:70px;font-size:12px;line-height:1.5;" placeholder="Texte français…">' + esc(p.textFr || '') + '</textarea></td>' +
+    '<td style="min-width:200px"><textarea class="inp" id="inp-pm-ten-' + i + '" rows="4" style="resize:vertical;min-height:70px;font-size:12px;line-height:1.5;" placeholder="English text…">' + esc(p.textEn || '') + '</textarea></td>' +
+    '<td class="td-act"><button class="btn btn-ok" onclick="pmSaveEdit(' + i + ')">✔</button> <button class="btn" onclick="pmCancelEdit(' + i + ')">✖</button></td>';
+  var el = document.getElementById('inp-pm-tfr-' + i);
+  if (el) el.focus();
+}
+window.pmEditRow = pmEditRow;
+
+function pmSaveEdit(i) {
+  var idEl    = document.getElementById('inp-pm-id-' + i);
+  var jourEl  = document.getElementById('inp-pm-jour-' + i);
+  var tfrEl   = document.getElementById('inp-pm-tfr-' + i);
+  var tenEl   = document.getElementById('inp-pm-ten-' + i);
+  var actifEl = document.getElementById('inp-pm-actif-' + i);
+  var newId = (idEl ? idEl.value.trim().toUpperCase().replace(/\s+/g,'_') : PM_STORE[i].id);
+  if (!newId) { if(idEl){ idEl.style.borderColor='#dc2626'; idEl.focus(); } return; }
+  var isDupe = PM_STORE.some(function(p, idx) { return idx !== i && p.id === newId; });
+  if (isDupe) { if(idEl){ idEl.style.borderColor='#dc2626'; idEl.title='ID déjà utilisé'; idEl.focus(); } return; }
+  PM_STORE[i] = {
+    id:     newId,
+    jourId: jourEl  ? jourEl.value    : PM_STORE[i].jourId,
+    textFr: tfrEl   ? tfrEl.value     : PM_STORE[i].textFr,
+    textEn: tenEl   ? tenEl.value     : PM_STORE[i].textEn,
+    actif:  actifEl ? actifEl.checked : PM_STORE[i].actif,
+  };
+  PM_EDIT_I = null;
+  pmMarkDirty();
+  renderPauseMassage();
+}
+window.pmSaveEdit = pmSaveEdit;
+
+function pmCancelEdit() { PM_EDIT_I = null; renderPauseMassage(); }
+window.pmCancelEdit = pmCancelEdit;
+
+function pmDeleteRow(i) {
+  var p = PM_STORE[i];
+  if (!confirm('Supprimer "' + p.id + '" — ' + pmJourLabel(p.jourId) + ' ?')) return;
+  PM_STORE.splice(i, 1);
+  pmMarkDirty();
+  renderPauseMassage();
+  showToast('🗑 Entrée Pause Massage supprimée.');
+}
+window.pmDeleteRow = pmDeleteRow;
+
+function pmAddRow() {
+  var ids = PM_STORE.map(function(p) { return p.id; });
+  var n = 1, newId;
+  do { newId = 'PM_NEW' + String(n).padStart(3,'0'); n++; } while (ids.indexOf(newId) !== -1);
+  PM_STORE.push({ id: newId, jourId: '', textFr: '', textEn: '', actif: true });
+  renderPauseMassage();
+  pmEditRow(PM_STORE.length - 1);
+  pmMarkDirty();
+}
+window.pmAddRow = pmAddRow;
+
+function pmMarkDirty() {
+  PM_DIRTY = true;
+  var bar = document.getElementById('bar-pause_massage');
+  if (bar) bar.classList.add('on');
+}
+
+function genPauseMassageJs() {
+  var escJ = function(v) { return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\n/g,'\\n'); };
+  var lines = PM_STORE.map(function(p) {
+    return '  { id: "' + escJ(p.id) + '", jourId: "' + escJ(p.jourId||'') + '", textFr: "' + escJ(p.textFr||'') + '", textEn: "' + escJ(p.textEn||'') + '", actif: ' + (p.actif !== false ? 'true' : 'false') + ' },';
+  }).join('\n');
+  return '/**\n * TANTRAMOUR 2026 — Référentiel : Pause Massage\n' +
+    ' * { id, jourId, textFr, textEn, actif }\n' +
+    ' */\nvar REF_PAUSE_MASSAGE = [\n' + lines + '\n];\n';
+}
+
+async function pmSave() {
+  try {
+    await saveToServer('ref_pause_massage.js', genPauseMassageJs());
+    PM_DIRTY = false;
+    var bar = document.getElementById('bar-pause_massage');
+    if (bar) bar.classList.remove('on');
+    showToast('✅ ref_pause_massage.js sauvegardé.', false);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.pmSave = pmSave;
 
 }); // fin loadData
 </script>

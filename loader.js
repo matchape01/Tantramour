@@ -25,6 +25,9 @@
     'ref_piment.js',
     'ref_resource_types.js',
     'ref_translations.js',
+    'ref_equipements.js',
+    'ref_equip_cat.js',
+    'ref_pause_massage.js',
   ];
 
   function bustStaticScripts() {

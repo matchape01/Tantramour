@@ -574,7 +574,7 @@
 
     <!-- ══ ACTIONS ══ -->
     <div class="editor-actions">
-      <button class="btn btn-primary" onclick="doSave()" data-i18n="r_desc_save">💾 Enregistrer</button>
+      <button class="btn btn-primary" id="btnDoSave" onclick="doSave()" data-i18n="r_desc_save">💾 Enregistrer</button>
       <button class="btn" onclick="goList()" data-i18n="rsa_back">← Retour à la liste</button>
       <span class="save-stamp" id="eStamp"></span>
     </div>
@@ -1079,6 +1079,8 @@ async function doSave() {
   // Mise à jour horodatage UI
   document.getElementById('eStamp').textContent = 'Dernière modif. : ' + today;
 
+  var saveBtn = document.getElementById('btnDoSave');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = '⏳ Enregistrement…'; }
   try {
     // Sauvegardes séquentielles pour éviter les conflits de SHA sur GitHub
     // (les PUT parallèles causent des 409 "does not match" car même SHA utilisé)
@@ -1093,6 +1095,8 @@ async function doSave() {
     showToast('✔ Enregistré', 'ok');
   } catch(err) {
     showToast('❌ ' + err.message, 'err');
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '💾 Enregistrer'; }
   }
 }
 window.doSave = doSave;
@@ -1445,26 +1449,29 @@ window.eqDemandeAjouter = eqDemandeAjouter;
 
 function buildDataJs() {
   var lines = AGENDA.map(function(e) {
-    return '  {jour:"'       + escJs(e.jour||'') +
-      '",date:"'             + escJs(e.date||'') +
-      '",heure:"'            + escJs(e.heure||'') +
-      '",type:"'             + escJs(e.type||'') +
-      '",atelier:"'          + escJs(e.atelier||'') +
-      '",lieu:"'             + escJs(e.lieu||'') +
-      '",fac1:"'             + escJs(e.fac1||'') +
-      '",fac2:"'             + escJs(e.fac2||'') +
-      '",fac3:"'             + escJs(e.fac3||'') +
-      '",fac4:"'             + escJs(e.fac4||'') +
-      '",meetingRoles:"'     + escJs(e.meetingRoles||'') +
-      '",traduction:"'       + escJs(e.traduction||'') +
-      '",helper1:"'          + escJs(e.helper1||'') +
-      '",helper2:"'          + escJs(e.helper2||'') +
-      '",helper3:"'          + escJs(e.helper3||'') +
-      '",helper4:"'          + escJs(e.helper4||'') +
-      '",angel:"'            + escJs(e.angel||'') +
-      '",note:"'             + escJs(e.note||'') +
-      '",piment:'            + (e.piment||0) +
-      ',logisticId:"'        + escJs(e.logisticId||'') + '"' +
+    return '  {' +
+      (e.id ? 'id:"' + escJs(e.id) + '",' : '') +
+      'jour:"'           + escJs(e.jour||'') +
+      '",date:"'         + escJs(e.date||'') +
+      '",heure:"'        + escJs(e.heure||'') +
+      '",type:"'         + escJs(e.type||'') +
+      '",atelier:"'      + escJs(e.atelier||'') +
+      '",lieu:"'         + escJs(e.lieu||'') +
+      '",fac1:"'         + escJs(e.fac1||'') +
+      '",fac2:"'         + escJs(e.fac2||'') +
+      '",fac3:"'         + escJs(e.fac3||'') +
+      '",fac4:"'         + escJs(e.fac4||'') +
+      '",traduction:"'   + escJs(e.traduction||'') +
+      '",helper1:"'      + escJs(e.helper1||'') +
+      '",helper2:"'      + escJs(e.helper2||'') +
+      '",helper3:"'      + escJs(e.helper3||'') +
+      '",helper4:"'      + escJs(e.helper4||'') +
+      '",angel:"'        + escJs(e.angel||'') +
+      '",note:"'         + escJs(e.note||'') +
+      '",piment:'        + (e.piment||0) +
+      ',colibri:'        + (e.colibri ? true : false) +
+      ',logisticId:"'    + escJs(e.logisticId||'') +
+      '",meetingRoles:"' + escJs(e.meetingRoles||'') + '"' +
       (e._consignesDisabled && Object.keys(e._consignesDisabled).length > 0
         ? ',_consignesDisabled:' + JSON.stringify(e._consignesDisabled)
         : '') +

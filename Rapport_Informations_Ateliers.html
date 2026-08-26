@@ -291,7 +291,7 @@ var currentAgendaIdx = -1;
 var _modalLang = 'fr';
 var _modalEntry = null;
 var IMPORT_ALLOWED_PIMENTS = { '0':true, '1':true, '2':true, '3':true };
-var IMPORT_ALLOWED_PREP = { '0':true, '15':true, '20':true, '30':true, '45':true, '50':true, '60':true, '80':true, '90':true, '100':true, '110':true, '120':true };
+var IMPORT_ALLOWED_PREP = { '0':true, '10':true, '15':true, '20':true, '25':true, '30':true, '35':true, '40':true, '45':true, '50':true, '55':true, '60':true, '75':true, '80':true, '90':true, '100':true, '110':true, '120':true };
 // Format 23 cols (interne) : ID, Atelier, Anim1, Anim2, Type, Date, Jour, HeureDébut, HeureFin, Lieu, Piment, Note, ...
 // Format 26 cols (TRANSFORM_UPLOAD) : idem mais avec Anim3 et Anim4 en cols 5-6 → décalage de +2 à partir de la col 5
 var IMPORT_HEADERS_BASE = [
@@ -1021,7 +1021,10 @@ function normalizeCellValue(value) {
     if (value.sharedFormula != null && value.result == null) return normalizeCellValue(value.sharedFormula);
     if (value.hyperlink != null) return normalizeCellValue(value.text || value.hyperlink);
   }
-  return String(value).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+  var s = String(value).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+  // "-" ou "_" seuls = valeur nulle
+  if (s === '-' || s === '_') return '';
+  return s;
 }
 function normalizeComparableValue(value) {
   return normalizeCellValue(value).replace(/\s+/g, ' ').trim();
@@ -1176,7 +1179,7 @@ function buildImportPreview(sheet, colOffset) {
         return; // on ignore ce champ, l'import continue
       }
       if (def.key === 'prepDuration' && nextValue !== '' && !IMPORT_ALLOWED_PREP[nextValue]) {
-        warnings.push('⚠️ Estimation préparation invalide pour « ' + id + ' » : valeur « ' + nextValue + ' » ignorée (valeurs acceptées : 0, 15, 20, 30, 45, 50, 60, 80, 90, 100, 110, 120).');
+        warnings.push('⚠️ Estimation préparation invalide pour « ' + id + ' » : valeur « ' + nextValue + ' » ignorée (valeurs acceptées : 0, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 75, 80, 90, 100, 110, 120).');
         return; // on ignore ce champ, l'import continue
       }
       if (normalizeComparableValue(currentValue) === normalizeComparableValue(nextValue)) return;

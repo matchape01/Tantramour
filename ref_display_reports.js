@@ -177,22 +177,22 @@ var REF_DISPLAY_REPORTS = [
   },
   {
     "id": "rep_saisie_ateliers",
-    "title": "Saisie des Ateliers",
+    "title": "Validation avec Animateurs (Info Ateliers)",
     "titleKey": "card_saisie_ateliers_title",
-    "desc": "Saisir descriptions FR/EN, niveau piment, consignes et besoins logistiques",
+    "desc": "Validation avec Animateurs (Info Ateliers)",
     "descKey": "card_saisie_ateliers_desc",
     "icon": "📋",
     "url": "Rapport_Saisie_Ateliers.html",
-    "section": "Logistique",
+    "section": "Gestion planning",
     "showInDreamTeam": false,
-    "active": false,
+    "active": true,
     "cardStyle": "background:#ca8a04;border-color:#ca8a04;color:#fff;",
     "iconStyle": "background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);",
     "titleStyle": "color:#fff;",
     "descStyle": "color:rgba(255,255,255,.8);",
     "arrowStyle": "color:rgba(255,255,255,.7);",
     "isProtected": false,
-    "order": 5
+    "order": 4
   },
   {
     "id": "rep_editer_atelier",
@@ -211,7 +211,7 @@ var REF_DISPLAY_REPORTS = [
     "descStyle": "color:rgba(255,255,255,.8);",
     "arrowStyle": "color:rgba(255,255,255,.6);",
     "isProtected": true,
-    "order": 1
+    "order": 3
   },
   {
     "id": "rep_agenda_jour",
@@ -230,7 +230,7 @@ var REF_DISPLAY_REPORTS = [
     "descStyle": "",
     "arrowStyle": "",
     "isProtected": false,
-    "order": 4
+    "order": 5
   },
   {
     "id": "rep_gerer_ressources",
@@ -287,7 +287,7 @@ var REF_DISPLAY_REPORTS = [
     "descStyle": "",
     "arrowStyle": "",
     "isProtected": true,
-    "order": 5
+    "order": 6
   },
   {
     "id": "rep_besoins_equipements",
@@ -329,7 +329,7 @@ var REF_DISPLAY_REPORTS = [
   },
   {
     "id": "rep_infos_ateliers",
-    "title": "Informations Ateliers",
+    "title": "Upload des fiches Ateliers",
     "titleKey": "card_ria_title",
     "desc": "Consignes, besoins logistiques et infos pour helpers et intervenants",
     "descKey": "card_ria_desc",
@@ -344,11 +344,11 @@ var REF_DISPLAY_REPORTS = [
     "descStyle": "color:rgba(255,255,255,.8);",
     "arrowStyle": "color:rgba(255,255,255,.7);",
     "isProtected": false,
-    "order": 3
+    "order": 2
   },
   {
     "id": "rep_transform_upload",
-    "title": "Transform & Upload",
+    "title": "Convertir Fiche Atelier",
     "titleKey": "card_transform_upload_title",
     "desc": "Convertir les fiches animateurs en fichier logistique consolidé (.xlsx)",
     "descKey": "card_transform_upload_desc",
@@ -363,7 +363,7 @@ var REF_DISPLAY_REPORTS = [
     "descStyle": "color:rgba(255,255,255,.8);",
     "arrowStyle": "color:rgba(255,255,255,.7);",
     "isProtected": false,
-    "order": 2
+    "order": 1
   },
   {
     "id": "rep_log_speciale",

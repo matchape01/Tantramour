@@ -266,46 +266,38 @@ function generateJsContent() {
 }
 
 async function saveConfiguration() {
-  var content = generateJsContent();
+  var content  = generateJsContent();
   var fileName = 'ref_display_reports.js';
 
   try {
-    // 1. Tenter la sauvegarde serveur local
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: fileName, content: content })
-    });
-    if (res.ok) {
-      showToast('✅ Configuration sauvegardée sur le serveur local !');
-      isDirty = false;
-      document.getElementById('saveBar').classList.remove('on');
-      return;
+    if (location.protocol === 'file:') {
+      throw new Error('Ouvrez via http://localhost:3000 (start.bat) ou GitHub Pages.');
     }
-  } catch(e) {}
 
-  // 2. Fallback GitHub API si token configuré
-  if (typeof githubSaveFile === 'function') {
-    try {
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      // ── Serveur local ──────────────────────────────────────────
+      var res = await fetch('http://localhost:3000/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: fileName, content: content })
+      });
+      if (!res.ok) {
+        var e = await res.json().catch(function(){ return {}; });
+        throw new Error(e.error || 'Erreur ' + res.status);
+      }
+      showToast('✅ Configuration sauvegardée (serveur local) !');
+    } else {
+      // ── GitHub Pages → API GitHub ──────────────────────────────
       await githubSaveFile(fileName, content);
       showToast('✅ Configuration sauvegardée sur GitHub !');
-      isDirty = false;
-      document.getElementById('saveBar').classList.remove('on');
-      return;
-    } catch(err) {
-      console.warn('GitHub save fallback:', err);
     }
-  }
 
-  // 3. Fallback téléchargement direct
-  var blob = new Blob([content], { type: 'text/javascript;charset=utf-8' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = fileName;
-  a.click();
-  showToast('📥 Fichier téléchargé (remplacez ' + fileName + ' dans le dossier Rapports).');
-  isDirty = false;
-  document.getElementById('saveBar').classList.remove('on');
+    isDirty = false;
+    document.getElementById('saveBar').classList.remove('on');
+
+  } catch(err) {
+    showToast('❌ ' + err.message);
+  }
 }
 
 function showToast(msg) {

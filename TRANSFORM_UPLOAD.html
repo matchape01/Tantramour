@@ -312,7 +312,9 @@ function extractSheetRow(rawData) {
     var label = row[1];
     var val   = row[2];
     if (label && String(label).trim()) {
-      labelMap[String(label).trim()] = (val !== null && val !== undefined) ? val : null;
+      // "-" ou "_" seuls = valeur nulle
+      var normVal = (val !== null && val !== undefined) ? String(val).trim() : null;
+      labelMap[String(label).trim()] = (normVal === '-' || normVal === '_') ? null : (val !== null && val !== undefined ? val : null);
     }
   });
 

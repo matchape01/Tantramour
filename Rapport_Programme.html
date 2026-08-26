@@ -354,6 +354,51 @@
   #toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
 
   footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+
+  /* ── BOUTON POSE MASSAGE ── */
+  .btn-massage {
+    display:inline-flex; align-items:center; gap:5px;
+    background:#d1fae5; color:#065f46; border:1.5px solid #6ee7b7;
+    border-radius:999px; padding:4px 14px; font-size:12px; font-weight:700;
+    cursor:pointer; font-family:inherit; white-space:nowrap;
+    transition:background .15s, border-color .15s;
+    vertical-align:middle;
+  }
+  .btn-massage:hover { background:#a7f3d0; border-color:#34d399; }
+  .btn-massage .sun-icon { font-size:14px; }
+  /* ── POPUP POSE MASSAGE ── */
+  #pmOverlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+    z-index:9998; align-items:flex-start; justify-content:center;
+    overflow-y:auto; padding:40px 16px;
+  }
+  #pmOverlay.open { display:flex; }
+  #pmModal {
+    background:var(--bg); border:1px solid var(--border); border-radius:14px;
+    padding:32px 30px 28px; max-width:520px; width:92%;
+    box-shadow:0 8px 36px rgba(0,0,0,.18); font-family:inherit; position:relative;
+    margin:auto; flex-shrink:0;
+  }
+  #pmModal .pm-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  #pmModal .pm-sun    { font-size:28px; line-height:1; }
+  #pmModal .pm-title  { font-size:17px; font-weight:700; color:var(--text); }
+  #pmModal .pm-day    { font-size:12px; color:var(--muted); font-weight:400; margin-top:2px; }
+  #pmModal .pm-body   {
+    font-size:14px; color:var(--text); line-height:1.75; white-space:pre-wrap;
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:16px 18px; margin-bottom:20px;
+  }
+  #pmModal .pm-close {
+    display:block; width:100%; padding:10px; border:none; border-radius:8px;
+    background:#d1fae5; color:#065f46; font-size:14px; font-weight:700;
+    font-family:inherit; cursor:pointer; transition:background .15s;
+  }
+  #pmModal .pm-close:hover  { background:#a7f3d0; }
+  #pmModal .pm-close-x {
+    position:absolute; top:14px; right:16px; background:none; border:none;
+    font-size:18px; cursor:pointer; color:var(--muted); line-height:1;
+  }
+  #pmModal .pm-close-x:hover { color:var(--text); }
 </style>
 </head>
 <body>
@@ -382,9 +427,10 @@
   <div id="screenProg">
     <div class="prog-header">
       <button class="back-btn" onclick="goBack()" data-i18n="rp_back_btn">← Choisir un autre jour</button>
-      <div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <span class="prog-title" id="progTitle">—</span>
         <span class="prog-count" id="progCount">0</span>
+        <span id="progMassageBtn"></span>
       </div>
       <div class="prog-sub" id="progSub"></div>
     </div>
@@ -397,6 +443,25 @@
   </div>
 
 </div><!-- /wrap -->
+
+<!-- ── POPUP POSE MASSAGE ── -->
+<div id="pmOverlay">
+  <div id="pmModal" onclick="pmClose()">
+    <button class="pm-close-x" onclick="event.stopPropagation();pmClose()" aria-label="Fermer">✕</button>
+    <div class="pm-header">
+      <div class="pm-sun">🌞</div>
+      <div>
+        <div class="pm-title" id="pmTitle">Pose Massage</div>
+        <div class="pm-day"   id="pmDay"></div>
+      </div>
+    </div>
+    <div class="pm-body" id="pmBody"></div>
+    <div style="display:flex;gap:10px;">
+      <button class="pm-close" style="flex:1;" onclick="event.stopPropagation();pmClose()">Fermer</button>
+      <button class="pm-lang-btn" onclick="event.stopPropagation();pmToggleLang()" style="flex:0 0 auto;padding:10px 16px;border:1px solid #6ee7b7;border-radius:8px;background:#f0fdf4;color:#065f46;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">🌐 EN</button>
+    </div>
+  </div>
+</div>
 
 <footer data-i18n="rp_footer">Tantramour 2026 — Programme festivaliers</footer>
 
@@ -428,6 +493,7 @@
 <div id="toast"></div>
 
 <script src="loader.js"></script>
+<script src="ref_pause_massage.js"></script>
 <script src="ref_piment.js"></script>
 <script src="ref_notes.js"></script>
 <script src="ref_consignes_type.js"></script>
@@ -700,6 +766,9 @@ function buildProgScreen(jour) {
   var ateliers = getAteliersPublics(jour);
 
   document.getElementById('progTitle').textContent = jourLabel(jour) + ' — ' + jourDate(meta);
+  // Bouton Pose Massage
+  var pmBtnEl = document.getElementById('progMassageBtn');
+  if (pmBtnEl) pmBtnEl.innerHTML = buildMassageBtn(jour);
   var nb2 = ateliers.length;
   var wsWord2 = nb2 > 1 ? I18n.t('rp_ateliers_s') : I18n.t('rp_atelier_s');
   document.getElementById('progSub').textContent   = meta.emoji + ' ' + nb2 + ' ' + wsWord2 + ' ' + I18n.t('rp_au_programme');
@@ -1179,6 +1248,89 @@ document.addEventListener('tm_lang_changed', function() {
   // Mettre à jour le bouton Mode Nuit
   var isDark = document.body.classList.contains('dark');
   document.getElementById('modeBtn').textContent = isDark ? I18n.t('rp_mode_jour') : I18n.t('rp_mode_nuit');
+});
+
+// ── POSE MASSAGE ─────────────────────────────────────────────────────────────
+// Cette page utilise "Jour 1"…"Jour 7" comme clé de jour.
+// REF_PAUSE_MASSAGE utilise jourId = "J1"…"J7".
+// On mappe via REF_JOURS si disponible, sinon via JOUR_ORDER (index+1).
+function pmJourId(jourValue) {
+  if (typeof REF_JOURS !== 'undefined' && REF_JOURS) {
+    var def = REF_JOURS.find(function(j){ return j.value === jourValue; });
+    if (def) return def.id;
+  }
+  // Fallback : "Jour 1" → "J1", etc.
+  var idx = JOUR_ORDER.indexOf(jourValue);
+  return idx >= 0 ? 'J' + (idx + 1) : null;
+}
+
+function pmFindEntry(jourValue) {
+  if (typeof REF_PAUSE_MASSAGE === 'undefined' || !REF_PAUSE_MASSAGE) return null;
+  var jId = pmJourId(jourValue);
+  if (!jId) return null;
+  return REF_PAUSE_MASSAGE.find(function(p){ return p.actif !== false && p.jourId === jId; })
+      || REF_PAUSE_MASSAGE.find(function(p){ return p.actif !== false && !p.jourId; });
+}
+
+function buildMassageBtn(jourValue) {
+  var entry = pmFindEntry(jourValue);
+  if (!entry) return '';
+  var lang  = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  var label = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  return '<button class="btn-massage" onclick="pmOpen(\'' + jourValue.replace(/'/g,"\\'") + '\')"><span class="sun-icon">🌞</span>' + label + '</button>';
+}
+
+function pmOpen(jourValue) {
+  var entry = pmFindEntry(jourValue);
+  if (!entry) return;
+  var lang  = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  var title = lang === 'en' ? 'Massage Break' : 'Pose Massage';
+  var body  = lang === 'en' ? (entry.textEn || entry.textFr || '') : (entry.textFr || entry.textEn || '');
+  var meta  = JOUR_META[jourValue] || {};
+  var dayLabel = (lang === 'en' && meta.dateEn) ? (meta.jourEn + ' — ' + meta.dateEn) : (jourValue + (meta.date ? ' — ' + meta.date : ''));
+  document.getElementById('pmTitle').textContent = title;
+  document.getElementById('pmDay').textContent   = dayLabel;
+  document.getElementById('pmBody').textContent  = body;
+  document.getElementById('pmOverlay').classList.add('open');
+}
+window.pmOpen = pmOpen;
+
+function pmClose() { document.getElementById('pmOverlay').classList.remove('open'); }
+window.pmClose = pmClose;
+
+document.getElementById('pmOverlay').addEventListener('click', function(e) { if (e.target === this) pmClose(); });
+
+// Bascule la langue depuis la popup et rafraîchit son contenu
+function pmToggleLang() {
+  if (typeof I18n === 'undefined') return;
+  I18n.setLang(I18n.getLang() === 'fr' ? 'en' : 'fr');
+  // tm_lang_changed va déclencher buildProgScreen → pmOpen se re-jouera si _pmCurrentJour est défini
+}
+window.pmToggleLang = pmToggleLang;
+
+// Mémorise le jour courant affiché dans la popup pour pouvoir la rafraîchir
+var _pmCurrentJour = null;
+var _pmOrigOpen = pmOpen;
+pmOpen = function(jourValue) {
+  _pmCurrentJour = jourValue;
+  _pmOrigOpen(jourValue);
+};
+window.pmOpen = pmOpen;
+
+// Met à jour le bouton langue dans la popup
+function pmUpdateLangBtn() {
+  var btn = document.querySelector('#pmModal .pm-lang-btn');
+  if (!btn) return;
+  var lang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
+  btn.textContent = lang === 'fr' ? '🌐 EN' : '🌐 FR';
+}
+
+// Rafraîchit le contenu de la popup si elle est ouverte quand la langue change
+document.addEventListener('tm_lang_changed', function() {
+  pmUpdateLangBtn();
+  if (_pmCurrentJour && document.getElementById('pmOverlay').classList.contains('open')) {
+    _pmOrigOpen(_pmCurrentJour);
+  }
 });
 
 }); // fin loadData

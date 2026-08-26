@@ -52,6 +52,7 @@ const ALLOWED = new Set([
   'ref_piment.js',
   'ref_heures.js',
   'ref_display_reports.js',
+  'ref_pause_massage.js',
 ]);
 
 // ── SERVEUR ───────────────────────────────────────────────────

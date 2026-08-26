@@ -126,11 +126,38 @@
   /* ── BLOC ÉQUIPEMENTS ── */
   .eq-block { margin-top:18px; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
   .eq-block-title { background:var(--surface); padding:10px 16px; font-size:13px; font-weight:700; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
-  .eq-cols { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
-  @media(max-width:760px) { .eq-cols { grid-template-columns:1fr; } }
-  .eq-col { border-right:1px solid var(--border); }
-  .eq-col:last-child { border-right:none; }
-  .eq-col-header { background:var(--header-bg); padding:8px 14px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1px solid var(--border); }
+  /* Accordéon catégorie */
+  .eq-cat-section { border-bottom:1px solid var(--border); }
+  .eq-cat-section:last-child { border-bottom:none; }
+  .eq-cat-toggle { display:flex; align-items:center; gap:8px; padding:9px 16px; cursor:pointer; background:#e2e8f0; user-select:none; transition:background .12s; }
+  .dark .eq-cat-toggle { background:#1e293b; }
+  .eq-cat-toggle:hover { background:#cbd5e1; }
+  .dark .eq-cat-toggle:hover { background:#273549; }
+  .eq-cat-toggle-label { flex:1; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#1e293b; }
+  .dark .eq-cat-toggle-label { color:#e2e8f0; }
+  .eq-cat-toggle-count { font-size:11px; color:var(--muted); background:var(--tag-bg); border:1px solid var(--border); border-radius:10px; padding:1px 8px; }
+  .eq-cat-toggle-count.has-sel { background:#dcfce7; border-color:#86efac; color:#15803d; font-weight:700; }
+  .dark .eq-cat-toggle-count.has-sel { background:#052e16; border-color:#166534; color:#4ade80; }
+  .eq-cat-toggle-arrow { font-size:10px; color:var(--muted); transition:transform .18s; }
+  .eq-cat-toggle.open .eq-cat-toggle-arrow { transform:rotate(90deg); }
+  .eq-cat-body { display:none; }
+  .eq-cat-body.open { display:grid; grid-template-columns:1fr 1fr; }
+  @media(max-width:600px) { .eq-cat-body.open { grid-template-columns:1fr; } }
+  .eq-cat-col { border-right:1px solid var(--border); min-width:0; }
+  .eq-cat-col:last-child { border-right:none; }
+  /* Séparateur de fournisseur dans une catégorie */
+  .eq-supplier-header { padding:4px 16px 3px; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; border-bottom:1px solid var(--border); }
+  .eq-supplier-header.hameau   { color:#1d4ed8; background:#eff6ff; border-left:3px solid #3b82f6; }
+  .dark .eq-supplier-header.hameau   { color:#93c5fd; background:#1e3a5f; border-left-color:#3b82f6; }
+  .eq-supplier-header.tantramour { color:#7c3aed; background:#f5f3ff; border-left:3px solid #8b5cf6; }
+  .dark .eq-supplier-header.tantramour { color:#c4b5fd; background:#2e1065; border-left-color:#8b5cf6; }
+  .eq-supplier-header.autre    { color:#92400e; background:#fffbeb; border-left:3px solid #f59e0b; }
+  .dark .eq-supplier-header.autre    { color:#fcd34d; background:#1c1003; border-left-color:#f59e0b; }
+  /* Bloc séparé animateur/autre */
+  .eq-ext-block { border-top:2px dashed var(--border); margin-top:2px; }
+  .eq-ext-header { padding:8px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#92400e; background:#fffbeb; border-bottom:1px solid var(--border); }
+  .dark .eq-ext-header { color:#fcd34d; background:#1c1003; }
+  /* Items */
   .eq-item { display:flex; align-items:center; gap:8px; padding:7px 14px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .12s; user-select:none; }
   .eq-item:last-child { border-bottom:none; }
   .eq-item:hover { background:var(--row-alt); }
@@ -139,6 +166,11 @@
   .eq-item.selected .eq-item-name { color:#15803d; font-weight:600; }
   .dark .eq-item.selected .eq-item-name { color:#4ade80; }
   .eq-item-name { flex:1; font-size:13px; }
+  .eq-item-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; padding:1px 6px; border-radius:8px; white-space:nowrap; }
+  .eq-item-badge.hameau     { background:#dbeafe; color:#1d4ed8; border:1px solid #93c5fd; }
+  .dark .eq-item-badge.hameau     { background:#1e3a5f; color:#93c5fd; }
+  .eq-item-badge.tantramour { background:#ede9fe; color:#7c3aed; border:1px solid #c4b5fd; }
+  .dark .eq-item-badge.tantramour { background:#2e1065; color:#c4b5fd; }
   .eq-qty { width:56px; padding:4px 6px; border:1px solid var(--border); border-radius:5px; font-size:13px; background:var(--bg); color:var(--text); font-family:inherit; text-align:center; }
   .eq-item.selected .eq-qty { border-color:#86efac; background:#f0fdf4; }
   .dark .eq-item.selected .eq-qty { border-color:#166534; background:#052e16; }
@@ -1251,42 +1283,93 @@ function renderEditor() {
             const cap = lieuRef && lieuRef.capacite > 0 ? ` — ${lieuRef.capacite} pers.` : '';
             return ` <span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:8px;">📍 ${esc(nomLieu)}${cap}</span>`;
           })()}</div>
-        <div class="eq-cols">
-          ${[['Hameau','Stock Hameau'],['Tantramour','Stock Tantramour'],['Animateur','Apporté par animateur'],['Autre','Autre']].map(([typeEq, labelEq]) => {
-            const allItems = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : [])
-              .filter(eq => eq.type === typeEq)
-              .sort((a,b) => (a.value||'').localeCompare(b.value||'', 'fr', {sensitivity:'base'}));
-            // Grouper par catégorie (ordre dynamique — REF_EQUIP_CAT)
-            const CAT_ORDER = eqCategorieOptionsList();
-            const catMap = {};
-            allItems.forEach(eq => {
-              const cat = eq.categorie || 'Divers';
-              if (!catMap[cat]) catMap[cat] = [];
-              catMap[cat].push(eq);
-            });
-            const catOrder = CAT_ORDER.filter(c => catMap[c])
-              .concat(Object.keys(catMap).filter(c => CAT_ORDER.indexOf(c) === -1).sort());
-            const rows = catOrder.map(cat => {
-              const catItems = catMap[cat].map(eq => {
-                const savedQty = (editedData._equipements && editedData._equipements[eq.id]) ? editedData._equipements[eq.id] : 0;
-                const sel = savedQty > 0 ? ' selected' : '';
-                return `<div class="eq-item${sel}" onclick="eqToggle('${esc(eq.id)}', this)">
-                  <span class="eq-item-name">${esc(eq.value)}</span>
-                  <span class="eq-qty-lbl">Qté</span>
-                  <input type="number" class="eq-qty" min="0" max="999" value="${savedQty}"
-                    data-eq-id="${esc(eq.id)}"
-                    onclick="event.stopPropagation()"
-                    oninput="eqQtyChange('${esc(eq.id)}', this.value, this.closest('.eq-item'))">
-                </div>`;
-              }).join('');
-              return `<div class="eq-cat-header">${esc(cat)}</div>${catItems}`;
-            }).join('');
-            return `<div class="eq-col">
-              <div class="eq-col-header">${labelEq}</div>
-              ${rows || '<div style="padding:10px 14px;font-size:12px;color:var(--muted);font-style:italic;">Aucun équipement</div>'}
+        <div class="eq-accordion">${(() => {
+          const CAT_ORDER  = eqCategorieOptionsList();
+          const MAIN_TYPES = ['Hameau', 'Tantramour'];
+          const EXT_TYPES  = ['Animateur', 'Autre'];
+          const allEq      = (typeof REF_EQUIPEMENTS !== 'undefined' ? REF_EQUIPEMENTS : []);
+
+          // ── Helper : rendu d'un item ──────────────────────────────────
+          const renderItem = (eq, showBadge) => {
+            const savedQty = (editedData._equipements && editedData._equipements[eq.id]) ? editedData._equipements[eq.id] : 0;
+            const sel      = savedQty > 0 ? ' selected' : '';
+            const badgeCls = eq.type === 'Hameau' ? 'hameau' : eq.type === 'Tantramour' ? 'tantramour' : 'autre';
+            const badge    = showBadge ? `<span class="eq-item-badge ${badgeCls}">${esc(eq.type)}</span>` : '';
+            return `<div class="eq-item${sel}" onclick="eqToggle('${esc(eq.id)}', this)">
+              <span class="eq-item-name">${esc(eq.value)}</span>
+              ${badge}
+              <span class="eq-qty-lbl">Qté</span>
+              <input type="number" class="eq-qty" min="0" max="999" value="${savedQty}"
+                data-eq-id="${esc(eq.id)}"
+                onclick="event.stopPropagation()"
+                oninput="eqQtyChange('${esc(eq.id)}', this.value, this.closest('.eq-item'))">
             </div>`;
-          }).join('')}
-        </div>
+          };
+
+          // ── BLOC PRINCIPAL : Hameau + Tantramour, groupés par catégorie ──
+          // Construire catMap = { catName: { Hameau: [...], Tantramour: [...] } }
+          const catMap = {};
+          allEq.filter(eq => MAIN_TYPES.includes(eq.type)).forEach(eq => {
+            const cat = eq.categorie || 'Divers';
+            if (!catMap[cat]) catMap[cat] = {};
+            if (!catMap[cat][eq.type]) catMap[cat][eq.type] = [];
+            catMap[cat][eq.type].push(eq);
+          });
+          // Trier les items dans chaque groupe alphabétiquement
+          Object.values(catMap).forEach(typeMap => {
+            Object.values(typeMap).forEach(arr => arr.sort((a,b) => (a.value||'').localeCompare(b.value||'','fr',{sensitivity:'base'})));
+          });
+          // Ordre catégories : REF_EQUIP_CAT, puis orphelines alpha
+          const orderedCats = CAT_ORDER.filter(c => catMap[c])
+            .concat(Object.keys(catMap).filter(c => CAT_ORDER.indexOf(c) === -1).sort());
+
+          const mainHtml = orderedCats.map((cat, idx) => {
+            const typeMap   = catMap[cat];
+            // Compter items sélectionnés dans cette catégorie
+            const allCatItems = MAIN_TYPES.flatMap(t => typeMap[t] || []);
+            const selCount  = allCatItems.filter(eq => editedData._equipements && editedData._equipements[eq.id] > 0).length;
+            const totalCount = allCatItems.length;
+            const countCls   = selCount > 0 ? ' has-sel' : '';
+            const countLbl   = selCount > 0 ? `${selCount}/${totalCount} sélectionné${selCount>1?'s':''}` : `${totalCount} équipement${totalCount>1?'s':''}`;
+            // ID stable pour l'accordéon
+            const catId = 'eqcat-' + idx;
+
+            const supplierRows = MAIN_TYPES.map(t => {
+              const cls   = t === 'Hameau' ? 'hameau' : 'tantramour';
+              const items = (typeMap[t] || []).map(eq => renderItem(eq, false)).join('');
+              const empty = items ? '' : '<div style="padding:8px 14px;font-size:12px;color:var(--muted);font-style:italic;">—</div>';
+              return `<div class="eq-cat-col">
+                <div class="eq-supplier-header ${cls}">${esc(t)}</div>
+                ${items || empty}
+              </div>`;
+            }).join('');
+
+            return `<div class="eq-cat-section">
+              <div class="eq-cat-toggle" id="${catId}-toggle" onclick="toggleEqCat('${catId}')">
+                <span class="eq-cat-toggle-arrow">▶</span>
+                <span class="eq-cat-toggle-label">${esc(cat)}</span>
+                <span class="eq-cat-toggle-count${countCls}" id="${catId}-count">${countLbl}</span>
+              </div>
+              <div class="eq-cat-body" id="${catId}-body">
+                ${supplierRows}
+              </div>
+            </div>`;
+          }).join('');
+
+          // ── BLOC SÉPARÉ : Animateur + Autre ──────────────────────────
+          const extItems = allEq
+            .filter(eq => EXT_TYPES.includes(eq.type))
+            .sort((a,b) => {
+              const tc = (a.type||'').localeCompare(b.type||'','fr',{sensitivity:'base'});
+              return tc || (a.value||'').localeCompare(b.value||'','fr',{sensitivity:'base'});
+            });
+          const extHtml = extItems.length ? `<div class="eq-ext-block">
+            <div class="eq-ext-header">🎒 Apporté par animateur / Autre fournisseur</div>
+            ${extItems.map(eq => renderItem(eq, true)).join('')}
+          </div>` : '';
+
+          return mainHtml + extHtml || '<div style="padding:12px 16px;font-size:12px;color:var(--muted);font-style:italic;">Aucun équipement disponible</div>';
+        })()}</div>
 
         <!-- Ajout d'un nouvel équipement -->
         <div class="eq-demande-block">
@@ -2647,6 +2730,43 @@ window.logSpecialSupprimerEntree = logSpecialSupprimerEntree;
 // ══════════════════════════════════════════════════════
 
 // Toggle sélection d'un équipement au clic sur la boîte
+// Ouvre/ferme un panneau de catégorie équipement (accordéon)
+function toggleEqCat(catId) {
+  var toggle = document.getElementById(catId + '-toggle');
+  var body   = document.getElementById(catId + '-body');
+  if (!toggle || !body) return;
+  var isOpen = body.classList.contains('open');
+  if (isOpen) {
+    body.classList.remove('open');
+    toggle.classList.remove('open');
+  } else {
+    body.classList.add('open');
+    toggle.classList.add('open');
+  }
+}
+window.toggleEqCat = toggleEqCat;
+
+// Met à jour le compteur d'une catégorie accordéon après un changement de sélection
+function _refreshEqCatCount(itemEl) {
+  var section = itemEl ? itemEl.closest('.eq-cat-section') : null;
+  if (!section) return;
+  var toggle = section.querySelector('.eq-cat-toggle');
+  if (!toggle) return;
+  var countEl = toggle.querySelector('.eq-cat-toggle-count');
+  if (!countEl) return;
+  var allItems  = section.querySelectorAll('.eq-item');
+  var selItems  = section.querySelectorAll('.eq-item.selected');
+  var total     = allItems.length;
+  var selCount  = selItems.length;
+  if (selCount > 0) {
+    countEl.textContent = selCount + '/' + total + ' sélectionné' + (selCount > 1 ? 's' : '');
+    countEl.classList.add('has-sel');
+  } else {
+    countEl.textContent = total + ' équipement' + (total > 1 ? 's' : '');
+    countEl.classList.remove('has-sel');
+  }
+}
+
 function eqToggle(eqId, itemEl) {
   if (!editedData) return;
   if (!editedData._equipements) editedData._equipements = {};
@@ -2666,6 +2786,7 @@ function eqToggle(eqId, itemEl) {
     var inp = itemEl.querySelector('.eq-qty');
     if (inp) inp.value = String(newQty);
   }
+  _refreshEqCatCount(itemEl);
 }
 window.eqToggle = eqToggle;
 
@@ -2681,6 +2802,7 @@ function eqQtyChange(eqId, val, itemEl) {
     editedData._equipements[eqId] = qty;
     if (itemEl) itemEl.classList.add('selected');
   }
+  _refreshEqCatCount(itemEl);
 }
 window.eqQtyChange = eqQtyChange;
 

@@ -271,6 +271,7 @@ footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--border); 
 <script src="ref_consignes_recurrentes.js"></script>
 <script src="ref_ressources.js"></script>
 <script src="ref_equipements.js"></script>
+<script src="ref_equip_cat.js"></script>
 
 <script src="loader.js"></script>
 <script>
@@ -1247,32 +1248,36 @@ function renderModalBody() {
       '<span style="font-size:13px;color:var(--muted)">—</span>'+
     '</div>';
   } else {
-    // Regrouper par type puis par catégorie
-    var TYPE_LABELS = { 'Hameau': 'Stock Hameau', 'Tantramour': 'Stock Tantramour', 'Animateur': 'Apporté par animateur', 'Autre': 'Autre', 'NEW': 'Nouveau' };
-    var TYPE_ORDER  = ['Hameau', 'Tantramour', 'Animateur', 'NEW', 'Autre'];
-    var CAT_ORDER   = ['Animation','Pratique','Ambiance & décoration','Hygiène & entretien','Consommables & fournitures','Mobilier & aménagement','Cuisine','Divers'];
-    var byType = {};
+    // Regrouper par catégorie puis par fournisseur
+    var TYPE_ORDER  = ['Hameau', 'Tantramour', 'Animateur'];
+    // Ordre des catégories depuis REF_EQUIP_CAT (trié par .ordre), puis inconnues à la fin
+    var catRefOrder = (typeof REF_EQUIP_CAT !== 'undefined')
+      ? REF_EQUIP_CAT.slice().sort(function(a,b){ return (parseInt(a.ordre)||0)-(parseInt(b.ordre)||0); }).map(function(c){ return c.value; })
+      : [];
+    var byCat = {};
     eqKeys.forEach(function(eqId) {
       var ref = (typeof REF_EQUIPEMENTS !== 'undefined') ? REF_EQUIPEMENTS.find(function(r){ return r.id === eqId; }) : null;
       var type = (ref && ref.type) || 'Autre';
       var cat  = (ref && ref.categorie) || 'Divers';
       var nom  = (ref && ref.value) || eqId;
-      if (!byType[type]) byType[type] = {};
-      if (!byType[type][cat]) byType[type][cat] = [];
-      byType[type][cat].push(nom + ' (' + eqAll[eqId] + ')');
+      if (!byCat[cat]) byCat[cat] = {};
+      if (!byCat[cat][type]) byCat[cat][type] = [];
+      byCat[cat][type].push(nom + ' (' + eqAll[eqId] + ')');
     });
+    // Catégories dans l'ordre REF_EQUIP_CAT, puis inconnues à la fin (ordre alpha)
+    var orderedCats = catRefOrder.filter(function(c){ return byCat[c]; })
+      .concat(Object.keys(byCat).filter(function(c){ return catRefOrder.indexOf(c) === -1; }).sort());
     var html = '';
-    TYPE_ORDER.forEach(function(type) {
-      if (!byType[type]) return;
-      html += '<div style="margin-bottom:10px;">';
-      html += '<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:'+(dark?'#2dd4bf':'#0f766e')+';margin-bottom:6px;">'+(TYPE_LABELS[type]||type)+' :</div>';
-      // Catégories dans l'ordre défini, puis les inconnues à la fin
-      var cats = CAT_ORDER.filter(function(c){ return byType[type][c]; })
-        .concat(Object.keys(byType[type]).filter(function(c){ return CAT_ORDER.indexOf(c) === -1; }).sort());
-      cats.forEach(function(cat) {
-        html += '<div style="margin-left:8px;margin-bottom:4px;">';
-        html += '<span style="font-size:12px;font-weight:600;color:var(--text)">• '+(cat||'—')+' : </span>';
-        html += '<span style="font-size:13px;color:var(--text)">'+byType[type][cat].join(' ; ')+'</span>';
+    orderedCats.forEach(function(cat) {
+      html += '<div style="margin-bottom:8px;">';
+      html += '<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">• '+esc(cat)+' :</div>';
+      // Fournisseurs dans l'ordre fixe, puis valeurs inconnues à la fin
+      var knownTypes = TYPE_ORDER.filter(function(t){ return byCat[cat][t]; });
+      var otherTypes = Object.keys(byCat[cat]).filter(function(t){ return TYPE_ORDER.indexOf(t) === -1; }).sort();
+      knownTypes.concat(otherTypes).forEach(function(type) {
+        html += '<div style="margin-left:12px;margin-bottom:3px;">';
+        html += '<span style="font-size:12px;font-weight:600;color:'+(dark?'#2dd4bf':'#0f766e')+'">'+esc(type)+' : </span>';
+        html += '<span style="font-size:13px;color:var(--text)">'+byCat[cat][type].join(' ; ')+'</span>';
         html += '</div>';
       });
       html += '</div>';

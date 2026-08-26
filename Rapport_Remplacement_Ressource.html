@@ -846,7 +846,22 @@ async function saveAll() {
   document.getElementById('btnSaveAll').textContent = '⏳ Sauvegarde…';
 
   try {
-    await githubSaveFile('data.js', content);
+    if (location.protocol === 'file:') {
+      throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
+    }
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const res = await fetch('http://localhost:3000/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: 'data.js', content: content })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Erreur serveur ' + res.status);
+      }
+    } else {
+      await githubSaveFile('data.js', content);
+    }
     showToast('✅ data.js sauvegardé avec succès !', 'ok');
     renderSummary(toSave);
   } catch(e) {
