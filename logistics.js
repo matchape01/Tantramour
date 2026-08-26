@@ -99,7 +99,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 21:13"
+    updatedAt: "2026-08-26 21:14"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
