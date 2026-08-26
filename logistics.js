@@ -423,11 +423,11 @@ var LOGISTICS = {
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    html: "Bien finir Finir a 15h30 car il y a ensuite un atelier en extérieur à 16hr",
-    text: "Bien finir Finir a 15h30 car il y a ensuite un atelier en extérieur à 16hr",
+    html: "<div>On a nos 2 guitares , prévoir câbles et micros,&nbsp;</div><div>2 stands pour guitare.&nbsp;</div><div>Mitsch : micro voix</div><div>Stéphane : micro pour djembe + micro voix + connecteurs pour pédalier</div><div>Chaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus</div><div>Coussins pour participants si pas de zafus</div><div>30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</div>",
+    text: "On a nos 2 guitares , prévoir câbles et micros, \n2 stands pour guitare. \nMitsch : micro voix\nStéphane : micro pour djembe + micro voix + connecteurs pour pédalier\nChaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus\nCoussins pour participants si pas de zafus\n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-20 20:10"
+    updatedAt: "2026-08-26 22:04"
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
