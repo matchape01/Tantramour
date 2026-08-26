@@ -30,8 +30,8 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_003",
-    valueFr: "Signaler tout incident à l'équipe organisatrice.",
-    valueEn: "Report any incidents to the organizing team.",
+    valueFr: "• Signaler tout incident à l'équipe organisatrice.",
+    valueEn: "• Report any incidents to the organizing team.",
     descriptif: "Consigne récurrente d'exemple — après l'atelier",
     placements: ["Après"],
     actif: true,
@@ -39,8 +39,8 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_004",
-    valueFr: "Ne plus accepter de participants après 15 min.",
-    valueEn: "sgd",
+    valueFr: "• Ne plus accepter de participants après 15 min.",
+    valueEn: "Do not allow entrance to participants arriving more than 15min late ",
     descriptif: "sdg",
     placements: ["Avant"],
     actif: true,
