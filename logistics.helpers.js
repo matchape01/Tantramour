@@ -731,6 +731,13 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "Ranger la salle",
     updatedAt: "2026-08-26 18:36"
+  },
+
+  "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
+    avant: "Preparer l'autel, fleurs, bougies",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-26 22:04"
   }
 
 };
