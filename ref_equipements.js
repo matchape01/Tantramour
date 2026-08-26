@@ -65,8 +65,6 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Aménagement & Equipements", id: "EQ_NEW011", value: "Grande table pliante #1 (122 cm)", stock: 58, description: "Grande table pliante #1 (122 cm)", remarque: "Table grise pliante (122cm/60cm/74cm hauteur)" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_NEW02", value: "Encens", stock: "N/A", description: "Encens", remarque: "" },
   { type: "Tantramour", categorie: "Matériel de Pratique", id: "EQ_NEW03", value: "Masque", stock: 0, description: "Masque", remarque: "" },
-  { type: "Autre", categorie: "Divers", id: "TEST_EQMATT", value: "TEST ITEM UPLAOD", stock: 56, description: "TEST ITEM UPLAOD", remarque: "" },
-  { type: "Animateur", categorie: "Divers", id: "TEST_EQMATT2", value: "TEST ITEM UPLAOD 2", stock: 56, description: "TEST ITEM UPLAOD", remarque: "" },
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_TABMIX", value: "Table de mixage", stock: "N/A", description: "Table de mixage", remarque: "" },
   { type: "Hameau", categorie: "Technique & Son", id: "EQ_SONO", value: "Sono", stock: "N/A", description: "Sono", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_GELHYDRO", value: "Gel hydroalcoolique", stock: "N/A", description: "Gel hydroalcoolique", remarque: "" },
