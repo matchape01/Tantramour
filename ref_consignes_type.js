@@ -67,7 +67,7 @@ var REF_CONSIGNES_TYPE = [
     valueEn: "• Check and adjust the ‘blue corner’",
     descriptif: "",
     placements: ["Avant","Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
