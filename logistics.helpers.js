@@ -734,10 +734,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    avant: "Preparer l'autel, fleurs, bougies",
+    avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:04"
+    updatedAt: "2026-08-26 22:05"
   }
 
 };
