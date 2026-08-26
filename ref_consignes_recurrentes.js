@@ -57,8 +57,8 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_006",
-    valueFr: "Entrer dans la pratique si besoin",
-    valueEn: "Step into the practice if required",
+    valueFr: "• Entrer dans la pratique si besoin",
+    valueEn: "• Step into the practice if required",
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
