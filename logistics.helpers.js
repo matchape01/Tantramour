@@ -286,10 +286,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
-    avant: "Preparer l'autel, fleurs, bougies",
+    avant: "• Préparer l'autel : tapis, fleurs, chandelles<br>• Disposer les zafus artiste + chaises<br>• Installer les bouteilles d'eau proche des artistes",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 21:58"
+    updatedAt: "2026-08-26 22:58"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
@@ -737,7 +737,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Préparer l'autel : tapis, fleurs, chandelles<br>• Disposer les zafus artiste + chaises<br>• Installer les bouteilles d'eau proche des artistes",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:58"
+    updatedAt: "2026-08-26 22:52"
   }
 
 };
