@@ -277,4 +277,13 @@ var REF_CONSIGNES_TYPE = [
     actif: false,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
+  {
+    id: "CONS_001",
+    valueFr: "",
+    valueEn: "",
+    descriptif: "",
+    placements: [],
+    actif: true,
+    types: []
+  },
 ];
