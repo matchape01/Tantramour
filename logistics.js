@@ -439,8 +439,8 @@ var LOGISTICS = {
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
-    html: "Système son <br>3 pieds de micro <br>3 micro",
-    text: "Système son\n3 pieds de micro\n3 micro",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 30,
     updatedAt: "2026-08-26 21:44"
