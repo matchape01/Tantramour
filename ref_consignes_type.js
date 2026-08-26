@@ -288,8 +288,8 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_027",
-    valueFr: "Viens à l'heure. Les admissions ne seront pas autorisées après le démarrage de l'atelier ",
-    valueEn: "Please arrive on time. No late arrivals will be admitted once the workshop has started",
+    valueFr: "• Viens à l'heure. Les admissions ne seront pas autorisées après le démarrage de l'atelier ",
+    valueEn: "• Please arrive on time. No late arrivals will be admitted once the workshop has started",
     descriptif: "",
     placements: ["Participant"],
     actif: true,
