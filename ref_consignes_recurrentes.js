@@ -16,7 +16,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Help bring the sound equipment and/or musical instruments",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY"]
   },
   {
@@ -25,7 +25,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect mats from another room",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -34,7 +34,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect cushions from another room",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -43,7 +43,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect yoga mats from another room",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -52,7 +52,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect chairs from another room",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -61,7 +61,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect yoag bricks  from another room",
     descriptif: "",
     placements: [],
-    actif: false,
+    actif: true,
     types: []
   },
   {
@@ -70,7 +70,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Lay out the mattresses",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -79,7 +79,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Arrange the mattresses in a star shape around the central altar",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -88,7 +88,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Set up the cushions",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -97,7 +97,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Set up the cushions",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -106,7 +106,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Lay out the yoga mats",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -115,7 +115,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Set up the chairs",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -124,7 +124,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Set up the chairs",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -133,7 +133,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Set up Felix’s spotlights",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -142,7 +142,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Light some incense, following the venue’s guidelines and being mindful of those who are sensitive to smells",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -151,7 +151,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Switch on the LED candles",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -160,7 +160,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Switch on the LED tea-light candles",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -169,7 +169,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Prepare the central altar",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -178,7 +178,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Place some paper plates to hold the massage oil and a few sheets of paper towels next to each mattress",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -187,7 +187,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Ensure that every participant reads the Temple of Love Charter (displayed at the entrance)",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["LOVE TEMPLE"]
   },
   {
@@ -196,7 +196,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Clearly verify consent",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -205,7 +205,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Open the plastic windows of the SHIVA",
     descriptif: "",
     placements: ["Avant"],
-    actif: false,
+    actif: true,
     types: ["CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -214,7 +214,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Smudge participants at the entrance",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -223,7 +223,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Help participants find a partner if necessary",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -232,7 +232,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Support the logistics of pair work and small-group activities (group allocation, timing, spaces)",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -241,7 +241,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Step into the practice if required",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -250,7 +250,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Do the demo of the practise",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -259,7 +259,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Close the curtains if there is nudity",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -268,7 +268,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Assist participants who need help (tissues, cushions, etc.)",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -277,7 +277,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Inform the facilitator of the participants’ needs",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -286,7 +286,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Report any disruptive behaviour or breaches of the rules to the organiser",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -295,7 +295,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Intervene gently if a situation gets out of hand",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -304,7 +304,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Kindly remind participants of the temple’s rules if necessary",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["LOVE TEMPLE"]
   },
   {
@@ -313,7 +313,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Coordinate with a ‘Grande Oreille – Angel’ in case of doubt or tension",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["LOVE TEMPLE"]
   },
   {
@@ -322,7 +322,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Hand out the blindfolds to the participants",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -331,7 +331,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Hold space",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -340,7 +340,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Give the mic to participants who wish to ask questions",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["CONFERENCE","TANTRA CAFE","RASSEMBLEMENT"]
   },
   {
@@ -349,7 +349,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Let participants who wish to leave the workshop do so at any point",
     descriptif: "",
     placements: ["Pendant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -358,7 +358,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Disinfect participant's hands before they get off their mats, during the workshop or at the end",
     descriptif: "",
     placements: ["Pendant","Après"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -367,7 +367,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Report any incidents to the organizing team",
     descriptif: "",
     placements: ["Pendant","Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","ATELIER ARTISTIQUE (Matin)","CONFERENCE","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE"]
   },
   {
@@ -376,7 +376,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Collect blindfolds from participants",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -385,7 +385,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Store massage equipment (oil, cups, hydrogel, kitchen roll)",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)"]
   },
   {
@@ -394,7 +394,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Clean incense ash",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -403,7 +403,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Switch off the candles (real and/or LED)",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -412,7 +412,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Tidy away the yoga mats",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -421,7 +421,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Tidy away the mattresses",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -430,7 +430,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Tidy away the chairs",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -439,7 +439,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Tidy away the cushions",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -448,7 +448,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Return the yoga mats to their original room",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -457,7 +457,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Return the mats to their original room",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -466,7 +466,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Return the cushions to their original room",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -475,7 +475,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Return the chairs to their original room",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT"]
   },
   {
@@ -484,7 +484,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Help bring the musical equipment back",
     descriptif: "",
     placements: ["Après"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY"]
   },
   {
@@ -493,7 +493,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• No specific instructions – just come as you are !",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -502,7 +502,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Open to everyone, all levels, no prior experience required",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","CONFERENCE","TANTRA CAFE"]
   },
   {
@@ -511,7 +511,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• All levels of tantra",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)"]
   },
   {
@@ -520,7 +520,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Both singles and couples",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -529,7 +529,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Come along with a partner",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -538,7 +538,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Come along with a partner or you’ll find one directly at the workshop",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -547,7 +547,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Please arrive on time. Doors will close to explain framework and rules. You will not be admitted if you arrive late",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -556,7 +556,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• You may leave whenever you wish, but once you leave, you cannot return",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -565,7 +565,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring a water bottle, towel if you sweat a lot & comfortable clothes for movement.",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","MEDITATION / YOGA"]
   },
   {
@@ -574,7 +574,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Don't forget your smil and curiosity",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
   {
@@ -583,7 +583,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring your tantric kit (sarong, mattress protecting sheet, massage oil)",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -592,7 +592,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring your sarong if you want",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)"]
   },
   {
@@ -601,7 +601,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring your own blindfold if you have one",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)"]
   },
   {
@@ -610,7 +610,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring a sheet to protect the mattress",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","LOVE TEMPLE"]
   },
   {
@@ -619,7 +619,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring your massage oil if you want",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)"]
   },
   {
@@ -628,7 +628,7 @@ var REF_CONSIGNES_RECURRENTES = [
     valueEn: "• Bring your own cushion/zafu and/or mat if you want",
     descriptif: "",
     placements: ["Participant"],
-    actif: false,
+    actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
 ];
