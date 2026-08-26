@@ -23,7 +23,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_002",
@@ -32,7 +32,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_003",
@@ -41,7 +41,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT"]
+    types: []
   },
   {
     id: "CONS_004",
@@ -50,7 +50,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","RASSEMBLEMENT"]
+    types: []
   },
   {
     id: "CONS_005",
@@ -59,7 +59,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT"]
+    types: []
   },
   {
     id: "CONS_006",
@@ -68,7 +68,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_007",
@@ -77,7 +77,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_008",
@@ -86,7 +86,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_009",
@@ -95,7 +95,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_010",
@@ -104,7 +104,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_011",
@@ -113,7 +113,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Avant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
+    types: []
   },
   {
     id: "CONS_012",
@@ -122,7 +122,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_013",
@@ -131,7 +131,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_014",
@@ -140,7 +140,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_015",
@@ -149,7 +149,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","TANTRA CAFE","CONFERENCE"]
+    types: []
   },
   {
     id: "CONS_016",
@@ -158,7 +158,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_017",
@@ -167,7 +167,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","TANTRA CAFE","CONFERENCE"]
+    types: []
   },
   {
     id: "CONS_018",
@@ -176,7 +176,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_019",
@@ -185,7 +185,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
+    types: []
   },
   {
     id: "CONS_020",
@@ -194,7 +194,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","RASSEMBLEMENT"]
+    types: []
   },
   {
     id: "CONS_021",
@@ -203,7 +203,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","CEREMONIE & CONCERT","POOL PARTY","DJ Set"]
+    types: []
   },
   {
     id: "CONS_022",
@@ -212,7 +212,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_023",
@@ -221,7 +221,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","LOVE TEMPLE","CEREMONIE & CONCERT","DJ Set"]
+    types: []
   },
   {
     id: "CONS_024",
@@ -230,7 +230,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant","Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_025",
@@ -239,7 +239,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Pendant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_026",
@@ -248,7 +248,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_028",
@@ -257,7 +257,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_029",
@@ -266,7 +266,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
+    types: []
   },
   {
     id: "CONS_030",
@@ -275,7 +275,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+    types: []
   },
   {
     id: "CONS_031",
@@ -284,7 +284,7 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Après"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE","MEDITATION / YOGA"]
+    types: []
   },
   {
     id: "CONS_027",
@@ -293,6 +293,6 @@ var REF_CONSIGNES_TYPE = [
     descriptif: "",
     placements: ["Participant"],
     actif: true,
-    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","TANTRA CAFE","CONFERENCE"]
+    types: []
   },
 ];
