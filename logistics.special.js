@@ -631,9 +631,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-26 22:05"
+    html: "<div>Preparer peut etre un autel, fleurs bougies devant nous pour le concert&nbsp;</div><div>Prevoir de l'eau pour nous pendant le concert&nbsp;</div>",
+    text: "Preparer peut etre un autel, fleurs bougies devant nous pour le concert \nPrevoir de l'eau pour nous pendant le concert",
+    updatedAt: "2026-08-26 22:06"
   }
 
 };
