@@ -277,4 +277,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
   },
+  {
+    id: "CONS_NEW31",
+    valueFr: "• Ramener les spots Felix dans la salle Orion",
+    valueEn: "• Bring Felix's spotlights back into Orion",
+    descriptif: "",
+    placements: ["Après"],
+    actif: true,
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","LOVE TEMPLE","DJ Set","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
+  },
 ];
