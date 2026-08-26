@@ -427,15 +427,15 @@ var LOGISTICS = {
     text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-26 22:58"
+    updatedAt: "2026-08-26 22:52"
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
-    html: "On a nos 2 guitares , prévoir câbles et micros, <br>2 stands pour guitare. <br>Mitsch : micro voix<br>Stéphane : micro pour djembe + micro voix + connecteurs pour pédalier<br>Chaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus<br>Coussins pour participants si pas de zafus<br>30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
-    text: "On a nos 2 guitares , prévoir câbles et micros,\n2 stands pour guitare.\nMitsch : micro voix\nStéphane : micro pour djembe + micro voix + connecteurs pour pédalier\nChaises pour qu'on puisse s'assoir (pour être à la même hauteur que Mitch ?) + tapis + zafus\nCoussins pour participants si pas de zafus\n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    html: "<div>2 guitares, djembe, piano&nbsp;</div><div><span style=\"font-family: inherit;\">4 voix&nbsp;</span></div><div><span style=\"font-family: inherit;\">30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</span></div>",
+    text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 40,
-    updatedAt: "2026-08-26 21:58"
+    updatedAt: "2026-08-26 22:58"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
