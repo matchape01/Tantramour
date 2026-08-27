@@ -28,6 +28,7 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_MOUCHOIR", value: "Boite mouchoirs", stock: 0, description: "Boite Mouchoirs", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_TALC", value: "Talc", stock: 0, description: "Talc", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_COCO", value: "Huile de coco", stock: 0, description: "Huile de coco", remarque: "" },
+  { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_SESAME", value: "Huile de sésame", stock: 0, description: "Huile de sésame", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_COUPELLE", value: "Petite coupelle (huile)", stock: 0, description: "Petite coupelle", remarque: "" },
   { type: "Tantramour", categorie: "Eclairage", id: "EQ_CHAUFPLAT", value: "Bougie chauffe plat (vraie)", stock: 0, description: "Bougie chauffe plat (vraie", remarque: "" },
   { type: "Tantramour", categorie: "Eclairage", id: "EQ_BOUGIE", value: "Bougie cierge (vraie)", stock: 0, description: "Bougie (vraie)", remarque: "" },
