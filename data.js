@@ -1,4 +1,4 @@
-// @saved:2026-08-28 20:13:15
+// @saved:2026-08-28 20:15:57
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -31,7 +31,7 @@ var AGENDA = [
   // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
   {id:"A_2135",jour:"Jour 1",date:"Samedi 29 aout",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"Atman Clochette (Matthieu)",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"LOG_Jour1_PETIT_DEJ_2",meetingRoles:"",_equipements:{"EQ_BOBSEAT":1,"EQ_NEW03":1,"EQ_TAMBOUR":1,"EQ_NEW016":1}},
   {id:"A_3687",jour:"Jour 1",date:"Samedi 29 aout",heure:"09:00 - 14:00",type:"PREPA & LOGISTICS",atelier:"DECO temples, Acceuil, exterieur",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_5090",jour:"Jour 1",date:"Samedi 29 aout",heure:"11:00 - 16:00",type:"PREPA & LOGISTICS",atelier:"Tests son & sono a  SHIVA",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_5090",jour:"Jour 1",date:"Samedi 29 aout",heure:"11:00 - 16:00",type:"PREPA & LOGISTICS",atelier:"Tests son & sono a  SHIVA",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_TESTS_SON___SONO_A__SHIVA",meetingRoles:""},
   {id:"A_4804",jour:"Jour 1",date:"Samedi 29 aout",heure:"12:30 - 14:30",type:"REPAS & PAUSE",atelier:"DEJEUNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_DEJEUNER",meetingRoles:""},
   {id:"A_5594",jour:"Jour 1",date:"Samedi 29 aout",heure:"14:30 - 15:30",type:"REUNION",atelier:"REUNION D'EQUIPE (Helpers)",lieu:"CHENREZIG",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_REUNION_D_EQUIPE__HELPERS_",meetingRoles:"helper,angel,traducteur"},
   {id:"A_7468",jour:"Jour 1",date:"Samedi 29 aout",heure:"16:00 - 17:00",type:"REUNION",atelier:"REUNION D'EQUIPE - DREAM TEAM (Tous)",lieu:"CHENREZIG",fac1:"ShivaChris",fac2:"Sabryna",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:"animateur,helper,angel,traducteur,healer"},
