@@ -1444,6 +1444,14 @@ var LOGISTICS = {
     validatedByFac: false,
     prepDuration: 15,
     updatedAt: "2026-08-18 23:13"
+  },
+
+  "JOUR1_TESTS_SON___SONO_A__SHIVA": {
+    html: "",
+    text: "",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-28 20:15"
   }
 
 };
