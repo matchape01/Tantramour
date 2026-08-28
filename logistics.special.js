@@ -652,6 +652,12 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-08-28 16:00"
+  },
+
+  "JOUR1_TESTS_SON___SONO_A__SHIVA": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-28 20:15"
   }
 
 };
