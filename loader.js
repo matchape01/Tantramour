@@ -13,6 +13,7 @@
 (function() {
   // Liste des fichiers de référence modifiables par l'interface
   var REFRESHABLE = [
+    'data.js',
     'ref_ressources.js',
     'ref_descriptions.js',
     'ref_consignes_type.js',
