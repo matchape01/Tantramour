@@ -295,4 +295,13 @@ var REF_CONSIGNES_TYPE = [
     actif: true,
     types: []
   },
+  {
+    id: "CONS_032",
+    valueFr: "Rien à signaler",
+    valueEn: "Nothing to report",
+    descriptif: "",
+    placements: ["Logistique","Spécifique"],
+    actif: true,
+    types: []
+  },
 ];
