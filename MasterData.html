@@ -192,10 +192,21 @@
   .import-item-meta { font-size:11px; color:var(--muted); }
   .import-fields-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
   .import-field { border:1px solid var(--border); border-radius:8px; padding:8px; background:var(--surface); }
-  .import-field-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; }
-  .import-field-values { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:start; margin-top:4px; }
-  .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; }
-  .import-field-arrow { color:var(--muted); font-size:12px; padding-top:2px; }
+  .import-field-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; margin-bottom:2px; }
+  /* layout vertical sys → upload */
+  .import-field-values { display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+  .import-field-slot { display:flex; flex-direction:column; gap:2px; }
+  .import-field-slot-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .import-field-slot-label.sys { color:#1d4ed8; }
+  .import-field-slot-label.upl { color:#166534; }
+  .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; padding:4px 8px; border-radius:5px; }
+  .import-field-value.sys { background:#eff6ff; border:1px solid #bfdbfe; color:#1e3a5f; }
+  .import-field-value.upl { background:#f0fdf4; border:1px solid #bbf7d0; color:#14532d; }
+  .import-field-arrow { text-align:center; color:var(--muted); font-size:13px; line-height:1; }
+  /* champ inchangé */
+  .import-field.unchanged { opacity:.65; }
+  .import-field-unchanged-badge { display:inline-block; margin-top:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); background:var(--border); border-radius:4px; padding:2px 7px; }
+  .import-field-value.same { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-style:italic; padding:4px 8px; border-radius:5px; }
   .import-choice { display:flex; gap:12px; margin-top:6px; font-size:12px; }
   .import-choice label { display:flex; align-items:center; gap:5px; cursor:pointer; }
   .import-empty { font-size:12px; color:var(--muted); font-style:italic; }
@@ -410,9 +421,16 @@
   <div class="section" id="sec-heures">
     <div class="sec-title">🕐 <span data-i18n="md_sec_heures">Heures</span></div>
     <div class="sec-meta">ref_heures.js — REF_HEURES — colonnes : id, value (HH:MM)</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span id="heures-active-filters-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;"></span>
+    </div>
     <div class="tbl-wrap" style="max-height:420px;overflow-y:auto">
       <table>
-        <thead><tr><th data-i18n="md_col_id">ID</th><th>Value (HH:MM)</th><th></th></tr></thead>
+        <thead><tr id="thead-heures-row">
+          <th class="th-sort" onclick="gSort('heures','id',false)"><div class="th-content"><span class="th-label">ID <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-heures-id" onclick="gOpenFilter(event,'heures','id','ID')" title="Filtrer par ID">🔍</button></div></th>
+          <th class="th-sort" onclick="gSort('heures','value',false)"><div class="th-content"><span class="th-label">Value (HH:MM) <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-heures-value" onclick="gOpenFilter(event,'heures','value','Value')" title="Filtrer par Value">🔍</button></div></th>
+          <th></th>
+        </tr></thead>
         <tbody id="tbody-heures"></tbody>
       </table>
     </div>
@@ -535,15 +553,18 @@
       <strong>Types</strong> : restreint la consigne à certains types d'ateliers (vide = tous les types).<br>
       <strong>Actif</strong> : décoché = consigne désactivée globalement pour tous les ateliers.
     </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span id="cons-active-filters-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;"></span>
+    </div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr>
-          <th style="width:7%;min-width:60px">Actif</th>
-          <th style="width:10%;min-width:90px">ID</th>
-          <th style="min-width:130px">Texte FR</th>
-          <th style="min-width:130px">Texte EN</th>
-          <th style="min-width:100px">Descriptif</th>
-          <th style="min-width:140px">Placements</th>
+        <thead><tr id="thead-consignes_type-row">
+          <th class="th-sort" style="width:7%;min-width:60px" onclick="gSort('cons','actif',false)"><div class="th-content"><span class="th-label">Actif <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-actif" onclick="gOpenFilter(event,'cons','actif','Actif')" title="Filtrer par Actif">🔍</button></div></th>
+          <th class="th-sort" style="width:10%;min-width:90px" onclick="gSort('cons','id',false)"><div class="th-content"><span class="th-label">ID <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-id" onclick="gOpenFilter(event,'cons','id','ID')" title="Filtrer par ID">🔍</button></div></th>
+          <th class="th-sort" style="min-width:130px" onclick="gSort('cons','valueFr',false)"><div class="th-content"><span class="th-label">Texte FR <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-valueFr" onclick="gOpenFilter(event,'cons','valueFr','Texte FR')" title="Filtrer par Texte FR">🔍</button></div></th>
+          <th class="th-sort" style="min-width:130px" onclick="gSort('cons','valueEn',false)"><div class="th-content"><span class="th-label">Texte EN <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-valueEn" onclick="gOpenFilter(event,'cons','valueEn','Texte EN')" title="Filtrer par Texte EN">🔍</button></div></th>
+          <th class="th-sort" style="min-width:100px" onclick="gSort('cons','descriptif',false)"><div class="th-content"><span class="th-label">Descriptif <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-descriptif" onclick="gOpenFilter(event,'cons','descriptif','Descriptif')" title="Filtrer par Descriptif">🔍</button></div></th>
+          <th class="th-sort" style="min-width:140px" onclick="gSort('cons','placements',false)"><div class="th-content"><span class="th-label">Placements <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-cons-placements" onclick="gOpenFilter(event,'cons','placements','Placements')" title="Filtrer par Placements">🔍</button></div></th>
           <th style="min-width:140px">Types d'ateliers</th>
           <th></th>
         </tr></thead>
@@ -589,15 +610,18 @@
       <strong>Types</strong> : restreint la consigne à certains types d'ateliers (vide = tous les types).<br>
       <strong>Actif</strong> : décoché = consigne désactivée globalement pour tous les ateliers.
     </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span id="corec-active-filters-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;"></span>
+    </div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr>
-          <th style="width:7%;min-width:60px">Actif</th>
-          <th style="width:11%;min-width:90px">ID</th>
-          <th style="min-width:140px">Texte FR</th>
-          <th style="min-width:140px">Texte EN</th>
-          <th style="min-width:110px">Descriptif</th>
-          <th style="min-width:160px">Placements</th>
+        <thead><tr id="thead-consignes_recurrentes-row">
+          <th class="th-sort" style="width:7%;min-width:60px" onclick="gSort('corec','actif',false)"><div class="th-content"><span class="th-label">Actif <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-actif" onclick="gOpenFilter(event,'corec','actif','Actif')" title="Filtrer par Actif">🔍</button></div></th>
+          <th class="th-sort" style="width:11%;min-width:90px" onclick="gSort('corec','id',false)"><div class="th-content"><span class="th-label">ID <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-id" onclick="gOpenFilter(event,'corec','id','ID')" title="Filtrer par ID">🔍</button></div></th>
+          <th class="th-sort" style="min-width:140px" onclick="gSort('corec','valueFr',false)"><div class="th-content"><span class="th-label">Texte FR <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-valueFr" onclick="gOpenFilter(event,'corec','valueFr','Texte FR')" title="Filtrer par Texte FR">🔍</button></div></th>
+          <th class="th-sort" style="min-width:140px" onclick="gSort('corec','valueEn',false)"><div class="th-content"><span class="th-label">Texte EN <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-valueEn" onclick="gOpenFilter(event,'corec','valueEn','Texte EN')" title="Filtrer par Texte EN">🔍</button></div></th>
+          <th class="th-sort" style="min-width:110px" onclick="gSort('corec','descriptif',false)"><div class="th-content"><span class="th-label">Descriptif <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-descriptif" onclick="gOpenFilter(event,'corec','descriptif','Descriptif')" title="Filtrer par Descriptif">🔍</button></div></th>
+          <th class="th-sort" style="min-width:160px" onclick="gSort('corec','placements',false)"><div class="th-content"><span class="th-label">Placements <span class="sort-icon">⇅</span></span><button class="th-filter-btn" id="g-fbtn-corec-placements" onclick="gOpenFilter(event,'corec','placements','Placements')" title="Filtrer par Placements">🔍</button></div></th>
           <th style="min-width:140px">Types d'ateliers</th>
           <th></th>
         </tr></thead>
@@ -798,7 +822,7 @@ var CFG = {
     cols:         ['type','categorie','id','value','stock','description','remarque'],
     textareaCols: ['description','remarque'],
     selectCols:   {
-      type:      ['Hameau','Tantramour','Animateur','Autre'],
+      type:      ['Hameau','Tantramour','Animateur','Autre','A définir'],
       categorie: [], // valeurs dynamiques — voir eqCategorieOptions() (basées sur REF_EQUIP_CAT)
     },
     stockCol:     'stock',
@@ -893,6 +917,12 @@ function renderTable(key) {
     equipCatSort(EQUIP_CAT_SORT && EQUIP_CAT_SORT.col ? EQUIP_CAT_SORT.col : null, true);
     return;
   }
+  // Pour heures, passer par le moteur générique (tri + filtres)
+  if (key === 'heures') {
+    if (editKey === 'heures' && editIdx !== null) return;
+    gSort('heures', null, true);
+    return;
+  }
   _renderTableInner(key);
 }
 
@@ -961,8 +991,8 @@ function eqThClick(e, col) {
 }
 window.eqThClick = eqThClick;
 
-// Rendu initial de tous les tableaux
-Object.keys(CFG).forEach(function(k) { renderTable(k); });
+// Rendu initial de tous les tableaux (sauf heures — géré après l'init du moteur générique)
+Object.keys(CFG).forEach(function(k) { if (k !== 'heures') renderTable(k); });
 // Appliquer le tri et filtres par défaut sur les équipements dès le chargement
 eqSort(null, true);
 
@@ -2028,6 +2058,17 @@ function eqBuildImportPreview(sheet) {
       continue;
     }
 
+    // Validation du champ Fournisseur — seules les valeurs prédéfinies sont acceptées
+    var ALLOWED_TYPES = CFG.equipements.selectCols.type;
+    if (type && ALLOWED_TYPES.indexOf(type) === -1) {
+      warnings.push(
+        '🚫 Ligne ' + rowNumber + ' — Fournisseur « ' + type + ' » invalide (équipement : « ' + value + ' »). ' +
+        'Valeurs acceptées : ' + ALLOWED_TYPES.map(function(v) { return '« ' + v + ' »'; }).join(', ') + '. ' +
+        'La ligne a été ignorée — corrigez la valeur dans votre fichier Excel et réimportez.'
+      );
+      continue;
+    }
+
     var existingIdx = rawId && idMap.hasOwnProperty(rawId) ? idMap[rawId] : -1;
 
     if (existingIdx !== -1) {
@@ -2035,7 +2076,7 @@ function eqBuildImportPreview(sheet) {
       if (seenIds[rawId]) { warnings.push('⚠️ ID dupliqué dans le fichier importé, ligne ' + rowNumber + ' ignorée : ' + rawId + '.'); continue; }
       seenIds[rawId] = true;
       var eq = STORE['equipements'][existingIdx];
-      var changes = [];
+      var changes = []; var unchanged = []; var fields = [];
       [
         { key: 'type',        label: 'Fournisseur', next: type,        cur: eq.type },
         { key: 'categorie',   label: 'Catégorie',    next: categorie,   cur: eq.categorie },
@@ -2044,9 +2085,16 @@ function eqBuildImportPreview(sheet) {
         { key: 'description', label: 'Description',  next: description, cur: eq.description },
         { key: 'remarque',    label: 'Remarque',     next: remarque,    cur: eq.remarque }
       ].forEach(function(f) {
-        if (f.next !== f.cur) changes.push({ key: f.key, label: f.label, currentValue: f.cur, nextValue: f.next, choice: 'apply' });
+        if (f.next !== f.cur) {
+          var ci = changes.length;
+          changes.push({ key: f.key, label: f.label, currentValue: f.cur, nextValue: f.next, choice: 'apply' });
+          fields.push({ changed: true, label: f.label, changeIdx: ci });
+        } else {
+          unchanged.push({ label: f.label, value: f.cur });
+          fields.push({ changed: false, label: f.label, value: f.cur });
+        }
       });
-      if (changes.length) items.push({ mode: 'update', id: rawId, storeIdx: existingIdx, label: eq.value, changes: changes });
+      if (changes.length) items.push({ mode: 'update', id: rawId, storeIdx: existingIdx, label: eq.value, changes: changes, unchanged: unchanged, fields: fields });
     } else {
       // ── Création d'un nouvel équipement ──
       // Si un ID est fourni dans le fichier et qu'il n'est pas déjà utilisé → on l'accepte tel quel.
@@ -2081,7 +2129,8 @@ function eqBuildImportPreview(sheet) {
         { key: 'description', label: 'Description',  currentValue: '', nextValue: description,        choice: 'apply' },
         { key: 'remarque',    label: 'Remarque',     currentValue: '', nextValue: remarque,           choice: 'apply' }
       ];
-      items.push({ mode: 'create', id: newId, idForced: idWasForced, idConflict: idHadConflict, storeIdx: -1, label: value, changes: changes2 });
+      var fields2 = changes2.map(function(c, ci) { return { changed: true, label: c.label, changeIdx: ci }; });
+      items.push({ mode: 'create', id: newId, idForced: idWasForced, idConflict: idHadConflict, storeIdx: -1, label: value, changes: changes2, unchanged: [], fields: fields2 });
     }
   }
   return { items: items, warnings: warnings, totalChanges: items.reduce(function(sum, it) { return sum + it.changes.length; }, 0) };
@@ -2095,6 +2144,43 @@ function eqRenderImportError(message) {
   document.getElementById('eqImportSummary').innerHTML =
     '<div class="import-summary-box"><div class="import-summary-title status-warn">Import impossible</div><div class="import-empty">' + esc(message) + '</div></div>';
 }
+// ── Helper partagé : rendu d'une grille de champs (inchangés + modifiés dans l'ordre) ──
+// radioPrefix : préfixe pour les noms radio (ex: 'eq-import-choice')
+// choiceFn    : nom de la fonction JS à appeler onchange (ex: 'setEqImportChoice')
+function _renderImportFieldsGrid(item, itemIdx, radioPrefix, choiceFn) {
+  return (item.fields || item.changes.map(function(c, ci) { return { changed: true, label: c.label, changeIdx: ci }; }))
+    .map(function(field) {
+      if (field.changed) {
+        var change = item.changes[field.changeIdx];
+        var ci = field.changeIdx;
+        return '<div class="import-field">' +
+          '<div class="import-field-name">' + esc(change.label) + '</div>' +
+          '<div class="import-field-values">' +
+            '<div class="import-field-slot">' +
+              '<div class="import-field-slot-label sys">Valeur système</div>' +
+              '<div class="import-field-value sys">' + esc(change.currentValue || '—') + '</div>' +
+            '</div>' +
+            '<div class="import-field-arrow">↓</div>' +
+            '<div class="import-field-slot">' +
+              '<div class="import-field-slot-label upl">Valeur upload</div>' +
+              '<div class="import-field-value upl">' + esc(change.nextValue || '—') + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="import-choice">' +
+            '<label><input type="radio" name="' + radioPrefix + '-' + itemIdx + '-' + ci + '" value="apply" checked onchange="' + choiceFn + '(' + itemIdx + ',' + ci + ',\'apply\')"> Accepter</label>' +
+            '<label><input type="radio" name="' + radioPrefix + '-' + itemIdx + '-' + ci + '" value="skip" onchange="' + choiceFn + '(' + itemIdx + ',' + ci + ',\'skip\')"> Ignorer</label>' +
+          '</div>' +
+        '</div>';
+      } else {
+        return '<div class="import-field unchanged">' +
+          '<div class="import-field-name">' + esc(field.label) + '</div>' +
+          '<div class="import-field-value same">' + esc(field.value || '—') + '</div>' +
+          '<div class="import-field-unchanged-badge">= Inchangé</div>' +
+        '</div>';
+      }
+    }).join('');
+}
+
 function eqRenderImportPreview(preview, filename) {
   var summary = document.getElementById('eqImportSummary');
   var warningsHtml = (preview.warnings && preview.warnings.length)
@@ -2128,28 +2214,16 @@ function eqRenderImportPreview(preview, filename) {
         } else {
           badge = '<span class="import-item-meta">ID : ' + esc(item.id) + '</span>';
         }
+        var unchangedCount = item.unchanged ? item.unchanged.length : 0;
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div>' +
               '<div class="import-item-title">' + esc(item.label || item.id) + '</div>' +
               '<div style="margin-top:4px">' + badge + '</div>' +
             '</div>' +
-            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)' + (unchangedCount ? ' · ' + unchangedCount + ' inchangé(s)' : '') + '</div>' +
           '</div>' +
-          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
-            return '<div class="import-field">' +
-              '<div class="import-field-name">' + esc(change.label) + '</div>' +
-              '<div class="import-field-values">' +
-                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
-                '<div class="import-field-arrow">→</div>' +
-                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
-              '</div>' +
-              '<div class="import-choice">' +
-                '<label><input type="radio" name="eq-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setEqImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
-                '<label><input type="radio" name="eq-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setEqImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
-              '</div>' +
-            '</div>';
-          }).join('') + '</div>' +
+          '<div class="import-fields-grid">' + _renderImportFieldsGrid(item, itemIdx, 'eq-import-choice', 'setEqImportChoice') + '</div>' +
         '</div>';
       }).join('') + '</div>' +
       '<div class="import-actions">' +
@@ -2274,6 +2348,413 @@ function saveDataUpdate() {
 window.saveDataUpdate = saveDataUpdate;
 
 // ════════════════════════════════════════════════════════════
+// MOTEUR GÉNÉRIQUE TRI + FILTRE (Heures, Consignes génériques, Consignes spécifiques)
+// ════════════════════════════════════════════════════════════
+
+// Configuration par module : { store, cols, barId, thRowId, renderFn, getVal }
+var G_MODULE = {
+  heures: {
+    storeKey: 'heures',       // clé dans STORE[]
+    cols:     ['id','value'],
+    barId:    'heures-active-filters-bar',
+    thRowId:  'thead-heures-row',
+    renderFn: function(items) { _gRenderHeures(items); },
+    getVal:   function(item, col) { return String(item[col] !== undefined ? item[col] : ''); },
+  },
+  cons: {
+    storeDirect: true,         // utiliser CONS_STORE directement
+    cols:     ['actif','id','valueFr','valueEn','descriptif','placements'],
+    barId:    'cons-active-filters-bar',
+    thRowId:  'thead-consignes_type-row',
+    renderFn: function(items) { _gRenderConsignesType(items); },
+    getVal:   function(item, col) {
+      if (col === 'actif')      return item.actif !== false ? 'Actif' : 'Inactif';
+      if (col === 'placements') return (item.placements || []).join(', ');
+      return String(item[col] !== undefined ? item[col] : '');
+    },
+  },
+  corec: {
+    storeDirect: true,
+    cols:     ['actif','id','valueFr','valueEn','descriptif','placements'],
+    barId:    'corec-active-filters-bar',
+    thRowId:  'thead-consignes_recurrentes-row',
+    renderFn: function(items) { _gRenderConsignesRecurrentes(items); },
+    getVal:   function(item, col) {
+      if (col === 'actif')      return item.actif !== false ? 'Actif' : 'Inactif';
+      if (col === 'placements') return (item.placements || []).join(', ');
+      return String(item[col] !== undefined ? item[col] : '');
+    },
+  },
+};
+
+// État tri + filtres par module
+var G_SORT    = { heures: { col: null, dir: 0 }, cons: { col: null, dir: 0 }, corec: { col: null, dir: 0 } };
+var G_FILTERS = { heures: {}, cons: {}, corec: {} };
+var G_POPOVER = null; // popover filtre ouvert
+
+// Récupère le store d'un module
+function _gGetStore(mod) {
+  var cfg = G_MODULE[mod];
+  if (!cfg) return [];
+  if (cfg.storeDirect) {
+    if (mod === 'cons')  return CONS_STORE;
+    if (mod === 'corec') return COREC_STORE;
+  }
+  return STORE[cfg.storeKey] || [];
+}
+
+// Valeur de tri/filtre pour un item
+function _gVal(mod, item, col) {
+  return G_MODULE[mod].getVal(item, col);
+}
+
+// ── Tri + filtre ──────────────────────────────────────────────────────────────
+function gSort(mod, col, reapply) {
+  var cfg = G_MODULE[mod];
+  if (!cfg) return;
+  if (!reapply && col) {
+    var s = G_SORT[mod];
+    if (s.col === col) {
+      s.dir = s.dir === 1 ? -1 : s.dir === -1 ? 0 : 1;
+    } else {
+      s.col = col; s.dir = 1;
+    }
+    if (s.dir === 0) s.col = null;
+  }
+
+  var store = _gGetStore(mod);
+  var s = G_SORT[mod];
+  var filters = G_FILTERS[mod];
+
+  // Filtrer
+  var items = store.filter(function(item) {
+    return Object.keys(filters).every(function(c) {
+      var sel = filters[c];
+      if (!sel || sel.size === 0) return true;
+      return sel.has(_gVal(mod, item, c));
+    });
+  });
+
+  // Trier
+  if (s.col && s.dir !== 0) {
+    var sc = s.col, sd = s.dir;
+    items = items.slice().sort(function(a, b) {
+      var va = _gVal(mod, a, sc).toLowerCase();
+      var vb = _gVal(mod, b, sc).toLowerCase();
+      if (va < vb) return -sd;
+      if (va > vb) return  sd;
+      return 0;
+    });
+  }
+
+  cfg.renderFn(items);
+  _gUpdateHeaders(mod);
+  _gUpdateFiltersBar(mod);
+}
+window.gSort = gSort;
+
+// ── Rendu des en-têtes (icône tri + bouton filtre actif) ─────────────────────
+function _gUpdateHeaders(mod) {
+  var cfg = G_MODULE[mod];
+  var thRow = document.getElementById(cfg.thRowId);
+  if (!thRow) return;
+  var ths = thRow.querySelectorAll('.th-sort');
+  var s = G_SORT[mod];
+  ths.forEach(function(th, idx) {
+    var col = cfg.cols[idx];
+    if (!col) return;
+    th.classList.remove('asc','desc');
+    var icon = th.querySelector('.sort-icon');
+    if (col === s.col) {
+      if (s.dir === 1)  { th.classList.add('asc');  if (icon) icon.textContent = '↑'; }
+      if (s.dir === -1) { th.classList.add('desc'); if (icon) icon.textContent = '↓'; }
+    } else {
+      if (icon) icon.textContent = '⇅';
+    }
+    var fbtn = document.getElementById('g-fbtn-' + mod + '-' + col);
+    if (fbtn) {
+      var active = G_FILTERS[mod][col] && G_FILTERS[mod][col].size > 0;
+      fbtn.classList.toggle('active', active);
+    }
+  });
+}
+
+// ── Barre des filtres actifs ──────────────────────────────────────────────────
+function _gUpdateFiltersBar(mod) {
+  var cfg = G_MODULE[mod];
+  var bar = document.getElementById(cfg.barId);
+  if (!bar) return;
+  var filters = G_FILTERS[mod];
+  var active = Object.keys(filters).filter(function(c) { return filters[c] && filters[c].size > 0; });
+  if (!active.length) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
+  bar.style.display = 'inline-flex';
+  var html = '<span style="font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;white-space:nowrap;">Filtres :</span> ';
+  active.forEach(function(c) {
+    var count = filters[c].size;
+    var preview = Array.from(filters[c]).slice(0,2).map(function(v){ return v===''?'(vide)':v; }).join(', ');
+    if (count > 2) preview += ' +' + (count - 2);
+    html += '<span class="eq-af-badge">'
+      + esc(c) + ': <strong>' + esc(preview) + '</strong>'
+      + '<button class="eq-af-remove" onclick="gRemoveFilter(\'' + mod + '\',\'' + c + '\')" title="Supprimer">×</button>'
+      + '</span>';
+  });
+  html += '<button class="eq-af-reset" onclick="gResetFilters(\'' + mod + '\')">✕ Réinitialiser</button>';
+  bar.innerHTML = html;
+}
+
+function gRemoveFilter(mod, col) {
+  delete G_FILTERS[mod][col];
+  gSort(mod, null, true);
+}
+window.gRemoveFilter = gRemoveFilter;
+
+function gResetFilters(mod) {
+  G_FILTERS[mod] = {};
+  gSort(mod, null, true);
+}
+window.gResetFilters = gResetFilters;
+
+// ── Popover filtre multi-valeurs ──────────────────────────────────────────────
+function gOpenFilter(e, mod, col, colTitle) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  _gClosePopover();
+
+  var btn = document.getElementById('g-fbtn-' + mod + '-' + col);
+  if (!btn) return;
+  var rect = btn.getBoundingClientRect();
+
+  var store = _gGetStore(mod);
+  var counts = {};
+  store.forEach(function(item) {
+    var v = _gVal(mod, item, col);
+    counts[v] = (counts[v] || 0) + 1;
+  });
+  var distinctVals = Object.keys(counts).sort(function(a, b) {
+    return a.localeCompare(b, 'fr', { sensitivity: 'base' });
+  });
+
+  var selectedSet = new Set(G_FILTERS[mod][col] ? Array.from(G_FILTERS[mod][col]) : []);
+
+  var popover = document.createElement('div');
+  popover.className = 'eq-filter-popover';
+  popover.id = 'gFilterPopover';
+
+  var popLeft = rect.left;
+  if (popLeft + 270 > window.innerWidth) popLeft = window.innerWidth - 280;
+  if (popLeft < 10) popLeft = 10;
+  popover.style.left = popLeft + 'px';
+  popover.style.top  = (rect.bottom + 6) + 'px';
+
+  popover.innerHTML =
+    '<div class="eq-fp-head">' +
+      '<span>Filtrer : ' + esc(colTitle) + '</span>' +
+      '<button class="eq-af-remove" style="cursor:pointer;font-size:14px;" onclick="_gClosePopover()">×</button>' +
+    '</div>' +
+    '<input type="text" class="eq-fp-search" id="gFpSearch" placeholder="Rechercher une valeur..." oninput="_gFpFilter()">' +
+    '<div class="eq-fp-actions">' +
+      '<button class="eq-fp-link" type="button" onclick="_gFpSelectAll(true)">Tout cocher</button>' +
+      '<button class="eq-fp-link" type="button" onclick="_gFpSelectAll(false)">Tout décocher</button>' +
+    '</div>' +
+    '<div class="eq-fp-list" id="gFpList"></div>' +
+    '<div class="eq-fp-footer">' +
+      '<button class="btn btn-sm" type="button" onclick="_gClosePopover()">Annuler</button>' +
+      '<button class="btn btn-sm btn-ok" type="button" onclick="_gFpApply()">Appliquer</button>' +
+    '</div>';
+
+  document.body.appendChild(popover);
+  G_POPOVER = { popover: popover, mod: mod, col: col, distinctVals: distinctVals, counts: counts, selectedSet: selectedSet };
+
+  _gFpRender('');
+
+  setTimeout(function() {
+    var si = document.getElementById('gFpSearch');
+    if (si) si.focus();
+  }, 50);
+
+  function onDocClick(ev) {
+    if (!popover.contains(ev.target) && ev.target !== btn && !btn.contains(ev.target)) {
+      _gClosePopover();
+    }
+  }
+  popover._onDocClick = onDocClick;
+  setTimeout(function() { document.addEventListener('click', onDocClick); }, 10);
+}
+window.gOpenFilter = gOpenFilter;
+
+function _gClosePopover() {
+  if (G_POPOVER && G_POPOVER.popover) {
+    if (G_POPOVER.popover._onDocClick) document.removeEventListener('click', G_POPOVER.popover._onDocClick);
+    if (G_POPOVER.popover.parentNode)  G_POPOVER.popover.parentNode.removeChild(G_POPOVER.popover);
+    G_POPOVER = null;
+  }
+}
+window._gClosePopover = _gClosePopover;
+
+function _gFpRender(query) {
+  if (!G_POPOVER) return;
+  var list = document.getElementById('gFpList');
+  if (!list) return;
+
+  // Sauvegarder les cases cochées visibles avant rebuild
+  list.querySelectorAll('.gfp-chk').forEach(function(chk) {
+    if (chk.checked) G_POPOVER.selectedSet.add(chk.value);
+    else G_POPOVER.selectedSet.delete(chk.value);
+  });
+
+  var q = (query || '').toLowerCase().trim();
+  var vals = G_POPOVER.distinctVals.filter(function(v) {
+    if (!q) return true;
+    return (v === '' ? '(vide)' : v).toLowerCase().indexOf(q) !== -1;
+  });
+
+  if (!vals.length) {
+    list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:6px;text-align:center;">Aucune valeur trouvée</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  vals.forEach(function(v) {
+    var label = document.createElement('label');
+    label.className = 'eq-fp-item';
+    var chk = document.createElement('input');
+    chk.type = 'checkbox'; chk.className = 'gfp-chk'; chk.value = v;
+    chk.checked = G_POPOVER.selectedSet.has(v);
+    var spanText = document.createElement('span');
+    spanText.className = 'eq-fp-item-text';
+    if (v === '') { spanText.innerHTML = '<em>(Vide)</em>'; } else { spanText.textContent = v; }
+    var spanCount = document.createElement('span');
+    spanCount.className = 'eq-fp-item-count';
+    spanCount.textContent = '(' + (G_POPOVER.counts[v] || 0) + ')';
+    label.appendChild(chk); label.appendChild(spanText); label.appendChild(spanCount);
+    list.appendChild(label);
+  });
+}
+
+function _gFpFilter() {
+  var si = document.getElementById('gFpSearch');
+  _gFpRender(si ? si.value : '');
+}
+window._gFpFilter = _gFpFilter;
+
+function _gFpSelectAll(check) {
+  document.querySelectorAll('.gfp-chk').forEach(function(chk) {
+    chk.checked = check;
+    if (check) G_POPOVER.selectedSet.add(chk.value);
+    else G_POPOVER.selectedSet.delete(chk.value);
+  });
+}
+window._gFpSelectAll = _gFpSelectAll;
+
+function _gFpApply() {
+  if (!G_POPOVER) return;
+  document.querySelectorAll('.gfp-chk').forEach(function(chk) {
+    if (chk.checked) G_POPOVER.selectedSet.add(chk.value);
+    else G_POPOVER.selectedSet.delete(chk.value);
+  });
+  var selected = G_POPOVER.selectedSet;
+  var mod = G_POPOVER.mod, col = G_POPOVER.col;
+  if (selected.size === 0 || selected.size === G_POPOVER.distinctVals.length) {
+    delete G_FILTERS[mod][col];
+  } else {
+    G_FILTERS[mod][col] = new Set(selected);
+  }
+  _gClosePopover();
+  gSort(mod, null, true);
+}
+window._gFpApply = _gFpApply;
+
+// ── Rendus filtrés/triés des 3 modules ───────────────────────────────────────
+
+// Heures : reproduit le rendu de _renderTableInner mais avec les items filtrés/triés
+function _gRenderHeures(items) {
+  var cfg   = CFG['heures'];
+  var tbody = document.getElementById('tbody-heures');
+  if (!tbody) return;
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="3" class="empty">Aucun résultat pour ces filtres.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = items.map(function(item) {
+    var i = STORE['heures'].indexOf(item);
+    return '<tr id="row-heures-' + i + '">' +
+      '<td class="td-id">' + esc(item.id) + '</td>' +
+      '<td class="td-val">' + esc(item.value) + '</td>' +
+      '<td class="td-act">' +
+        '<button class="btn" onclick="editRow(\'heures\',' + i + ')">✏️</button> ' +
+        '<button class="btn btn-del" onclick="askDelete(\'heures\',' + i + ')">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+// Consignes génériques (reprend le rendu de renderConsignesType mais avec items filtrés/triés)
+function _gRenderConsignesType(items) {
+  var tbody = document.getElementById('tbody-consignes_type');
+  if (!tbody) return;
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun résultat pour ces filtres.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = items.map(function(c) {
+    var i = CONS_STORE.indexOf(c);
+    var vFr   = String(c.valueFr  || '').length > 55 ? String(c.valueFr).slice(0,55)+'…'  : (c.valueFr  || '');
+    var vEn   = String(c.valueEn  || '').length > 55 ? String(c.valueEn).slice(0,55)+'…'  : (c.valueEn  || '');
+    var desc  = String(c.descriptif||'').length > 55 ? String(c.descriptif).slice(0,55)+'…': (c.descriptif||'');
+    var actif = c.actif !== false;
+    var typesHtml = (c.types && c.types.length)
+      ? c.types.map(function(t){ return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">'+esc(t)+'</span>'; }).join(' ')
+      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
+    return '<tr id="row-cons-' + i + '" style="'+(actif?'':'opacity:.5;')+'">' +
+      '<td style="text-align:center;"><input type="checkbox" '+(actif?'checked':'')+' title="Activer / désactiver" onclick="consToggleActif('+i+',this.checked)"></td>' +
+      '<td class="td-id">' + esc(c.id) + '</td>' +
+      '<td class="td-val" title="'+esc(c.valueFr||'')+'">' + esc(vFr) + '</td>' +
+      '<td class="td-val" title="'+esc(c.valueEn||'')+'">' + esc(vEn) + '</td>' +
+      '<td class="td-val" title="'+esc(c.descriptif||'')+'">' + esc(desc) + '</td>' +
+      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
+        (c.placements||[]).map(function(p){ return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">'+esc(p)+'</span>'; }).join('') +
+      '</span></td>' +
+      '<td>' + typesHtml + '</td>' +
+      '<td class="td-act"><button class="btn" onclick="editConsigneType('+i+')">✏️</button> <button class="btn btn-del" onclick="deleteConsigneType('+i+')">🗑</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// Consignes spécifiques (reprend le rendu de renderConsignesRecurrentes mais avec items filtrés/triés)
+function _gRenderConsignesRecurrentes(items) {
+  var tbody = document.getElementById('tbody-consignes_recurrentes');
+  if (!tbody) return;
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun résultat pour ces filtres.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = items.map(function(c) {
+    var i = COREC_STORE.indexOf(c);
+    var vFr  = String(c.valueFr  || '').length > 55 ? String(c.valueFr).slice(0,55)+'…'  : (c.valueFr  || '');
+    var vEn  = String(c.valueEn  || '').length > 55 ? String(c.valueEn).slice(0,55)+'…'  : (c.valueEn  || '');
+    var desc = String(c.descriptif||'').length > 55 ? String(c.descriptif).slice(0,55)+'…': (c.descriptif||'');
+    var actif = c.actif !== false;
+    var typesHtml = (c.types && c.types.length)
+      ? c.types.map(function(t){ return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">'+esc(t)+'</span>'; }).join(' ')
+      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
+    return '<tr id="row-corec-' + i + '" style="'+(actif?'':'opacity:.5;')+'">' +
+      '<td style="text-align:center;"><input type="checkbox" '+(actif?'checked':'')+' title="Activer / désactiver" onclick="corecToggleActif('+i+',this.checked)"></td>' +
+      '<td class="td-id">' + esc(c.id) + '</td>' +
+      '<td class="td-val" title="'+esc(c.valueFr||'')+'">' + esc(vFr) + '</td>' +
+      '<td class="td-val" title="'+esc(c.valueEn||'')+'">' + esc(vEn) + '</td>' +
+      '<td class="td-val" title="'+esc(c.descriptif||'')+'">' + esc(desc) + '</td>' +
+      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
+        (c.placements||[]).map(function(p){ return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">'+esc(p)+'</span>'; }).join('') +
+      '</span></td>' +
+      '<td>' + typesHtml + '</td>' +
+      '<td class="td-act"><button class="btn" onclick="editConsigneRecurrente('+i+')">✏️</button> <button class="btn btn-del" onclick="deleteConsigneRecurrente('+i+')">🗑</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// Rendu initial : heures (après définition du moteur générique)
+gSort('heures', null, true);
+
+// ════════════════════════════════════════════════════════════
 // CONSIGNES TYPE — GESTION DÉDIÉE
 // (structure spéciale : placements est un array, textes longs)
 // ════════════════════════════════════════════════════════════
@@ -2290,42 +2771,8 @@ function consTypesOptions() {
 }
 
 function renderConsignesType() {
-  var tbody = document.getElementById('tbody-consignes_type');
-  if (!tbody) return;
-  if (!CONS_STORE.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne générique.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = CONS_STORE.map(function(c, i) {
-    var vFr   = String(c.valueFr || '').length > 55 ? String(c.valueFr).slice(0, 55) + '…' : (c.valueFr || '');
-    var vEn   = String(c.valueEn || '').length > 55 ? String(c.valueEn).slice(0, 55) + '…' : (c.valueEn || '');
-    var desc  = String(c.descriptif || '').length > 55 ? String(c.descriptif).slice(0, 55) + '…' : (c.descriptif || '');
-    var actif = c.actif !== false; // défaut true si absent
-    var typesHtml = (c.types && c.types.length)
-      ? c.types.map(function(t) {
-          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">' + esc(t) + '</span>';
-        }).join(' ')
-      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
-    return '<tr id="row-cons-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
-      '<td style="text-align:center;">' +
-        '<input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="consToggleActif(' + i + ',this.checked)">' +
-      '</td>' +
-      '<td class="td-id">' + esc(c.id) + '</td>' +
-      '<td class="td-val" title="' + esc(c.valueFr||'') + '">' + esc(vFr) + '</td>' +
-      '<td class="td-val" title="' + esc(c.valueEn||'') + '">' + esc(vEn) + '</td>' +
-      '<td class="td-val" title="' + esc(c.descriptif||'') + '">' + esc(desc) + '</td>' +
-      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
-        (c.placements || []).map(function(p) {
-          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">' + esc(p) + '</span>';
-        }).join('') +
-      '</span></td>' +
-      '<td>' + typesHtml + '</td>' +
-      '<td class="td-act">' +
-        '<button class="btn" onclick="editConsigneType(' + i + ')">✏️</button> ' +
-        '<button class="btn btn-del" onclick="deleteConsigneType(' + i + ')">🗑</button>' +
-      '</td>' +
-    '</tr>';
-  }).join('');
+  // Passer par le moteur générique (préserve le tri et les filtres actifs)
+  gSort('cons', null, true);
 }
 
 function consToggleActif(i, checked) {
@@ -2510,42 +2957,8 @@ var COREC_EDIT_I = null;
 var COREC_PLACEMENTS_ALL = ['Avant', 'Pendant', 'Après', 'Logistique', 'Spécifique', 'Participant'];
 
 function renderConsignesRecurrentes() {
-  var tbody = document.getElementById('tbody-consignes_recurrentes');
-  if (!tbody) return;
-  if (!COREC_STORE.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucune consigne spécifique.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = COREC_STORE.map(function(c, i) {
-    var vFr  = String(c.valueFr || '').length > 55 ? String(c.valueFr).slice(0, 55) + '…' : (c.valueFr || '');
-    var vEn  = String(c.valueEn || '').length > 55 ? String(c.valueEn).slice(0, 55) + '…' : (c.valueEn || '');
-    var desc = String(c.descriptif || '').length > 55 ? String(c.descriptif).slice(0, 55) + '…' : (c.descriptif || '');
-    var actif = c.actif !== false;
-    var typesHtml = (c.types && c.types.length)
-      ? c.types.map(function(t) {
-          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">' + esc(t) + '</span>';
-        }).join(' ')
-      : '<span style="font-size:11px;color:var(--muted);font-style:italic;">Tous</span>';
-    return '<tr id="row-corec-' + i + '" style="' + (actif ? '' : 'opacity:.5;') + '">' +
-      '<td style="text-align:center;">' +
-        '<input type="checkbox" ' + (actif ? 'checked' : '') + ' title="Activer / désactiver" onclick="corecToggleActif(' + i + ',this.checked)">' +
-      '</td>' +
-      '<td class="td-id">' + esc(c.id) + '</td>' +
-      '<td class="td-val" title="' + esc(c.valueFr || '') + '">' + esc(vFr) + '</td>' +
-      '<td class="td-val" title="' + esc(c.valueEn || '') + '">' + esc(vEn) + '</td>' +
-      '<td class="td-val" title="' + esc(c.descriptif || '') + '">' + esc(desc) + '</td>' +
-      '<td><span style="display:flex;flex-wrap:wrap;gap:3px;">' +
-        (c.placements || []).map(function(p) {
-          return '<span style="background:var(--th-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;">' + esc(p) + '</span>';
-        }).join('') +
-      '</span></td>' +
-      '<td>' + typesHtml + '</td>' +
-      '<td class="td-act">' +
-        '<button class="btn" onclick="editConsigneRecurrente(' + i + ')">✏️</button> ' +
-        '<button class="btn btn-del" onclick="deleteConsigneRecurrente(' + i + ')">🗑</button>' +
-      '</td>' +
-    '</tr>';
-  }).join('');
+  // Passer par le moteur générique (préserve le tri et les filtres actifs)
+  gSort('corec', null, true);
 }
 window.renderConsignesRecurrentes = renderConsignesRecurrentes;
 
@@ -2943,11 +3356,18 @@ function _corecParseRow(row, normFn, warnings, rn) {
 function _corecComputeChanges(cur, d) {
   var curPl=(cur.placements||[]).slice().sort().join('|'), newPl=d.pl.slice().sort().join('|');
   var curTy=(cur.types||[]).slice().sort().join('|'),      newTy=d.types.slice().sort().join('|');
-  var changes=[];
+  var changes=[]; var unchanged=[]; var fields=[];
   [{key:'valueFr',label:'Texte FR',cur:cur.valueFr||'',next:d.vFr},{key:'valueEn',label:'Texte EN',cur:cur.valueEn||'',next:d.vEn},{key:'descriptif',label:'Descriptif',cur:cur.descriptif||'',next:d.desc},{key:'placements',label:'Placements',cur:curPl,next:newPl,_pl:d.pl},{key:'types',label:'Types',cur:curTy,next:newTy,_ty:d.types}].forEach(function(f){
-    if(f.next!==f.cur) changes.push({key:f.key,label:f.label,currentValue:f.cur.replace(/\|/g,', '),nextValue:f.next.replace(/\|/g,', '),choice:'apply',_pl:f._pl,_ty:f._ty});
+    if(f.next!==f.cur){
+      var ci=changes.length;
+      changes.push({key:f.key,label:f.label,currentValue:f.cur.replace(/\|/g,', '),nextValue:f.next.replace(/\|/g,', '),choice:'apply',_pl:f._pl,_ty:f._ty});
+      fields.push({changed:true,label:f.label,changeIdx:ci});
+    } else {
+      unchanged.push({label:f.label,value:f.cur.replace(/\|/g,', ')});
+      fields.push({changed:false,label:f.label,value:f.cur.replace(/\|/g,', ')});
+    }
   });
-  return changes;
+  return {changes:changes,unchanged:unchanged,fields:fields};
 }
 
 function corecBuildImportPreview(sheet) {
@@ -2992,8 +3412,8 @@ function corecBuildImportPreview(sheet) {
 
     // ── Cas 2 : ID existant dans le store → update ──
     if (rawId && idMap.hasOwnProperty(rawId)) {
-      var changes = _corecComputeChanges(COREC_STORE[idMap[rawId]], d);
-      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:changes });
+      var cfd = _corecComputeChanges(COREC_STORE[idMap[rawId]], d);
+      if (cfd.changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:cfd.changes, unchanged:cfd.unchanged, fields:cfd.fields });
       return;
     }
 
@@ -3001,13 +3421,14 @@ function corecBuildImportPreview(sheet) {
     if (rawId) {
       usedIds[rawId] = true;
       var plStr=d.pl.slice().sort().join('|'), tyStr=d.types.slice().sort().join('|');
-      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:[
+      var ch3=[
         {key:'valueFr',   label:'Texte FR',   currentValue:'',nextValue:d.vFr, choice:'apply'},
         {key:'valueEn',   label:'Texte EN',   currentValue:'',nextValue:d.vEn, choice:'apply'},
         {key:'descriptif',label:'Descriptif', currentValue:'',nextValue:d.desc,choice:'apply'},
         {key:'placements',label:'Placements', currentValue:'',nextValue:plStr.replace(/\|/g,', '),choice:'apply',_pl:d.pl},
         {key:'types',     label:'Types',      currentValue:'',nextValue:tyStr.replace(/\|/g,', ')||'Tous',choice:'apply',_ty:d.types},
-      ]});
+      ];
+      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:ch3, unchanged:[], fields:ch3.map(function(c,ci){return {changed:true,label:c.label,changeIdx:ci};}) });
       return;
     }
 
@@ -3016,13 +3437,14 @@ function corecBuildImportPreview(sheet) {
     do { newId2='COREC_NEW'+String(n2).padStart(3,'0'); n2++; } while(usedIds[newId2]&&n2<=999);
     usedIds[newId2]=true;
     var plStr4=d.pl.slice().sort().join('|'), tyStr4=d.types.slice().sort().join('|');
-    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:[
+    var ch4=[
       {key:'valueFr',   label:'Texte FR',   currentValue:'',nextValue:d.vFr, choice:'apply'},
       {key:'valueEn',   label:'Texte EN',   currentValue:'',nextValue:d.vEn, choice:'apply'},
       {key:'descriptif',label:'Descriptif', currentValue:'',nextValue:d.desc,choice:'apply'},
       {key:'placements',label:'Placements', currentValue:'',nextValue:plStr4.replace(/\|/g,', '),choice:'apply',_pl:d.pl},
       {key:'types',     label:'Types',      currentValue:'',nextValue:tyStr4.replace(/\|/g,', ')||'Tous',choice:'apply',_ty:d.types},
-    ]});
+    ];
+    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:ch4, unchanged:[], fields:ch4.map(function(c,ci){return {changed:true,label:c.label,changeIdx:ci};}) });
   });
 
   return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){
@@ -3072,25 +3494,13 @@ function corecRenderImportPreview(preview, filename) {
               ? '<span style="font-size:11px;font-weight:700;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouvelle · ID forcé : ' + esc(item.id) + ' · Actif = NON</span>'
               : '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouvelle · ID auto : ' + esc(item.id) + ' · Actif = NON</span>')
           : '<span class="import-item-meta">Mise à jour · ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+        var unchangedCount = item.unchanged ? item.unchanged.length : 0;
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
-            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)' + (unchangedCount ? ' · ' + unchangedCount + ' inchangé(s)' : '') + '</div>' +
           '</div>' +
-          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
-            return '<div class="import-field">' +
-              '<div class="import-field-name">' + esc(change.label) + '</div>' +
-              '<div class="import-field-values">' +
-                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
-                '<div class="import-field-arrow">→</div>' +
-                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
-              '</div>' +
-              '<div class="import-choice">' +
-                '<label><input type="radio" name="corec-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setCorecImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
-                '<label><input type="radio" name="corec-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setCorecImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
-              '</div>' +
-            '</div>';
-          }).join('') + '</div>' +
+          '<div class="import-fields-grid">' + _renderImportFieldsGrid(item, itemIdx, 'corec-import-choice', 'setCorecImportChoice') + '</div>' +
         '</div>';
       }).join('') + '</div>' +
       '<div class="import-actions">' +
@@ -3440,7 +3850,7 @@ function _consComputeChanges(cur, d) {
   var newPl = d.pl.slice().sort().join('|');
   var curTy = (cur.types || []).slice().sort().join('|');
   var newTy = d.types.slice().sort().join('|');
-  var changes = [];
+  var changes = []; var unchanged = []; var fields = [];
   [
     { key:'valueFr',    label:'Texte FR',   cur:cur.valueFr    ||'', next:d.vFr },
     { key:'valueEn',    label:'Texte EN',   cur:cur.valueEn    ||'', next:d.vEn },
@@ -3448,9 +3858,16 @@ function _consComputeChanges(cur, d) {
     { key:'placements', label:'Placements', cur:curPl, next:newPl, _pl:d.pl },
     { key:'types',      label:'Types',      cur:curTy, next:newTy, _ty:d.types },
   ].forEach(function(f) {
-    if (f.next !== f.cur) changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
+    if (f.next !== f.cur) {
+      var ci = changes.length;
+      changes.push({ key:f.key, label:f.label, currentValue:f.cur.replace(/\|/g,', '), nextValue:f.next.replace(/\|/g,', '), choice:'apply', _pl:f._pl, _ty:f._ty });
+      fields.push({ changed:true, label:f.label, changeIdx:ci });
+    } else {
+      unchanged.push({ label:f.label, value:f.cur.replace(/\|/g,', ') });
+      fields.push({ changed:false, label:f.label, value:f.cur.replace(/\|/g,', ') });
+    }
   });
-  return changes;
+  return { changes:changes, unchanged:unchanged, fields:fields };
 }
 
 function consBuildImportPreview(sheet) {
@@ -3509,8 +3926,8 @@ function consBuildImportPreview(sheet) {
     // ── Cas 2 : ID présent et existant dans le store → update ──
     if (rawId && idMap.hasOwnProperty(rawId)) {
       var cur = CONS_STORE[idMap[rawId]];
-      var changes = _consComputeChanges(cur, d);
-      if (changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:changes });
+      var cfd2 = _consComputeChanges(cur, d);
+      if (cfd2.changes.length) items.push({ mode:'update', id:rawId, storeIdx:idMap[rawId], label:d.vFr||rawId, changes:cfd2.changes, unchanged:cfd2.unchanged, fields:cfd2.fields });
       return;
     }
 
@@ -3519,13 +3936,14 @@ function consBuildImportPreview(sheet) {
       var newPl3 = d.pl.slice().sort().join('|');
       var newTy3 = d.types.slice().sort().join('|');
       usedIds[rawId] = true;
-      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:[
+      var chC3 = [
         { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:d.vFr,  choice:'apply' },
         { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:d.vEn,  choice:'apply' },
         { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:d.desc, choice:'apply' },
         { key:'placements', label:'Placements', currentValue:'', nextValue:newPl3.replace(/\|/g,', '), choice:'apply', _pl:d.pl },
         { key:'types',      label:'Types',      currentValue:'', nextValue:newTy3.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:d.types },
-      ]});
+      ];
+      items.push({ mode:'create', id:rawId, idForced:true, storeIdx:-1, label:d.vFr||rawId, changes:chC3, unchanged:[], fields:chC3.map(function(c,ci){return {changed:true,label:c.label,changeIdx:ci};}) });
       return;
     }
 
@@ -3535,13 +3953,14 @@ function consBuildImportPreview(sheet) {
     usedIds[newId2] = true;
     var newPl4 = d.pl.slice().sort().join('|');
     var newTy4 = d.types.slice().sort().join('|');
-    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:[
+    var chC4 = [
       { key:'valueFr',    label:'Texte FR',   currentValue:'', nextValue:d.vFr,  choice:'apply' },
       { key:'valueEn',    label:'Texte EN',   currentValue:'', nextValue:d.vEn,  choice:'apply' },
       { key:'descriptif', label:'Descriptif', currentValue:'', nextValue:d.desc, choice:'apply' },
       { key:'placements', label:'Placements', currentValue:'', nextValue:newPl4.replace(/\|/g,', '), choice:'apply', _pl:d.pl },
       { key:'types',      label:'Types',      currentValue:'', nextValue:newTy4.replace(/\|/g,', ')||'Tous', choice:'apply', _ty:d.types },
-    ]});
+    ];
+    items.push({ mode:'create', id:newId2, idForced:false, storeIdx:-1, label:d.vFr||newId2, changes:chC4, unchanged:[], fields:chC4.map(function(c,ci){return {changed:true,label:c.label,changeIdx:ci};}) });
   });
 
   return { items:items, warnings:warnings, totalChanges:items.reduce(function(s,it){
@@ -3622,25 +4041,13 @@ function consRenderImportPreview(preview, filename) {
               ? '<span style="font-size:11px;font-weight:700;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:4px;padding:2px 6px;">Nouvelle · ID forcé : ' + esc(item.id) + ' · Actif = NON</span>'
               : '<span style="font-size:11px;font-weight:700;color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:4px;padding:2px 6px;">Nouvelle · ID auto : ' + esc(item.id) + ' · Actif = NON</span>')
           : '<span class="import-item-meta">Mise à jour · ID : ' + esc(item.id) + ' · Actif inchangé</span>';
+        var unchangedCount2 = item.unchanged ? item.unchanged.length : 0;
         return '<div class="import-item">' +
           '<div class="import-item-head">' +
             '<div><div class="import-item-title">' + esc(item.label) + '</div><div style="margin-top:4px">' + badge + '</div></div>' +
-            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)' + (unchangedCount2 ? ' · ' + unchangedCount2 + ' inchangé(s)' : '') + '</div>' +
           '</div>' +
-          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
-            return '<div class="import-field">' +
-              '<div class="import-field-name">' + esc(change.label) + '</div>' +
-              '<div class="import-field-values">' +
-                '<div class="import-field-value">' + esc(change.currentValue || '—') + '</div>' +
-                '<div class="import-field-arrow">→</div>' +
-                '<div class="import-field-value">' + esc(change.nextValue || '—') + '</div>' +
-              '</div>' +
-              '<div class="import-choice">' +
-                '<label><input type="radio" name="cons-import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setConsImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
-                '<label><input type="radio" name="cons-import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setConsImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
-              '</div>' +
-            '</div>';
-          }).join('') + '</div>' +
+          '<div class="import-fields-grid">' + _renderImportFieldsGrid(item, itemIdx, 'cons-import-choice', 'setConsImportChoice') + '</div>' +
         '</div>';
       }).join('') + '</div>' +
       '<div class="import-actions">' +

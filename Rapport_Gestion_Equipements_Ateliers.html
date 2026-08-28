@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantramour 2026 — Gestion des équipements par Atelier</title>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>
+  :root {
+    --bg:#ffffff; --surface:#f7f8fa; --border:#e5e7eb;
+    --text:#1f2328; --muted:#57606a; --accent:#3b82d4;
+    --header-bg:#f0f4fb; --row-alt:#f7f8fa;
+    --tag-bg:#eef2ff; --tag-text:#3b5bdb;
+    --green:#16a34a; --green-bg:#dcfce7; --green-border:#86efac;
+    --orange:#ca8a04; --orange-bg:#fef9c3; --orange-border:#fde68a;
+    --sys-bg:#eff6ff; --sys-border:#bfdbfe; --sys-text:#1e3a5f;
+    --upl-bg:#f0fdf4; --upl-border:#bbf7d0; --upl-text:#14532d;
+  }
+  .dark {
+    --bg:#0d1117; --surface:#161b22; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
+    --header-bg:#1c2333; --row-alt:#161b22;
+    --tag-bg:#1c2a4a; --tag-text:#79a8ff;
+    --green-bg:#052e16; --green-border:#166534;
+    --orange-bg:#2a1f00; --orange-border:#7a4e00;
+    --sys-bg:#0c2d48; --sys-border:#1e4976; --sys-text:#93c5fd;
+    --upl-bg:#052e16; --upl-border:#166534; --upl-text:#4ade80;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:var(--bg); color:var(--text); transition:background .2s,color .2s; }
+  .wrap { max-width:1400px; margin:0 auto; padding:24px 20px 80px; }
+
+  /* ── HEADER ── */
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+  .logo h1 { font-size:18px; font-weight:700; }
+  .logo p  { font-size:22px; font-weight:800; color:var(--accent); line-height:1.2; margin-top:2px; }
+  .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .btn { cursor:pointer; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 14px; font-size:13px; color:var(--text); font-family:inherit; display:inline-flex; align-items:center; gap:6px; text-decoration:none; transition:background .15s; white-space:nowrap; }
+  .btn:hover { background:var(--border); }
+  .btn:disabled { opacity:.55; cursor:wait; }
+  .btn-primary { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+  .btn-primary:hover { filter:brightness(1.1); }
+  .btn-export { background:#166534; color:#fff; border-color:#166534; font-weight:600; }
+  .btn-export:hover { filter:brightness(1.1); }
+  .btn-import { background:#7c3aed; color:#fff; border-color:#7c3aed; font-weight:600; }
+  .btn-import:hover { filter:brightness(1.1); }
+  .hidden-file-input { display:none; }
+
+  /* ── STATS ── */
+  .stats-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .stat-chip { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 14px; font-size:13px; display:flex; flex-direction:column; align-items:center; min-width:90px; }
+  .stat-chip-val { font-size:20px; font-weight:800; color:var(--accent); }
+  .stat-chip-lbl { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:600; }
+
+  /* ── FILTRES ── */
+  .filters-panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+  .filters-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:10px; }
+  .filters-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; align-items:flex-end; }
+  .filter-group { display:flex; flex-direction:column; gap:4px; }
+  .filter-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+  .filter-select, .filter-input { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; }
+  .filter-select:focus, .filter-input:focus { outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent); }
+  /* Combo-search (dropdown + saisie libre) */
+  .combo-wrap { position:relative; }
+  .combo-search { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px 6px 0 0; padding:6px 10px; font-size:13px; color:var(--text); font-family:inherit; border-bottom:none; }
+  .combo-search:focus { outline:none; border-color:var(--accent); }
+  .combo-select { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:0 0 6px 6px; padding:6px 10px; font-size:13px; color:var(--text); font-family:inherit; cursor:pointer; max-height:180px; }
+  .combo-select:focus { outline:none; border-color:var(--accent); }
+  .combo-search:focus + .combo-select, .combo-search.active + .combo-select { border-color:var(--accent); }
+  /* Checkbox filtre */
+  .filter-checkbox-row { display:flex; align-items:center; gap:7px; padding:7px 0 3px; font-size:13px; cursor:pointer; user-select:none; }
+  .filter-checkbox-row input[type="checkbox"] { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:10px; }
+  table { width:max-content; min-width:100%; border-collapse:collapse; font-size:13px; table-layout:auto; }
+  thead th { background:var(--header-bg); padding:9px 12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:2px solid var(--border); text-align:left; white-space:nowrap; position:sticky; top:0; z-index:2; }
+  tbody tr { border-bottom:1px solid var(--border); transition:background .1s; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:nth-child(even) { background:var(--row-alt); }
+  tbody tr:hover { background:#eff6ff; }
+  .dark tbody tr:hover { background:#0c2d48; }
+  tbody td { padding:8px 12px; vertical-align:middle; white-space:nowrap; }
+  td.num { font-variant-numeric:tabular-nums; text-align:center; font-weight:800; font-size:15px; color:var(--accent); min-width:80px; }
+  td.bold { font-weight:600; }
+  /* Colonne Quantité collée à droite */
+  th.col-qty, td.col-qty { position:sticky; right:0; z-index:1; background:var(--header-bg); border-left:2px solid var(--border); }
+  tbody tr:nth-child(even) td.col-qty { background:#f0f4fb; }
+  tbody tr:hover td.col-qty { background:#e0eeff; }
+  .dark th.col-qty, .dark td.col-qty { background:#1c2333; }
+  .dark tbody tr:nth-child(even) td.col-qty { background:#1c2333; }
+  .dark tbody tr:hover td.col-qty { background:#0c2d48; }
+  .empty-row td { text-align:center; padding:40px; color:var(--muted); font-style:italic; }
+
+  /* ── BADGES ── */
+  .badge { display:inline-flex; align-items:center; border-radius:4px; padding:2px 7px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .badge-type { background:var(--tag-bg); color:var(--tag-text); }
+  .badge-cat  { background:#fef3c7; color:#92400e; }
+  .dark .badge-cat { background:#2a1f00; color:#fbbf24; }
+  .badge-hameau     { background:#dbeafe; color:#1d4ed8; border:1px solid #93c5fd; }
+  .badge-tantramour { background:#ede9fe; color:#7c3aed; border:1px solid #c4b5fd; }
+  .badge-animateur  { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
+  .badge-autre      { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+  .dark .badge-hameau     { background:#1e3a5f; color:#93c5fd; }
+  .dark .badge-tantramour { background:#2e1065; color:#c4b5fd; }
+  .dark .badge-animateur  { background:#022c22; color:#6ee7b7; }
+  .dark .badge-autre      { background:#1c1003; color:#fcd34d; }
+
+  /* ── PANNEAU IMPORT ── */
+  .import-panel { display:none; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px; margin-bottom:18px; }
+  .import-panel.open { display:block; }
+  .import-panel-title { font-size:13px; font-weight:700; margin-bottom:6px; }
+  .import-panel-help { font-size:12px; color:var(--muted); margin-bottom:12px; }
+  .import-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+
+  /* ── VALIDATION IMPORT ── */
+  .validation-box { margin-top:14px; }
+  .val-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+  .val-header-title { font-size:14px; font-weight:700; }
+  .val-summary { font-size:12px; color:var(--muted); }
+  .val-atelier-block { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:12px; }
+  .val-atelier-head { padding:12px 16px; background:var(--surface); display:flex; align-items:flex-start; gap:12px; flex-wrap:wrap; cursor:pointer; user-select:none; }
+  .val-atelier-head:hover { background:var(--header-bg); }
+  .val-atelier-id { font-size:11px; font-weight:700; color:var(--muted); background:var(--border); border-radius:4px; padding:1px 7px; white-space:nowrap; }
+  .val-atelier-name { font-size:13px; font-weight:700; flex:1; }
+  .val-atelier-meta { font-size:11px; color:var(--muted); }
+  .val-arrow { margin-left:auto; font-size:12px; color:var(--muted); transition:transform .18s; }
+  .val-atelier-head.open .val-arrow { transform:rotate(90deg); }
+  .val-rows-wrap { display:none; overflow-x:auto; }
+  .val-rows-wrap.open { display:block; }
+  .val-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .val-table th { background:var(--header-bg); padding:7px 12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; text-align:left; }
+  .val-table td { padding:7px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .val-table tr:last-child td { border-bottom:none; }
+  .val-table tr:nth-child(even) td { background:var(--row-alt); }
+
+  /* Cellule Valeur système / Valeur upload */
+  .val-cell { display:flex; flex-direction:column; gap:4px; }
+  .val-slot { display:flex; flex-direction:column; gap:2px; }
+  .val-slot-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .val-slot-label.sys { color:#1d4ed8; }
+  .dark .val-slot-label.sys { color:#93c5fd; }
+  .val-slot-label.upl { color:#166534; }
+  .dark .val-slot-label.upl { color:#4ade80; }
+  .val-slot-value { font-size:12px; padding:3px 7px; border-radius:4px; }
+  .val-slot-value.sys { background:var(--sys-bg); border:1px solid var(--sys-border); color:var(--sys-text); }
+  .val-slot-value.upl { background:var(--upl-bg); border:1px solid var(--upl-border); color:var(--upl-text); }
+  .val-arrow-inline { font-size:11px; color:var(--muted); text-align:center; }
+  .val-unchanged { font-size:11px; color:var(--muted); font-style:italic; display:flex; align-items:center; gap:5px; }
+  .val-unchanged-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); background:var(--border); border-radius:4px; padding:1px 6px; }
+  .val-new-row td { background:#f0fdf4; }
+  .dark .val-new-row td { background:#052e16; }
+  .val-new-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; background:#dcfce7; color:#166534; border:1px solid #86efac; border-radius:4px; padding:1px 6px; }
+  .dark .val-new-badge { background:#052e16; color:#4ade80; border-color:#166534; }
+  .val-removed-row td { background:#fff5f5; }
+  .dark .val-removed-row td { background:#2d0a0a; }
+  .val-removed-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; border-radius:4px; padding:1px 6px; }
+  .dark .val-removed-badge { background:#2d0a0a; color:#f87171; border-color:#ef4444; }
+
+  /* ── TOAST ── */
+  #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1f2328; color:#fff; border-radius:8px; padding:12px 22px; font-size:13px; font-weight:600; z-index:10000; transition:transform .3s,opacity .3s; opacity:0; white-space:nowrap; pointer-events:none; }
+  #toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  #toast.error { background:#dc2626; }
+
+  footer { margin-top:48px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <h1>Tantramour 2026</h1>
+      <p>📦 Gestion des équipements par Atelier</p>
+    </div>
+    <div class="header-actions">
+      <a class="btn" href="index.html">🏠 Accueil</a>
+      <a class="btn" href="gestion_planning.html">⚙️ Admin</a>
+      <button class="btn" onclick="hardReload()">🔄 Refresh</button>
+      <button class="btn btn-export" id="btnExport" onclick="exportExcel()">📥 Export Excel</button>
+      <button class="btn btn-import" onclick="toggleImportPanel()">📤 Import Excel</button>
+      <input class="hidden-file-input" id="importFileInput" type="file" accept=".xlsx" onchange="handleImportFile(event)">
+      <button class="btn" id="modeBtn" onclick="toggleMode()">🌙 Mode Nuit</button>
+    </div>
+  </header>
+
+  <!-- Panneau Import -->
+  <div class="import-panel" id="importPanel">
+    <div class="import-panel-title">📤 Import — Gestion des équipements par Atelier</div>
+    <div class="import-panel-help">Importez un fichier Excel préalablement exporté depuis ce rapport. Le format doit être identique (13 colonnes : ID, Nom Atelier, Animateur 1, Date, Heure début, Heure fin, Lieu, Type d'atelier, ID équipement, Equipement, Fournisseur, Catégorie, Quantité). L'ID atelier est utilisé comme clé de correspondance.</div>
+    <div class="import-actions">
+      <button class="btn btn-import" onclick="triggerImportFile()">Choisir un fichier .xlsx</button>
+      <button class="btn" onclick="closeImportPanel()">✕ Fermer</button>
+    </div>
+    <div id="validationBox"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar"></div>
+
+  <!-- Filtres -->
+  <div class="filters-panel">
+    <div class="filters-title">🔍 Filtres</div>
+    <div class="filters-grid">
+
+      <div class="filter-group">
+        <div class="filter-label">📅 Jour / Date</div>
+        <select class="filter-select" id="fJour" onchange="applyFilters()">
+          <option value="">Tous les jours</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🏷 Type</div>
+        <select class="filter-select" id="fType" onchange="applyFilters()">
+          <option value="">Tous les types</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🏛️ Lieu</div>
+        <select class="filter-select" id="fLieu" onchange="applyFilters()">
+          <option value="">Tous les lieux</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🔑 ID Atelier</div>
+        <input class="filter-input" id="fId" type="text" placeholder="ex: A_1140" oninput="applyFilters()">
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🎭 Nom d'atelier</div>
+        <div class="combo-wrap">
+          <input class="combo-search" id="fAtelierSearch" type="text" placeholder="Rechercher…" oninput="onComboSearch('fAtelierSearch','fAtelier')" onfocus="this.select()">
+          <select class="combo-select" id="fAtelier" onchange="applyFilters()" size="1">
+            <option value="">Tous les ateliers</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">👤 Animateur</div>
+        <select class="filter-select" id="fAnimateur" onchange="applyFilters()">
+          <option value="">Tous</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">📦 Fournisseur</div>
+        <select class="filter-select" id="fFournisseur" onchange="applyFilters()">
+          <option value="">Tous</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🗂 Catégorie</div>
+        <select class="filter-select" id="fCategorie" onchange="applyFilters()">
+          <option value="">Toutes</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">🔩 Équipement</div>
+        <div class="combo-wrap">
+          <input class="combo-search" id="fEquipSearch" type="text" placeholder="Rechercher…" oninput="onComboSearch('fEquipSearch','fEquip')" onfocus="this.select()">
+          <select class="combo-select" id="fEquip" onchange="applyFilters()" size="1">
+            <option value="">Tous</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-group" style="align-self:flex-end;">
+        <label class="filter-checkbox-row">
+          <input type="checkbox" id="fHideZero" checked onchange="applyFilters()">
+          Masquer quantité 0
+        </label>
+        <button class="btn" onclick="resetFilters()" style="width:100%;margin-top:4px;">✕ Réinitialiser</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="resultsCount"></div>
+
+  <div class="table-wrap">
+    <table id="mainTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom Atelier</th>
+          <th>Animateur 1</th>
+          <th>Date</th>
+          <th>Heure début</th>
+          <th>Heure fin</th>
+          <th>Lieu</th>
+          <th>Type d'atelier</th>
+          <th>ID équipement</th>
+          <th>Equipement</th>
+          <th>Fournisseur</th>
+          <th>Catégorie</th>
+          <th class="col-qty" style="color:var(--accent);">Quantité</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <footer>Tantramour 2026 — Gestion des équipements par Atelier (Export/Import)</footer>
+</div>
+
+<div id="toast"></div>
+
+<script src="github-api.js"></script>
+<script src="loader.js"></script>
+<script>
+loadData(['data.js','ref_equipements.js','ref_equip_cat.js','ref_jours.js'], function() {
+
+// ════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escJs(v) {
+  return (v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r\n/g,'\\n').replace(/\r/g,'\\n').replace(/\n/g,'\\n');
+}
+function showToast(msg, isErr) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (isErr ? ' error' : '');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function() { t.className = ''; }, 3200);
+}
+
+function hardReload() {
+  location.href = location.pathname + '?_=' + Date.now();
+}
+
+// ── Lookup tables ─────────────────────────────────────
+var EQ_MAP = {};   // id → équipement complet
+var CAT_MAP = {};  // id catégorie → label
+if (typeof REF_EQUIPEMENTS !== 'undefined') {
+  REF_EQUIPEMENTS.forEach(function(e) { EQ_MAP[e.id] = e; });
+}
+if (typeof REF_EQUIP_CAT !== 'undefined') {
+  REF_EQUIP_CAT.forEach(function(c) { CAT_MAP[c.id || c.value] = c.value || c.label || c.id; });
+}
+
+function getEqName(id)  { return (EQ_MAP[id] && EQ_MAP[id].value)     || id; }
+function getEqType(id)  { return (EQ_MAP[id] && EQ_MAP[id].type)      || ''; }
+function getEqCat(id)   {
+  var e = EQ_MAP[id];
+  if (!e) return '';
+  return e.categorie || CAT_MAP[e.categorie] || '';
+}
+
+// ── Heure parsing ──────────────────────────────────
+function parseHeureDebut(heure) {
+  if (!heure) return '';
+  var m = heure.match(/^(\d{1,2}[:.]\d{2})/);
+  return m ? m[1].replace('.',':') : heure.split('-')[0].trim();
+}
+function parseHeureFin(heure) {
+  if (!heure) return '';
+  var parts = heure.split('-');
+  if (parts.length < 2) return '';
+  return parts[1].trim().replace('.',':');
+}
+
+// ════════════════════════════════════════════════════
+// CONSTRUCTION DES LIGNES D'AFFICHAGE
+// ════════════════════════════════════════════════════
+var ALL_ROWS = [];
+
+function buildRows() {
+  ALL_ROWS = [];
+  if (typeof AGENDA === 'undefined') return;
+  AGENDA.forEach(function(atelier) {
+    var equips = atelier._equipements || {};
+    var ids = Object.keys(equips);
+    if (ids.length === 0) {
+      ALL_ROWS.push({
+        atelierId:  atelier.id       || '',
+        atelier:    atelier.atelier  || '',
+        fac1:       atelier.fac1     || '',
+        date:       atelier.date     || '',
+        heureDebut: parseHeureDebut(atelier.heure || ''),
+        heureFin:   parseHeureFin(atelier.heure   || ''),
+        lieu:       atelier.lieu     || '',
+        type:       atelier.type     || '',
+        eqId:       '',
+        eqName:     '—',
+        eqType:     '',
+        eqCat:      '',
+        qty:        '',
+        hasEquip:   false,
+        jour:       atelier.jour     || ''
+      });
+    } else {
+      ids.forEach(function(eqId) {
+        ALL_ROWS.push({
+          atelierId:  atelier.id       || '',
+          atelier:    atelier.atelier  || '',
+          fac1:       atelier.fac1     || '',
+          date:       atelier.date     || '',
+          heureDebut: parseHeureDebut(atelier.heure || ''),
+          heureFin:   parseHeureFin(atelier.heure   || ''),
+          lieu:       atelier.lieu     || '',
+          type:       atelier.type     || '',
+          eqId:       eqId,
+          eqName:     getEqName(eqId),
+          eqType:     getEqType(eqId),
+          eqCat:      getEqCat(eqId),
+          qty:        equips[eqId],
+          hasEquip:   true,
+          jour:       atelier.jour     || ''
+        });
+      });
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════
+// COMBO-SEARCH (dropdown + saisie libre)
+// ════════════════════════════════════════════════════
+// Référence complète des options de chaque combo (non filtrées)
+var COMBO_OPTIONS = { fAtelier: [], fEquip: [] };
+
+function onComboSearch(searchId, selectId) {
+  var q = (document.getElementById(searchId).value || '').toLowerCase().trim();
+  var sel = document.getElementById(selectId);
+  var opts = COMBO_OPTIONS[selectId] || [];
+  var cur = sel.value;
+  sel.innerHTML = '<option value="">Tous</option>';
+  opts.forEach(function(v) {
+    if (q && v.toLowerCase().indexOf(q) === -1) return;
+    var o = document.createElement('option');
+    o.value = v; o.textContent = v;
+    if (v === cur) o.selected = true;
+    sel.appendChild(o);
+  });
+  applyFilters();
+}
+window.onComboSearch = onComboSearch;
+
+// ════════════════════════════════════════════════════
+// FILTRES
+// ════════════════════════════════════════════════════
+var FILTERED_ROWS = [];
+
+function populateFilters() {
+  var jours = [], types = [], lieux = [], fourns = [], cats = [];
+  var animateurs = [], ateliers = [], equips = [];
+  ALL_ROWS.forEach(function(r) {
+    if (r.jour      && jours.indexOf(r.jour)           === -1) jours.push(r.jour);
+    if (r.type      && types.indexOf(r.type)           === -1) types.push(r.type);
+    if (r.lieu      && lieux.indexOf(r.lieu)           === -1) lieux.push(r.lieu);
+    if (r.eqType    && fourns.indexOf(r.eqType)        === -1) fourns.push(r.eqType);
+    if (r.eqCat     && cats.indexOf(r.eqCat)           === -1) cats.push(r.eqCat);
+    if (r.fac1      && animateurs.indexOf(r.fac1)      === -1) animateurs.push(r.fac1);
+    if (r.atelier   && ateliers.indexOf(r.atelier)     === -1) ateliers.push(r.atelier);
+    if (r.hasEquip  && r.eqName && equips.indexOf(r.eqName) === -1) equips.push(r.eqName);
+  });
+
+  var jourOrder = ['Jour 1','Jour 2','Jour 3','Jour 4','Jour 5','Jour 6','Jour 7'];
+  jours.sort(function(a,b) { return jourOrder.indexOf(a)-jourOrder.indexOf(b); });
+  types.sort(); lieux.sort(); fourns.sort(); cats.sort();
+  animateurs.sort(); ateliers.sort(); equips.sort();
+
+  function fill(sel, arr, allLabel) {
+    var el = document.getElementById(sel);
+    var cur = el.value;
+    el.innerHTML = '<option value="">' + (allLabel || 'Tous') + '</option>';
+    arr.forEach(function(v) {
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      if (v === cur) o.selected = true;
+      el.appendChild(o);
+    });
+  }
+  fill('fJour',        jours,      'Tous les jours');
+  fill('fType',        types,      'Tous les types');
+  fill('fLieu',        lieux,      'Tous les lieux');
+  fill('fFournisseur', fourns,     'Tous');
+  fill('fCategorie',   cats,       'Toutes');
+  fill('fAnimateur',   animateurs, 'Tous');
+
+  // Combos avec search
+  COMBO_OPTIONS['fAtelier'] = ateliers;
+  COMBO_OPTIONS['fEquip']   = equips;
+  fill('fAtelier', ateliers, 'Tous les ateliers');
+  fill('fEquip',   equips,   'Tous');
+}
+
+function applyFilters() {
+  var fJ    = document.getElementById('fJour').value;
+  var fT    = document.getElementById('fType').value;
+  var fL    = document.getElementById('fLieu').value;
+  var fF    = document.getElementById('fFournisseur').value;
+  var fC    = document.getElementById('fCategorie').value;
+  var fId   = (document.getElementById('fId').value || '').trim().toLowerCase();
+  var fAnim = document.getElementById('fAnimateur').value;
+  var fAtel = document.getElementById('fAtelier').value;
+  var fEq   = document.getElementById('fEquip').value;
+  var hideZ = document.getElementById('fHideZero').checked;
+
+  FILTERED_ROWS = ALL_ROWS.filter(function(r) {
+    if (fJ    && r.jour                    !== fJ)    return false;
+    if (fT    && r.type                    !== fT)    return false;
+    if (fL    && r.lieu                    !== fL)    return false;
+    if (fF    && r.eqType                  !== fF)    return false;
+    if (fC    && r.eqCat                   !== fC)    return false;
+    if (fId   && r.atelierId.toLowerCase().indexOf(fId) === -1) return false;
+    if (fAnim && r.fac1                    !== fAnim) return false;
+    if (fAtel && r.atelier                 !== fAtel) return false;
+    if (fEq   && r.eqName                  !== fEq)   return false;
+    // Masquer les lignes sans équipement (qty=0 ou absentes) si la case est cochée
+    if (hideZ && (!r.hasEquip || !r.qty || Number(r.qty) === 0)) return false;
+    return true;
+  });
+  renderTable();
+  renderStats();
+}
+
+function resetFilters() {
+  ['fJour','fType','fLieu','fFournisseur','fCategorie','fAnimateur','fAtelier','fEquip'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('fId').value = '';
+  document.getElementById('fAtelierSearch').value = '';
+  document.getElementById('fEquipSearch').value = '';
+  document.getElementById('fHideZero').checked = true;
+  // Réafficher toutes les options des combos
+  onComboSearch('fAtelierSearch','fAtelier');
+  onComboSearch('fEquipSearch','fEquip');
+  applyFilters();
+}
+window.resetFilters = resetFilters;
+window.applyFilters = applyFilters;
+
+// ════════════════════════════════════════════════════
+// RENDU TABLE
+// ════════════════════════════════════════════════════
+function typeClass(type) {
+  if (!type) return '';
+  var t = (type||'').toLowerCase();
+  if (t === 'hameau')     return 'badge-hameau';
+  if (t === 'tantramour') return 'badge-tantramour';
+  if (t === 'animateur')  return 'badge-animateur';
+  return 'badge-autre';
+}
+
+function renderTable() {
+  var tbody = document.getElementById('tableBody');
+  var count = document.getElementById('resultsCount');
+  if (!FILTERED_ROWS.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="13">Aucun équipement trouvé avec ces filtres.</td></tr>';
+    count.textContent = '';
+    return;
+  }
+  var withEquip = FILTERED_ROWS.filter(function(r){ return r.hasEquip; });
+  count.textContent = FILTERED_ROWS.length + ' ligne(s) — ' + withEquip.length + ' équipement(s) réel(s)';
+
+  var html = '';
+  var prevId = null;
+  FILTERED_ROWS.forEach(function(r) {
+    var rowClass = !r.hasEquip ? ' style="opacity:.6;font-style:italic;"' : '';
+    var isFirstRow = r.atelierId !== prevId;
+    prevId = r.atelierId;
+    html += '<tr' + rowClass + '>';
+    html += '<td class="bold" style="white-space:nowrap;">' + esc(r.atelierId) + '</td>';
+    html += '<td class="bold">' + esc(r.atelier) + '</td>';
+    html += '<td>' + esc(r.fac1) + '</td>';
+    html += '<td style="white-space:nowrap;">' + esc(r.date) + '</td>';
+    html += '<td style="white-space:nowrap;">' + esc(r.heureDebut) + '</td>';
+    html += '<td style="white-space:nowrap;">' + esc(r.heureFin) + '</td>';
+    html += '<td>' + esc(r.lieu) + '</td>';
+    html += '<td><span class="badge badge-type">' + esc(r.type) + '</span></td>';
+    html += '<td style="font-variant-numeric:tabular-nums;white-space:nowrap;">' + esc(r.eqId) + '</td>';
+    html += '<td>' + esc(r.eqName) + '</td>';
+    html += '<td>' + (r.eqType ? '<span class="badge ' + typeClass(r.eqType) + '">' + esc(r.eqType) + '</span>' : '') + '</td>';
+    html += '<td>' + (r.eqCat ? '<span class="badge badge-cat">' + esc(r.eqCat) + '</span>' : '') + '</td>';
+    html += '<td class="num col-qty">' + (r.hasEquip ? esc(String(r.qty)) : '') + '</td>';
+    html += '</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function renderStats() {
+  var total = FILTERED_ROWS.filter(function(r){ return r.hasEquip; }).length;
+  var ateliers = new Set(FILTERED_ROWS.map(function(r){ return r.atelierId; })).size;
+  var withEq = new Set(FILTERED_ROWS.filter(function(r){ return r.hasEquip; }).map(function(r){ return r.atelierId; })).size;
+  document.getElementById('statsBar').innerHTML =
+    chip(ateliers, 'Ateliers') +
+    chip(withEq,   'Avec équip.') +
+    chip(total,    'Lignes équip.');
+}
+function chip(v,l) {
+  return '<div class="stat-chip"><div class="stat-chip-val">' + v + '</div><div class="stat-chip-lbl">' + l + '</div></div>';
+}
+
+// ════════════════════════════════════════════════════
+// EXPORT EXCEL
+// ════════════════════════════════════════════════════
+async function exportExcel() {
+  var btn = document.getElementById('btnExport');
+  btn.disabled = true; btn.textContent = '⏳ Export en cours…';
+  try {
+    var wb = new ExcelJS.Workbook();
+    wb.creator = 'Tantramour 2026';
+    wb.created = new Date();
+    var ws = wb.addWorksheet('Équipements par Atelier');
+
+    var COLS = [
+      { header:'ID',            key:'atelierId',  width:14 },
+      { header:'Nom Atelier',   key:'atelier',    width:40 },
+      { header:'Animateur 1',   key:'fac1',       width:28 },
+      { header:'Date',          key:'date',       width:22 },
+      { header:'Heure début',   key:'heureDebut', width:14 },
+      { header:'Heure fin',     key:'heureFin',   width:14 },
+      { header:'Lieu',          key:'lieu',       width:16 },
+      { header:"Type d'atelier",key:'type',       width:32 },
+      { header:'ID équipement', key:'eqId',       width:18 },
+      { header:'Equipement',    key:'eqName',     width:36 },
+      { header:'Fournisseur',   key:'eqType',     width:16 },
+      { header:'Catégorie',     key:'eqCat',      width:26 },
+      { header:'Quantité',      key:'qty',        width:12 }
+    ];
+    ws.columns = COLS;
+
+    // En-tête style
+    var hdr = ws.getRow(1);
+    hdr.font = { bold:true, color:{ argb:'FF1D4ED8' } };
+    hdr.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FFE0ECFF' } };
+    hdr.border = { bottom:{ style:'medium', color:{ argb:'FF1D4ED8' } } };
+    hdr.alignment = { vertical:'middle', horizontal:'left' };
+
+    // Lignes — utiliser les lignes filtrées (ou toutes si pas de filtre)
+    var rows = FILTERED_ROWS.length ? FILTERED_ROWS : ALL_ROWS;
+    rows.forEach(function(r) {
+      if (!r.hasEquip) return; // n'exporter que les lignes avec équipements
+      var row = ws.addRow({
+        atelierId:  r.atelierId,
+        atelier:    r.atelier,
+        fac1:       r.fac1,
+        date:       r.date,
+        heureDebut: r.heureDebut,
+        heureFin:   r.heureFin,
+        lieu:       r.lieu,
+        type:       r.type,
+        eqId:       r.eqId,
+        eqName:     r.eqName,
+        eqType:     r.eqType,
+        eqCat:      r.eqCat,
+        qty:        r.qty !== '' && r.qty !== undefined ? Number(r.qty) : ''
+      });
+      row.getCell('qty').alignment = { horizontal:'center' };
+    });
+
+    // Freeze row 1
+    ws.views = [{ state:'frozen', ySplit:1 }];
+    // Auto-filter
+    ws.autoFilter = { from:'A1', to:'M1' };
+
+    var buf = await wb.xlsx.writeBuffer();
+    var blob = new Blob([buf], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    var ts = new Date().toISOString().slice(0,10);
+    a.download = 'TAF2026_Equipements_Ateliers_' + ts + '.xlsx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✅ Export téléchargé !');
+  } catch(err) {
+    showToast('❌ Export échoué : ' + err.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = '📥 Export Excel';
+  }
+}
+window.hardReload = hardReload;
+window.exportExcel = exportExcel;
+
+// ════════════════════════════════════════════════════
+// IMPORT — LECTURE FICHIER
+// ════════════════════════════════════════════════════
+var IMPORT_PREVIEW = null;
+
+function toggleImportPanel() {
+  var p = document.getElementById('importPanel');
+  p.classList.toggle('open');
+}
+window.toggleImportPanel = toggleImportPanel;
+
+function closeImportPanel() {
+  document.getElementById('importPanel').classList.remove('open');
+  clearValidation();
+}
+window.closeImportPanel = closeImportPanel;
+
+function triggerImportFile() {
+  document.getElementById('importFileInput').click();
+}
+window.triggerImportFile = triggerImportFile;
+
+async function handleImportFile(event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    var buf = await file.arrayBuffer();
+    var wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(buf);
+    var ws = wb.worksheets[0];
+    if (!ws) throw new Error('Aucune feuille trouvée dans le fichier.');
+
+    // Lire la ligne d'en-tête
+    var hdrRow = ws.getRow(1).values; // 1-indexed, index 0 = null
+    // Normaliser les en-têtes
+    var headers = [];
+    for (var ci = 1; ci < hdrRow.length; ci++) {
+      headers.push((hdrRow[ci] || '').toString().trim());
+    }
+
+    var EXPECTED = ['ID','Nom Atelier','Animateur 1','Date','Heure début','Heure fin','Lieu',"Type d'atelier",'ID équipement','Equipement','Fournisseur','Catégorie','Quantité'];
+    var missing = EXPECTED.filter(function(h){ return headers.indexOf(h) === -1; });
+    if (missing.length) throw new Error('Colonnes manquantes : ' + missing.join(', ') + '. Vérifiez que le fichier est bien exporté depuis ce rapport.');
+
+    // Indexer les colonnes
+    var COL = {};
+    EXPECTED.forEach(function(h) { COL[h] = headers.indexOf(h) + 1; }); // 1-based
+
+    // Lire les lignes de données
+    var importedMap = {}; // atelierId → { eqId → qty }
+    var rowCount = 0;
+    ws.eachRow(function(row, rowNumber) {
+      if (rowNumber === 1) return;
+      var atelierId = (row.getCell(COL['ID']).value || '').toString().trim();
+      var eqId      = (row.getCell(COL['ID équipement']).value || '').toString().trim();
+      var qtyRaw    = row.getCell(COL['Quantité']).value;
+      var qty       = parseInt(qtyRaw, 10);
+      if (!atelierId || !eqId) return;
+      if (isNaN(qty) || qty <= 0) return;
+      if (!importedMap[atelierId]) importedMap[atelierId] = {};
+      importedMap[atelierId][eqId] = qty;
+      rowCount++;
+    });
+
+    if (rowCount === 0) throw new Error('Aucune ligne valide trouvée dans le fichier (vérifie les colonnes ID et ID équipement).');
+
+    buildImportPreview(importedMap);
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+  }
+}
+window.handleImportFile = handleImportFile;
+
+// ════════════════════════════════════════════════════
+// VALIDATION IMPORT — CONSTRUCTION DU DIFF
+// ════════════════════════════════════════════════════
+function buildImportPreview(importedMap) {
+  // importedMap : { atelierId → { eqId → qty } }
+  var preview = { items: [] };
+
+  var atelierIds = Object.keys(importedMap);
+  atelierIds.forEach(function(atelierId) {
+    var atelier = (typeof AGENDA !== 'undefined') ? AGENDA.find(function(a){ return a.id === atelierId; }) : null;
+    if (!atelier) {
+      // ID inconnu — signaler comme erreur mais ne pas bloquer
+      preview.items.push({ atelierId: atelierId, atelier: '⚠ ID inconnu', unknown: true, rows: [], newEquips: Object.keys(importedMap[atelierId]), removedEquips: [], changedEquips: [] });
+      return;
+    }
+    var sysEquips  = atelier._equipements ? Object.assign({}, atelier._equipements) : {};
+    var uplEquips  = importedMap[atelierId];
+    var allIds = new Set(Object.keys(sysEquips).concat(Object.keys(uplEquips)));
+    var rows = [];
+
+    allIds.forEach(function(eqId) {
+      var sysQty = sysEquips.hasOwnProperty(eqId) ? sysEquips[eqId] : null;
+      var uplQty = uplEquips.hasOwnProperty(eqId) ? uplEquips[eqId] : null;
+      var status = '';
+      if (sysQty === null)                   status = 'new';
+      else if (uplQty === null)              status = 'removed';
+      else if (sysQty === uplQty)            status = 'unchanged';
+      else                                   status = 'changed';
+      rows.push({
+        eqId:       eqId,
+        eqName:     getEqName(eqId),
+        eqType:     getEqType(eqId),
+        eqCat:      getEqCat(eqId),
+        sysQty:     sysQty,
+        uplQty:     uplQty,
+        status:     status,
+        applyChange: true  // par défaut, on applique
+      });
+    });
+
+    // Trier : inchangés en dernier
+    rows.sort(function(a,b) {
+      var ord = { changed:0, new:1, removed:2, unchanged:3 };
+      return (ord[a.status]||9) - (ord[b.status]||9);
+    });
+
+    preview.items.push({
+      atelierId: atelierId,
+      atelier:   atelier.atelier || atelierId,
+      date:      atelier.date    || '',
+      heure:     atelier.heure   || '',
+      type:      atelier.type    || '',
+      lieu:      atelier.lieu    || '',
+      fac1:      atelier.fac1    || '',
+      unknown:   false,
+      rows:      rows
+    });
+  });
+
+  IMPORT_PREVIEW = preview;
+  renderValidation();
+}
+
+// ════════════════════════════════════════════════════
+// RENDU VALIDATION
+// ════════════════════════════════════════════════════
+function renderValidation() {
+  if (!IMPORT_PREVIEW) { clearValidation(); return; }
+  var items = IMPORT_PREVIEW.items;
+  var totalChanges = 0;
+  items.forEach(function(item) {
+    totalChanges += item.rows.filter(function(r){ return r.status !== 'unchanged'; }).length;
+  });
+
+  var html = '<div class="validation-box">';
+  html += '<div class="val-header">';
+  html += '<div class="val-header-title">📋 Aperçu des modifications — ' + items.length + ' atelier(s) concerné(s), ' + totalChanges + ' changement(s)</div>';
+  html += '<div style="display:flex;gap:8px;">';
+  html += '<button class="btn btn-primary" onclick="applyImport()">✅ Valider et appliquer</button>';
+  html += '<button class="btn" onclick="clearValidation()">✕ Annuler</button>';
+  html += '</div>';
+  html += '</div>';
+
+  items.forEach(function(item, itemIdx) {
+    var hasChanges = item.rows.filter(function(r){ return r.status !== 'unchanged'; }).length;
+    html += '<div class="val-atelier-block">';
+    html += '<div class="val-atelier-head" onclick="toggleValBlock(this)" data-idx="' + itemIdx + '">';
+    html += '<span class="val-atelier-id">' + esc(item.atelierId) + '</span>';
+    html += '<span class="val-atelier-name">' + esc(item.atelier) + '</span>';
+    if (!item.unknown) {
+      html += '<span class="val-atelier-meta">' + esc(item.date) + ' · ' + esc(item.heure) + ' · ' + esc(item.lieu) + '</span>';
+    }
+    if (hasChanges) {
+      html += '<span class="badge" style="background:#fef9c3;color:#92400e;border:1px solid #fde68a;">' + hasChanges + ' modification(s)</span>';
+    } else {
+      html += '<span class="badge" style="background:#dcfce7;color:#166534;border:1px solid #86efac;">Aucun changement</span>';
+    }
+    if (item.unknown) html += '<span class="badge" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;">ID inconnu</span>';
+    html += '<span class="val-arrow">›</span>';
+    html += '</div>';
+
+    html += '<div class="val-rows-wrap" id="valblock-' + itemIdx + '">';
+    if (item.unknown) {
+      html += '<div style="padding:14px 18px;font-size:12px;color:#dc2626;">⚠ Cet ID d\'atelier n\'existe pas dans la base de données. Les équipements importés seront ignorés.</div>';
+    } else {
+      html += '<table class="val-table">';
+      html += '<thead><tr><th>ID Équipement</th><th>Equipement</th><th>Fournisseur</th><th>Catégorie</th><th>Statut</th><th>Valeur système → Valeur upload</th><th>Appliquer ?</th></tr></thead>';
+      html += '<tbody>';
+      item.rows.forEach(function(row, rowIdx) {
+        var rowClass = row.status === 'new' ? ' class="val-new-row"' : row.status === 'removed' ? ' class="val-removed-row"' : '';
+        html += '<tr' + rowClass + '>';
+        html += '<td style="white-space:nowrap;">' + esc(row.eqId) + '</td>';
+        html += '<td>' + esc(row.eqName) + '</td>';
+        html += '<td>' + (row.eqType ? '<span class="badge ' + typeClass(row.eqType) + '">' + esc(row.eqType) + '</span>' : '') + '</td>';
+        html += '<td>' + (row.eqCat ? '<span class="badge badge-cat">' + esc(row.eqCat) + '</span>' : '') + '</td>';
+
+        // Statut badge
+        if (row.status === 'new') {
+          html += '<td><span class="val-new-badge">Nouveau</span></td>';
+        } else if (row.status === 'removed') {
+          html += '<td><span class="val-removed-badge">Supprimé</span></td>';
+        } else if (row.status === 'changed') {
+          html += '<td><span class="badge" style="background:#fef9c3;color:#92400e;border:1px solid #fde68a;">Modifié</span></td>';
+        } else {
+          html += '<td><span class="val-unchanged-badge">= Inchangé</span></td>';
+        }
+
+        // Valeur système → Valeur upload
+        if (row.status === 'unchanged') {
+          html += '<td><span class="val-unchanged">Quantité : <strong>' + esc(String(row.sysQty)) + '</strong> <span class="val-unchanged-badge">= Inchangé</span></span></td>';
+          html += '<td>—</td>';
+        } else if (row.status === 'new') {
+          html += '<td><div class="val-cell"><div class="val-slot"><div class="val-slot-label sys">Valeur système</div><div class="val-slot-value sys">—</div></div><div class="val-arrow-inline">↓</div><div class="val-slot"><div class="val-slot-label upl">Valeur upload</div><div class="val-slot-value upl">' + esc(String(row.uplQty)) + '</div></div></div></td>';
+          html += '<td><label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;"><input type="checkbox" checked onchange="toggleRowApply(' + itemIdx + ',' + rowIdx + ',this.checked)"> Ajouter</label></td>';
+        } else if (row.status === 'removed') {
+          html += '<td><div class="val-cell"><div class="val-slot"><div class="val-slot-label sys">Valeur système</div><div class="val-slot-value sys">' + esc(String(row.sysQty)) + '</div></div><div class="val-arrow-inline">↓</div><div class="val-slot"><div class="val-slot-label upl">Valeur upload</div><div class="val-slot-value upl">— (supprimé)</div></div></div></td>';
+          html += '<td><label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;"><input type="checkbox" checked onchange="toggleRowApply(' + itemIdx + ',' + rowIdx + ',this.checked)"> Supprimer</label></td>';
+        } else { // changed
+          html += '<td><div class="val-cell"><div class="val-slot"><div class="val-slot-label sys">Valeur système</div><div class="val-slot-value sys">' + esc(String(row.sysQty)) + '</div></div><div class="val-arrow-inline">↓</div><div class="val-slot"><div class="val-slot-label upl">Valeur upload</div><div class="val-slot-value upl">' + esc(String(row.uplQty)) + '</div></div></div></td>';
+          html += '<td><label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;"><input type="checkbox" checked onchange="toggleRowApply(' + itemIdx + ',' + rowIdx + ',this.checked)"> Appliquer</label></td>';
+        }
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div>'; // val-rows-wrap
+    html += '</div>'; // val-atelier-block
+  });
+
+  html += '<div style="display:flex;gap:8px;margin-top:14px;">';
+  html += '<button class="btn btn-primary" onclick="applyImport()">✅ Valider et appliquer</button>';
+  html += '<button class="btn" onclick="clearValidation()">✕ Annuler</button>';
+  html += '</div>';
+  html += '</div>';
+
+  document.getElementById('validationBox').innerHTML = html;
+}
+window.renderValidation = renderValidation;
+
+function toggleValBlock(head) {
+  var idx = head.getAttribute('data-idx');
+  var body = document.getElementById('valblock-' + idx);
+  head.classList.toggle('open');
+  if (body) body.classList.toggle('open');
+}
+window.toggleValBlock = toggleValBlock;
+
+function toggleRowApply(itemIdx, rowIdx, checked) {
+  if (!IMPORT_PREVIEW) return;
+  var item = IMPORT_PREVIEW.items[itemIdx];
+  if (!item || !item.rows[rowIdx]) return;
+  item.rows[rowIdx].applyChange = !!checked;
+}
+window.toggleRowApply = toggleRowApply;
+
+function clearValidation() {
+  IMPORT_PREVIEW = null;
+  document.getElementById('validationBox').innerHTML = '';
+}
+window.clearValidation = clearValidation;
+
+// ════════════════════════════════════════════════════
+// APPLICATION DE L'IMPORT → data.js
+// ════════════════════════════════════════════════════
+async function applyImport() {
+  if (!IMPORT_PREVIEW) return;
+  var btn = document.querySelector('[onclick="applyImport()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Sauvegarde en cours…'; }
+
+  try {
+    var changeCount = 0;
+    IMPORT_PREVIEW.items.forEach(function(item) {
+      if (item.unknown) return;
+      var atelier = AGENDA.find(function(a){ return a.id === item.atelierId; });
+      if (!atelier) return;
+      var equips = atelier._equipements ? Object.assign({}, atelier._equipements) : {};
+
+      item.rows.forEach(function(row) {
+        if (row.status === 'unchanged') return;
+        if (!row.applyChange) return;
+        if (row.status === 'new') {
+          equips[row.eqId] = row.uplQty;
+          changeCount++;
+        } else if (row.status === 'removed') {
+          delete equips[row.eqId];
+          changeCount++;
+        } else if (row.status === 'changed') {
+          equips[row.eqId] = row.uplQty;
+          changeCount++;
+        }
+      });
+
+      // Remettre en place sur l'objet AGENDA
+      if (Object.keys(equips).length > 0) {
+        atelier._equipements = equips;
+      } else {
+        delete atelier._equipements;
+      }
+    });
+
+    if (changeCount === 0) {
+      showToast('ℹ Aucune modification à appliquer.');
+      if (btn) { btn.disabled = false; btn.textContent = '✅ Valider et appliquer'; }
+      return;
+    }
+
+    var content = genererDataJs();
+    await saveFile('data.js', content);
+    clearValidation();
+    closeImportPanel();
+    buildRows();
+    populateFilters();
+    applyFilters();
+    showToast('✅ ' + changeCount + ' modification(s) appliquée(s) et sauvegardée(s) !');
+  } catch(err) {
+    showToast('❌ ' + err.message, true);
+    if (btn) { btn.disabled = false; btn.textContent = '✅ Valider et appliquer'; }
+  }
+}
+window.applyImport = applyImport;
+
+// ════════════════════════════════════════════════════
+// GÉNÉRATION data.js (même format que Rapport_Editer_Atelier)
+// ════════════════════════════════════════════════════
+function genererDataJs() {
+  var now = new Date();
+  var ts = now.getFullYear() + '-' +
+    String(now.getMonth()+1).padStart(2,'0') + '-' +
+    String(now.getDate()).padStart(2,'0') + ' ' +
+    String(now.getHours()).padStart(2,'0') + ':' +
+    String(now.getMinutes()).padStart(2,'0') + ':' +
+    String(now.getSeconds()).padStart(2,'0');
+
+  var header =
+'// @saved:' + ts + '\n' +
+'/**\n' +
+' * TANTRAMOUR 2026 — Référentiel de données commun\n' +
+' * ================================================\n' +
+' * Source unique pour les 3 rapports HTML.\n' +
+' * Pour mettre à jour : modifier uniquement ce fichier.\n' +
+' *\n' +
+' * Structure de chaque entrée :\n' +
+' *   jour       {string}  "Jour 1" … "Jour 7"\n' +
+' *   date       {string}  "Samedi 29 aout" …\n' +
+' *   heure      {string}  "9:45 - 11:00" | "Matin" | "APRES MIDI"\n' +
+' *   type       {string}  catégorie (ex: "ATELIERS TANTRA (AM)")\n' +
+' *   atelier    {string}  nom de l\'atelier / activité\n' +
+' *   lieu       {string}  salle / espace (ex: "SHIVA", "CHENREZIG" …)\n' +
+' *   fac1       {string}  Animateur principal\n' +
+' *   fac2       {string}  Animateur secondaire\n' +
+' *   fac3       {string}  Animateur 3\n' +
+' *   fac4       {string}  Animateur 4\n' +
+' *   traduction {string}  Langue / traducteur\n' +
+' *   helper1    {string}  Helper 1\n' +
+' *   helper2    {string}  Helper 2\n' +
+' *   helper3    {string}  Helper 3\n' +
+' *   helper4    {string}  Helper 4\n' +
+' *   angel      {string}  Angel\n' +
+' *   note       {string}  Note logistique\n' +
+' *   colibri    {boolean} Vrai si un Colibri est requis\n' +
+' */\n\nvar AGENDA = [';
+
+  var usedInSer = new Set(AGENDA.map(function(e){ return e.id; }).filter(Boolean));
+  var REF_TYPES_LOCAL = (typeof REF_TYPES !== 'undefined') ? REF_TYPES : [];
+  var REF_JOURS_LOCAL = (typeof REF_JOURS !== 'undefined') ? REF_JOURS : [];
+
+  var lines = AGENDA.map(function(e, i) {
+    var prev = AGENDA[i - 1];
+    var section = '';
+    if (!prev || prev.jour !== e.jour) {
+      var ref = REF_JOURS_LOCAL.find(function(j){ return j.value === e.jour; });
+      var dateLabel = ref ? ref.date : (e.date || '');
+      section = '\n  // ─── ' + e.jour + ' — ' + dateLabel + ' ' + '─'.repeat(Math.max(0,60-(e.jour||'').length-(dateLabel||'').length)) + '\n';
+    }
+    var typeRule2 = REF_TYPES_LOCAL.find(function(t){ return t.value === e.type; }) || {};
+    var customParts = [];
+    if (e._minRes      !== undefined && e._minRes      !== (typeRule2.minRes||0))     customParts.push('_minRes:'+e._minRes);
+    if (e._minHelpers  !== undefined && e._minHelpers  !== (typeRule2.minHelpers||0)) customParts.push('_minHelpers:'+e._minHelpers);
+    if (e._minTrad     !== undefined && e._minTrad     !== (typeRule2.minTrad||0))    customParts.push('_minTrad:'+e._minTrad);
+    if (e._tradCounts  !== undefined && e._tradCounts  !== (typeRule2.tradCounts||0)) customParts.push('_tradCounts:'+e._tradCounts);
+    if (e._equipements && Object.keys(e._equipements).length > 0) {
+      customParts.push('_equipements:'+JSON.stringify(e._equipements));
+    }
+    if (e._consignesDisabled && Object.keys(e._consignesDisabled).length > 0) {
+      customParts.push('_consignesDisabled:'+JSON.stringify(e._consignesDisabled));
+    }
+    if (e._corecSelected) {
+      var hasSel = Object.keys(e._corecSelected).some(function(pl){ return e._corecSelected[pl] && e._corecSelected[pl].length > 0; });
+      if (hasSel) customParts.push('_corecSelected:'+JSON.stringify(e._corecSelected));
+    }
+    var eid = e.id;
+    if (!eid) {
+      do { eid = 'A_' + String(Math.floor(Math.random()*10000)).padStart(4,'0'); }
+      while (AGENDA.some(function(x){ return x.id === eid; }) || usedInSer.has(eid));
+      usedInSer.add(eid);
+    }
+    var line = '  {id:"'+escJs(eid)+'",jour:"'+escJs(e.jour)+'",date:"'+escJs(e.date)+'",heure:"'+escJs(e.heure)+'",type:"'+escJs(e.type)+'",atelier:"'+escJs(e.atelier)+'",lieu:"'+escJs(e.lieu)+'",fac1:"'+escJs(e.fac1)+'",fac2:"'+escJs(e.fac2)+'",fac3:"'+escJs(e.fac3||'')+'",fac4:"'+escJs(e.fac4||'')+'",traduction:"'+escJs(e.traduction)+'",helper1:"'+escJs(e.helper1)+'",helper2:"'+escJs(e.helper2)+'",helper3:"'+escJs(e.helper3)+'",helper4:"'+escJs(e.helper4||'')+'",angel:"'+escJs(e.angel)+'",note:"'+escJs(e.note)+'",piment:'+(e.piment||0)+',colibri:'+(e.colibri?true:false)+',logisticId:"'+escJs(e.logisticId||'')+'",meetingRoles:"'+escJs(e.meetingRoles||'')+'"}'
+    var lineWithCustom = customParts.length ? line.slice(0,-1)+','+customParts.join(',')+'}'  : line;
+    return section + lineWithCustom + ',';
+  }).join('\n');
+
+  return header + '\n' + lines + '\n];\n\n' +
+'/**\n' +
+' * Convertit un objet AGENDA en tableau positionnel [17 colonnes]\n' +
+' * identique au format RAW utilisé par les rapports.\n' +
+' */\n' +
+'function agendaToRaw(entries) {\n' +
+'  return entries.map(e => [\n' +
+'    e.jour, e.date, e.heure, e.type, e.atelier, e.lieu,\n' +
+'    e.fac1, e.fac2, e.traduction,\n' +
+'    e.helper1, e.helper2, e.helper3, e.helper4,\n' +
+'    e.angel, e.note, e.logisticId, e.piment\n' +
+'  ]);\n' +
+'}\n';
+}
+
+// ════════════════════════════════════════════════════
+// SAUVEGARDE UNIVERSELLE (local + GitHub)
+// ════════════════════════════════════════════════════
+async function saveFile(filename, content) {
+  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
+  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) {
+    var res = await fetch('http://localhost:3000/save', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: filename, content: content })
+    });
+    if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e && e.error ? e.error : 'Erreur ' + res.status); }
+    return;
+  }
+  await githubSaveFile(filename, content);
+}
+
+// ════════════════════════════════════════════════════
+// MODE NUIT
+// ════════════════════════════════════════════════════
+function toggleMode() {
+  var isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('tm_dark', isDark ? '1' : '');
+  document.getElementById('modeBtn').textContent = isDark ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+}
+window.toggleMode = toggleMode;
+if (localStorage.getItem('tm_dark') === '1') {
+  document.body.classList.add('dark');
+  document.getElementById('modeBtn').textContent = '☀️ Mode Jour';
+}
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+buildRows();
+populateFilters();
+applyFilters();
+
+}); // fin loadData
+</script>
+</body>
+</html>

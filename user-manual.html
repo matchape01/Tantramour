@@ -165,8 +165,8 @@
       <span data-lang="en">User Manual — DreamTeam</span>
     </h2>
     <div class="cover-meta">
-      <span data-lang="fr">9 rapports · Programme festivaliers, plannings équipes</span>
-      <span data-lang="en">9 reports · Festival programme, team schedules</span>
+      <span data-lang="fr">9 rapports · Programme festivaliers, plannings équipes · Master Data</span>
+      <span data-lang="en">9 reports · Festival programme, team schedules · Master Data</span>
     </div>
   </div>
 
@@ -212,6 +212,10 @@
       <li><span class="toc-num pink">9</span><a href="#agenda-salle">
         <span data-lang="fr">Agenda Simplifié par Salle</span>
         <span data-lang="en">Simplified Schedule by Room</span>
+      </a></li>
+      <li><span class="toc-num" style="background:#0f766e">10</span><a href="#master-data">
+        <span data-lang="fr">Master Data — Tri & Filtres (nouveau)</span>
+        <span data-lang="en">Master Data — Sort & Filters (new)</span>
       </a></li>
     </ol>
   </div>
@@ -375,6 +379,20 @@
           <span data-lang="fr">La popup affiche toutes les informations disponibles, avec le même format FR / EN que dans Mon Planning V2.</span>
           <span data-lang="en">The popup shows all available information, using the same FR / EN format as in My Planning V2.</span>
         </div>
+      </div>
+    </div>
+
+    <h3 class="green">
+      <span data-lang="fr">Import Excel — champ « Atelier (FR) »</span>
+      <span data-lang="en">Excel Import — "Workshop (FR)" field</span>
+    </h3>
+    <p data-lang="fr">Le bouton <strong>📤 Import Excel</strong> (en haut de la page) permet de mettre à jour en lot les informations des ateliers. Depuis la dernière mise à jour, le champ <strong>Atelier (FR)</strong> (colonne B du fichier Excel) est <strong>pleinement éditable</strong> via l'import — au même titre que <em>Workshop name (ENG)</em>.</p>
+    <p data-lang="en">The <strong>📤 Import Excel</strong> button (at the top of the page) lets you batch-update workshop information. Since the last update, the <strong>Workshop (FR)</strong> field (column B of the Excel file) is <strong>fully editable</strong> via import — just like <em>Workshop name (ENG)</em>.</p>
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>
+        <span data-lang="fr">Si vous renommez un atelier via import (colonne B), toutes les données associées (description, logistique, consignes) sont automatiquement <strong>préservées et liées au nouveau nom</strong>. Aucune perte de données.</span>
+        <span data-lang="en">If you rename a workshop via import (column B), all associated data (description, logistics, instructions) are automatically <strong>preserved and linked to the new name</strong>. No data loss.</span>
       </div>
     </div>
 
@@ -875,6 +893,55 @@
           <span data-lang="en">Hover over a block to show the <strong>detailed tooltip</strong> (name, time, arrival time, venue, team).</span>
         </div>
       </div>
+      <div class="step">
+        <div class="step-n pink">4</div>
+        <div class="step-body">
+          <span data-lang="fr"><strong>Cliquez</strong> sur un bloc pour ouvrir la <strong>fiche complète de l'atelier</strong> — même popup que Mon Planning V2 avec les 5 sections (Infos générales, Logistique, Besoins spécifiques, Équipements, Consignes helpers) et le toggle FR / EN.</span>
+          <span data-lang="en"><strong>Click</strong> on a block to open the <strong>full workshop sheet</strong> — the same popup as My Planning V2 with all 5 sections (General info, Logistics, Specific needs, Equipment, Helper instructions) and the FR / EN toggle.</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pink">
+      <span data-lang="fr">Fiche atelier — popup au clic</span>
+      <span data-lang="en">Workshop sheet — click popup</span>
+    </h3>
+    <p data-lang="fr">Un clic sur n'importe quel bloc de la grille ouvre une modale avec les informations complètes de l'atelier, organisées en <strong>5 blocs colorés</strong> :</p>
+    <p data-lang="en">Clicking any block on the grid opens a modal with the workshop's full details, organised into <strong>5 colour-coded sections</strong>:</p>
+    <table class="data-table">
+      <thead><tr>
+        <th><span data-lang="fr">Section</span><span data-lang="en">Section</span></th>
+        <th><span data-lang="fr">Contenu</span><span data-lang="en">Content</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span style="background:#fefce8;border:1px solid #fde68a;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:#854d0e">1) Informations générales</span></td>
+          <td><span data-lang="fr">Nom (FR/ENG), type, jour/date, horaire, arrivée, lieu, équipe, note — instructions participants et description</span><span data-lang="en">Name (FR/ENG), type, day/date, schedule, arrival, venue, team, note — participant instructions and description</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#f0fdf4;border:1px solid #4ade80;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:#166534">2) Informations logistiques</span></td>
+          <td><span data-lang="fr">Durée de préparation, heure d'arrivée, informations logistiques saisies</span><span data-lang="en">Preparation time, arrival time, entered logistics information</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#faf5ff;border:1px solid #c084fc;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:#7e22ce">3) Besoins spécifiques</span></td>
+          <td><span data-lang="fr">Besoins logistiques spécifiques à l'atelier</span><span data-lang="en">Specific logistics needs for the workshop</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#f0fdfa;border:1px solid #2dd4bf;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:#0f766e">4) Équipements</span></td>
+          <td><span data-lang="fr">Liste des équipements nécessaires, regroupés par catégorie et fournisseur</span><span data-lang="en">List of required equipment, grouped by category and supplier</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#eff6ff;border:1px solid #3b82f6;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:#1d4ed8">5) Consignes helpers</span></td>
+          <td><span data-lang="fr">Consignes avant / pendant / après — avec durée de rangement si définie</span><span data-lang="en">Instructions before / during / after — with tidying duration if defined</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div>
+        <span data-lang="fr">Le tooltip (survol) reste disponible pour un aperçu rapide sans ouvrir la modale. Cliquez pour les détails complets. Fermez avec <strong>✕</strong>, la touche <strong>Échap</strong> ou un swipe horizontal sur mobile.</span>
+        <span data-lang="en">The hover tooltip remains available for a quick preview without opening the modal. Click for full details. Close with <strong>✕</strong>, the <strong>Escape</strong> key or a horizontal swipe on mobile.</span>
+      </div>
     </div>
 
     <h3 class="pink">
@@ -1036,6 +1103,139 @@
       <div>
         <span data-lang="fr">Ce rapport est accessible depuis <strong>Gestion Planning</strong>, juste en dessous de la carte « Agenda Simplifié ».</span>
         <span data-lang="en">This report is accessible from the <strong>Planning Management</strong> page, just below the "Simplified Schedule" card.</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════
+       10 — MASTER DATA
+  ══════════════════════════════════════ -->
+  <div class="section" id="master-data">
+    <div class="section-header">
+      <div class="section-icon">🗄️</div>
+      <div>
+        <div class="section-title">
+          <span data-lang="fr">Master Data</span>
+          <span data-lang="en">Master Data</span>
+          <span class="section-badge" style="background:#ccfbf1;color:#0f766e">
+            <span data-lang="fr">Admin</span>
+            <span data-lang="en">Admin</span>
+          </span>
+        </div>
+        <div class="section-subtitle">
+          <span data-lang="fr">Gestion des référentiels — tri, filtres multi-valeurs, import/export Excel</span>
+          <span data-lang="en">Reference data management — sort, multi-value filters, Excel import/export</span>
+        </div>
+      </div>
+    </div>
+
+    <p data-lang="fr">Master Data centralise l'édition de tous les référentiels du festival (lieux, types, heures, équipements, consignes…). L'accès est protégé par mot de passe. Les modifications sont sauvegardées directement dans les fichiers <code>.js</code> du projet via GitHub ou le serveur local.</p>
+    <p data-lang="en">Master Data centralises editing of all festival reference data (venues, types, hours, equipment, instructions…). Access is password-protected. Changes are saved directly to the project's <code>.js</code> files via GitHub or the local server.</p>
+
+    <h3 style="border-left-color:#0f766e">
+      <span data-lang="fr">Tri A-Z / Z-A sur les colonnes</span>
+      <span data-lang="en">A-Z / Z-A sort on columns</span>
+    </h3>
+    <p data-lang="fr">Les modules <strong>Heures</strong>, <strong>Consignes génériques</strong> et <strong>Consignes spécifiques</strong> disposent maintenant d'en-têtes de colonnes cliquables pour trier le tableau :</p>
+    <p data-lang="en">The <strong>Hours</strong>, <strong>Generic Instructions</strong> and <strong>Specific Instructions</strong> modules now have clickable column headers to sort the table:</p>
+    <table class="data-table">
+      <thead><tr>
+        <th><span data-lang="fr">Clic</span><span data-lang="en">Click</span></th>
+        <th><span data-lang="fr">Effet</span><span data-lang="en">Effect</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span data-lang="fr">1er clic sur un en-tête</span><span data-lang="en">1st click on a header</span></td>
+          <td><span data-lang="fr">Tri A → Z (icône <strong>↑</strong> en bleu)</span><span data-lang="en">Sort A → Z (blue <strong>↑</strong> icon)</span></td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">2e clic</span><span data-lang="en">2nd click</span></td>
+          <td><span data-lang="fr">Tri Z → A (icône <strong>↓</strong> en bleu)</span><span data-lang="en">Sort Z → A (blue <strong>↓</strong> icon)</span></td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">3e clic</span><span data-lang="en">3rd click</span></td>
+          <td><span data-lang="fr">Retour à l'ordre naturel (icône <strong>⇅</strong>)</span><span data-lang="en">Back to natural order (<strong>⇅</strong> icon)</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p data-lang="fr">Ce comportement est identique à celui des colonnes du module <strong>Équipements</strong> (déjà existant).</p>
+    <p data-lang="en">This behaviour is identical to that of the columns in the <strong>Equipment</strong> module (already existing).</p>
+
+    <h3 style="border-left-color:#0f766e">
+      <span data-lang="fr">Filtres multi-valeurs (bouton 🔍)</span>
+      <span data-lang="en">Multi-value filters (🔍 button)</span>
+    </h3>
+    <p data-lang="fr">Chaque colonne de ces mêmes modules dispose d'un bouton 🔍 qui ouvre un <strong>popover de filtrage</strong> :</p>
+    <p data-lang="en">Each column in these same modules has a 🔍 button that opens a <strong>filter popover</strong>:</p>
+    <div class="steps-block">
+      <div class="step">
+        <div class="step-n" style="background:#0f766e">1</div>
+        <div class="step-body">
+          <span data-lang="fr">Cliquez sur 🔍 dans l'en-tête d'une colonne — un popover liste toutes les valeurs distinctes présentes dans cette colonne, avec leur nombre d'occurrences.</span>
+          <span data-lang="en">Click 🔍 in a column header — a popover lists all distinct values in that column, with their occurrence count.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#0f766e">2</div>
+        <div class="step-body">
+          <span data-lang="fr">Utilisez la barre de recherche pour retrouver une valeur, ou les boutons <strong>Tout cocher</strong> / <strong>Tout décocher</strong> pour sélectionner/désélectionner toutes les valeurs d'un coup.</span>
+          <span data-lang="en">Use the search bar to find a value, or the <strong>Select all</strong> / <strong>Deselect all</strong> buttons to check/uncheck all values at once.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:#0f766e">3</div>
+        <div class="step-body">
+          <span data-lang="fr">Cliquez <strong>Appliquer</strong> — le tableau ne montre plus que les lignes correspondant à vos sélections. Un badge coloré apparaît dans la barre de filtres actifs au-dessus du tableau.</span>
+          <span data-lang="en">Click <strong>Apply</strong> — the table now shows only rows matching your selections. A coloured badge appears in the active filters bar above the table.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div>
+        <span data-lang="fr">Plusieurs filtres peuvent être actifs simultanément sur des colonnes différentes. La barre de filtres actifs affiche un badge par colonne filtrée, avec un bouton <strong>✕ Réinitialiser</strong> pour tout effacer en un clic.</span>
+        <span data-lang="en">Multiple filters can be active at the same time on different columns. The active filters bar shows one badge per filtered column, with a <strong>✕ Reset</strong> button to clear everything in one click.</span>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:#0f766e">
+      <span data-lang="fr">Modules concernés</span>
+      <span data-lang="en">Affected modules</span>
+    </h3>
+    <table class="data-table">
+      <thead><tr>
+        <th><span data-lang="fr">Module</span><span data-lang="en">Module</span></th>
+        <th><span data-lang="fr">Colonnes triables et filtrables</span><span data-lang="en">Sortable and filterable columns</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>🕐 <span data-lang="fr">Heures</span><span data-lang="en">Hours</span></td>
+          <td><span data-lang="fr">ID · Value (HH:MM)</span><span data-lang="en">ID · Value (HH:MM)</span></td>
+        </tr>
+        <tr>
+          <td>📋 <span data-lang="fr">Consignes génériques</span><span data-lang="en">Generic Instructions</span></td>
+          <td><span data-lang="fr">Actif · ID · Texte FR · Texte EN · Descriptif · Placements</span><span data-lang="en">Active · ID · FR Text · EN Text · Description · Placements</span></td>
+        </tr>
+        <tr>
+          <td>🔁 <span data-lang="fr">Consignes spécifiques</span><span data-lang="en">Specific Instructions</span></td>
+          <td><span data-lang="fr">Actif · ID · Texte FR · Texte EN · Descriptif · Placements</span><span data-lang="en">Active · ID · FR Text · EN Text · Description · Placements</span></td>
+        </tr>
+        <tr>
+          <td>🔧 Équipements</td>
+          <td><span data-lang="fr">Fournisseur · Catégorie · ID · Équipement · Stock · Description · Remarque</span><span data-lang="en">Supplier · Category · ID · Equipment · Stock · Description · Remark</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <span data-lang="fr">Le tri et les filtres sont <strong>visuels uniquement</strong> — ils n'affectent pas l'ordre de sauvegarde dans les fichiers <code>.js</code>. Les données sont toujours sauvegardées dans leur ordre naturel (ordre de création / import).</span>
+        <span data-lang="en">Sort and filters are <strong>visual only</strong> — they do not affect the save order in the <code>.js</code> files. Data is always saved in its natural order (creation / import order).</span>
       </div>
     </div>
   </div>

@@ -309,6 +309,25 @@ var REF_DISPLAY_REPORTS = [
     "order": 3
   },
   {
+    "id": "rep_gestion_equipements_ateliers",
+    "title": "Gestion des équipements par Atelier (Export/Import)",
+    "titleKey": "card_gestion_eq_ateliers_title",
+    "desc": "Export et import des équipements par atelier — validation ligne par ligne",
+    "descKey": "card_gestion_eq_ateliers_desc",
+    "icon": "📦",
+    "url": "Rapport_Gestion_Equipements_Ateliers.html",
+    "section": "Logistique",
+    "showInDreamTeam": false,
+    "active": true,
+    "cardStyle": "background:#0f766e;border-color:#0f766e;color:#fff;",
+    "iconStyle": "background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);",
+    "titleStyle": "color:#fff;",
+    "descStyle": "color:rgba(255,255,255,.8);",
+    "arrowStyle": "color:rgba(255,255,255,.7);",
+    "isProtected": false,
+    "order": 4
+  },
+  {
     "id": "rep_stock_equipements_lieux",
     "title": "Stock & Équipements par Lieu",
     "titleKey": "card_stock_eq_lieux_title",

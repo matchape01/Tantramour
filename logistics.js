@@ -95,11 +95,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
-    html: "<br>",
+    html: "",
     text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 21:43"
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
@@ -159,11 +159,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
-    html: "Tapis + matelas + coussins <br>Système son <br>3 pieds de micro<br>3 micros (2 voix et 1 instrument) <br>Système son aussi bluetooth pour passer une playlist",
-    text: "Tapis + matelas + coussins \nSystème son \n3 pieds de micro\n3 micros (2 voix et 1 instrument) \nSystème son aussi bluetooth pour passer une playlist",
+    html: "<span lang=\"FR\" style=\"font-size:11.0pt;line-height:\n107%;font-family:&quot;Aptos&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\nmso-fareast-font-family:Aptos;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:\nminor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;\nmso-ansi-language:FR;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\">AVANT — RENDEZ-VOUS À 9H25<br><br>Les helpers affectés au rassemblement doivent être présents 20 minutes avant le début.<br><br>• Ouvrir et installer correctement les bâches.<br><br>• Aérer la salle si nécessaire.<br><br>• Allumer un peu d’encens, dans le respect des consignes du lieu et en restant attentif aux personnes sensibles aux odeurs.<br><br>• Vérifier que l’espace est propre, agréable et dégagé.<br><br>• Passer un coup de balai si nécessaire.<br><br>• Ranger et disposer harmonieusement les coussins.<br><br>• Dégager les passages, les entrées et les sorties de secours.<br><br>• Vérifier qu’aucun objet dangereux ou inutile ne reste au sol.<br><br>• Préparer l’espace nécessaire à l’accueil dansé et aux prises de parole.<br><br>• Vérifier avec les maîtres de cérémonie s’ils ont besoin de matériel, de micros, d’eau ou d’un soutien particulier.<br><br>• Accueillir progressivement les festivaliers et les inviter à entrer dans l’espace.<br><br>L’objectif est que Shiva soit entièrement prêt, propre et accueillant avant l’arrivée du groupe.</span>",
+    text: "AVANT — RENDEZ-VOUS À 9H25\n\nLes helpers affectés au rassemblement doivent être présents 20 minutes avant le début.\n\n• Ouvrir et installer correctement les bâches.\n\n• Aérer la salle si nécessaire.\n\n• Allumer un peu d’encens, dans le respect des consignes du lieu et en restant attentif aux personnes sensibles aux odeurs.\n\n• Vérifier que l’espace est propre, agréable et dégagé.\n\n• Passer un coup de balai si nécessaire.\n\n• Ranger et disposer harmonieusement les coussins.\n\n• Dégager les passages, les entrées et les sorties de secours.\n\n• Vérifier qu’aucun objet dangereux ou inutile ne reste au sol.\n\n• Préparer l’espace nécessaire à l’accueil dansé et aux prises de parole.\n\n• Vérifier avec les maîtres de cérémonie s’ils ont besoin de matériel, de micros, d’eau ou d’un soutien particulier.\n\n• Accueillir progressivement les festivaliers et les inviter à entrer dans l’espace.\n\nL’objectif est que Shiva soit entièrement prêt, propre et accueillant avant l’arrivée du groupe.",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-28 15:26"
   },
 
   "JOUR2_RASSEMBLEMENT": {
@@ -255,11 +255,11 @@ var LOGISTICS = {
   },
 
   "JOUR3_ANGEL___SHIFT_MATIN__AM_": {
-    html: "30 min pour l'installation du clavier et du son <br>Système de sonorisation pour le clavier, 1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
-    text: "30 min pour l'installation du clavier et du son \nSystème de sonorisation pour le clavier, 1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-28 15:27"
   },
 
   "JOUR3_DANCING_EROS": {
@@ -322,8 +322,8 @@ var LOGISTICS = {
     html: "Achats que nous apporterons, achats sur place et approts<br>Intro : danse métamorphique alchimique  :  Kalista  &amp; Gwen<br><br>ARTISTE : peintures corps ou crayon<br>Crayon de couleurs pour peau : 11 €  (acheté par Sabryna ou Audrey)<br>Peinture (à valider par Hélène et Karen : Hélène les achetera)<br>Hélène prend son APN (pas de frais photo)<br><br>ETHERE : <br>Achats (par Paul ou Audrey, à livrer direct sur place si validé): <br>SPARKLERS CLUB Bouteille Gaz Hélium 50 Ballons, Bonbonne Jetable | Capacité 0,40 m3 : env 50 € à valider<br>  Kit Arche Ballon Bleu Et Blanc, Bleu marine ciel métallisé argent paillette | 119 Bleu Ciel : 13 €<br>Apport lieu : <br>1 mini table basse pour autel au centre de l étoile de matelas<br>6 matelas/12 coussins<br>2 Projecteurs : lumière blanche et une lumière bleue<br>Apport perso <br>nos \"déités\"<br>Apport Tantramour<br>tissu blanc soyeux + tissu bleu argenté soyeux<br>1 boule à facette<br>guirlande lumineuse<br>aurasoma<br>1 grande bougie blanche (Led ? )<br><br>SENSITIF : <br>ACHATS : <br>Talc hypoallergenique bébé (env . 5 € la boite en pharmaicie X2)<br>Plumes : 20€ <br>Apports perso: <br>Foulards,<br>Tissus<br>Accessoires <br><br>PRIMAL: <br>Achats : Argiles 4 couleurs : <br> CATTIER Argile verte ultra-ventilée 750g   : 11€<br>puis 3 autres couleurs en paquet de 600 gr : 7 € chaque X3<br>Matériel restaurant ou lingerie<br>* 8 bols (2 par couleur d'argile)<br>* des bouteilles d'eau pour faire les mélange d'argile et humidifier les tissus<br>* des linges types carrés de serviettes éponges ou gants de toilette,  pour les mains ou nettoyer une partie du corps si besoin<br>* des cuillères pour mélanger les préparations d'argile<br>1 bassine de rinçage (eau)<br><br>Soundsystem avec 3 micros : Audrey, Paul et Traducteur-ice (Sandrine)",
     text: "Achats que nous apporterons, achats sur place et approts\nIntro : danse métamorphique alchimique  :  Kalista  & Gwen\n\nARTISTE : peintures corps ou crayon\nCrayon de couleurs pour peau : 11 €  (acheté par Sabryna ou Audrey)\nPeinture (à valider par Hélène et Karen : Hélène les achetera)\nHélène prend son APN (pas de frais photo)\n\nETHERE : \nAchats (par Paul ou Audrey, à livrer direct sur place si validé): \nSPARKLERS CLUB Bouteille Gaz Hélium 50 Ballons, Bonbonne Jetable | Capacité 0,40 m3 : env 50 € à valider\n  Kit Arche Ballon Bleu Et Blanc, Bleu marine ciel métallisé argent paillette | 119 Bleu Ciel : 13 €\nApport lieu : \n1 mini table basse pour autel au centre de l étoile de matelas\n6 matelas/12 coussins\n2 Projecteurs : lumière blanche et une lumière bleue\nApport perso \nnos \"déités\"\nApport Tantramour\ntissu blanc soyeux + tissu bleu argenté soyeux\n1 boule à facette\nguirlande lumineuse\naurasoma\n1 grande bougie blanche (Led ? )\n\nSENSITIF : \nACHATS : \nTalc hypoallergenique bébé (env . 5 € la boite en pharmaicie X2)\nPlumes : 20€ \nApports perso: \nFoulards,\nTissus\nAccessoires \n\nPRIMAL: \nAchats : Argiles 4 couleurs : \n CATTIER Argile verte ultra-ventilée 750g   : 11€\npuis 3 autres couleurs en paquet de 600 gr : 7 € chaque X3\nMatériel restaurant ou lingerie\n* 8 bols (2 par couleur d'argile)\n* des bouteilles d'eau pour faire les mélange d'argile et humidifier les tissus\n* des linges types carrés de serviettes éponges ou gants de toilette,  pour les mains ou nettoyer une partie du corps si besoin\n* des cuillères pour mélanger les préparations d'argile\n1 bassine de rinçage (eau)\n\nSoundsystem avec 3 micros : Audrey, Paul et Traducteur-ice (Sandrine)",
     validatedByFac: false,
-    prepDuration: 120,
-    updatedAt: "2026-08-26 18:36"
+    prepDuration: 30,
+    updatedAt: "2026-08-28 15:13"
   },
 
   "JOUR3_POOL_PARTY_____DJ_PASCAL_DE_LA": {
@@ -423,27 +423,27 @@ var LOGISTICS = {
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    html: "<div>2 guitares, djembe, piano&nbsp;</div><div><span style=\"font-family: inherit;\">4 voix&nbsp;</span></div><div><span style=\"font-family: inherit;\">30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</span></div>",
-    text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    html: "2 guitares, djembe, piano 4 voix 30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    text: "2 guitares, djembe, piano 4 voix 30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-26 22:52"
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
-    html: "<div>2 guitares, djembe, piano&nbsp;</div><div><span style=\"font-family: inherit;\">4 voix&nbsp;</span></div><div><span style=\"font-family: inherit;\">30/40 min de Balance dans la journée puis 30 min de pause avant le concert&nbsp;</span></div>",
-    text: "2 guitares, djembe, piano \n4 voix \n30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    html: "2 guitares, djembe, piano 4 voix 30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
+    text: "2 guitares, djembe, piano 4 voix 30/40 min de Balance dans la journée puis 30 min de pause avant le concert",
     validatedByFac: false,
     prepDuration: 40,
-    updatedAt: "2026-08-26 22:58"
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
-    html: "<br>",
+    html: "",
     text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 21:46"
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR4_DANSE_FUSION___GUIDER___SE_LAI": {
@@ -474,8 +474,8 @@ var LOGISTICS = {
     html: "Aménager un espace dévotionnel centré sur un autel pour Shiva Nataraj (ou autre garnde statue), avec des zones de<br>vénération et de confort.<br><br>Pour la vénération des pieds :<br>- 3 grandes bassines (suffisamment larges pour les deux pieds).<br>- Chaises associées.<br>- 6 petites serviettes (idéalement fournies par  le Hameau).<br><br>Pour l'autel central (Shiva Nataraj) :<br>Une grande statuette de Shiva Nataraj (ou autre forme de Shiva). <br>- 3 ou 4 tables basses (disponibles au hameau) pour former la base de l'autel.<br>- Des tissus pour couvrir les tables (apportés par Ishvari).<br>- Abondance d'encens, de bougies et de fleurs pour les offrandes (le but est que Nataraj soit entouré de ces éléments).<br> <br>Pour le confort et l'ambiance :<br>- Matelas et tapis de yoga (ceux déjà disponibles dans la salle devraient être suffisants).<br>- De nombreux coussins.Spots de lumière.Des bandeau pour couvrir les yeux. <br>- Mobilier et décor divers :Une grande chaise type \"trône\" (comme celle utilisée l'année précédente).<br>- 3 grands miroirs pleins pieds (à vérifier si le hameau en dispose dans les chambres ou castings et s'ils sont faciles à déplacer).",
     text: "Aménager un espace dévotionnel centré sur un autel pour Shiva Nataraj (ou autre garnde statue), avec des zones de\nvénération et de confort.\n\nPour la vénération des pieds :\n- 3 grandes bassines (suffisamment larges pour les deux pieds).\n- Chaises associées.\n- 6 petites serviettes (idéalement fournies par  le Hameau).\n\nPour l'autel central (Shiva Nataraj) :\nUne grande statuette de Shiva Nataraj (ou autre forme de Shiva). \n- 3 ou 4 tables basses (disponibles au hameau) pour former la base de l'autel.\n- Des tissus pour couvrir les tables (apportés par Ishvari).\n- Abondance d'encens, de bougies et de fleurs pour les offrandes (le but est que Nataraj soit entouré de ces éléments).\n \nPour le confort et l'ambiance :\n- Matelas et tapis de yoga (ceux déjà disponibles dans la salle devraient être suffisants).\n- De nombreux coussins.Spots de lumière.Des bandeau pour couvrir les yeux. \n- Mobilier et décor divers :Une grande chaise type \"trône\" (comme celle utilisée l'année précédente).\n- 3 grands miroirs pleins pieds (à vérifier si le hameau en dispose dans les chambres ou castings et s'ils sont faciles à déplacer).",
     validatedByFac: false,
-    prepDuration: 30,
-    updatedAt: "2026-08-25 03:37"
+    prepDuration: 60,
+    updatedAt: "2026-08-28 15:13"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
@@ -610,8 +610,8 @@ var LOGISTICS = {
     html: "Soundcheck will take about 1 hour, set up instruments (clean stage, powersupply ready and on) should be possible already at least 2 h before the concert<br><br>PA system as written in technical rider, plus settings for Kelly (singing mic) and Stéphane (sax &amp; Djembe), 3 monitors on stage",
     text: "Soundcheck will take about 1 hour, set up instruments (clean stage, powersupply ready and on) should be possible already at least 2 h before the concert\n\nPA system as written in technical rider, plus settings for Kelly (singing mic) and Stéphane (sax & Djembe), 3 monitors on stage",
     validatedByFac: false,
-    prepDuration: 30,
-    updatedAt: "2026-08-25 03:37"
+    prepDuration: 45,
+    updatedAt: "2026-08-28 15:13"
   },
 
   "JOUR5_EMBRASSER_LE_MYSTERE": {
@@ -899,7 +899,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-07-28"
+    updatedAt: "2026-08-28 16:00"
   },
 
   "LOG_Jour1_TEST_3": {
@@ -1343,11 +1343,11 @@ var LOGISTICS = {
   },
 
   "LOG_Jour6_LA_GRANDE_SPIRALE_DU_COEUR_": {
-    html: "Tapis matelas, coussins <br>Système son avec 3 pieds de micro, 3 micros (2 voix et 1 instrument) / Système son aussi bluetooth pour passer une playlist",
-    text: "Tapis matelas, coussins \nSystème son avec 3 pieds de micro, 3 micros (2 voix et 1 instrument) / Système son aussi bluetooth pour passer une playlist",
+    html: "Tapis + matelas + coussins <br>Système son <br>3 pieds de micro<br>3 micros (2 voix et 1 instrument) <br>Système son aussi bluetooth pour passer une playlist",
+    text: "Tapis + matelas + coussins \nSystème son \n3 pieds de micro\n3 micros (2 voix et 1 instrument) \nSystème son aussi bluetooth pour passer une playlist",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-18 23:48"
+    updatedAt: "2026-08-28 15:23"
   },
 
   "LOG_Jour6_MINDFULNESS___MOUVEMENTS_SOMAT": {

@@ -61,9 +61,19 @@
     .import-fields-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
     .import-field { border:1px solid var(--border); border-radius:8px; padding:8px; background:var(--surface); }
     .import-field-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; }
-    .import-field-values { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:start; margin-top:4px; }
-    .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; }
-    .import-field-arrow { color:var(--muted); font-size:12px; padding-top:2px; }
+    .import-field-values { display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+    .import-field-slot { display:flex; flex-direction:column; gap:2px; }
+    .import-field-slot-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+    .import-field-slot-label.sys { color:#1d4ed8; }
+    .import-field-slot-label.upl { color:#166534; }
+    .import-field-value { font-size:12px; white-space:pre-wrap; word-break:break-word; padding:4px 8px; border-radius:5px; }
+    .import-field-value.sys { background:#eff6ff; border:1px solid #bfdbfe; color:#1e3a5f; }
+    .import-field-value.upl { background:#f0fdf4; border:1px solid #bbf7d0; color:#14532d; }
+    .import-field-arrow { text-align:center; color:var(--muted); font-size:13px; line-height:1; }
+    .import-field.unchanged { opacity:.65; }
+    .import-field.unchanged .import-field-name { color:var(--muted); }
+    .import-field-unchanged-badge { display:inline-block; margin-top:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); background:var(--border); border-radius:4px; padding:2px 7px; }
+    .import-field-value.same { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-style:italic; }
     .import-choice { display:flex; gap:12px; margin-top:6px; font-size:12px; }
     .import-choice label { display:flex; align-items:center; gap:5px; cursor:pointer; }
     .import-empty { font-size:12px; color:var(--muted); font-style:italic; }
@@ -309,6 +319,7 @@ var IMPORT_HEADERS_26 = [
 ];
 // Décalage 0 = format 23 cols, décalage 2 = format 26 cols
 var IMPORT_FIELD_DEFS = [
+  { key:'nomFr',         label:'Atelier (FR)',                        col:2  },
   { key:'piment',        label:'Piment',                              col:11 },
   { key:'nomEn',         label:'Workshop name (ENG)',                 col:13 },
   { key:'descFr',        label:'Description (FR)',                    col:14 },
@@ -746,9 +757,11 @@ function esc(s) {
 }
 function htmlToText(html) {
   if (!html) return '';
+  // Remplacer les <br> par \n avant l'extraction pour préserver les sauts de ligne
+  var normalized = html.replace(/<br\s*\/?>/gi, '\n');
   var div = document.createElement('div');
-  div.innerHTML = html;
-  return (div.textContent || div.innerText || '').replace(/\s+\n/g, '\n').trim();
+  div.innerHTML = normalized;
+  return (div.textContent || div.innerText || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
 }
 function noteLabel(val, lang) {
   if (!val) return '';
@@ -849,7 +862,8 @@ function buildAteliersExportRows() {
       logSpecial: specEntry ? htmlToText(specEntry.html || specEntry.text || '') : '',
       helperAvant: helpEntry ? htmlToText(helpEntry.avant || '') : '',
       helperPendant: helpEntry ? htmlToText(helpEntry.pendant || '') : '',
-      helperApres: helpEntry ? htmlToText(helpEntry.apres || '') : ''
+      helperApres: helpEntry ? htmlToText(helpEntry.apres || '') : '',
+      commentaire: ''
     };
   });
 }
@@ -896,7 +910,8 @@ function buildExcelRows(rows) {
   return rows.map(function(row) {
     return [
       row.id,row.atelier,row.fac1,row.fac2,row.fac3,row.fac4,row.type,row.date,row.jour,row.heureDebut,row.heureFin,row.lieu,row.piment,row.note,
-      row.nomEn,row.descFr,row.descEn,row.consigneFr,row.consigneEn,row.prepDuration,row.logInfo,row.logSpecial,row.helperAvant,row.helperPendant,row.helperApres
+      row.nomEn,row.descFr,row.descEn,row.consigneFr,row.consigneEn,row.prepDuration,row.logInfo,row.logSpecial,row.helperAvant,row.helperPendant,row.helperApres,
+      row.commentaire
     ];
   });
 }
@@ -906,10 +921,11 @@ function downloadExcelFile(rows, filename) {
   var headers = [
     'ID','Atelier (FR)','Animateur 1','Animateur 2','Animateur 3','Animateur 4','Type','Date (DD/MM/YYYY)','Jour','Heure de début','Heure de fin','Lieu','Piment','Note',
     'Workshop name (ENG)','Description (FR)','Description (ENG)','Instructions participants (FR)','Participant instructions (ENG)',
-    'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES'
+    'Estimation préparation','Informations logistiques','Besoins logistiques spécifiques','Consignes HELPER – AVANT','Consignes HELPER – PENDANT','Consignes HELPER – APRES',
+    'Commentaire'
   ];
   var grayColumns = { 13:true, 15:true, 16:true, 17:true, 18:true, 19:true, 20:true, 21:true, 22:true, 23:true, 24:true, 25:true };
-  var columnWidths = [12, 30, 24, 24, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30];
+  var columnWidths = [12, 30, 24, 24, 24, 24, 18, 14, 12, 14, 14, 16, 10, 18, 28, 36, 36, 36, 36, 20, 40, 40, 30, 30, 30, 36];
 
   sheet.addRow(headers);
   buildExcelRows(rows).forEach(function(values) {
@@ -1156,12 +1172,17 @@ function buildImportPreview(sheet, colOffset) {
     var specEntry = logId && typeof LOGISTICS_SPECIAL !== 'undefined' ? LOGISTICS_SPECIAL[logId] : null;
     var helpEntry = logId && typeof LOGISTICS_HELPERS !== 'undefined' ? LOGISTICS_HELPERS[logId] : null;
     var changes = [];
+    var unchanged = [];
+    var fields = [];
 
     IMPORT_FIELD_DEFS.forEach(function(def) {
-      var raw = row.getCell(def.col + colOffset).value;
+      // Le décalage (+2 colonnes pour Anim3/Anim4) ne s'applique qu'à partir de la colonne 5
+      var effectiveCol = def.col < 5 ? def.col : def.col + colOffset;
+      var raw = row.getCell(effectiveCol).value;
       var nextValue = (def.key === 'piment' || def.key === 'prepDuration') ? parseImportNumber(raw) : normalizeCellValue(raw);
       var currentValue = '';
-      if (def.key === 'piment') currentValue = String(entry.piment || 0);
+      if (def.key === 'nomFr') currentValue = normalizeCellValue(entry.atelier || '');
+      else if (def.key === 'piment') currentValue = String(entry.piment || 0);
       else if (def.key === 'nomEn') currentValue = normalizeCellValue(desc.nomEn || '');
       else if (def.key === 'descFr') currentValue = normalizeCellValue(desc.descFr || '');
       else if (def.key === 'descEn') currentValue = normalizeCellValue(desc.descEn || '');
@@ -1182,8 +1203,14 @@ function buildImportPreview(sheet, colOffset) {
         warnings.push('⚠️ Estimation préparation invalide pour « ' + id + ' » : valeur « ' + nextValue + ' » ignorée (valeurs acceptées : 0, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 75, 80, 90, 100, 110, 120).');
         return; // on ignore ce champ, l'import continue
       }
-      if (normalizeComparableValue(currentValue) === normalizeComparableValue(nextValue)) return;
+      if (normalizeComparableValue(currentValue) === normalizeComparableValue(nextValue)) {
+        unchanged.push({ key:def.key, label:def.label, value:currentValue });
+        fields.push({ changed:false, key:def.key, label:def.label, value:currentValue });
+        return;
+      }
+      var changeIdx = changes.length;
       changes.push({ key:def.key, label:def.label, currentValue:currentValue, nextValue:nextValue, choice:'apply' });
+      fields.push({ changed:true, key:def.key, label:def.label, changeIdx:changeIdx });
     });
 
     if (changes.length) {
@@ -1195,7 +1222,9 @@ function buildImportPreview(sheet, colOffset) {
         heure: entry.heure || '',
         lieu: entry.lieu || '',
         facs: [entry.fac1, entry.fac2, entry.fac3, entry.fac4].filter(Boolean).join(' & '),
-        changes:changes
+        changes:changes,
+        unchanged:unchanged,
+        fields:fields
       });
     }
   }
@@ -1244,22 +1273,40 @@ function renderImportPreview(preview, filename) {
                 (item.facs ? ' · ' + esc(item.facs) : '') +
               '</div>' +
             '</div>' +
-            '<div class="import-item-meta">' + item.changes.length + ' changement(s)</div>' +
+            '<div class="import-item-meta">' + item.changes.length + ' changement(s)' + (item.unchanged && item.unchanged.length ? ' · ' + item.unchanged.length + ' inchangé(s)' : '') + '</div>' +
           '</div>' +
-          '<div class="import-fields-grid">' + item.changes.map(function(change, changeIdx) {
-            return '<div class="import-field">' +
-              '<div class="import-field-name">' + esc(change.label) + '</div>' +
-              '<div class="import-field-values">' +
-                '<div class="import-field-value">' + esc(formatImportValue(change.currentValue)).replace(/\n/g,'<br>') + '</div>' +
-                '<div class="import-field-arrow">→</div>' +
-                '<div class="import-field-value">' + esc(formatImportValue(change.nextValue)).replace(/\n/g,'<br>') + '</div>' +
-              '</div>' +
-              '<div class="import-choice">' +
-                '<label><input type="radio" name="import-choice-' + itemIdx + '-' + changeIdx + '" value="apply" checked onchange="setImportChoice(' + itemIdx + ',' + changeIdx + ',\'apply\')"> Accepter</label>' +
-                '<label><input type="radio" name="import-choice-' + itemIdx + '-' + changeIdx + '" value="skip" onchange="setImportChoice(' + itemIdx + ',' + changeIdx + ',\'skip\')"> Ignorer</label>' +
-              '</div>' +
-            '</div>';
-          }).join('') + '</div>' +
+          '<div class="import-fields-grid">' +
+            (item.fields || item.changes).map(function(field) {
+              if (field.changed) {
+                var change = item.changes[field.changeIdx];
+                var ci = field.changeIdx;
+                return '<div class="import-field">' +
+                  '<div class="import-field-name">' + esc(change.label) + '</div>' +
+                  '<div class="import-field-values">' +
+                    '<div class="import-field-slot">' +
+                      '<div class="import-field-slot-label sys">Valeur système</div>' +
+                      '<div class="import-field-value sys">' + esc(formatImportValue(change.currentValue)).replace(/\n/g,'<br>') + '</div>' +
+                    '</div>' +
+                    '<div class="import-field-arrow">↓</div>' +
+                    '<div class="import-field-slot">' +
+                      '<div class="import-field-slot-label upl">Valeur upload</div>' +
+                      '<div class="import-field-value upl">' + esc(formatImportValue(change.nextValue)).replace(/\n/g,'<br>') + '</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="import-choice">' +
+                    '<label><input type="radio" name="import-choice-' + itemIdx + '-' + ci + '" value="apply" checked onchange="setImportChoice(' + itemIdx + ',' + ci + ',\'apply\')"> Accepter</label>' +
+                    '<label><input type="radio" name="import-choice-' + itemIdx + '-' + ci + '" value="skip" onchange="setImportChoice(' + itemIdx + ',' + ci + ',\'skip\')"> Ignorer</label>' +
+                  '</div>' +
+                '</div>';
+              } else {
+                return '<div class="import-field unchanged">' +
+                  '<div class="import-field-name">' + esc(field.label) + '</div>' +
+                  '<div class="import-field-value same">' + esc(formatImportValue(field.value)).replace(/\n/g,'<br>') + '</div>' +
+                  '<div class="import-field-unchanged-badge">= Inchangé</div>' +
+                '</div>';
+              }
+            }).join('') +
+          '</div>' +
         '</div>';
       }).join('') + '</div>' +
       '<div class="import-actions">' +
@@ -1378,7 +1425,26 @@ async function applyImportPreview() {
     var logId = '';
     selectedChanges.forEach(function(change) {
       var value = change.nextValue;
-      if (change.key === 'piment') {
+      if (change.key === 'nomFr') {
+        var oldAtelier = entry.atelier || '';
+        var newAtelier = normalizeCellValue(value);
+        // Récupérer le desc avec l'ancien nom (avant tout renommage)
+        // Fallback : chercher aussi avec le nouveau nom (cas de désynchronisation data.js ↔ ref_descriptions.js)
+        desc = desc || getDesc(oldAtelier) || getDesc(newAtelier) || ensureDescEntry(entry);
+        // Supprimer l'éventuelle entrée orpheline portant le nouveau nom (doublon résiduel)
+        var existingNew = getDesc(newAtelier);
+        if (existingNew && existingNew !== desc) {
+          var idx = REF_DESCRIPTIONS.indexOf(existingNew);
+          if (idx !== -1) REF_DESCRIPTIONS.splice(idx, 1);
+          delete DESCS_BY_NAME[newAtelier.trim().toLowerCase()];
+        }
+        entry.atelier = newAtelier;
+        desc.atelier = entry.atelier;
+        desc.updatedAt = now;
+        // Reconstruire l'index desc après renommage
+        delete DESCS_BY_NAME[oldAtelier.trim().toLowerCase()];
+        DESCS_BY_NAME[entry.atelier.trim().toLowerCase()] = desc;
+      } else if (change.key === 'piment') {
         entry.piment = parseInt(value || '0', 10) || 0;
         desc = desc || ensureDescEntry(entry);
         desc.piment = entry.piment;
@@ -1427,20 +1493,38 @@ async function applyImportPreview() {
 
   setImportSavingState(true);
   try {
-    var saveResults = await Promise.allSettled([
-      saveTextFile('data.js', 'var AGENDA = ' + JSON.stringify(AGENDA, null, 2) + ';\n'),
-      saveTextFile('ref_descriptions.js', generateRefDescriptionsJs()),
-      saveTextFile('logistics.js', generateLogisticsJs()),
-      saveTextFile('logistics.special.js', generateLogisticsSpecialJs()),
-      saveTextFile('logistics.helpers.js', generateLogisticsHelpersJs())
-    ]);
-    var saveError = saveResults.find(function(result) { return result.status === 'rejected'; });
-    if (saveError) throw saveError.reason;
+    // Sur GitHub Pages les appels parallèles provoquent des conflits de SHA (409/422).
+    // On séquentialise donc les sauvegardes hors localhost.
+    var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    var filesToSave = [
+      { name:'data.js',               content:'var AGENDA = ' + JSON.stringify(AGENDA, null, 2) + ';\n' },
+      { name:'ref_descriptions.js',   content:generateRefDescriptionsJs() },
+      { name:'logistics.js',          content:generateLogisticsJs() },
+      { name:'logistics.special.js',  content:generateLogisticsSpecialJs() },
+      { name:'logistics.helpers.js',  content:generateLogisticsHelpersJs() }
+    ];
+    if (isLocal) {
+      // Localhost : parallèle (le serveur local gère les écritures sans conflit de SHA)
+      var saveResults = await Promise.allSettled(filesToSave.map(function(f) {
+        return saveTextFile(f.name, f.content);
+      }));
+      var saveError = saveResults.find(function(result) { return result.status === 'rejected'; });
+      if (saveError) throw saveError.reason;
+    } else {
+      // GitHub Pages : séquentiel pour éviter les conflits de SHA entre appels simultanés
+      for (var fi = 0; fi < filesToSave.length; fi++) {
+        await saveTextFile(filesToSave[fi].name, filesToSave[fi].content);
+      }
+    }
     rebuildDescIndex();
     applyFilters();
     if (_modalEntry) {
       var modalId = _modalEntry.id;
       _modalEntry = modalId ? (getAgendaByIdMap()[modalId] || {}).entry || _modalEntry : _modalEntry;
+      // Mettre à jour le titre de la modale (peut avoir changé si nomFr modifié)
+      var pm2 = parseInt(_modalEntry.piment)||0;
+      var mTitleEl = document.getElementById('mTitle');
+      if (mTitleEl) mTitleEl.innerHTML = esc(_modalEntry.atelier||'—') + (pm2 ? ' '+pimentHtml(pm2) : '');
       renderModalBody();
     }
     IMPORT_PREVIEW = null;

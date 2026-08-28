@@ -175,19 +175,19 @@
   .dark .type-section.section-apm .prog-name,
   .dark .type-section.section-apm .prog-time,
   .dark .type-section.section-apm .prog-main,
-  .dark .type-section.section-apm .prog-main * { color:#f9fafb; }
+  .dark .type-section.section-apm .prog-main * { color:#ffffff; }
   .dark .type-section.section-soir .type-section-label,
   .dark .type-section.section-soir .type-subgroup-label,
   .dark .type-section.section-soir .prog-name,
   .dark .type-section.section-soir .prog-time,
   .dark .type-section.section-soir .prog-main,
-  .dark .type-section.section-soir .prog-main * { color:#f9fafb; }
+  .dark .type-section.section-soir .prog-main * { color:#ffffff; }
   .dark .type-section.section-soir .type-section-divider,
   .dark .type-section.section-soir .type-subgroup-header,
   .dark .type-section.section-soir .prog-card-footer { border-color:#374151; }
   .dark .type-section-header { background:#1b222c; border-left-color:#9ca3af; }
   .type-section-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#4b5563; flex:1; }
-  .dark .type-section-label { color:#cbd5e1; }
+  .dark .type-section-label { color:#ffffff; }
   .type-section-count { font-size:11px; font-weight:700; background:#6b7280; color:#fff; border-radius:20px; padding:1px 8px; }
 
   /* ── GRILLE CARTES ── */
@@ -234,8 +234,10 @@
   .prog-main { flex:1; padding:8px 9px 6px; min-width:0; display:flex; flex-direction:column; gap:4px; }
   /* Ligne heure + durée */
   .prog-time  { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+  .dark .prog-time  { color:#ffffff; }
   /* Nom atelier + piment */
   .prog-name  { font-size:12px; font-weight:700; line-height:1.3; color:var(--text); }
+  .dark .prog-name  { color:#ffffff; }
   /* Lieu + FR/ENG sur la même ligne */
   .prog-lieu-lang { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
   /* Animateurs */
@@ -255,7 +257,17 @@
     padding:3px 8px; font-size:11px; color:var(--tc); font-family:inherit;
     font-weight:600; transition:background .15s; white-space:nowrap;
   }
+  .dark .detail-btn { color:#ffffff; border-color:rgba(255,255,255,.35); }
   .detail-btn:hover { background:var(--tbd); }
+  /* Texte couleur type (stripe) — blanc en mode nuit */
+  .prog-type-label { font-size:11px; color:var(--tc); }
+  .dark .prog-type-label { color:#ffffff !important; }
+  /* Durée entre parenthèses — blanc en mode nuit */
+  .prog-duree { font-weight:400; color:var(--muted); }
+  .dark .prog-duree { color:#ffffff !important; }
+  /* Badges lieu et animateur — texte blanc en mode nuit */
+  .dark .badge-lieu { color:#ffffff; background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.2); }
+  .dark .badge-fac  { color:#ffffff; background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.2); }
 
   /* Badges */
   .badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; white-space:nowrap; }
@@ -345,7 +357,11 @@
     border-radius:8px; padding:14px 16px; margin-bottom:16px;
     border:1px solid var(--border); background:var(--surface); font-size:14px; line-height:1.7;
   }
+  .modal-desc-box.consigne-box { border-color:#7dd3fc; background:#f0f9ff; }
+  .dark .modal-desc-box.consigne-box { border-color:#1e4976; background:#1a2e3d; color:#ffffff; }
   .modal-desc-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:6px; }
+  .consigne-box .modal-desc-label { color:#0369a1; }
+  .dark .consigne-box .modal-desc-label { color:#7dd3fc; }
   .piment-stars { letter-spacing:-2px; font-size:15px; }
   .no-desc { font-style:italic; color:var(--muted); font-size:13px; }
 
@@ -838,7 +854,7 @@ function cardHtml(e, globalIdx, opts) {
   // Bandeau TYPE + Détails — TOUJOURS en haut (même dans les sous-groupes)
   var typeHeader =
     '<div class="prog-card-footer" style="border-top:none;border-bottom:1px solid var(--tbd);border-radius:0">' +
-      '<strong style="font-size:11px;color:var(--tc)">' + esc(typeLabel(e.type)) + '</strong>' +
+      '<strong class="prog-type-label">' + esc(typeLabel(e.type)) + '</strong>' +
       '<button class="detail-btn" onclick="event.stopPropagation();openDetail(' + globalIdx + ')" title="' + I18n.t('rp_details_btn') + '">ℹ️ ' + (lang === 'en' ? 'Details' : 'Détails') + '</button>' +
     '</div>';
 
@@ -854,7 +870,7 @@ function cardHtml(e, globalIdx, opts) {
         /* 2. Heure – durée */
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
-          (heureDuree(e.heure) ? ' <span style="font-weight:400;color:var(--muted)">(' + heureDuree(e.heure) + ')</span>' : '') +
+          (heureDuree(e.heure) ? ' <span class="prog-duree">(' + heureDuree(e.heure) + ')</span>' : '') +
         '</div>' +
         /* 3. Lieu + FR/ENG */
         (lieuLangHtml ? '<div class="prog-lieu-lang">' + lieuLangHtml + '</div>' : '') +
@@ -1079,8 +1095,8 @@ function renderModalContent() {
     });
   }
 
-  consigneEl.innerHTML = '<div class="modal-desc-box" style="border-color:#7dd3fc;background:#f0f9ff">' +
-    '<div class="modal-desc-label" style="color:#0369a1">' + consigneLabel + '</div>' +
+  consigneEl.innerHTML = '<div class="modal-desc-box consigne-box">' +
+    '<div class="modal-desc-label">' + consigneLabel + '</div>' +
     _corecHtml +
     _consTypeHtml +
     '<div>' + (consigneTxt ? esc(consigneTxt).replace(/\n/g,'<br>') : '<span class="no-desc">' + noInfoTxt + '</span>') + '</div>' +

@@ -56,15 +56,6 @@ var REF_CONSIGNES_RECURRENTES = [
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
   },
   {
-    id: "COREC_NEW001",
-    valueFr: "• Récupérer des briques de yoag dans une autre salle",
-    valueEn: "• Collect yoag bricks  from another room",
-    descriptif: "",
-    placements: [],
-    actif: true,
-    types: []
-  },
-  {
     id: "COREC_006",
     valueFr: "• Installer les matelas",
     valueEn: "• Lay out the mattresses",
@@ -72,6 +63,15 @@ var REF_CONSIGNES_RECURRENTES = [
     placements: ["Avant"],
     actif: true,
     types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","LOVE TEMPLE"]
+  },
+  {
+    id: "COREC_NEW001",
+    valueFr: "• Récupérer des briques de yoag dans une autre salle",
+    valueEn: "• Collect yoag bricks  from another room",
+    descriptif: "",
+    placements: [],
+    actif: true,
+    types: []
   },
   {
     id: "COREC_007",
@@ -570,7 +570,7 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_062",
-    valueFr: "• N'oublies pas ton sourire et ta curiosité ! ",
+    valueFr: "• N'oublies pas ton sourire et ta curiosité !",
     valueEn: "• Don't forget your smil and curiosity !",
     descriptif: "",
     placements: ["Participant"],

@@ -45,7 +45,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-26 21:43"
+    updatedAt: ""
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
@@ -93,7 +93,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
     html: "enscens / bougies",
     text: "enscens / bougies",
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-28 15:26"
   },
 
   "JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C": {
@@ -145,9 +145,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR3_ANGEL___SHIFT_MATIN__AM_": {
-    html: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
-    text: "Demander à Echo Clem et/ou Felix le materriel suivant:\n1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
-    updatedAt: "2026-08-25 03:37"
+    html: "<br>",
+    text: "",
+    updatedAt: "2026-08-28 15:27"
   },
 
   "JOUR3_DANCING_EROS": {
@@ -246,16 +246,22 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-26 18:36"
   },
 
-  "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
-    html: "<br>",
+  "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
+    html: "",
     text: "",
-    updatedAt: "2026-08-26 22:58"
+    updatedAt: ""
+  },
+
+  "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-26 21:46"
+    updatedAt: ""
   },
 
   "JOUR4_DANSE_FUSION___GUIDER___SE_LAI": {
@@ -430,6 +436,12 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-08-24 01:30"
+  },
+
+  "JOUR6_ATELIER_ARTISTIQUE___FREE_YOUR": {
+    html: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    text: "Demander à Echo Clem et/ou Felix le materriel suivant:\n1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    updatedAt: "2026-08-28 15:23"
   },
 
   "JOUR6_BAIN_MANTRIQUE___SOIN_SONORE_C": {
@@ -612,6 +624,12 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-25 03:37"
   },
 
+  "LOG_Jour6_LA_GRANDE_SPIRALE_DU_COEUR_": {
+    html: "enscens / bougies",
+    text: "enscens / bougies",
+    updatedAt: "2026-08-28 15:23"
+  },
+
   "LOG_Jour6_MINDFULNESS___MOUVEMENTS_SOMAT": {
     html: "- 1 Bol tibétain<br>- papier d'arménie à la rose<br>(PHOTOS &amp; VIDEO)",
     text: "- 1 Bol tibétain\n- papier d'arménie à la rose\n(PHOTOS & VIDEO)",
@@ -630,10 +648,10 @@ var LOGISTICS_SPECIAL = {
     updatedAt: "2026-08-26 18:36"
   },
 
-  "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    html: "<br>",
+  "LOG_Jour1_PETIT_DEJ_2": {
+    html: "",
     text: "",
-    updatedAt: "2026-08-26 22:52"
+    updatedAt: "2026-08-28 16:00"
   }
 
 };

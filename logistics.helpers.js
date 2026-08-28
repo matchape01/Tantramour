@@ -50,8 +50,8 @@ var LOGISTICS_HELPERS = {
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
     avant: "",
     pendant: "",
-    apres: "<br>",
-    updatedAt: "2026-08-26 21:43"
+    apres: "",
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR2_INMEN___HELD_BY_MEN_A_SOMATIC_": {
@@ -104,10 +104,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
-    avant: "installer matelas pour participants <br>aider à emmener le matériel de musique<br>passer enscens<br>allumer bougies",
+    avant: "<br>",
     pendant: "",
-    apres: "Ranger les matelas<br>Aider à ramener le matériel de musique",
-    updatedAt: "2026-08-26 18:36"
+    apres: "<br>",
+    updatedAt: "2026-08-28 15:26"
   },
 
   "JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C": {
@@ -167,10 +167,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR3_ANGEL___SHIFT_MATIN__AM_": {
-    avant: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène.<br>Emmener le matos à l'entrée de la salle.<br><br>Installer le matériel technique (voir en amount avec Felix)<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
-    pendant: "Verifier le volume sonore",
-    apres: "Remener le matériel à Felix (Chapiteau)<br>Ranger la salle (oreillers, matelas)",
-    updatedAt: "2026-08-25 03:37"
+    avant: "<br>",
+    pendant: "<br>",
+    apres: "<br>",
+    updatedAt: "2026-08-28 15:27"
   },
 
   "JOUR3_DANCING_EROS": {
@@ -285,18 +285,25 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-26 18:36"
   },
 
-  "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
-    avant: "• Préparer l'autel : tapis, fleurs, chandelles<br>• Disposer les zafus artiste + chaises<br>• Installer les bouteilles d'eau proche des artistes",
+  "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
+    avant: "• Préparer l'autel : tapis, fleurs, chandelles• Disposer les zafus artiste + chaises• Installer les bouteilles d'eau proche des artistes",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:58"
+    updatedAt: "2026-08-28 15:49"
+  },
+
+  "JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K": {
+    avant: "• Préparer l'autel : tapis, fleurs, chandelles• Disposer les zafus artiste + chaises• Installer les bouteilles d'eau proche des artistes",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-28 15:49"
   },
 
   "JOUR4_DANSE_ECSTATIC_CONTACT__2_": {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 21:46"
+    updatedAt: ""
   },
 
   "JOUR4_DANSE_FUSION___GUIDER___SE_LAI": {
@@ -502,6 +509,13 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-24 01:30"
   },
 
+  "JOUR6_ATELIER_ARTISTIQUE___FREE_YOUR": {
+    avant: "Demander à Echo Clem et/ou Felix le materriel suivant:<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène.<br>Emmener le matos à l'entrée de la salle.<br><br>Installer le matériel technique (voir en amount avec Felix)<br>1 micro chant standard avec pied, 1 micro-casque, 1 retour de scène",
+    pendant: "Verifier le volume sonore",
+    apres: "Remener le matériel à Felix (Chapiteau)<br>Ranger la salle (oreillers, matelas)",
+    updatedAt: "2026-08-28 15:23"
+  },
+
   "JOUR6_BAIN_MANTRIQUE___SOIN_SONORE_C": {
     avant: "installer matelas pour participants <br>aider à emmener le matériel de musique<br>passer enscens<br>allumer bougies",
     pendant: "",
@@ -611,7 +625,7 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir la salle et l'espace",
     pendant: "Déposer des coussins vers la fin de la méditation<br>Soutenir émotionnellement si nécessaire",
     apres: "Ranger les coussins et nettoyer la salle",
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-28 11:09"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
@@ -712,6 +726,13 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-25 03:37"
   },
 
+  "LOG_Jour6_LA_GRANDE_SPIRALE_DU_COEUR_": {
+    avant: "installer matelas pour participants <br>aider à emmener le matériel de musique<br>passer enscens<br>allumer bougies",
+    pendant: "",
+    apres: "Ranger les matelas<br>Aider à ramener le matériel de musique",
+    updatedAt: "2026-08-28 15:23"
+  },
+
   "LOG_Jour6_MINDFULNESS___MOUVEMENTS_SOMAT": {
     avant: "Accueillir et consignes à l'exterieur de la salle. Le silence est d'OR<br>En amont : ouvrir la salle + vérifier rangement",
     pendant: "Découvrir et pratiquer avec le groupe, si l'élan<br>Soutenir émotionnellement",
@@ -733,11 +754,11 @@ var LOGISTICS_HELPERS = {
     updatedAt: "2026-08-26 18:36"
   },
 
-  "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
-    avant: "• Préparer l'autel : tapis, fleurs, chandelles<br>• Disposer les zafus artiste + chaises<br>• Installer les bouteilles d'eau proche des artistes",
+  "LOG_Jour1_PETIT_DEJ_2": {
+    avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-26 22:52"
+    updatedAt: "2026-08-28 16:00"
   }
 
 };
