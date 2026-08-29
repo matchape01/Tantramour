@@ -23,11 +23,11 @@ var LOGISTICS = {
   },
 
   "JOUR1_OPENING_CEREMONY": {
-    html: "<div>- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bien-venu. S'il y en a trop, ça servira pour autour de l'autel.</div><div>- 4 à 5 contenants pour les y mettre</div><div>- Préparer un autel au centre de SHIVA (statu à identifier) avec coussins en spirale qui partent du centre</div><div>- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour 'laccueil puis le contenant)</div><div>- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA</div><div><br></div><div>LES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.</div>",
-    text: "- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bien-venu. S'il y en a trop, ça servira pour autour de l'autel.\n- 4 à 5 contenants pour les y mettre\n- Préparer un autel au centre de SHIVA (statu à identifier) avec coussins en spirale qui partent du centre\n- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour 'laccueil puis le contenant)\n- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA\n\n\nLES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.",
+    html: "<div>- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bienvenu. S'il y en a trop, ça servira pour autour de l'autel.</div><div>- 4 à 5 contenants pour les y mettre</div><div>- Préparer un autel au centre de SHIVA (statut à identifier) avec coussins en spirale qui partent du centre</div><div>- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour l'accueil puis le contenant)</div><div>- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA</div><div><br></div><div>LES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.</div>",
+    text: "- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bienvenu. S'il y en a trop, ça servira pour autour de l'autel.\n- 4 à 5 contenants pour les y mettre\n- Préparer un autel au centre de SHIVA (statut à identifier) avec coussins en spirale qui partent du centre\n- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour l'accueil puis le contenant)\n- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA\n\n\nLES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-29 13:02"
+    updatedAt: "2026-08-29 13:13"
   },
 
   "JOUR1_REUNION_D_EQUIPE__HELPERS_": {
@@ -83,7 +83,7 @@ var LOGISTICS = {
     text: "micro casque (optimalement)",
     validatedByFac: false,
     prepDuration: 20,
-    updatedAt: "2026-08-29 13:07"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE": {
@@ -408,10 +408,10 @@ var LOGISTICS = {
 
   "JOUR4_ALICE___DISSOLUTION__2_3__MASS": {
     html: "- 15 matelas <br>- 30 coussins<br>- Sono bluetooth",
-    text: "- 15 matelas\n- 30 coussins\n- Sono bluetooth",
+    text: "- 15 matelas \n- 30 coussins\n- Sono bluetooth",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-29 13:10"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4_BALADI_TAO_TANTRIQUE": {
@@ -1291,7 +1291,7 @@ var LOGISTICS = {
     text: "* Matelas confortables au sol, un par trio.\n* Coussins et, si disponibles, quelques bolsters pour le confort des personnes qui massent au sol, notamment pour pouvoir s’asseoir ou s’agenouiller confortablement autour du matelas.\n* Protections pour les matelas et les tables en raison de l’utilisation d’huile.",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-29 13:12"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "LOG_Jour6_ANGEL___SHIFT_APR_S_MIDI__PM_": {
