@@ -537,7 +537,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour2_MEDITATION_ACTIVE": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 22:16"
+    updatedAt: "2026-08-29 11:55"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
@@ -663,13 +663,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 17:04"
-  },
-
-  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-29 17:18"
+    updatedAt: "2026-08-29 16:55"
   }
 
 };

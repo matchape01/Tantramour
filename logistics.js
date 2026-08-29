@@ -1019,7 +1019,7 @@ var LOGISTICS = {
     text: "- micro",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-29 22:16"
+    updatedAt: "2026-08-29 11:55"
   },
 
   "LOG_Jour2_OPENING_CONNECTIONS": {
@@ -1455,19 +1455,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
-    html: "mise en place de place assise pour la perf (je serai la pour guider comment) /<br><br>60 yoga mat (chin mudra) pour la jam /<br><br>lights pro pour la décorastion de la salle. 3 pour la scène + quelque autre pour lumière d'ambiance salle.",
-    text: "mise en place de place assise pour la perf (je serai la pour guider comment) /\n\n60 yoga mat (chin mudra) pour la jam /\n\nlights pro pour la décorastion de la salle. 3 pour la scène + quelque autre pour lumière d'ambiance salle.",
+    html: "",
+    text: "",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 17:04"
-  },
-
-  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
-    html: "mise en place de coussins au sols, je serai la pour guider le placement.<br>- Coussins<br><br>besoin de<br>- 4 casseroles /<br>- 4 louche /<br>- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.<br><br>Besoin de 8 helpers pour servir le cacao",
-    text: "mise en place de coussins au sols, je serai la pour guider le placement.\n- Coussins\n\nbesoin de\n- 4 casseroles /\n- 4 louche /\n- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.\n\nBesoin de 8 helpers pour servir le cacao",
-    validatedByFac: false,
-    prepDuration: 0,
-    updatedAt: "2026-08-29 17:18"
+    updatedAt: "2026-08-29 16:55"
   }
 
 };

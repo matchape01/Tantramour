@@ -625,7 +625,7 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir la salle et l'espace",
     pendant: "Déposer des coussins vers la fin de la méditation<br>Soutenir émotionnellement si nécessaire",
     apres: "Ranger les coussins et nettoyer la salle",
-    updatedAt: "2026-08-29 22:16"
+    updatedAt: "2026-08-29 11:55"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
@@ -772,14 +772,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-29 17:04"
-  },
-
-  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-29 17:18"
+    updatedAt: "2026-08-29 16:55"
   }
 
 };
