@@ -128,7 +128,7 @@ var LOGISTICS_HELPERS = {
     avant: "mise en place vers 19h30",
     pendant: "",
     apres: "Ranger les tapis de yoga et les remettre dans la salle d'orgine<br>Ranger les spots",
-    updatedAt: "2026-08-29 16:46"
+    updatedAt: "2026-08-29 16:47"
   },
 
   "JOUR2_VIBRATION___L_UNISSON__T_TE___": {
