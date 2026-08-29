@@ -756,9 +756,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour1_PETIT_DEJ_2": {
     avant: "test",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-29 14:09"
+    pendant: "Transition",
+    apres: "courage !&nbsp;",
+    updatedAt: "2026-08-29 14:13"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
