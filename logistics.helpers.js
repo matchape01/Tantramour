@@ -128,7 +128,7 @@ var LOGISTICS_HELPERS = {
     avant: "mise en place vers 19h30",
     pendant: "",
     apres: "Ranger les tapis de yoga et les remettre dans la salle d'orgine<br>Ranger les spots",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-29 16:46"
   },
 
   "JOUR2_VIBRATION___L_UNISSON__T_TE___": {
@@ -766,13 +766,6 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-08-28 20:15"
-  },
-
-  "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
-    avant: "Mise en place de place assise pour la perf (je serai la pour guider comment) /<br><br>60 yoga mat (chin mudra) pour la jam /<br><br>Lights pro pour la décoration de la salle. <br>3 pour la scène + quelque autre pour lumière d'ambiance salle.<br><br>Point à gérer par l'équipe en charge.",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-29 16:35"
   }
 
 };
