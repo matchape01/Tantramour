@@ -9,7 +9,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 13:06"
+    updatedAt: "2026-08-29 13:02"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
@@ -32,8 +32,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR2_ALICE___OUVERTURE__1_3____MASS": {
     html: "micro casque - <br>matelas auto gonflable, ramené par Joe",
-    text: "micro casque - \nmatelas auto gonflable, ramené par Joe",
-    updatedAt: "2026-08-25 03:58"
+    text: "micro casque -\nmatelas auto gonflable, ramené par Joe",
+    updatedAt: "2026-08-29 13:07"
   },
 
   "JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE": {
