@@ -27,7 +27,7 @@ var LOGISTICS = {
     text: "- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bienvenu. S'il y en a trop, ça servira pour autour de l'autel.\n- 4 à 5 contenants pour les y mettre\n- Préparer un autel au centre de SHIVA (statut à identifier) avec coussins en spirale qui partent du centre\n- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour l'accueil puis le contenant)\n- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA\n\n\nLES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-29 13:04"
+    updatedAt: "2026-08-29 13:06"
   },
 
   "JOUR1_REUNION_D_EQUIPE__HELPERS_": {
