@@ -91,4 +91,5 @@ var REF_EQUIPEMENTS = [
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_TAPSOL", value: "Tapis de sol décoratif", stock: 0, description: "Tapis de sol décoratif", remarque: "" },
   { type: "Tantramour", categorie: "Fournitures", id: "EQ_WATER", value: "Bouteilles d'eau", stock: 0, description: "Bouteilles d'eau", remarque: "" },
   { type: "Hameau", categorie: "Matériel de Pratique", id: "EQ_ZAFU", value: "Zafu animateur", stock: 32, description: "Zafu animateur", remarque: "" },
+  { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_NEW04", value: "Petites fleurs séchées", stock: 0, description: "pour autel Shiva", remarque: "" }
 ];
