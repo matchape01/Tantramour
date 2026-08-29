@@ -927,7 +927,7 @@ function buildPersonSelect(id, refArr, val, availMap) {
       const title     = status === 'red'    ? 'Non disponible — déjà assigné sur ce créneau'
                       : status === 'orange' ? 'Disponible — atelier dans les 90 min avant ou après'
                       :                       'Disponible';
-      return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${colibri}${esc(r.value)}</option>`;
+      return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${esc(r.value)}${colibri ? ' 🐦' : ''}</option>`;
     }).join('');
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
