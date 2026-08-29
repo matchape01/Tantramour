@@ -1455,11 +1455,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
-    html: "",
-    text: "",
+    html: "mise en place de place assise pour la perf (je serai la pour guider comment) /<br><br>60 yoga mat (chin mudra) pour la jam /<br><br>lights pro pour la décorastion de la salle. 3 pour la scène + quelque autre pour lumière d'ambiance salle.",
+    text: "mise en place de place assise pour la perf (je serai la pour guider comment) /\n\n60 yoga mat (chin mudra) pour la jam /\n\nlights pro pour la décorastion de la salle. 3 pour la scène + quelque autre pour lumière d'ambiance salle.",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 16:55"
+    updatedAt: "2026-08-29 17:02"
   }
 
 };
