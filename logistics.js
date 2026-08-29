@@ -411,7 +411,7 @@ var LOGISTICS = {
     text: "- 15 matelas\n- 30 coussins\n- Sono bluetooth",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-29 13:09"
+    updatedAt: "2026-08-29 13:10"
   },
 
   "JOUR4_BALADI_TAO_TANTRIQUE": {
