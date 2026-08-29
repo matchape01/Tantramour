@@ -1,4 +1,4 @@
-// @saved:2026-08-29 20:47:48
+// @saved:2026-08-29 20:50:02
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -108,7 +108,7 @@ var AGENDA = [
   {id:"A_1060",jour:"Jour 3",date:"Lundi 31 aout",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Yoni & Lingam Puja",lieu:"SHAKTI",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Maeva Mantione",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR3_YONI___LINGAM_PUJA",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
-  {id:"A_1061",jour:"Jour 2",date:"Dimanche 30 aout",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"La Saveur du Désir",lieu:"GANESH",fac1:"Daniel Latapie",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Sattler",helper2:"Mitsch Kohn",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:1,colibri:false,logisticId:"JOUR2_LA_SAVEUR_DU_DESIR_",meetingRoles:""},
+  {id:"A_1061",jour:"Jour 2",date:"Dimanche 30 aout",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"La Saveur du Désir",lieu:"GANESH",fac1:"Daniel Latapie",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Mitsch Kohn",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:1,colibri:false,logisticId:"JOUR2_LA_SAVEUR_DU_DESIR_",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
   {id:"A_7456",jour:"Jour 3",date:"Lundi 31 aout",heure:"14:30 - 20:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
