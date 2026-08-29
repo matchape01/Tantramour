@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Tantramour 2026 — Sync depuis GitHub</title>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.6; background:#f7f8fa; color:#1f2328; padding:32px 20px 60px; }
+  .wrap { max-width:780px; margin:0 auto; }
+  h1 { font-size:20px; font-weight:700; margin-bottom:4px; }
+  .sub { color:#57606a; font-size:13px; margin-bottom:28px; }
+
+  .token-row { display:flex; gap:8px; align-items:center; margin-bottom:24px; flex-wrap:wrap; }
+  .token-row label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#57606a; white-space:nowrap; }
+  .token-row input { flex:1; min-width:260px; padding:8px 10px; border:1px solid #e5e7eb; border-radius:6px; font-size:13px; font-family:inherit; background:#fff; }
+  .token-row input:focus { outline:none; border-color:#3b82d4; box-shadow:0 0 0 3px rgba(59,130,212,.12); }
+
+  .btn { cursor:pointer; padding:9px 20px; border-radius:6px; font-size:14px; font-weight:700; font-family:inherit; border:none; display:inline-flex; align-items:center; gap:7px; }
+  .btn-primary { background:#3b82d4; color:#fff; }
+  .btn-primary:hover { filter:brightness(1.1); }
+  .btn-primary:disabled { opacity:.5; cursor:not-allowed; filter:none; }
+  .btn-zip { background:#16a34a; color:#fff; font-size:15px; padding:11px 26px; }
+  .btn-zip:hover { filter:brightness(1.08); }
+  .btn-zip:disabled { opacity:.5; cursor:not-allowed; filter:none; }
+
+  .zip-bar { display:flex; align-items:center; gap:14px; background:#fff; border:2px solid #86efac; border-radius:10px; padding:16px 20px; margin-bottom:24px; flex-wrap:wrap; }
+  .zip-bar-info { flex:1; min-width:200px; }
+  .zip-bar-title { font-size:15px; font-weight:700; }
+  .zip-bar-sub { font-size:12px; color:#57606a; margin-top:2px; }
+  .zip-status { font-size:13px; font-weight:700; min-width:180px; }
+
+  .section-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#57606a; margin:20px 0 8px; padding-bottom:6px; border-bottom:1px solid #e5e7eb; }
+  .file-list { display:flex; flex-direction:column; gap:5px; margin-bottom:8px; }
+  .file-row { display:flex; align-items:center; gap:10px; padding:8px 14px; background:#fff; border:1px solid #e5e7eb; border-radius:6px; transition:background .1s; }
+  .file-row.ok  { background:#f0fdf4; border-color:#86efac; }
+  .file-row.err { background:#fef2f2; border-color:#fca5a5; }
+  .file-name { flex:1; font-size:13px; font-weight:600; font-family:monospace; }
+  .file-desc { font-size:12px; color:#57606a; flex:2; }
+  .file-status { font-size:12px; font-weight:700; min-width:100px; text-align:right; white-space:nowrap; }
+  .s-idle    { color:#57606a; }
+  .s-loading { color:#3b82d4; }
+  .s-ok      { color:#16a34a; }
+  .s-err     { color:#dc2626; }
+
+  .warn-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 16px; font-size:13px; color:#92400e; margin-bottom:24px; line-height:1.8; }
+  .warn-box strong { font-weight:700; }
+  .progress-bar-wrap { height:6px; background:#e5e7eb; border-radius:3px; margin-top:10px; overflow:hidden; display:none; }
+  .progress-bar-wrap.show { display:block; }
+  .progress-bar { height:100%; background:#16a34a; border-radius:3px; width:0%; transition:width .3s; }
+
+  footer { margin-top:48px; padding-top:14px; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#57606a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔄 Sync depuis GitHub</h1>
+  <p class="sub">Récupère tous les fichiers de données depuis GitHub dans un seul ZIP horodaté.</p>
+
+  <div class="warn-box">
+    <strong>⚠️ Mode d'emploi :</strong><br>
+    1. Saisis ton token GitHub ci-dessous — il est mémorisé dans ton navigateur.<br>
+    2. Clique <strong>⬇ Télécharger le ZIP</strong> — tous les fichiers sont récupérés depuis l'API GitHub et compressés en un seul fichier.<br>
+    3. Le ZIP est nommé automatiquement <code>Tantramour_sync_AAAA-MM-JJ_HH-MM.zip</code>.<br>
+    4. Extrais le ZIP dans ton dossier <code>Rapports/</code> en remplaçant les anciens fichiers.
+  </div>
+
+  <div class="token-row">
+    <label>🔑 Token GitHub</label>
+    <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    <button class="btn btn-primary" onclick="saveToken()">Enregistrer</button>
+  </div>
+
+  <!-- BOUTON PRINCIPAL ZIP -->
+  <div class="zip-bar">
+    <div class="zip-bar-info">
+      <div class="zip-bar-title">📦 ZIP complet — tous les fichiers</div>
+      <div class="zip-bar-sub" id="zipBarSub">20 fichiers · nommé avec date et heure</div>
+    </div>
+    <div class="zip-status" id="zipStatus"></div>
+    <button class="btn btn-zip" id="btnZip" onclick="downloadZip()">⬇ Télécharger le ZIP</button>
+    <div class="progress-bar-wrap" id="progressWrap" style="width:100%;flex-basis:100%;">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- SECTION : Données planning -->
+  <div class="section-title">📅 Données planning (modifiées en ligne)</div>
+  <div class="file-list" id="list-planning"></div>
+
+  <!-- SECTION : Référentiels -->
+  <div class="section-title">📋 Référentiels (modifiés en ligne via MasterData)</div>
+  <div class="file-list" id="list-ref"></div>
+
+</div>
+
+<footer>Tantramour 2026 — Outil local de synchronisation · Made with IBM Bob</footer>
+
+<script>
+const GITHUB_OWNER  = 'matchape01';
+const GITHUB_REPO   = 'Tantramour';
+const GITHUB_BRANCH = 'main';
+
+// ── Fichiers à synchroniser ──────────────────────────────────────────────────
+const FILES = {
+  'list-planning': [
+    { name: 'data.js',                      desc: 'Agenda complet des ateliers' },
+    { name: 'logistics.js',                 desc: 'Informations logistiques par atelier' },
+    { name: 'logistics.special.js',         desc: 'Besoins logistiques spécifiques' },
+    { name: 'logistics.helpers.js',         desc: 'Consignes helpers par atelier' },
+    { name: 'ref_descriptions.js',          desc: 'Descriptions FR/EN des ateliers' },
+    { name: 'ref_equipements.js',           desc: 'Liste des équipements' },
+    { name: 'ref_ressources.js',            desc: 'Liste des ressources (personnes)' },
+    { name: 'ref_news.js',                  desc: 'News et annonces' },
+    { name: 'ref_translations.js',          desc: 'Traductions i18n' },
+  ],
+  'list-ref': [
+    { name: 'ref_lieux.js',                 desc: 'Salles et espaces' },
+    { name: 'ref_types.js',                 desc: 'Types d\'ateliers' },
+    { name: 'ref_notes.js',                 desc: 'Notes logistiques' },
+    { name: 'ref_jours.js',                 desc: 'Jours du festival' },
+    { name: 'ref_piment.js',                desc: 'Niveaux de piment' },
+    { name: 'ref_resource_types.js',        desc: 'Types de ressources' },
+    { name: 'ref_heures.js',                desc: 'Créneaux horaires' },
+    { name: 'ref_equip_cat.js',             desc: 'Catégories d\'équipements' },
+    { name: 'ref_consignes_type.js',        desc: 'Consignes génériques (type)' },
+    { name: 'ref_consignes_recurrentes.js', desc: 'Consignes spécifiques (récurrentes)' },
+    { name: 'ref_pause_massage.js',         desc: 'Pauses massage' },
+  ],
+};
+
+const ALL_FILES = Object.values(FILES).flat();
+
+// ── Init : rendre la liste et restaurer le token ─────────────────────────────
+(function init() {
+  const saved = localStorage.getItem('tm_gh_token') || '';
+  if (saved) document.getElementById('tokenInput').value = saved;
+
+  document.getElementById('zipBarSub').textContent =
+    ALL_FILES.length + ' fichiers · nommé avec date et heure';
+
+  Object.keys(FILES).forEach(function(listId) {
+    const container = document.getElementById(listId);
+    FILES[listId].forEach(function(f) {
+      const row = document.createElement('div');
+      row.className = 'file-row';
+      row.id = 'row-' + f.name;
+      row.innerHTML =
+        '<span class="file-name">' + f.name + '</span>' +
+        '<span class="file-desc">'  + f.desc + '</span>' +
+        '<span class="file-status s-idle" id="status-' + f.name + '">—</span>';
+      container.appendChild(row);
+    });
+  });
+})();
+
+// ── Token ────────────────────────────────────────────────────────────────────
+function saveToken() {
+  const val = document.getElementById('tokenInput').value.trim();
+  if (!val) { alert('Saisis un token GitHub valide.'); return; }
+  localStorage.setItem('tm_gh_token', val);
+  alert('✅ Token enregistré.');
+}
+
+function getToken() {
+  return document.getElementById('tokenInput').value.trim() ||
+         localStorage.getItem('tm_gh_token') || '';
+}
+
+// ── Statut d'une ligne ───────────────────────────────────────────────────────
+function setStatus(filename, cls, text) {
+  const el  = document.getElementById('status-' + filename);
+  const row = document.getElementById('row-'    + filename);
+  if (el)  { el.className = 'file-status ' + cls; el.textContent = text; }
+  if (row) { row.className = 'file-row' + (cls === 's-ok' ? ' ok' : cls === 's-err' ? ' err' : ''); }
+}
+
+// ── Récupère le contenu d'un fichier depuis l'API GitHub ─────────────────────
+async function fetchFileContent(filename, token) {
+  const url = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO +
+              '/contents/' + filename + '?ref=' + GITHUB_BRANCH + '&_t=' + Date.now();
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept':        'application/vnd.github+json',
+      'If-None-Match': ''
+    },
+    cache: 'no-store'
+  });
+  if (res.status === 401) {
+    localStorage.removeItem('tm_gh_token');
+    throw new Error('TOKEN_INVALIDE');
+  }
+  if (res.status === 404) throw new Error('FICHIER_INTROUVABLE');
+  if (!res.ok)            throw new Error('HTTP_' + res.status);
+
+  const data = await res.json();
+  // Contenu encodé en Base64 par l'API GitHub
+  return decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+}
+
+// ── Nom du ZIP horodaté ───────────────────────────────────────────────────────
+function buildZipName() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return 'Tantramour_sync_' +
+    now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) +
+    '_' + pad(now.getHours()) + '-' + pad(now.getMinutes()) + '.zip';
+}
+
+// ── Téléchargement ZIP complet ────────────────────────────────────────────────
+async function downloadZip() {
+  const token = getToken();
+  if (!token) { alert('Saisis ton token GitHub avant de télécharger.'); return; }
+
+  const btn         = document.getElementById('btnZip');
+  const statusEl    = document.getElementById('zipStatus');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+
+  btn.disabled = true;
+  progressWrap.classList.add('show');
+  progressBar.style.width = '0%';
+
+  const zip    = new JSZip();
+  const total  = ALL_FILES.length;
+  let   ok     = 0;
+  let   errors = 0;
+
+  // Réinitialiser tous les statuts
+  ALL_FILES.forEach(f => setStatus(f.name, 's-idle', '—'));
+  statusEl.textContent = '';
+
+  for (let i = 0; i < total; i++) {
+    const f = ALL_FILES[i];
+    setStatus(f.name, 's-loading', '⏳ …');
+    statusEl.innerHTML = '<span style="color:#3b82d4">⏳ ' + (i + 1) + ' / ' + total + ' — ' + f.name + '</span>';
+
+    try {
+      const content = await fetchFileContent(f.name, token);
+      zip.file(f.name, content);
+      setStatus(f.name, 's-ok', '✅ OK');
+      ok++;
+    } catch (err) {
+      const msg = err.message === 'TOKEN_INVALIDE'     ? '❌ Token invalide'
+                : err.message === 'FICHIER_INTROUVABLE' ? '⚠️ Introuvable'
+                : '❌ ' + err.message;
+      setStatus(f.name, 's-err', msg);
+      errors++;
+      // Arrêt immédiat si token invalide
+      if (err.message === 'TOKEN_INVALIDE') {
+        statusEl.innerHTML = '<span style="color:#dc2626">❌ Token invalide — sauvegarde interrompue.</span>';
+        btn.disabled = false;
+        progressWrap.classList.remove('show');
+        return;
+      }
+    }
+
+    progressBar.style.width = Math.round(((i + 1) / total) * 100) + '%';
+    // Petite pause pour ne pas saturer l'API GitHub
+    await new Promise(r => setTimeout(r, 300));
+  }
+
+  if (ok === 0) {
+    statusEl.innerHTML = '<span style="color:#dc2626">❌ Aucun fichier récupéré.</span>';
+    btn.disabled = false;
+    progressWrap.classList.remove('show');
+    return;
+  }
+
+  // Générer et déclencher le téléchargement du ZIP
+  statusEl.innerHTML = '<span style="color:#3b82d4">⏳ Compression en cours…</span>';
+  const zipName = buildZipName();
+  try {
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+    const a    = document.createElement('a');
+    a.href     = URL.createObjectURL(blob);
+    a.download = zipName;
+    a.click();
+    URL.revokeObjectURL(a.href);
+
+    const summary = ok === total
+      ? '<span style="color:#16a34a">✅ ZIP téléchargé — ' + ok + ' fichiers — ' + zipName + '</span>'
+      : '<span style="color:#92400e">⚠️ ZIP partiel — ' + ok + ' OK · ' + errors + ' erreur(s) — ' + zipName + '</span>';
+    statusEl.innerHTML = summary;
+  } catch (err) {
+    statusEl.innerHTML = '<span style="color:#dc2626">❌ Erreur ZIP : ' + err.message + '</span>';
+  }
+
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

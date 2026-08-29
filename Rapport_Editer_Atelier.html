@@ -1676,13 +1676,13 @@ async function saveUpdate() {
     'DJ Set', 'POOL PARTY',
   ]);
 
-  // Pour les ateliers non-SHIFT ANGEL, calculer l'angel depuis le shift ANGEL correspondant
+  // Pour les ateliers non-SHIFT ANGEL, calculer l'angel depuis le shift ANGEL correspondant.
+  // Pour les types non pilotés, on conserve la valeur saisie manuellement dans le formulaire.
   if (newEntry.type !== 'SHIFT ANGEL') {
     if (TYPES_ANGEL_PILOTES.has(newEntry.type)) {
       newEntry.angel = resolveAngelEdit(newEntry.jour, newEntry.heure);
-    } else {
-      newEntry.angel = ''; // types non pilotés → angel toujours vide
     }
+    // Types non pilotés → on garde la valeur de editedData.angel (saisie manuelle)
   }
 
   // ── Propagation en cascade : si on modifie un SHIFT ANGEL, mettre à jour
@@ -1802,33 +1802,6 @@ async function saveUpdate() {
       showToast(baseMsg, false);
       if (isLocal) showProgrammeLink();
 
-      // ── Vérification propagation GitHub Pages ──────────────────────────────
-      // GitHub API accepte le PUT instantanément, mais le CDN GitHub Pages peut
-      // mettre jusqu'à 10 min à servir le nouveau fichier. On sonde data.js
-      // jusqu'à ce que le contenu soit cohérent, avec un max de 30 tentatives.
-      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-        // Vérifier la propagation en cherchant le marqueur @saved exact généré ci-dessus.
-        // Ce marqueur change à chaque sauvegarde (timestamp à la seconde),
-        // ce qui évite les faux positifs (l'ancien fichier ne contient jamais ce marqueur).
-        (async function pollPropagation() {
-          const MAX = 30;
-          const DELAY = 8000; // 8s entre chaque sonde
-          for (let i = 0; i < MAX; i++) {
-            await new Promise(r => setTimeout(r, DELAY));
-            try {
-              const r = await fetch('data.js?_=' + Date.now(), { cache: 'no-store' });
-              if (!r.ok) continue;
-              const text = await r.text();
-              if (text.includes(tsMarker)) {
-                showToast('🌐 GitHub Pages propagé — données à jour !', false);
-                return;
-              }
-            } catch(_) { /* réseau indispo, on réessaie */ }
-          }
-          // Timeout : on prévient l'utilisateur
-          showToast('⚠️ GitHub Pages n\'a pas encore propagé la mise à jour. Patientez quelques minutes puis rafraîchissez.', true);
-        })();
-      }
     } catch(err) {
       // Rollback
       AGENDA[selectedIdx] = originalEntry;
