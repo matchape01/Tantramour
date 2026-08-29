@@ -1,4 +1,4 @@
-// @saved:2026-08-29 20:38:04
+// @saved:2026-08-29 20:46:34
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -156,7 +156,7 @@ var AGENDA = [
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {id:"A_7837",jour:"Jour 4",date:"Mardi 1 septembre",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_6041",jour:"Jour 4",date:"Mardi 1 septembre",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT Kelly Aura / Claude Brame (SHIVA)",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Philippe Hanrion",helper2:"Frederic Chalard",helper3:"Delphine Dupré",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_1099",jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"CONCERT chants & mantra avec Kelly Aura & Claude Brame",lieu:"SHIVA",fac1:"Kelly Aura",fac2:"Claude Brame",fac3:"",fac4:"",traduction:"Mukti (Cecile Yvorel)",helper1:"Damien Eissen",helper2:"Philippe Hanrion",helper3:"",helper4:"Echo Clem (Clement)",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K",meetingRoles:"",_equipements:{"EQ_COUSSIN":1,"EQ_CHANDELLE":6,"EQ_SUPCHAND":6}},
+  {id:"A_1099",jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"CONCERT chants & mantra avec Kelly Aura & Claude Brame",lieu:"SHIVA",fac1:"Kelly Aura",fac2:"Claude Brame",fac3:"",fac4:"",traduction:"",helper1:"Damien Eissen",helper2:"Philippe Hanrion",helper3:"Alexandre Sattler",helper4:"Echo Clem (Clement)",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K",meetingRoles:"",_equipements:{"EQ_COUSSIN":1,"EQ_CHANDELLE":6,"EQ_SUPCHAND":6}},
   {id:"A_6968",jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Devotion",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"Veronique Santini Bottemer",helper3:"Audrey Barthelemy",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_PREPA_TEMPLE__CHENREZIG____DEV",meetingRoles:""},
   {id:"A_1101",jour:"Jour 4",date:"Mardi 1 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Love temple - Dévotion & Sacré",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Cedric Vesper",helper2:"Maeva Mantione",helper3:"Suman (Emmanuelle Cueff)",helper4:"Audrey Barthelemy",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_LOVE_TEMPLE_DEVOTIONNEL",meetingRoles:""},
 
