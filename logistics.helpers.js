@@ -282,7 +282,7 @@ var LOGISTICS_HELPERS = {
     avant: "- Assurer le bon fonctionnement de la sono bluetooth.<br>- Disposer 15 matelas en etoile autour de la pièce. Bougies electriques (15), grand modèle. Mouchoirs. Alèses pour les matelas. <br>- Disposer 30 coussins disposés aléatoirement dans la salle, <br>- Préparer 1 micro main, une sono avec connexion bluetooth, 1 helper (si possible Veronique Bottemer Santini). <br>- Préparer assiette en carton pour poser les flacons d'huile.",
     pendant: "",
     apres: "Aider à ranger la salle",
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-29 13:09"
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
