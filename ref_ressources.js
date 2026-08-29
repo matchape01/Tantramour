@@ -73,7 +73,7 @@ var REF_RESSOURCES = [
   { id: "R_EMMANUELLE",      value: "Suman (Emmanuelle Cueff)",                  roles: ["animateur", "helper", "colibri", "artist"],             langues: ["FR", "EN"], tel: "06 61 00 22 86", email: "emmanuellecueff@yahoo.com", lien: "" },
   { id: "R_TEST",            value: "TEST",                                      roles: ["animateur", "helper", "traducteur", "angel", "admin", "manager"], langues: ["FR", "EN"], tel: "", email: "", lien: "" },
   { id: "R_VERA",            value: "Vera De Sousa",                             roles: ["animateur", "helper", "admin", "manager"],              langues: ["FR"], tel: "", email: "", lien: "" },
-  { id: "R_VERONIQUE",       value: "Veronique Santini Bottemer",                roles: ["helper"],                                               langues: ["FR"], tel: "", email: "", lien: "" },
+  { id: "R_VERONIQUE",       value: "Veronique Santini Bottemer",                roles: ["helper", "angel"],                                      langues: ["FR"], tel: "", email: "", lien: "" },
   { id: "R_VIRGINIE",        value: "Virginie Bertrand",                         roles: ["animateur", "helper", "traducteur", "angel", "artist", "Mi-Colibri"], langues: ["FR", "EN"], tel: "(+33) 06 63 52 97 14", email: "v.bertrand.coaching@gmail.com", lien: "" },
   { id: "R_YANNICK",         value: "Yannick Bohrer",                            roles: ["animateur", "helper", "traducteur", "Mi-Colibri"],      langues: ["FR", "EN"], tel: "06 78 88 85 34", email: "yannickbohrer@hotmail.com", lien: "" },
 ];
