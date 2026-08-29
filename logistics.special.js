@@ -9,7 +9,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 14:37"
+    updatedAt: "2026-08-29 14:58"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
