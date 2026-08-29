@@ -17,24 +17,6 @@
  */
 var REF_CONSIGNES_TYPE = [
   {
-    id: "CONS_EXEMPLE",
-    valueFr: "💧 Pensez à boire un verre d’eau avant l’atelier et évitez le café.",
-    valueEn: "💧 Please drink a glass of water before the workshop and avoid coffee.",
-    descriptif: "Consigne d'exemple — à supprimer ou modifier",
-    placements: ["Participant"],
-    actif: true,
-    types: ["MEDITATION / YOGA"]
-  },
-  {
-    id: "CONS_001",
-    valueFr: "• Récupérer la clé de la salle au QG et ouvrir la salle",
-    valueEn: "• Collect the room key from HQ and open the room",
-    descriptif: "",
-    placements: ["Avant"],
-    actif: true,
-    types: []
-  },
-  {
     id: "CONS_002",
     valueFr: "• Aérer la salle",
     valueEn: "• Air the room",
@@ -306,7 +288,7 @@ var REF_CONSIGNES_TYPE = [
   },
   {
     id: "CONS_032",
-    valueFr: "Rien à signaler",
+    valueFr: "• Rien à signaler",
     valueEn: "Nothing to report",
     descriptif: "",
     placements: ["Logistique","Spécifique"],
