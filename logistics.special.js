@@ -9,7 +9,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 13:02"
+    updatedAt: "2026-08-29 13:17"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
@@ -69,7 +69,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_L_UNION_SACREE_D_HATHOR_ET_HOR": {
     html: "huile de massage, coupelles, du sopalin et du gel hydro, boite mouchoirs, bougies blanches (2 grandes et une 10aine type chauffe plats)",
     text: "huile de massage, coupelles, du sopalin et du gel hydro, boite mouchoirs, bougies blanches (2 grandes et une 10aine type chauffe plats)",
-    updatedAt: "2026-08-29 13:17"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR2_MEETING_YOUR_DEITY___HYPNOSIS_": {
