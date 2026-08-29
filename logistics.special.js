@@ -15,7 +15,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
     html: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
     text: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
-    updatedAt: "2026-08-29 15:07"
+    updatedAt: "2026-08-29 15:15"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
