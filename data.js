@@ -1,4 +1,4 @@
-// @saved:2026-08-29 12:51:36
+// @saved:2026-08-29 12:54:19
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -39,7 +39,7 @@ var AGENDA = [
   {id:"A_1007",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"CEREMONIE & CONCERT",atelier:"OPENING CEREMONY",lieu:"SHIVA",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Alexandre Fourcault",helper2:"Aurelie Lechardeur",helper3:"Bhaskar (Alexandre Roque)",helper4:"Carine Janez",angel:"Daniel Latapie",note:"",piment:1,colibri:false,logisticId:"JOUR1_OPENING_CEREMONY",meetingRoles:""},
   {id:"A_2302",jour:"Jour 1",date:"Samedi 29 aout",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_3409",jour:"Jour 1",date:"Samedi 29 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT (SHIVA) - DJ Set (Ecstatic dance)",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frederic Chalard",helper2:"Philippe Hanrion",helper3:"Veronique Santini Bottemer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_1010",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"DJ Set",atelier:"SOIRÉE ECSTATIC DANCE",lieu:"SHIVA",fac1:"Pascal de Lacaze",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Delphine Dupré",helper3:"Boris Desvignes",helper4:"Carine Janez",angel:"Mukti (Cecile Yvorel)",note:"",piment:1,colibri:false,logisticId:"JOUR1_SOIREE_ECSTATIC_DANSE",meetingRoles:""},
+  {id:"A_1010",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"DJ Set",atelier:"SOIRÉE ECSTATIC DANCE",lieu:"SHIVA",fac1:"Pascal de Lacaze",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Delphine Dupré",helper3:"Boris Desvignes",helper4:"Carine Janez",angel:"",note:"",piment:1,colibri:false,logisticId:"JOUR1_SOIREE_ECSTATIC_DANSE",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_1011",jour:"Jour 2",date:"Dimanche 30 aout",heure:"08:00 - 09:00",type:"MEDITATION / YOGA",atelier:"Yoga2",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Delphine Dupré",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour2_YOGA2",meetingRoles:""},
@@ -267,7 +267,7 @@ var AGENDA = [
   {id:"A_9170",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"11:00 - 13:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Matin (AM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
-  {id:"A_4311",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Soir (Soirée)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Mukti (Cecile Yvorel)",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_4311",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Soir (Soirée)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_9189",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_7637",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - OPENING CEREMONY",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Damien Eissen",helper2:"Emma Roussel",helper3:"Maeva Mantione",helper4:"Cedric Vesper",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_EXTRA_SUPPORT___OPENING_CEREMO",meetingRoles:""},
 
