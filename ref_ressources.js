@@ -15,7 +15,7 @@
  */
 var REF_RESSOURCES = [
   { id: "R_ALEXANDRE_F",     value: "Alexandre Fourcault",                       roles: ["helper"],                                               langues: ["FR"], tel: "", email: "", lien: "" },
-  { id: "R_ALEXANDRE_S",     value: "Alexandre Sattler",                         roles: ["helper"],                                               langues: ["FR"], tel: "", email: "", lien: "" },
+  { id: "R_ALEXANDRE_S",     value: "Alexandre Sattler",                         roles: ["helper", "colibri"],                                    langues: ["FR"], tel: "", email: "", lien: "" },
   { id: "R_AMANA",           value: "Amana",                                     roles: ["animateur", "helper", "traducteur", "colibri"],         langues: ["FR", "EN"], tel: "00 41 79 195 91 74", email: "amana.noname@gmail.com", lien: "" },
   { id: "R_MATTHIEU",        value: "Atman Clochette (Matthieu)",                roles: ["animateur", "helper", "admin", "manager", "Mi-Colibri"], langues: ["FR"], tel: "06 95 48 53 00", email: "matthieu.chapeleau@gmail.com", lien: "" },
   { id: "R_AUDREY",          value: "Audrey Barthelemy",                         roles: ["animateur", "helper", "colibri"],                       langues: ["FR"], tel: "06 60 61 57 13", email: "contact@audreybarthelemy.fr", lien: "" },
