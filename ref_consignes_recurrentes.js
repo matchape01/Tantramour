@@ -489,12 +489,12 @@ var REF_CONSIGNES_RECURRENTES = [
   },
   {
     id: "COREC_053",
-    valueFr: "• Pas d'instructions particulières, viens comme tu es !",
-    valueEn: "• No specific instructions – just come as you are !",
+    valueFr: "• Viens comme tu es ! Pas d'instructions particulières",
+    valueEn: "• Just come as you are ! No specific instructions",
     descriptif: "",
     placements: ["Participant"],
     actif: true,
-    types: ["MEDITATION / YOGA","ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","DJ Set","POOL PARTY","RASSEMBLEMENT","TANTRA CAFE","CONFERENCE"]
+    types: ["ATELIERS TANTRA (Matin)","ATELIERS TANTRA (Apres-Midi)","ATELIER ARTISTIQUE (Matin)","ATELIER ARTISTIQUE (Apres-Midi)","CEREMONIE & CONCERT","MEDITATION / YOGA","DJ Set","RASSEMBLEMENT","TANTRA CAFE","POOL PARTY","CONFERENCE"]
   },
   {
     id: "COREC_054",
