@@ -9,7 +9,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 13:02"
+    updatedAt: "2026-08-29 13:11"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
@@ -32,8 +32,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR2_ALICE___OUVERTURE__1_3____MASS": {
     html: "micro casque - <br>matelas auto gonflable, ramené par Joe",
-    text: "micro casque -\nmatelas auto gonflable, ramené par Joe",
-    updatedAt: "2026-08-29 13:07"
+    text: "micro casque - \nmatelas auto gonflable, ramené par Joe",
+    updatedAt: "2026-08-25 03:58"
   },
 
   "JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE": {
@@ -242,8 +242,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR4_ALICE___DISSOLUTION__2_3__MASS": {
     html: "- 15 bougies electriques (grand modèle)<br>- mouchoirs<br>- 15 Aleses pour matelas <br>- 15 Assiettes en cartons",
-    text: "- 15 bougies electriques (grand modèle)\n- mouchoirs\n- 15 Aleses pour matelas\n- 15 Assiettes en cartons",
-    updatedAt: "2026-08-29 13:11"
+    text: "- 15 bougies electriques (grand modèle)\n- mouchoirs\n- 15 Aleses pour matelas \n- 15 Assiettes en cartons",
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
