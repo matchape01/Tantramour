@@ -6,10 +6,10 @@
 var LOGISTICS_HELPERS = {
 
   "JOUR1_OPENING_CEREMONY": {
-    avant: "",
-    pendant: "",
-    apres: "",
-    updatedAt: "2026-08-29 13:02"
+    avant: "<span style=\"font-family: Calibri; font-size: 14.6667px;\">•&nbsp;</span>15 mins avant 18h : faire venir festivaliers pour se mettre sur le chemin devant l'entrée SHIVA (et permettre ainsi une installation fluide et optimisée)",
+    pendant: "<div><span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Accueil à l'entrée et proposer la corbeille pour choix de la fleur</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Une fois tout le monde arrivé : Helpers se positionnent en contenant au bord de Shiva&nbsp;</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Phase où tous et toutes se lèvent : Helpers récupèrent les coussins pour mettre sur le côté</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Pour la fluidité : si un.e participant.e est seul, faire la pratique avec lui.elle.</div><div><br></div>",
+    apres: "<div><span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Message aimable pour les personnes qui tardent à aller au restaurant : \"c'est l'heure de se diriger vers le restau (reprise à 21h !) donc ne pas trainer !\"</div><div><br></div>",
+    updatedAt: "2026-08-29 13:13"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
@@ -37,7 +37,7 @@ var LOGISTICS_HELPERS = {
     avant: "Garder le calme / ranger les affaires",
     pendant: "-",
     apres: "-",
-    updatedAt: "2026-08-29 13:07"
+    updatedAt: "2026-08-25 03:58"
   },
 
   "JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE": {
@@ -282,7 +282,7 @@ var LOGISTICS_HELPERS = {
     avant: "- Assurer le bon fonctionnement de la sono bluetooth.<br>- Disposer 15 matelas en etoile autour de la pièce. Bougies electriques (15), grand modèle. Mouchoirs. Alèses pour les matelas. <br>- Disposer 30 coussins disposés aléatoirement dans la salle, <br>- Préparer 1 micro main, une sono avec connexion bluetooth, 1 helper (si possible Veronique Bottemer Santini). <br>- Préparer assiette en carton pour poser les flacons d'huile.",
     pendant: "",
     apres: "Aider à ranger la salle",
-    updatedAt: "2026-08-29 13:10"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
@@ -709,7 +709,7 @@ var LOGISTICS_HELPERS = {
     avant: "Installer les différents espaces de pratique avant l’arrivée des participants : un matelas par trio, avec les protections nécessaires pour l’utilisation de l’huile.<br><br>Préparer quelques tables de massage pour les personnes qui en auraient besoin.<br><br>Disposer les coussins et bolsters destinés au confort des masseurs à proximité des espaces de pratique.<br><br>Veiller à laisser suffisamment de place autour de chaque zone pour que deux personnes puissent masser simultanément.",
     pendant: "Rester disponible et discret en cas de besoin matériel ou pour aider à adapter l’installation.<br><br>Préserver une atmosphère calme et éviter les déplacements inutiles pendant les temps de massage.",
     apres: "Aider au rangement des matelas, tables, coussins et bolsters ainsi qu’au nettoyage ou au retrait des protections utilisées contre l’huile.",
-    updatedAt: "2026-08-29 13:12"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "LOG_Jour6_CONFERENCE___POUR_UN_TANTRA_D_": {
