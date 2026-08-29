@@ -755,10 +755,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
-    avant: "",
+    avant: "test",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-28 16:00"
+    updatedAt: "2026-08-29 14:09"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
