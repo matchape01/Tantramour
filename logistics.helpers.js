@@ -773,6 +773,13 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-08-29 17:04"
+  },
+
+  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-29 17:07"
   }
 
 };
