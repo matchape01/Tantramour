@@ -1452,6 +1452,14 @@ var LOGISTICS = {
     validatedByFac: false,
     prepDuration: 0,
     updatedAt: "2026-08-28 20:15"
+  },
+
+  "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
+    html: "",
+    text: "",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-29 16:31"
   }
 
 };
