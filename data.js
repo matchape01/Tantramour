@@ -1,4 +1,4 @@
-// @saved:2026-08-29 16:12:59
+// @saved:2026-08-29 16:31:36
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -73,7 +73,7 @@ var AGENDA = [
   {id:"A_9359",jour:"Jour 2",date:"Dimanche 30 aout",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_4893",jour:"Jour 2",date:"Dimanche 30 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA Ceremonie CACAO (SHIVA)",lieu:"SHIVA",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frederic Chalard",helper2:"Mukti (Cecile Yvorel)",helper3:"Damien Eissen",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1038",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"CÉRÉMONIE CACAO - Cœur dansant",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Emma Roussel",helper2:"",helper3:"",helper4:"",angel:"Aurelie Lechardeur",note:"",piment:1,colibri:false,logisticId:"LOG_Jour2_CEROMONIE_CACAO___DANCING_HEAR",meetingRoles:""},
-  {id:"A_0030",jour:"Jour 2",date:"Dimanche 30 aout",heure:"19:30 - 20:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Shibari Performance",lieu:"CHENREZIG",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Alexandre Sattler",helper3:"Veronique Santini Bottemer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_0030",jour:"Jour 2",date:"Dimanche 30 aout",heure:"19:30 - 20:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Shibari Performance",lieu:"CHENREZIG",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Alexandre Sattler",helper3:"Veronique Santini Bottemer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPA_TEMPLE__CHENREZIG____SHI",meetingRoles:""},
   {id:"A_1040",jour:"Jour 2",date:"Dimanche 30 aout",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Performance de Shibari Mystique & Jam Interactive",lieu:"CHENREZIG",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Damien Eissen",helper2:"Delphine Dupré",helper3:"",helper4:"",angel:"Aurelie Lechardeur",note:"",piment:1,colibri:false,logisticId:"JOUR2_SHIBARI_PERFORMANCE___INTERACT",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
