@@ -1732,13 +1732,61 @@ async function saveUpdate() {
   }
 
   // ── Sauvegarder nomEn / consignes dans REF_DESCRIPTIONS si modifiés ─────────
+  // Stratégie anti-écrasement collaboratif :
+  //   1. Récupérer ref_descriptions.js FRAIS depuis l'API GitHub (jamais le CDN)
+  //   2. Parser ce contenu pour obtenir la liste à jour
+  //   3. N'appliquer les changements locaux QUE sur l'entrée de l'atelier en cours
+  //   4. Sauvegarder la version fusionnée → aucune description d'un autre utilisateur n'est perdue
   async function saveDescIfNeeded() {
     const hasDescChange = editedData._nomEn !== undefined || editedData._descFr !== undefined || editedData._descEn !== undefined || editedData._consigneFr !== undefined || editedData._consigneEn !== undefined;
     if (!hasDescChange) return;
+
+    // ── Étape 1 : récupérer la version fraîche depuis l'API GitHub ──────────
+    let freshDescriptions = null;
+    try {
+      const token = localStorage.getItem('tm_gh_token');
+      if (token) {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/ref_descriptions.js?ref=${GITHUB_BRANCH}&_t=${Date.now()}`;
+        const res = await fetch(apiUrl, {
+          headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json', 'If-None-Match': '' },
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          const data    = await res.json();
+          const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+          // Parser le JS pour extraire REF_DESCRIPTIONS — eval sécurisé dans un scope isolé
+          try {
+            const fn = new Function(content + '\n return REF_DESCRIPTIONS;');
+            freshDescriptions = fn();
+          } catch(_) { /* parse échoué → on utilise la version en mémoire */ }
+        }
+      }
+    } catch(_) { /* réseau indispo → on utilise la version en mémoire */ }
+
+    // ── Étape 2 : si on a une version fraîche, synchroniser REF_DESCRIPTIONS en mémoire ──
+    // On prend TOUTES les entrées fraîches, puis on écrase uniquement celle de l'atelier courant.
+    if (freshDescriptions && Array.isArray(freshDescriptions)) {
+      // Fusionner : les entrées fraîches de GitHub remplacent la mémoire locale,
+      // sauf l'entrée de l'atelier en cours qui sera mise à jour juste après.
+      const atelierNameNorm = (newEntry.atelier || '').trim();
+      // Ajouter les entrées fraîches absentes de la mémoire locale (ajoutées par d'autres users)
+      freshDescriptions.forEach(function(fd) {
+        if ((fd.atelier || '').trim() === atelierNameNorm) return; // sera géré ci-dessous
+        const existing = REF_DESCRIPTIONS.find(function(d) { return (d.atelier||'').trim() === (fd.atelier||'').trim(); });
+        if (!existing) {
+          REF_DESCRIPTIONS.push(fd); // entrée créée par un autre utilisateur → on l'intègre
+        } else {
+          // Mettre à jour les champs de l'entrée existante avec la version GitHub
+          // (sauf si c'est l'atelier courant — géré séparément)
+          Object.assign(existing, fd);
+        }
+      });
+    }
+
+    // ── Étape 3 : appliquer les changements locaux sur l'entrée de l'atelier courant ──
     const atelierName = newEntry.atelier || '';
     let d = findDesc(atelierName);
     if (!d) {
-      // Créer une entrée minimale
       const key = atelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
       d = { key, atelier: atelierName, nomEn:'', type: newEntry.type||'', piment: newEntry.piment||0,
             fac1: newEntry.fac1||'', fac2: newEntry.fac2||'', descFr:'', descEn:'',
@@ -1751,6 +1799,8 @@ async function saveUpdate() {
     if (editedData._consigneFr !== undefined) d.consigne   = editedData._consigneFr;
     if (editedData._consigneEn !== undefined) d.consigneEn = editedData._consigneEn;
     d.updatedAt = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
+
+    // ── Étape 4 : sauvegarder la version fusionnée ──────────────────────────
     await saveFile('ref_descriptions.js', genererRefDescJs());
   }
 
