@@ -9,14 +9,14 @@ var LOGISTICS_HELPERS = {
     avant: "<span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>15 mins avant 18h : faire venir festivaliers pour se mettre sur le chemin devant l'entrée SHIVA (et permettre ainsi une installation fluide et optimisée)",
     pendant: "<div><span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Accueil à l'entrée et proposer la corbeille pour choix de la fleur</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Une fois tout le monde arrivé : Helpers se positionnent en contenant au bord de Shiva&nbsp;</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Phase où tous et toutes se lèvent : Helpers récupèrent les coussins pour mettre sur le côté</div><div><span style=\"font-family: Calibri; font-size: 14.6667px;\">• </span>Pour la fluidité. : si un.e participant.e est seul, faire la pratique avec lui.elle.</div><div><br></div>",
     apres: "<div><span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Message aimable pour les personnes qui tardent à aller au restaurant : \" c'est l'heure de se diriger vers le restau (reprise à 21h !) donc ne pas trainer !\"</div>",
-    updatedAt: "2026-08-29 14:58"
+    updatedAt: "2026-08-29 14:37"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
-    avant: "Préparer l'espace sur le plan énergétique (purification) <br>Accueillir les participants à leur arrivée<br>Purifier les participants (au palo santo, à la sauge ou à l'encens). <br>J'aimerais les rencontrer environ une heure avant le début de la séance.",
-    pendant: "Helpers jouent le rôle de gardiens de l'espace pendant la danse. <br>Pour permettre à chacun de s'immerger pleinement dans la danse, ils peuvent, si nécessaire, demander gentiment aux participants de s'abstenir de parler.",
-    apres: "1 helper pour rapporter les instruments",
-    updatedAt: "2026-08-26 18:36"
+    avant: "<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt\">• rencontrer l'animateur&nbsp;<span style=\"font-family: inherit; font-size: 13px;\">environ une heure avant le début de la séance.</span></p>",
+    pendant: "<span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Helpers jouent le rôle de gardiens de l'espace pendant la danse (silence, pieds nus...)<br>",
+    apres: "<br>",
+    updatedAt: "2026-08-29 15:07"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
