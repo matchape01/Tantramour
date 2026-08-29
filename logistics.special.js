@@ -111,7 +111,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_SHIBARI_PERFORMANCE___INTERACT": {
     html: "mise en place point de suspension ( je prends soin de cela)<br>60 tapis de yoga<br>12 spots (Voir avec Felix)",
     text: "mise en place point de suspension ( je prends soin de cela)\n60 tapis de yoga\n12 spots (Voir avec Felix)",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-29 16:46"
   },
 
   "JOUR2_VIBRATION___L_UNISSON__T_TE___": {
@@ -658,12 +658,6 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-08-28 20:15"
-  },
-
-  "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
-    html: "",
-    text: "",
-    updatedAt: "2026-08-29 16:35"
   }
 
 };
