@@ -43,7 +43,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-29 15:07"
+    updatedAt: "2026-08-29 15:15"
   },
 
   "JOUR1_TEST_MATT_2__CHHANGEMENT____3_": {
