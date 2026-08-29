@@ -27,7 +27,7 @@ var LOGISTICS = {
     text: "- 250 petites fleurs de la nature (séchées ou pas) - Delphine essaye d'en trouver sur sa route mais si quelqu'un.e peut s'en occuper le samedi matin (nature du Hameau, chemin vers la grotte), pour compléter, c'est bien-venu. S'il y en a trop, ça servira pour autour de l'autel.\n- 4 à 5 contenants pour les y mettre\n- Préparer un autel au centre de SHIVA (statu à identifier) avec coussins en spirale qui partent du centre\n- Autant de coussins que de participants + personnes de l'équipe (sauf helpers qui restent au bord pour 'laccueil puis le contenant)\n- préparer une joli déco (fleurs, lumières à LED,...) sur le chemin qui mène à SHIVA\n\n\nLES INFORMATIONS COMPLEMENTAIRES SERONT COMMUNIQUÉES LORS DE LA RÉUNION DU MATIN.",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-29 14:58"
+    updatedAt: "2026-08-29 14:37"
   },
 
   "JOUR1_REUNION_D_EQUIPE__HELPERS_": {
@@ -39,11 +39,11 @@ var LOGISTICS = {
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
-    html: "Please send sound person my tech rider: https://www.dropbox.com/scl/fo/yljn88d12kaznbq91z4ne/AI0B29qamUXVy51PU3jGdr4?rlkey=v2urcr70rsjxv7ihuo6q74c4g&amp;dl=0Space ; Ideally I have my own mixer on the table where I play so I can control sound and levels. About dance floor: Space needs to be free from mats, clothes, bottles etc. so there is a clear dance floor to move freely.",
-    text: "Please send sound person my tech rider: https://www.dropbox.com/scl/fo/yljn88d12kaznbq91z4ne/AI0B29qamUXVy51PU3jGdr4?rlkey=v2urcr70rsjxv7ihuo6q74c4g&dl=0Space ; Ideally I have my own mixer on the table where I play so I can control sound and levels. About dance floor: Space needs to be free from mats, clothes, bottles etc. so there is a clear dance floor to move freely.",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-29 15:07"
   },
 
   "JOUR1_TEST_MATT_2__CHHANGEMENT____3_": {
