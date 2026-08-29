@@ -13,10 +13,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
-    avant: "<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt\">• rencontrer l'animateur&nbsp;<span style=\"font-family: inherit; font-size: 13px;\">environ une heure avant le début de la séance.</span></p>",
+    avant: "<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt\">• rencontrer l'animateur environ 1h avant le début de la séance&nbsp;</p>",
     pendant: "<span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Helpers jouent le rôle de gardiens de l'espace pendant la danse (silence, pieds nus...)<br>",
     apres: "<br>",
-    updatedAt: "2026-08-29 15:07"
+    updatedAt: "2026-08-29 15:15"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
