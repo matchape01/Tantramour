@@ -289,7 +289,7 @@ var REF_CONSIGNES_TYPE = [
   {
     id: "CONS_032",
     valueFr: "• Rien à signaler",
-    valueEn: "Nothing to report",
+    valueEn: "• Nothing to report",
     descriptif: "",
     placements: ["Logistique","Spécifique"],
     actif: true,
