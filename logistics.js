@@ -408,10 +408,10 @@ var LOGISTICS = {
 
   "JOUR4_ALICE___DISSOLUTION__2_3__MASS": {
     html: "- 15 matelas <br>- 30 coussins<br>- Sono bluetooth",
-    text: "- 15 matelas \n- 30 coussins\n- Sono bluetooth",
+    text: "- 15 matelas\n- 30 coussins\n- Sono bluetooth",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-29 13:09"
   },
 
   "JOUR4_BALADI_TAO_TANTRIQUE": {
