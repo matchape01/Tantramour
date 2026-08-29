@@ -895,6 +895,20 @@ function getBusyPersons() {
   return busy;
 }
 
+// Set des noms de personnes ayant le rôle "colibri" ou "Mi-Colibri" dans REF_RESSOURCES.
+// Recalculé une seule fois — utilisé par buildPersonSelect pour afficher le logo 🐦.
+const _COLIBRI_NAMES = (function() {
+  const s = new Set();
+  if (typeof REF_RESSOURCES !== 'undefined') {
+    REF_RESSOURCES.forEach(function(r) {
+      if (r.roles && r.roles.indexOf('colibri') !== -1) {
+        s.add(r.value);
+      }
+    });
+  }
+  return s;
+})();
+
 function buildPersonSelect(id, refArr, val, availMap) {
   // availMap : objet { name: 'red' | 'orange' } — les absents sont 'green'
   const avail = availMap || {};
@@ -909,10 +923,11 @@ function buildPersonSelect(id, refArr, val, availMap) {
       const status    = getStatus(r.value);
       const isCurrent = r.value === val;
       const prefix    = status === 'red' ? '🔴 ' : status === 'orange' ? '🟠 ' : '🟢 ';
+      const colibri   = _COLIBRI_NAMES.has(r.value) ? '🐦 ' : '';
       const title     = status === 'red'    ? 'Non disponible — déjà assigné sur ce créneau'
                       : status === 'orange' ? 'Disponible — atelier dans les 90 min avant ou après'
                       :                       'Disponible';
-      return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${esc(r.value)}</option>`;
+      return `<option value="${esc(r.value)}"${isCurrent ? ' selected' : ''} title="${title}">${prefix}${colibri}${esc(r.value)}</option>`;
     }).join('');
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
