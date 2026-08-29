@@ -1459,7 +1459,7 @@ var LOGISTICS = {
     text: "mise en place de place assise pour la perf (je serai la pour guider comment) /\n\n60 yoga mat (chin mudra) pour la jam /\n\nlights pro pour la décorastion de la salle. 3 pour la scène + quelque autre pour lumière d'ambiance salle.",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 17:02"
+    updatedAt: "2026-08-29 17:04"
   }
 
 };
