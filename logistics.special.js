@@ -663,7 +663,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 16:31"
+    updatedAt: "2026-08-29 16:34"
   }
 
 };
