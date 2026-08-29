@@ -772,7 +772,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-29 17:02"
+    updatedAt: "2026-08-29 17:04"
   }
 
 };
