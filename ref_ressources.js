@@ -35,7 +35,7 @@ var REF_RESSOURCES = [
   { id: "R_SURPRISE",        value: "DJ Surprise",                               roles: ["animateur", "artist"],                                  langues: ["FR", "EN"], tel: "", email: "", lien: "" },
   { id: "R_DORIAN",          value: "Dorian Vallet",                             roles: ["animateur", "helper", "traducteur", "manager", "Mi-Colibri"], langues: ["FR", "EN"], tel: "06 27 91 88 51", email: "onemovevallet@gmail.com", lien: "" },
   { id: "R_ECHOCLEM",        value: "Echo Clem (Clement)",                       roles: ["helper", "manager"],                                    langues: ["FR"], tel: "", email: "", lien: "" },
-  { id: "R_EMMA",            value: "Emma Roussel",                              roles: ["animateur", "helper", "Mi-Colibri"],                    langues: ["FR"], tel: "06 88 12 98 66", email: "rousselemma@hotmail.com", lien: "" },
+  { id: "R_EMMA",            value: "Emma Roussel",                              roles: ["animateur", "helper", "angel", "Mi-Colibri"],           langues: ["FR"], tel: "(+33) 06 88 12 98 66", email: "rousselemma@hotmail.com", lien: "" },
   { id: "R_FELIX",           value: "Felix Ardevol",                             roles: ["animateur", "artist"],                                  langues: ["FR"], tel: "06 38 11 03 49", email: "felix@caudiovisuel.com", lien: "" },
   { id: "R_FRANZ",           value: "Franz Bols thibétains",                     roles: ["stand"],                                                langues: ["FR"], tel: "", email: "", lien: "" },
   { id: "R_FREDERIC",        value: "Frederic Chalard",                          roles: ["helper"],                                               langues: ["FR"], tel: "", email: "", lien: "" },
