@@ -9,13 +9,13 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_OPENING_CEREMONY": {
     html: "",
     text: "",
-    updatedAt: "2026-08-29 14:58"
+    updatedAt: "2026-08-29 14:37"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
     html: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
     text: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-29 15:07"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
