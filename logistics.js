@@ -1459,7 +1459,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 16:31"
+    updatedAt: "2026-08-29 16:34"
   }
 
 };
