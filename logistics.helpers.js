@@ -766,6 +766,13 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-08-28 20:15"
+  },
+
+  "JOUR2_PREPA_TEMPLE__CHENREZIG____SHI": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-29 16:54"
   }
 
 };
