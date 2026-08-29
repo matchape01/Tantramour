@@ -9,7 +9,7 @@ var LOGISTICS_HELPERS = {
     avant: "",
     pendant: "",
     apres: "",
-    updatedAt: "2026-08-29 13:04"
+    updatedAt: "2026-08-29 13:06"
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
