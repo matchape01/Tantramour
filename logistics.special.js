@@ -242,8 +242,8 @@ var LOGISTICS_SPECIAL = {
 
   "JOUR4_ALICE___DISSOLUTION__2_3__MASS": {
     html: "- 15 bougies electriques (grand modèle)<br>- mouchoirs<br>- 15 Aleses pour matelas <br>- 15 Assiettes en cartons",
-    text: "- 15 bougies electriques (grand modèle)\n- mouchoirs\n- 15 Aleses pour matelas \n- 15 Assiettes en cartons",
-    updatedAt: "2026-08-26 18:36"
+    text: "- 15 bougies electriques (grand modèle)\n- mouchoirs\n- 15 Aleses pour matelas\n- 15 Assiettes en cartons",
+    updatedAt: "2026-08-29 13:09"
   },
 
   "JOUR4_BALANCE_CONCERT_KELLY_AURA___C": {
