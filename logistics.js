@@ -1460,6 +1460,14 @@ var LOGISTICS = {
     validatedByFac: false,
     prepDuration: 0,
     updatedAt: "2026-08-29 17:04"
+  },
+
+  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
+    html: "mise en place de coussins au sols, je serai la pour guider le placement.<br>- Coussins",
+    text: "mise en place de coussins au sols, je serai la pour guider le placement.\n- Coussins",
+    validatedByFac: false,
+    prepDuration: 0,
+    updatedAt: "2026-08-29 17:07"
   }
 
 };
