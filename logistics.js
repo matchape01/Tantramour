@@ -1463,11 +1463,11 @@ var LOGISTICS = {
   },
 
   "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA_": {
-    html: "mise en place de coussins au sols, je serai la pour guider le placement.<br>- Coussins",
-    text: "mise en place de coussins au sols, je serai la pour guider le placement.\n- Coussins",
+    html: "mise en place de coussins au sols, je serai la pour guider le placement.<br>- Coussins<br><br>besoin de<br>- 4 casseroles /<br>- 4 louche /<br>- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.<br><br>Besoin de 8 helpers pour servir le cacao",
+    text: "mise en place de coussins au sols, je serai la pour guider le placement.\n- Coussins\n\nbesoin de\n- 4 casseroles /\n- 4 louche /\n- 200 gobelets en carton (3dl) nombre de tasse en fonctions du nombre de participants.\n\nBesoin de 8 helpers pour servir le cacao",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 17:07"
+    updatedAt: "2026-08-29 17:08"
   }
 
 };
