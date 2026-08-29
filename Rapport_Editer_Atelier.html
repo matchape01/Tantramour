@@ -1731,6 +1731,65 @@ async function saveUpdate() {
     return count;
   }
 
+  // ── Parseur textuel de ref_descriptions.js ───────────────────────────────────
+  // Extrait REF_DESCRIPTIONS depuis le texte brut du fichier JS sans eval/new Function.
+  // Compatible CSP strict (GitHub Pages).
+  // Stratégie : chercher les objets littéraux entre { } dans le tableau REF_DESCRIPTIONS,
+  // puis extraire chaque champ clé:valeur avec des regex ciblées.
+  function parseRefDescJs(src) {
+    // Isoler le contenu entre les crochets du tableau REF_DESCRIPTIONS = [ ... ]
+    const arrMatch = src.match(/var\s+REF_DESCRIPTIONS\s*=\s*\[([\s\S]*?)\];/);
+    if (!arrMatch) return null;
+    const arrSrc = arrMatch[1];
+
+    // Découper en objets individuels : chaque { ... }
+    // On utilise un compteur de profondeur pour gérer les accolades imbriquées
+    const objects = [];
+    let depth = 0, start = -1;
+    for (let i = 0; i < arrSrc.length; i++) {
+      if (arrSrc[i] === '{') { if (depth === 0) start = i; depth++; }
+      else if (arrSrc[i] === '}') {
+        depth--;
+        if (depth === 0 && start !== -1) { objects.push(arrSrc.slice(start, i + 1)); start = -1; }
+      }
+    }
+
+    // Pour chaque objet, extraire les champs string et non-string connus
+    function extractStr(obj, key) {
+      // Supporte : key:"valeur" ou key:"val\"eur" (escapes)
+      const m = obj.match(new RegExp(key + '\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"'));
+      if (!m) return '';
+      // Dés-échapper les séquences \n et \"
+      return m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    }
+    function extractBool(obj, key) {
+      const m = obj.match(new RegExp(key + '\\s*:\\s*(true|false)'));
+      return m ? m[1] === 'true' : false;
+    }
+    function extractNum(obj, key) {
+      const m = obj.match(new RegExp(key + '\\s*:\\s*(\\d+)'));
+      return m ? parseInt(m[1], 10) : 0;
+    }
+
+    return objects.map(function(obj) {
+      return {
+        key:            extractStr(obj,  'key'),
+        atelier:        extractStr(obj,  'atelier'),
+        nomEn:          extractStr(obj,  'nomEn'),
+        type:           extractStr(obj,  'type'),
+        piment:         extractNum(obj,  'piment'),
+        fac1:           extractStr(obj,  'fac1'),
+        fac2:           extractStr(obj,  'fac2'),
+        descFr:         extractStr(obj,  'descFr'),
+        descEn:         extractStr(obj,  'descEn'),
+        consigne:       extractStr(obj,  'consigne'),
+        consigneEn:     extractStr(obj,  'consigneEn'),
+        validatedByFac: extractBool(obj, 'validatedByFac'),
+        updatedAt:      extractStr(obj,  'updatedAt'),
+      };
+    }).filter(function(d) { return d.atelier; }); // ignorer les entrées vides
+  }
+
   // ── Sauvegarder nomEn / consignes dans REF_DESCRIPTIONS si modifiés ─────────
   // Stratégie anti-écrasement collaboratif :
   //   1. Récupérer ref_descriptions.js FRAIS depuis l'API GitHub (jamais le CDN)
@@ -1742,6 +1801,8 @@ async function saveUpdate() {
     if (!hasDescChange) return;
 
     // ── Étape 1 : récupérer la version fraîche depuis l'API GitHub ──────────
+    // On utilise un parseur de texte (regex) pour extraire les entrées de REF_DESCRIPTIONS
+    // sans jamais évaluer de code JS (new Function / eval sont bloqués par le CSP GitHub Pages).
     let freshDescriptions = null;
     try {
       const token = localStorage.getItem('tm_gh_token');
@@ -1754,10 +1815,10 @@ async function saveUpdate() {
         if (res.ok) {
           const data    = await res.json();
           const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
-          // Parser le JS pour extraire REF_DESCRIPTIONS — eval sécurisé dans un scope isolé
+          // Parseur textuel : extrait chaque objet { ... } de REF_DESCRIPTIONS via JSON.parse
+          // après avoir transformé les littéraux JS en JSON valide.
           try {
-            const fn = new Function(content + '\n return REF_DESCRIPTIONS;');
-            freshDescriptions = fn();
+            freshDescriptions = parseRefDescJs(content);
           } catch(_) { /* parse échoué → on utilise la version en mémoire */ }
         }
       }
@@ -1837,6 +1898,27 @@ async function saveUpdate() {
       if (ind) ind.classList.remove('show');
       return;
     }
+
+    // ── Détection de renommage ────────────────────────────────────────────────
+    // Si le nom FR de l'atelier a changé, il faut migrer l'entrée REF_DESCRIPTIONS
+    // de l'ancien nom vers le nouveau AVANT de sauvegarder, sinon les descriptions
+    // se retrouvent orphelines sous l'ancien nom et sont invisibles.
+    const oldAtelierName = AGENDA[selectedIdx].atelier || '';
+    const newAtelierName = newEntry.atelier || '';
+    const isRename = oldAtelierName && newAtelierName && oldAtelierName !== newAtelierName;
+    if (isRename) {
+      const existingDesc = REF_DESCRIPTIONS.find(function(d) {
+        return (d.atelier || '').trim() === oldAtelierName.trim();
+      });
+      if (existingDesc) {
+        // Mettre à jour le nom dans l'entrée existante (les descriptions sont conservées)
+        existingDesc.atelier = newAtelierName;
+        const newKey = newAtelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
+        existingDesc.key = newKey;
+        console.log('[saveUpdate] Renommage détecté : migration REF_DESCRIPTIONS "' + oldAtelierName + '" → "' + newAtelierName + '"');
+      }
+    }
+
     const originalEntry = Object.assign({}, AGENDA[selectedIdx]);
     // Sauvegardes rollback des ateliers impactés (si SHIFT ANGEL)
     const rollbackAngels = [];
@@ -1858,7 +1940,12 @@ async function saveUpdate() {
       const content  = genererDataJs();
       const tsMarker = genererDataJs._lastTs ? ('// @saved:' + genererDataJs._lastTs) : '';
       await sauvegarder(content);
-      await saveDescIfNeeded();
+      // Si renommage : forcer la sauvegarde de ref_descriptions.js même sans changement de contenu
+      if (isRename && !editedData._descFr && !editedData._descEn && !editedData._nomEn && !editedData._consigneFr && !editedData._consigneEn) {
+        await saveFile('ref_descriptions.js', genererRefDescJs());
+      } else {
+        await saveDescIfNeeded();
+      }
       renderList();
       const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       const baseMsg = propagated > 0
