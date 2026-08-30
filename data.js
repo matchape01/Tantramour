@@ -1,4 +1,4 @@
-// @saved:2026-08-31 00:28:57
+// @saved:2026-08-31 00:29:56
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -133,7 +133,7 @@ var AGENDA = [
   {id:"A_1080",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:15 - 13:15",type:"ATELIERS TANTRA (Matin)",atelier:"Alice - Dissolution (2/3) massage méditatif tantrique",lieu:"CHENREZIG",fac1:"Bruno Deck",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Véronique Santini Bottemer",helper2:"Alexandre Fourcault",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR4_ALICE___DISSOLUTION__2_3__MASS",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
-  {id:"A_1081",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Le toucher comme porte vers l'extase",lieu:"SHAKTI",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Carine Janez",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:2,colibri:false,logisticId:"JOUR3_LE_TOUCHER_COMME_PORTE_VERS_L_",meetingRoles:""},
+  {id:"A_1081",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Le toucher comme porte vers l'extase",lieu:"SHAKTI",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Cédric Vesper",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:2,colibri:false,logisticId:"JOUR3_LE_TOUCHER_COMME_PORTE_VERS_L_",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {id:"A_1082",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:30 - 13:45",type:"ATELIERS TANTRA (Matin)",atelier:"Ode à la liberté (2h15)",lieu:"TARA",fac1:"Selma (Céline Laroche)",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"Delphine Dupré",helper3:"Amana",helper4:"",angel:"Daniel Latapie",note:"Atelier + long",piment:2,colibri:false,logisticId:"JOUR4__DE___LA_LIBERTE__2HRS_",meetingRoles:""},
