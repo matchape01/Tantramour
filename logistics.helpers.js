@@ -758,7 +758,7 @@ var LOGISTICS_HELPERS = {
     avant: "test",
     pendant: "Transition VERA",
     apres: "courage ! MERCI",
-    updatedAt: "2026-08-30 03:29"
+    updatedAt: "2026-08-30 03:33"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
