@@ -1,4 +1,4 @@
-// @saved:2026-08-30 22:45:02
+// @saved:2026-08-30 22:45:41
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -119,7 +119,7 @@ var AGENDA = [
   {id:"A_1067",jour:"Jour 3",date:"Lundi 31 aout",heure:"18:00 - 20:00",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Traverser: souffle, froid et confiance (Méthode Wim Hof - bain froid) - 2h",lieu:"SHIVA",fac1:"Damien Eissen",fac2:"Dorian Vallet",fac3:"",fac4:"",traduction:"",helper1:"Daniel Latapie",helper2:"Cédric Vesper",helper3:"",helper4:"Atman Clochette (Matthieu)",angel:"Linda Stachetti",note:"Atelier + long",piment:1,colibri:false,logisticId:"JOUR3_TRAVERSER___SOUFFLE__FROID_ET_",meetingRoles:""},
   {id:"A_5940",jour:"Jour 3",date:"Lundi 31 aout",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_5319",jour:"Jour 3",date:"Lundi 31 aout",heure:"19:30 - 20:30",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT  - DJ Set",lieu:"SHAKTI",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Yannick Bohrer",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_9705",jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 23:00",type:"DJ Set",atelier:"DJ Set avec Juan Felix",lieu:"SHAKTI",fac1:"Felix Ardevol",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"JOUR3_DJ_SET_AVEC_JUAN_FELIX",meetingRoles:""},
+  {id:"A_9705",jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 23:00",type:"DJ Set",atelier:"DJ Set avec Juan Felix",lieu:"SHAKTI",fac1:"Felix Ardevol",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Yannick Bohrer",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"JOUR3_DJ_SET_AVEC_JUAN_FELIX",meetingRoles:""},
   {id:"A_9196",jour:"Jour 3",date:"Lundi 31 aout",heure:"19:30 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Erotypes",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"Audrey Barthélémy",fac3:"",fac4:"",traduction:"",helper1:"Delphine Dupré",helper2:"Karen Cayuela",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1072",jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 1:00",type:"LOVE TEMPLE",atelier:"Love Temple inspiré des ErotypesⓇ",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"Audrey Barthélémy",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR3_LOVE_TEMPLE_DES_EROTYPES__R",meetingRoles:""},
 
