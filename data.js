@@ -1,4 +1,4 @@
-// @saved:2026-08-30 12:29:03
+// @saved:2026-08-30 12:29:30
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -345,7 +345,7 @@ var AGENDA = [
   {id:"A_5097",jour:"Jour 1",date:"Samedi 29 aout",heure:"14:30 - 15:45",type:"TEST",atelier:"BALANCES Artistes Cérémonie d'Ouverture",lieu:"SHIVA",fac1:"Claude Brame",fac2:"Kelly Aura",fac3:"Stéphane Ahmed",fac4:"Suman (Emmanuelle Cueff)",traduction:"",helper1:"Echo Clem (Clément)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
-  {id:"A_9843",jour:"Jour 2",date:"Dimanche 30 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA Ceremonie CACAO (SHIVA) (EXTRA)",lieu:"SHIVA",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Sevda Duroy",helper2:"Sophie O'Heix",helper3:"Audrey Barthélémy",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPA_CEREMONIE_CACAO__SHIVA__",meetingRoles:""},
+  {id:"A_9843",jour:"Jour 2",date:"Dimanche 30 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA Ceremonie CACAO (SHIVA) (EXTRA)",lieu:"SHIVA",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPA_CEREMONIE_CACAO__SHIVA__",meetingRoles:""},
   {id:"A_5006",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"PREPA & LOGISTICS",atelier:"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Sevda Duroy",helper2:"Sophie O'Heix",helper3:"Audrey Barthélémy",helper4:"Damien Eissen",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
