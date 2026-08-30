@@ -1,4 +1,4 @@
-// @saved:2026-08-30 04:28:50
+// @saved:2026-08-30 04:31:26
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -43,7 +43,7 @@ var AGENDA = [
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_1011",jour:"Jour 2",date:"Dimanche 30 aout",heure:"08:00 - 09:00",type:"MEDITATION / YOGA",atelier:"Yoga2",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Delphine Dupré",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour2_YOGA2",meetingRoles:""},
-  {id:"A_1012",jour:"Jour 2",date:"Dimanche 30 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Meditation des 4 directions",lieu:"SHAKTI",fac1:"Dorian Vallet",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour2_MEDITATION_ACTIVE",meetingRoles:""},
+  {id:"A_1012",jour:"Jour 2",date:"Dimanche 30 aout",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Meditation des 4 directions",lieu:"SHAKTI",fac1:"Dorian Vallet",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour2_MEDITATION_ACTIVE",meetingRoles:"",_equipements:{"EQ_PISCINE":1},_consignesDisabled:{"CONS_027":true}},
   {id:"A_2154",jour:"Jour 2",date:"Dimanche 30 aout",heure:"9:00 - 9:30",type:"REUNION",atelier:"REUNION D'EQUIPE (Animateurs et Artistes)",lieu:"TARA",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_REUNION_D_EQUIPE__ANIMATEURS_E",meetingRoles:""},
   {id:"A_6166",jour:"Jour 2",date:"Dimanche 30 aout",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_4901",jour:"Jour 2",date:"Dimanche 30 aout",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPARATION_RASSEMBLEMENT",meetingRoles:""},
