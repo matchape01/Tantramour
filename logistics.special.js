@@ -357,7 +357,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR5_ANIMAL_EMBODIMENT_": {
     html: "",
     text: "",
-    updatedAt: ""
+    updatedAt: "2026-08-30 03:05"
   },
 
   "JOUR5_AU_COMMENCEMENT_ETAIT_LE_CORPS": {
