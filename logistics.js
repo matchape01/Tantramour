@@ -391,11 +391,11 @@ var LOGISTICS = {
   },
 
   "JOUR3__DE_A_KALI": {
-    html: "Tapis + matelas + coussins <br>Système son <br>3 pieds de micro<br>3 micros (2 voix et 1 instrument) <br>Système son aussi bluetooth pour passer une playlist",
-    text: "Tapis + matelas + coussins \nSystème son \n3 pieds de micro\n3 micros (2 voix et 1 instrument) \nSystème son aussi bluetooth pour passer une playlist",
+    html: "Tapis + matelas + coussins <br>Système son <br>4 pieds de micro<br>4 micros (3 voix et 1 instrument) <br>Système son aussi bluetooth pour passer une playlist",
+    text: "Tapis + matelas + coussins\nSystème son\n4 pieds de micro\n4 micros (3 voix et 1 instrument)\nSystème son aussi bluetooth pour passer une playlist",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-30 23:47"
   },
 
   "JOUR3____STAND__MAQUILLAGE___": {
