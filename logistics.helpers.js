@@ -755,10 +755,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
-    avant: "test",
-    pendant: "Transition VERA",
-    apres: "courage ! MERCI",
-    updatedAt: "2026-08-30 04:23"
+    avant: "testZZZZ",
+    pendant: "Transition VERAZZZZ",
+    apres: "courage ! MERCIZZZ",
+    updatedAt: "2026-08-30 09:49"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
