@@ -1,4 +1,4 @@
-// @saved:2026-08-31 00:19:31
+// @saved:2026-08-31 00:23:13
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -88,7 +88,7 @@ var AGENDA = [
   {id:"A_2872",jour:"Jour 3",date:"Lundi 31 aout",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR3_PREPARATION_RASSEMBLEMENT",meetingRoles:""},
   {id:"A_5867",jour:"Jour 3",date:"Lundi 31 aout",heure:"9:45 - 11:00",type:"RASSEMBLEMENT",atelier:"Rassemblement du matin",lieu:"SHIVA",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"Amana",helper1:"Vera De Sousa",helper2:"Linda Stachetti",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"LOG_Jour3_RASSEMBLEMENT",meetingRoles:""},
   {id:"A_1047",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Entre dans la Caresse comme dans la Vie Eternelle",lieu:"SHIVA",fac1:"Sandrine Bettinelli",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"Maeva Mantione",helper3:"",helper4:"Véronique Santini Bottemer",angel:"Virginie Bertrand",note:"",piment:2,colibri:false,logisticId:"JOUR3_ENTRE_DANS_LA_CARESSE_COMME_DA",meetingRoles:"",_equipements:{"EQ_MATELAS":30,"EQ_MICCASQUE":1,"EQ_NEW03":25},_corecSelected:{"Avant":["COREC_005"]}},
-  {id:"A_1048",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Ode à KALI",lieu:"CHENREZIG",fac1:"Suman (Emmanuelle Cueff)",fac2:"",fac3:"",fac4:"",traduction:"Daniel Latapie",helper1:"",helper2:"Cédric Vesper",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:2,colibri:false,logisticId:"JOUR3__DE_A_KALI",meetingRoles:""},
+  {id:"A_1048",jour:"Jour 3",date:"Lundi 31 aout",heure:"16:00 - 17:30",type:"ATELIERS TANTRA (Matin)",atelier:"Ode à KALI",lieu:"CHENREZIG",fac1:"Suman (Emmanuelle Cueff)",fac2:"",fac3:"",fac4:"",traduction:"Daniel Latapie",helper1:"",helper2:"Cédric Vesper",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:2,colibri:false,logisticId:"JOUR3__DE_A_KALI",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {id:"A_1049",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"La Merkaba tantrique ",lieu:"SHAKTI",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Maeva Mantione",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR4_LA_MERKABA_TANTRIQUE_",meetingRoles:""},
