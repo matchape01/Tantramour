@@ -1683,6 +1683,11 @@ async function saveUpdate() {
 
   const newEntry = Object.assign({}, editedData);
 
+  // Copie profonde des champs imbriqués pour éviter les références partagées
+  if (editedData._consignesDisabled) newEntry._consignesDisabled = Object.assign({}, editedData._consignesDisabled);
+  if (editedData._corecSelected)     newEntry._corecSelected     = JSON.parse(JSON.stringify(editedData._corecSelected));
+  if (editedData._equipements)       newEntry._equipements       = Object.assign({}, editedData._equipements);
+
   // Synchroniser la date depuis le jour si non remplie
   if (!newEntry.date && newEntry.jour) {
     const ref = REF_JOURS.find(j => j.value === newEntry.jour);

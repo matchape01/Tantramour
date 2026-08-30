@@ -1300,7 +1300,7 @@ function renderModalBody() {
       var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
       if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
     });
-    return html ? '<span>' + html + '</span>' : '';
+    return html ? '<span style="color:#92400e;font-size:13px;">' + html + '</span>' : '';
   }
 
   var _corecSel = e._corecSelected || {};
@@ -1317,7 +1317,7 @@ function renderModalBody() {
       var txt = (lang==='en' && c.valueEn && c.valueEn.trim()) ? c.valueEn : c.valueFr;
       if (txt) html += esc(txt).replace(/\n/g,'<br>') + '<br>';
     });
-    return html ? '<span>' + html + '</span>' : '';
+    return html ? '<span style="color:#166534;font-size:13px;">' + html + '</span>' : '';
   }
 
   var S_INFO   = dark
@@ -1396,9 +1396,9 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'Logistics info':'Informations logistiques')+'</div>'+
+        '<div style="color:#1d4ed8;font-weight:700">'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
         _consignesRecurrentesBlock('Logistique')+
         _consignesTypeBlock('Logistique')+
-        '<div>'+(logInfoTxt ? logInfoTxt : noTxt)+'</div>'+
       '</div>'+
     '</div>'+
   '</div>';
@@ -1407,9 +1407,9 @@ function renderModalBody() {
     '<div style="'+titleStyle+S_SPEC_TL+';border-bottom-color:'+(dark?'#9333ea':'#c084fc')+'">'+
       '3) '+(lang==='en'?'Specific logistics needs':'Besoins logistiques spécifiques')+
     '</div>'+
+    '<div style="color:#1d4ed8;font-weight:700">'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
     _consignesRecurrentesBlock('Spécifique')+
     _consignesTypeBlock('Spécifique')+
-    '<div>'+(logSpecTxt ? logSpecTxt : noTxt)+'</div>'+
   '</div>';
 
   var eqAgenda  = e._equipements || {};
@@ -1471,22 +1471,22 @@ function renderModalBody() {
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do before':'À faire avant')+'</div>'+
-        _consignesTypeBlock('Avant')+
+        '<div style="color:#1d4ed8;font-weight:700">'+(avantTxt ? avantTxt : noTxt)+'</div>'+
         _consignesRecurrentesBlock('Avant')+
-        '<div>'+(avantTxt ? avantTxt : noTxt)+'</div>'+
+        _consignesTypeBlock('Avant')+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do during':'À faire pendant')+'</div>'+
-        _consignesTypeBlock('Pendant')+
+        '<div style="color:#1d4ed8;font-weight:700">'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
         _consignesRecurrentesBlock('Pendant')+
-        '<div>'+(pendantTxt ? pendantTxt : noTxt)+'</div>'+
+        _consignesTypeBlock('Pendant')+
       '</div>'+
       '<div class="modal-desc-box">'+
         '<div class="modal-desc-lbl">'+(lang==='en'?'To do after':'À faire après')+'</div>'+
         (range > 0 ? '<div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:3px 8px;margin-bottom:6px;">🧹 '+(lang==='en'?'Tidying up':'Rangement')+' : <strong style="color:var(--text)">'+range+' min</strong></div>' : '')+
-        _consignesTypeBlock('Après')+
+        '<div style="color:#1d4ed8;font-weight:700">'+(apresTxt ? apresTxt : noTxt)+'</div>'+
         _consignesRecurrentesBlock('Après')+
-        '<div>'+(apresTxt ? apresTxt : noTxt)+'</div>'+
+        _consignesTypeBlock('Après')+
       '</div>'+
     '</div>'+
   '</div>';

@@ -899,7 +899,7 @@ var LOGISTICS = {
     text: "VERA TEST",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-30 03:34"
+    updatedAt: "2026-08-30 04:23"
   },
 
   "LOG_Jour1_TEST_3": {
