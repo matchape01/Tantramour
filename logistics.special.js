@@ -537,7 +537,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour2_MEDITATION_ACTIVE": {
     html: "",
     text: "",
-    updatedAt: "2026-08-30 04:33"
+    updatedAt: "2026-08-30 04:43"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
