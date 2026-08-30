@@ -395,7 +395,7 @@ var LOGISTICS = {
     text: "Tapis + matelas + coussins\nSystème son\n4 pieds de micro\n4 micros (3 voix et 1 instrument)\nSystème son aussi bluetooth pour passer une playlist",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-08-30 23:47"
+    updatedAt: "2026-08-30 00:23"
   },
 
   "JOUR3____STAND__MAQUILLAGE___": {
