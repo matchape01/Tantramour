@@ -867,12 +867,18 @@ function renderList(results) {
           rowAttrs = ' style="cursor:pointer" onclick="openDetail('+agendaIdx+',\''+ri+'\')"';
         }
 
+        var _descRow = (typeof REF_DESCRIPTIONS!=='undefined')
+          ? ((e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId===e.id; })) ||
+             REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); }))
+          : null;
+        var _langRow = (typeof I18n!=='undefined') ? I18n.getLang() : 'fr';
+        var _nomRow = (_langRow==='en' && _descRow && _descRow.nomEn && _descRow.nomEn.trim()) ? _descRow.nomEn.trim() : (e.atelier||'—');
         return '<tr'+rowAttrs+'>'+
           '<td style="width:32px;padding:4px 6px;" onclick="event.stopPropagation()"><button class="info-btn" title="Détails" onclick="openDetail('+agendaIdx+',\''+ri+'\')">ℹ️</button></td>'+
           '<td class="at-heure">'+esc(e.heure||'—')+'</td>'+
           '<td class="at-duree">'+((!isShift && dur) ? fmtDuree(dur) : (isShift ? '' : '—'))+'</td>'+
           '<td>'+roleBadge+'</td>'+
-          '<td class="at-name">'+esc(e.atelier||'—')+shiftDurPill+
+          '<td class="at-name">'+esc(_nomRow)+shiftDurPill+
             (pm?'<span style="margin-left:4px;font-size:11px">'+pimentHtml(pm)+'</span>':'')+
             (isColibri(res.nom) && (x.roles.indexOf('helper')!==-1 || x.roles.indexOf('traducteur')!==-1) ? '<span class="badge" style="margin-left:5px;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;font-size:9px;">Colibri</span>' : '')+
           '</td>'+
@@ -974,9 +980,17 @@ window.setModalLang = function(lang) {
   _modalLang = lang;
   document.getElementById('mlBtnFr').classList.toggle('active', lang==='fr');
   document.getElementById('mlBtnEn').classList.toggle('active', lang==='en');
-  // Mettre à jour le sous-titre (jour + date) selon la nouvelle langue
   if (_modalEntry) {
     document.getElementById('mSub').textContent = jourSubtitle(_modalEntry.jour, lang);
+    // Mettre à jour le titre (nom FR / nom EN)
+    var _d = (typeof REF_DESCRIPTIONS!=='undefined')
+      ? ((_modalEntry.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId===_modalEntry.id; })) ||
+         REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(_modalEntry.atelier||'').trim(); }))
+      : null;
+    var pm = parseInt(_modalEntry.piment)||0;
+    var titleFr = _modalEntry.atelier||'—';
+    var titleEn = (_d && _d.nomEn && _d.nomEn.trim()) ? _d.nomEn.trim() : titleFr;
+    document.getElementById('mTitle').innerHTML = esc(lang==='en' ? titleEn : titleFr) + (pm ? ' '+pimentHtml(pm) : '');
   }
   renderModalBody();
 };
@@ -990,7 +1004,13 @@ window.openDetail = function(agendaIdx, ri) {
   document.getElementById('mlBtnEn').classList.toggle('active', _modalLang==='en');
 
   var pm = parseInt(e.piment)||0;
-  document.getElementById('mTitle').innerHTML = esc(e.atelier||'—') + (pm ? ' '+pimentHtml(pm) : '');
+  var _descInit = (typeof REF_DESCRIPTIONS!=='undefined')
+    ? ((e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId===e.id; })) ||
+       REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); }))
+    : null;
+  var _titleFr = e.atelier||'—';
+  var _titleEn = (_descInit && _descInit.nomEn && _descInit.nomEn.trim()) ? _descInit.nomEn.trim() : _titleFr;
+  document.getElementById('mTitle').innerHTML = esc(_modalLang==='en' ? _titleEn : _titleFr) + (pm ? ' '+pimentHtml(pm) : '');
   document.getElementById('mSub').textContent = jourSubtitle(e.jour, _modalLang);
 
   renderModalBody();
@@ -1057,7 +1077,7 @@ function renderModalBody() {
     : '<span class="badge badge-lang badge-fr">FR</span>';
 
   var noteVal = e.note ? noteLabel(e.note, lang) : '';
-  var nomAtelierVal = esc(e.atelier||'—') + ' ' + langBadge;
+  var nomAtelierVal = esc((lang==='en' && desc && desc.nomEn && desc.nomEn.trim()) ? desc.nomEn.trim() : (e.atelier||'—')) + ' ' + langBadge;
   var typeVal = e.type ? esc(e.type) : '—';
   var jourDate = jourSubtitle(e.jour, lang);
   var horaireVal = esc(e.heure||'—') + (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '');

@@ -1165,6 +1165,15 @@ window.setModalLang = function(lang) {
   document.getElementById('mlBtnEn').classList.toggle('active', lang==='en');
   if (_modalEntry) {
     document.getElementById('mSub').textContent = jourSubtitle(_modalEntry.jour, lang);
+    // Mettre à jour le titre (nom FR / nom EN)
+    var _d = (typeof REF_DESCRIPTIONS!=='undefined')
+      ? ((_modalEntry.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId===_modalEntry.id; })) ||
+         REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(_modalEntry.atelier||'').trim(); }))
+      : null;
+    var pm = parseInt(_modalEntry.piment)||0;
+    var titleFr = _modalEntry.atelier||'—';
+    var titleEn = (_d && _d.nomEn && _d.nomEn.trim()) ? _d.nomEn.trim() : titleFr;
+    document.getElementById('mTitle').innerHTML = esc(lang==='en' ? titleEn : titleFr) + (pm ? ' '+pimentHtml(pm) : '');
   }
   renderModalBody();
 };
@@ -1177,7 +1186,13 @@ window.openDetail = function(agendaIdx) {
   document.getElementById('mlBtnFr').classList.toggle('active', _modalLang==='fr');
   document.getElementById('mlBtnEn').classList.toggle('active', _modalLang==='en');
   var pm = parseInt(e.piment)||0;
-  document.getElementById('mTitle').innerHTML = esc(e.atelier||'—') + (pm ? ' '+pimentHtml(pm) : '');
+  var _descInit = (typeof REF_DESCRIPTIONS!=='undefined')
+    ? ((e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId===e.id; })) ||
+       REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); }))
+    : null;
+  var _titleFr = e.atelier||'—';
+  var _titleEn = (_descInit && _descInit.nomEn && _descInit.nomEn.trim()) ? _descInit.nomEn.trim() : _titleFr;
+  document.getElementById('mTitle').innerHTML = esc(_modalLang==='en' ? _titleEn : _titleFr) + (pm ? ' '+pimentHtml(pm) : '');
   document.getElementById('mSub').textContent = jourSubtitle(e.jour, _modalLang);
   renderModalBody();
   document.getElementById('detailModal').classList.add('open');
@@ -1238,7 +1253,7 @@ function renderModalBody() {
     : '<span class="badge badge-lang badge-fr">FR</span>';
 
   var noteVal = e.note ? noteLabel(e.note, lang) : '';
-  var nomAtelierVal = esc(e.atelier||'—') + ' ' + langBadge;
+  var nomAtelierVal = esc((lang==='en' && desc && desc.nomEn && desc.nomEn.trim()) ? desc.nomEn.trim() : (e.atelier||'—')) + ' ' + langBadge;
   var typeVal = e.type ? esc(e.type) : '—';
   var jourDateStr = jourSubtitle(e.jour, lang);
   var horaireVal = esc(e.heure||'—') + (dur ? ' <span style="color:var(--muted);font-size:11px">('+fmtDuree(dur)+')</span>' : '');

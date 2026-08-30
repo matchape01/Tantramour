@@ -838,6 +838,7 @@ function cardHtml(e, globalIdx, opts) {
   var pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '';
   var desc      = findDesc(e.atelier, e.id);
   var lang      = I18n.getLang();
+  var nomAffiche = (lang === 'en' && desc && desc.nomEn && desc.nomEn.trim()) ? desc.nomEn.trim() : (e.atelier || '—');
 
   // Ligne Lieu + FR/ENG
   var lieuLangHtml =
@@ -871,7 +872,7 @@ function cardHtml(e, globalIdx, opts) {
       '<div class="prog-stripe"></div>' +
       '<div class="prog-main">' +
         /* 1. Nom + piment */
-        '<div class="prog-name">' + esc(e.atelier||'—') + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
+        '<div class="prog-name">' + esc(nomAffiche) + (pimentStr ? ' <span style="letter-spacing:-2px;font-size:12px">' + pimentStr + '</span>' : '') + '</div>' +
         /* 2. Heure – durée */
         '<div class="prog-time">' +
           (e.heure ? esc(e.heure) : '—') +
@@ -1012,6 +1013,14 @@ var _modalEntry = null;  // entrée agenda complète
 
 window.setModalLang = function(lang) {
   _modalLang = lang;
+  // Mettre à jour le titre (nom FR / nom EN)
+  var e = _modalEntry;
+  var d = _modalDesc;
+  if (e) {
+    var titleFr = e.atelier || '—';
+    var titleEn = (d && d.nomEn && d.nomEn.trim()) ? d.nomEn.trim() : titleFr;
+    document.getElementById('mTitle').textContent = (lang === 'en' ? titleEn : titleFr);
+  }
   document.getElementById('mlBtnFr').classList.toggle('active', lang === 'fr');
   document.getElementById('mlBtnEn').classList.toggle('active', lang === 'en');
   renderModalContent();
@@ -1139,7 +1148,9 @@ window.openDetail = function(idx) {
   badgeEl.className = 'modal-type-badge badge badge-type badge-type-c ' + css;
   badgeEl.textContent = typeLabel(e.type);
 
-  document.getElementById('mTitle').textContent    = (e.atelier || '—');
+  var _titleFr = e.atelier || '—';
+  var _titleEn = (_modalDesc && _modalDesc.nomEn && _modalDesc.nomEn.trim()) ? _modalDesc.nomEn.trim() : _titleFr;
+  document.getElementById('mTitle').textContent = (_modalLang === 'en' ? _titleEn : _titleFr);
   document.getElementById('mSubtitle').textContent = jourLabel(e.jour) + (meta.date ? ' — ' + jourDate(meta) : '');
 
   // Rendre la grille + consigne + description selon la langue active
