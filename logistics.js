@@ -39,11 +39,11 @@ var LOGISTICS = {
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
-    html: "INFO LOGISTIQUES TEST MATT",
-    text: "INFO LOGISTIQUES TEST MATT",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-30 03:23"
+    updatedAt: "2026-08-29 15:16"
   },
 
   "JOUR1_TEST_MATT_2__CHHANGEMENT____3_": {
@@ -895,11 +895,11 @@ var LOGISTICS = {
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
-    html: "TEST",
-    text: "TEST",
+    html: "VERA TEST",
+    text: "VERA TEST",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-29 14:13"
+    updatedAt: "2026-08-30 03:23"
   },
 
   "LOG_Jour1_TEST_3": {
