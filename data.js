@@ -1,4 +1,4 @@
-// @saved:2026-08-30 03:05:14
+// @saved:2026-08-30 03:05:13
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -151,7 +151,7 @@ var AGENDA = [
   {id:"A_1095",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Ecstatic Contact #2 ",lieu:"SHAKTI",fac1:"Cédric Vesper",fac2:"Suman (Emmanuelle Cueff)",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Sophie O'Heix",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_ECSTATIC_CONTACT__2_",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
-  {id:"A_1096",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Incarnation Animale",lieu:"TARA",fac1:"Dorian Vallet",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Virginie Bertrand",helper2:"Véronique Santini Bottemer",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_ANIMAL_EMBODIMENT_",meetingRoles:""},
+  {id:"A_1096",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Animal Embodiment",lieu:"TARA",fac1:"Dorian Vallet",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Virginie Bertrand",helper2:"Véronique Santini Bottemer",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_ANIMAL_EMBODIMENT_",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {id:"A_7837",jour:"Jour 4",date:"Mardi 1 septembre",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
