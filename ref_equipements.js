@@ -22,7 +22,7 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Cuisine", id: "EQ_BASSINE", value: "Bassine", stock: 0, description: "Bassine", remarque: "" },
   { type: "Hameau", categorie: "Cuisine", id: "EQ_PAN", value: "Casserole", stock: 0, description: "Casserole", remarque: "" },
   { type: "Hameau", categorie: "Cuisine", id: "EQ_LOUCHE", value: "Louche", stock: 0, description: "Louche", remarque: "" },
-  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOT", value: "Spot lumineux chromé", stock: "N/A", description: "Spot lumineux", remarque: "" },
+  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOTCHROME", value: "Spot lumineux chromé", stock: "N/A", description: "Spot lumineux", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_LINGETTE", value: "Lingette humide", stock: 0, description: "Lingette humide", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_MOUCHOIR", value: "Boite mouchoirs", stock: 0, description: "Boite mouchoirs", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_TALC", value: "Talc", stock: 0, description: "Talc", remarque: "" },
