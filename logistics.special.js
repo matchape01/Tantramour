@@ -231,7 +231,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3__DE_A_KALI": {
     html: "encens + bougies",
     text: "encens + bougies",
-    updatedAt: "2026-08-25 03:58"
+    updatedAt: "2026-08-30 23:47"
   },
 
   "JOUR3____STAND__MAQUILLAGE___": {
