@@ -1,4 +1,4 @@
-// @saved:2026-08-30 12:29:30
+// @saved:2026-08-30 12:33:53
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -346,7 +346,7 @@ var AGENDA = [
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_9843",jour:"Jour 2",date:"Dimanche 30 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA Ceremonie CACAO (SHIVA) (EXTRA)",lieu:"SHIVA",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPA_CEREMONIE_CACAO__SHIVA__",meetingRoles:""},
-  {id:"A_5006",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"PREPA & LOGISTICS",atelier:"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Sevda Duroy",helper2:"Sophie O'Heix",helper3:"Audrey Barthélémy",helper4:"Damien Eissen",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_5006",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"PREPA & LOGISTICS",atelier:"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
