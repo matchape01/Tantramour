@@ -1,4 +1,4 @@
-// @saved:2026-08-30 23:45:54
+// @saved:2026-08-30 23:46:04
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -61,7 +61,7 @@ var AGENDA = [
   {id:"A_1028",jour:"Jour 2",date:"Dimanche 30 aout",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Roue de Terre: Consentir et Communiquer",lieu:"SHAKTI",fac1:"Jivan Muti (Clément Victor)",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Vera De Sousa",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:1,colibri:false,logisticId:"JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
-  {id:"A_1029",jour:"Jour 3",date:"Lundi 31 aout",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Cesser de Faire, Laisser Etre",lieu:"TARA",fac1:"Audrey Barthélémy",fac2:"",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Yannick Bohrer",helper2:"Claude Brame",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE",meetingRoles:""},
+  {id:"A_1029",jour:"Jour 3",date:"Lundi 31 aout",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Cesser de Faire, Laisser Etre",lieu:"TARA",fac1:"Audrey Barthélémy",fac2:"",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Yannick Bohrer",helper2:"",helper3:"",helper4:"",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_8651",jour:"Jour 2",date:"Dimanche 30 aout",heure:"14:30 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
