@@ -1,4 +1,4 @@
-// @saved:2026-08-30 15:30:36
+// @saved:2026-08-30 15:33:54
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -184,7 +184,7 @@ var AGENDA = [
   {id:"A_7320",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"14:30 - 16:00",type:"SUPPORT EMOTIONNEL",atelier:"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL",lieu:"BUDDHA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_2658",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"14:00 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_3055",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"17.30 - 18.15",type:"REPAS & PAUSE",atelier:"GOUTER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_1123",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Et si tu tissais le fil de ta liberté ?",lieu:"CHENREZIG",fac1:"Laurence Heitzmann",fac2:"Laurent Lacoste",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Philippe Hanrion",helper2:"Audrey Barthélémy",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_",meetingRoles:""},
+  {id:"A_1123",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Et si tu tissais le fil de ta liberté ?",lieu:"CHENREZIG",fac1:"Laurence Heitzmann",fac2:"Laurent Lacoste",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Philippe Hanrion",helper2:"Audrey Barthélémy",helper3:"Scott McClure",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
   {id:"A_1124",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Roue de l'Air: Poèmes Médecine",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Kalista",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN",meetingRoles:""},
