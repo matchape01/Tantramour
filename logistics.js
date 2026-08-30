@@ -39,11 +39,11 @@ var LOGISTICS = {
   },
 
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
-    html: "<br>",
-    text: "",
+    html: "INFO LOGISTIQUES TEST MATT",
+    text: "INFO LOGISTIQUES TEST MATT",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-29 15:16"
+    updatedAt: "2026-08-30 03:22"
   },
 
   "JOUR1_TEST_MATT_2__CHHANGEMENT____3_": {
