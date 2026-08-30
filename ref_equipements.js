@@ -93,5 +93,5 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Matériel de Pratique", id: "EQ_ZAFU", value: "Zafu animateur", stock: 32, description: "Zafu animateur", remarque: "" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_NEW04", value: "Petites fleurs séchées", stock: 0, description: "pour autel Shiva", remarque: "" },
   { type: "Hameau", categorie: "Décoration & Rituel", id: "EQ_NEW05", value: "Vase", stock: 0, description: "", remarque: "" },
-  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOTNOIR", value: "Spot noir", stock: "N/A", description: "", remarque: "" },
+  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOTNOIR", value: "Spot lumineux noir", stock: "N/A", description: "", remarque: "" },
 ];
