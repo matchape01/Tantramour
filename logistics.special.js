@@ -649,9 +649,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
-    html: "DES OEUFS POUR LES PROT §§§",
-    text: "DES OEUFS POUR LES PROT §§§",
-    updatedAt: "2026-08-30 04:23"
+    html: "DES OEUFS POUR LES PROT §§§ZZZ",
+    text: "DES OEUFS POUR LES PROT §§§ZZZ",
+    updatedAt: "2026-08-30 09:49"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
