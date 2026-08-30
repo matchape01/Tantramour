@@ -16,7 +16,7 @@ var LOGISTICS_HELPERS = {
     avant: "<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt\">• rencontrer l'animateur environ 1h avant le début de la séance&nbsp;</p>",
     pendant: "<span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Helpers jouent le rôle de gardiens de l'espace pendant la danse (silence, pieds nus...)<br>",
     apres: "<br>",
-    updatedAt: "2026-08-30 03:22"
+    updatedAt: "2026-08-30 03:23"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
