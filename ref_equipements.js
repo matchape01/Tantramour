@@ -22,7 +22,7 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Cuisine", id: "EQ_BASSINE", value: "Bassine", stock: 0, description: "Bassine", remarque: "" },
   { type: "Hameau", categorie: "Cuisine", id: "EQ_PAN", value: "Casserole", stock: 0, description: "Casserole", remarque: "" },
   { type: "Hameau", categorie: "Cuisine", id: "EQ_LOUCHE", value: "Louche", stock: 0, description: "Louche", remarque: "" },
-  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOT", value: "Spot lumineux", stock: 0, description: "Spot lumineux", remarque: "" },
+  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOT", value: "Spot lumineux chromé", stock: "N/A", description: "Spot lumineux", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_LINGETTE", value: "Lingette humide", stock: 0, description: "Lingette humide", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_MOUCHOIR", value: "Boite mouchoirs", stock: 0, description: "Boite mouchoirs", remarque: "" },
   { type: "Tantramour", categorie: "Consommables Hygiène", id: "EQ_TALC", value: "Talc", stock: 0, description: "Talc", remarque: "" },
@@ -93,5 +93,5 @@ var REF_EQUIPEMENTS = [
   { type: "Hameau", categorie: "Matériel de Pratique", id: "EQ_ZAFU", value: "Zafu animateur", stock: 32, description: "Zafu animateur", remarque: "" },
   { type: "Tantramour", categorie: "Décoration & Rituel", id: "EQ_NEW04", value: "Petites fleurs séchées", stock: 0, description: "pour autel Shiva", remarque: "" },
   { type: "Hameau", categorie: "Décoration & Rituel", id: "EQ_NEW05", value: "Vase", stock: 0, description: "", remarque: "" },
-  { type: "Tantramour", categorie: "Eclairage", id: "EQ_NEW06", value: "Spot noir", stock: 0, description: "", remarque: "" }
+  { type: "Tantramour", categorie: "Eclairage", id: "EQ_SPOTNOIR", value: "Spot noir", stock: "N/A", description: "", remarque: "" },
 ];
