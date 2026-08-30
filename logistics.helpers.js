@@ -99,8 +99,8 @@ var LOGISTICS_HELPERS = {
   "JOUR2_OPENING_CONNECTIONS": {
     avant: "• Faire un test son (enceintes, micro, musique) <br>• Installer les chaises et réorganiser en fonction du nombre de participants.<br>• Ajuster l'ambiance lumineuse (mais je ne le saurai qu’après avoir vu les lieux)",
     pendant: "Distribuer les bandeaux aux participants",
-    apres: "• Rapporter les spots noirs sous le chapiteau à droite de la scène",
-    updatedAt: "2026-08-30 10:19"
+    apres: "• Rapporter les spots noirs au QG Hanuman",
+    updatedAt: "2026-08-30 10:24"
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
