@@ -1049,33 +1049,30 @@ window.exportJpeg = function() {
 };
 
 window.doRefresh = function() {
-  // Recharger la page en conservant le nom sélectionné via le hash URL
+  // Sauvegarder le nom sélectionné, puis forcer un vrai rechargement sans cache
   var nom = document.getElementById('fNom').value;
-  if (nom) {
-    location.href = location.pathname + '#nom=' + encodeURIComponent(nom);
+  if (nom) sessionStorage.setItem('mas_restore_nom', nom);
+  if ('caches' in window) {
+    caches.keys().then(function(keys) {
+      return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+    }).finally(function() { location.reload(true); });
   } else {
-    location.reload();
+    location.reload(true);
   }
 };
 
-// ── Restauration du nom depuis le hash URL après reload ───────────────────────
+// ── Restauration du nom depuis sessionStorage après reload ────────────────────
 (function() {
-  var hash = location.hash;
-  if (!hash) return;
-  var m = hash.match(/[#&]nom=([^&]*)/);
-  if (!m) return;
-  var nom = decodeURIComponent(m[1]);
-  // Attendre que le select soit peuplé (déjà fait au-dessus)
+  var nom = sessionStorage.getItem('mas_restore_nom');
+  if (!nom) return;
+  sessionStorage.removeItem('mas_restore_nom');
   var sel = document.getElementById('fNom');
   if (!sel) return;
-  // Chercher l'option correspondante
   for (var i = 0; i < sel.options.length; i++) {
     if (sel.options[i].value === nom) {
       sel.value = nom;
       activeNom = nom;
       activeJour = '';
-      // Nettoyer le hash sans recharger
-      history.replaceState(null, '', location.pathname);
       updateExportBtn();
       break;
     }
