@@ -268,7 +268,7 @@ var LOGISTICS_HELPERS = {
     avant: "installer matelas pour participants <br>aider à apporter le matériel de musique<br>passer enscens<br>allumer bougies",
     pendant: "",
     apres: "Ranger les matelas<br>Aider à ramener le matériel de musique",
-    updatedAt: "2026-08-30 23:47"
+    updatedAt: "2026-08-30 00:23"
   },
 
   "JOUR3____STAND__MAQUILLAGE___": {
