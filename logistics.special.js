@@ -15,7 +15,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR1_SOIREE_ECSTATIC_DANSE": {
     html: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
     text: "2 helpers ayant de l'expérience en danse extatique (ou danse consciente) qui puissent jouer le rôle de « gardiens de l'espace »",
-    updatedAt: "2026-08-30 03:24"
+    updatedAt: "2026-08-29 15:16"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
@@ -651,7 +651,7 @@ var LOGISTICS_SPECIAL = {
   "LOG_Jour1_PETIT_DEJ_2": {
     html: "DES OEUFS POUR LES PROT §§§",
     text: "DES OEUFS POUR LES PROT §§§",
-    updatedAt: "2026-08-29 14:13"
+    updatedAt: "2026-08-30 03:27"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
