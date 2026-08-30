@@ -100,7 +100,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Faire un test son (enceintes, micro, musique) <br>• Installer les chaises et réorganiser en fonction du nombre de participants.<br>• Ajuster l'ambiance lumineuse (mais je ne le saurai qu’après avoir vu les lieux)",
     pendant: "Distribuer les bandeaux aux participants",
     apres: "• Rapporter les spots noirs au QG Hanuman",
-    updatedAt: "2026-08-30 10:29"
+    updatedAt: "2026-08-30 10:44"
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
