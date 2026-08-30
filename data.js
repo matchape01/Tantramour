@@ -1,4 +1,4 @@
-// @saved:2026-08-30 23:06:24
+// @saved:2026-08-30 23:07:42
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -350,6 +350,7 @@ var AGENDA = [
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_8004",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid) EXTRA STAFF",lieu:"CHENREZIG",fac1:"",fac2:"",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"",helper2:"Linda Stachetti",helper3:"Yannick Bohrer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_7601",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"PREPA & LOGISTICS",atelier:"Temple du Mystère et de la Fantaisie (EXTRA STAFF)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
