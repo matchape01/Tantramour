@@ -311,11 +311,11 @@ var LOGISTICS = {
   },
 
   "JOUR3_LE_TOUCHER_COMME_PORTE_VERS_L_": {
-    html: "",
-    text: "",
+    html: "-20 matelas (+2 coussins par matelas) en étoile (on en ajoutera si plus de monde)",
+    text: "-20 matelas (+2 coussins par matelas) en étoile (on en ajoutera si plus de monde)",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-21 03:30"
+    updatedAt: "2026-08-30 00:19"
   },
 
   "JOUR3_LOVE_TEMPLE_DES_EROTYPES__R": {
