@@ -87,7 +87,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_OPENING_CONNECTIONS": {
     html: "1 angel formé à la prise en charge des traumatismes ?<br>6 spots lumineux (à voir avec Félix)<br>J’aimerais peut-être aussi que quelqu’un m’aide à modifier l’éclairage si possible, mais je ne le saurai qu’après avoir vu les lieux",
     text: "1 angel formé à la prise en charge des traumatismes ?\n6 spots lumineux (à voir avec Félix)\nJ’aimerais peut-être aussi que quelqu’un m’aide à modifier l’éclairage si possible, mais je ne le saurai qu’après avoir vu les lieux",
-    updatedAt: "2026-08-30 10:24"
+    updatedAt: "2026-08-30 10:29"
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
