@@ -1015,11 +1015,11 @@ var LOGISTICS = {
   },
 
   "LOG_Jour2_MEDITATION_ACTIVE": {
-    html: "- micro",
-    text: "- micro",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-29 11:55"
+    updatedAt: "2026-08-30 04:33"
   },
 
   "LOG_Jour2_OPENING_CONNECTIONS": {
