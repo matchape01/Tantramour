@@ -16,7 +16,7 @@ var LOGISTICS_HELPERS = {
     avant: "<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt\">• rencontrer l'animateur environ 1h avant le début de la séance&nbsp;</p>",
     pendant: "<span style=\"font-family: Calibri; font-size: 11pt;\">•&nbsp;</span>Helpers jouent le rôle de gardiens de l'espace pendant la danse (silence, pieds nus...)<br>",
     apres: "<br>",
-    updatedAt: "2026-08-29 15:16"
+    updatedAt: "2026-08-30 03:24"
   },
 
   "JOUR1_VERIFICATION_STOCK_EQUIPEMENTS": {
@@ -756,9 +756,9 @@ var LOGISTICS_HELPERS = {
 
   "LOG_Jour1_PETIT_DEJ_2": {
     avant: "test",
-    pendant: "Transition VERA",
-    apres: "courage ! MERCI",
-    updatedAt: "2026-08-30 03:23"
+    pendant: "Transition",
+    apres: "courage !&nbsp;",
+    updatedAt: "2026-08-29 14:13"
   },
 
   "JOUR1_TESTS_SON___SONO_A__SHIVA": {
