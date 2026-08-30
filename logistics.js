@@ -152,10 +152,10 @@ var LOGISTICS = {
 
   "JOUR2_OPENING_CONNECTIONS": {
     html: "Microphones et haut-parleurs connectés à mon iPhone pour la musique. <br>Bandeaux pour les participants. <br>Disposer les chaises en demi-cercle avec un espace libre au milieu pour les activités de mise en relation. Il faut surtout prévoir de la place pour rester debout.",
-    text: "Microphones et haut-parleurs connectés à mon iPhone pour la musique. \nBandeaux pour les participants. \nDisposer les chaises en demi-cercle avec un espace libre au milieu pour les activités de mise en relation. Il faut surtout prévoir de la place pour rester debout.",
+    text: "Microphones et haut-parleurs connectés à mon iPhone pour la musique.\nBandeaux pour les participants.\nDisposer les chaises en demi-cercle avec un espace libre au milieu pour les activités de mise en relation. Il faut surtout prévoir de la place pour rester debout.",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-30 10:19"
   },
 
   "JOUR2_PREPARATION_RASSEMBLEMENT": {
