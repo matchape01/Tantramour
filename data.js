@@ -1,4 +1,4 @@
-// @saved:2026-08-30 12:33:53
+// @saved:2026-08-30 15:23:22
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -129,7 +129,7 @@ var AGENDA = [
   {id:"A_5674",jour:"Jour 4",date:"Mardi 1 septembre",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1837",jour:"Jour 4",date:"Mardi 1 septembre",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_PREPARATION_RASSEMBLEMENT",meetingRoles:""},
   {id:"A_5555",jour:"Jour 4",date:"Mardi 1 septembre",heure:"9:45 - 11:00",type:"RASSEMBLEMENT",atelier:"Rassemblement du matin",lieu:"SHIVA",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Vera De Sousa",helper2:"Linda Stachetti",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"LOG_Jour4_RASSEMBLEMENT",meetingRoles:""},
-  {id:"A_1079",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Se libérer de la honte sexuelle et des conditionnements",lieu:"SHIVA",fac1:"Samantha Marvels",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Yannick Bohrer",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR4_RELEASING_SEXUAL_SHAME___CONDI",meetingRoles:""},
+  {id:"A_1079",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Se libérer de la honte sexuelle et des conditionnements",lieu:"SHIVA",fac1:"Samantha Marvels",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Yannick Bohrer",helper2:"Scott McClure",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR4_RELEASING_SEXUAL_SHAME___CONDI",meetingRoles:""},
   {id:"A_1080",jour:"Jour 4",date:"Mardi 1 septembre",heure:"11:15 - 13:15",type:"ATELIERS TANTRA (Matin)",atelier:"Alice - Dissolution (2/3) massage méditatif tantrique",lieu:"CHENREZIG",fac1:"Bruno Deck",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Véronique Santini Bottemer",helper2:"Alexandre Fourcault",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR4_ALICE___DISSOLUTION__2_3__MASS",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
