@@ -664,6 +664,12 @@ var LOGISTICS_SPECIAL = {
     html: "",
     text: "",
     updatedAt: "2026-08-29 16:55"
+  },
+
+  "JOUR2_PREPA_CEREMONIE_CACAO__SHIVA__": {
+    html: "",
+    text: "",
+    updatedAt: "2026-08-30 12:29"
   }
 
 };
