@@ -595,7 +595,7 @@ var LOGISTICS = {
     text: "- micro\n- sono\n- coussins",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-30 03:05"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR5_AU_COMMENCEMENT_ETAIT_LE_CORPS": {

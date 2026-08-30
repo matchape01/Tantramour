@@ -1,55 +1,60 @@
 /**
  * TANTRAMOUR 2026 — Loader de données dynamique
  * ================================================
- * Charge les fichiers JS séquentiellement via injection de <script>.
- * Timestamp sur chaque URL pour contourner le cache GitHub Pages.
+ * Stratégie de chargement (par ordre de priorité) :
+ *   1. Si un token GitHub est disponible (localStorage 'tm_gh_token') :
+ *      → Charger depuis l'API GitHub (api.github.com) — TOUJOURS FRAIS, pas de CDN.
+ *   2. Sinon : charger depuis le CDN GitHub Pages avec timestamp anti-cache navigateur.
+ *
  * Compatible CSP strict (pas d'eval, pas de blob).
  */
 
-// ── Anti-cache pour les fichiers de référence chargés en <script src> statique ──
-// Ces fichiers sont éditables depuis l'interface (ressources, descriptions, etc.)
-// et peuvent donc changer entre deux visites. On les recharge avec un timestamp
-// pour contourner le cache navigateur, sans avoir à modifier chaque rapport.
-(function() {
-  // Liste des fichiers de référence modifiables par l'interface
-  var REFRESHABLE = [
-    'data.js',
-    'ref_ressources.js',
-    'ref_descriptions.js',
-    'ref_consignes_type.js',
-    'ref_consignes_recurrentes.js',
-    'ref_notes.js',
-    'ref_lieux.js',
-    'ref_types.js',
-    'ref_heures.js',
-    'ref_jours.js',
-    'ref_piment.js',
-    'ref_resource_types.js',
-    'ref_translations.js',
-    'ref_equipements.js',
-    'ref_equip_cat.js',
-    'ref_pause_massage.js',
-  ];
+// Ces variables sont déclarées localement dans loader.js pour éviter tout conflit
+// avec les déclarations const de github-api.js (chargé sur certaines pages).
+var _LDR_GH_OWNER  = 'matchape01';
+var _LDR_GH_REPO   = 'Tantramour';
+var _LDR_GH_BRANCH = 'main';
 
+// ── Liste des fichiers de référence modifiables ───────────────────────────────
+var REFRESHABLE = [
+  'data.js',
+  'ref_ressources.js',
+  'ref_descriptions.js',
+  'ref_consignes_type.js',
+  'ref_consignes_recurrentes.js',
+  'ref_notes.js',
+  'ref_lieux.js',
+  'ref_types.js',
+  'ref_heures.js',
+  'ref_jours.js',
+  'ref_piment.js',
+  'ref_resource_types.js',
+  'ref_translations.js',
+  'ref_equipements.js',
+  'ref_equip_cat.js',
+  'ref_pause_massage.js',
+  'ref_news.js',
+  'logistics.js',
+  'logistics.special.js',
+  'logistics.helpers.js',
+];
+
+// ── Anti-cache navigateur pour les scripts statiques chargés en <script src> ──
+(function() {
   function bustStaticScripts() {
     var ts = Date.now();
     var scripts = document.querySelectorAll('script[src]');
     scripts.forEach(function(s) {
       var src = s.getAttribute('src') || '';
-      // Ne traiter que les scripts statiques sans timestamp déjà présent
       if (src.indexOf('?') !== -1) return;
       var basename = src.split('/').pop();
       if (REFRESHABLE.indexOf(basename) === -1) return;
-
-      // Créer un nouveau script avec timestamp et remplacer l'original
       var fresh = document.createElement('script');
       fresh.src = src + '?_=' + ts;
-      // Conserver les éventuels attributs (defer, async) — en pratique absents ici
       s.parentNode.insertBefore(fresh, s.nextSibling);
       s.remove();
     });
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bustStaticScripts);
   } else {
@@ -57,34 +62,89 @@
   }
 })();
 
+// ── Injecter du code JS dans la page ─────────────────────────────────────────
+// GitHub Pages bloque blob: et eval() dans sa CSP.
+// On utilise un script inline (textContent) — compatible avec la CSP de GitHub Pages
+// qui autorise les scripts inline via 'unsafe-inline' pour les balises <script>.
+function _injectScript(code, onDone) {
+  try {
+    var el = document.createElement('script');
+    el.textContent = code;
+    (document.head || document.documentElement).appendChild(el);
+    if (onDone) setTimeout(onDone, 0); // tick suivant pour que le script s'exécute
+  } catch(e) {
+    console.error('[loader] Impossible d\'injecter le script', e);
+    if (onDone) onDone();
+  }
+}
+
+// ── Charger un fichier depuis l'API GitHub (toujours frais) ──────────────────
+function _loadFromGitHubAPI(filename, token, onSuccess, onFallback) {
+  var apiUrl = 'https://api.github.com/repos/' + _LDR_GH_OWNER + '/' + _LDR_GH_REPO +
+               '/contents/' + encodeURIComponent(filename) +
+               '?ref=' + _LDR_GH_BRANCH + '&_t=' + Date.now();
+  var headers = { 'Accept': 'application/vnd.github+json', 'If-None-Match': '' };
+  if (token) headers['Authorization'] = 'token ' + token; // optionnel — augmente le quota
+  fetch(apiUrl, { headers: headers, cache: 'no-store' })
+  .then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(function(data) {
+    var content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    _injectScript(content, onSuccess);
+  })
+  .catch(function(err) {
+    console.warn('[loader] API GitHub échouée pour ' + filename + ' (' + err.message + ') → fallback CDN');
+    onFallback();
+  });
+}
+
+// ── Charger un fichier depuis le CDN GitHub Pages ─────────────────────────────
+function _loadFromCDN(filename, onDone) {
+  var url    = filename + '?_=' + Date.now();
+  var script = document.createElement('script');
+  script.src     = url;
+  script.onload  = onDone;
+  script.onerror = function() {
+    console.error('[loader] Échec CDN : ' + filename);
+    onDone();
+  };
+  (document.head || document.documentElement).appendChild(script);
+}
+
+// ── API publique : loadData([fichiers], callback) ─────────────────────────────
+// Tous les fichiers REFRESHABLE sont chargés via l'API GitHub (toujours frais,
+// pas de CDN, pas de délai). L'API GitHub est publique en lecture pour un repo public
+// — pas besoin de token. Le token est utilisé uniquement s'il existe pour augmenter
+// la limite de requêtes (60/h anonyme → 5000/h authentifié).
+// Fallback CDN si l'API est inaccessible (réseau, quota dépassé).
 function loadData(files, callback) {
+  var token = (typeof localStorage !== 'undefined') ? localStorage.getItem('tm_gh_token') : null;
   var index = 0;
 
   function loadNext() {
-    if (index >= files.length) {
-      callback();
-      return;
-    }
+    if (index >= files.length) { callback(); return; }
     var file = files[index++];
-    var url  = file + '?_=' + Date.now();
 
-    var script = document.createElement('script');
-    script.src     = url;
-    script.onload  = loadNext;
-    script.onerror = function() {
-      console.error('[loader] Echec : ' + file);
-      loadNext();
-    };
-    (document.head || document.documentElement).appendChild(script);
+    var isRefreshable = REFRESHABLE.indexOf(file) !== -1;
+
+    if (isRefreshable) {
+      // ── Via API GitHub (frais instantané, même sans token) ──
+      _loadFromGitHubAPI(file, token, loadNext, function() {
+        // Fallback CDN si l'API échoue (réseau, quota)
+        _loadFromCDN(file, loadNext);
+      });
+    } else {
+      // ── Via CDN (fichiers statiques non modifiables) ──
+      _loadFromCDN(file, loadNext);
+    }
   }
 
-  // Lancer au prochain tick pour laisser le DOM finir de se construire
   setTimeout(loadNext, 0);
 }
 
 // ── Badge "Data Update" ────────────────────────────────────────────────────────
-// Affiché en bas à droite sur toutes les pages qui chargent loader.js.
-// La date est lue depuis localStorage (clé : tm_data_update).
 (function() {
   function injectBadge() {
     var date = localStorage.getItem('tm_data_update') || '';
@@ -104,7 +164,6 @@ function loadData(files, callback) {
     badge.style.display = date ? 'block' : 'none';
     document.body.appendChild(badge);
 
-    // Synchroniser si la valeur change (ex : onglet MasterData ouvert en parallèle)
     window.addEventListener('storage', function(e) {
       if (e.key === 'tm_data_update') {
         var v = e.newValue || '';
