@@ -1019,7 +1019,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-30 04:43"
+    updatedAt: "2026-08-30 04:45"
   },
 
   "LOG_Jour2_OPENING_CONNECTIONS": {
