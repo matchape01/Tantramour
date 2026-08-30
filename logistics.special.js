@@ -181,9 +181,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR3_LE_TOUCHER_COMME_PORTE_VERS_L_": {
-    html: "",
-    text: "",
-    updatedAt: ""
+    html: "-au centre : 30 petites coupelles + pots huile de coco (chacun prend une coupelle et y met de l'huile à son arrivée) + plusieurs cuillères<div><br></div><div>Préparation temple :<br>-autel au centre (tissus + statuette)</div>",
+    text: "-au centre : 30 petites coupelles + pots huile de coco (chacun prend une coupelle et y met de l'huile à son arrivée) + plusieurs cuillères\n\n\nPréparation temple :\n-autel au centre (tissus + statuette)",
+    updatedAt: "2026-08-30 00:19"
   },
 
   "JOUR3_LOVE_TEMPLE_DES_EROTYPES__R": {
