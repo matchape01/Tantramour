@@ -1,4 +1,4 @@
-// @saved:2026-08-30 21:08:30
+// @saved:2026-08-30 21:09:10
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -169,7 +169,7 @@ var AGENDA = [
   {id:"A_1108",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Roue du Feu: Libération émotionnelle et Kali",lieu:"SHIVA",fac1:"Jivan Muti (Clément Victor)",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Maeva Mantione",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:3,colibri:false,logisticId:"LOG_Jour5_ROUE_DU_FEU___LIBERATION_EMOTI",meetingRoles:""},
   {id:"A_1109",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Ode à SHIVA",lieu:"CHENREZIG",fac1:"Suman (Emmanuelle Cueff)",fac2:"",fac3:"",fac4:"",traduction:"Delphine Dupré",helper1:"Cédric Vesper",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:1,colibri:false,logisticId:"JOUR5__DE___SHIVA_",meetingRoles:""},
   {id:"A_1110",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Shibari Mystique - L'art du Lâcher-Prise",lieu:"SHAKTI",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Mahima (Emma Roussel)",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:1,colibri:false,logisticId:"LOG_Jour5_MYSTIC_SHIBARI___L_ART_DE_LA_T",meetingRoles:""},
-  {id:"A_1111",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Au commencement était le corps",lieu:"TARA",fac1:"Sandrine Bettinelli",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Cédric Vesper",helper2:"Alexandre Fourcault",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:3,colibri:false,logisticId:"JOUR5_AU_COMMENCEMENT_ETAIT_LE_CORPS",meetingRoles:""},
+  {id:"A_1111",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Au commencement était le corps",lieu:"TARA",fac1:"Sandrine Bettinelli",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Philippe Hanrion",helper2:"Alexandre Fourcault",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:3,colibri:false,logisticId:"JOUR5_AU_COMMENCEMENT_ETAIT_LE_CORPS",meetingRoles:""},
 
   // ─── Jour 6 — Jeudi 3 septembre ─────────────────────────────────────
   {id:"A_1112",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"12:00 - 13:30",type:"ATELIER ARTISTIQUE (Matin)",atelier:"Danse de sublimation et Yi king ",lieu:"GANESH",fac1:"Boris Desvignes",fac2:"",fac3:"",fac4:"",traduction:"Delphine Dupré",helper1:"Stéphane Ahmed",helper2:"",helper3:"",helper4:"",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"JOUR6_DANSE_DE_SUBLIMATION_ET_YI_KIN",meetingRoles:""},
