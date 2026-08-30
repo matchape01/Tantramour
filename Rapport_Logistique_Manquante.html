@@ -192,7 +192,8 @@ function getLogStatus(e) {
   var hasContent  = entry && (LOGISTICS[e.logisticId].text || '').trim().length > 0;
   // Source unifiée de validation : REF_DESCRIPTIONS (priorité) puis LOGISTICS (compatibilité)
   var descEntry = typeof REF_DESCRIPTIONS !== 'undefined'
-    ? REF_DESCRIPTIONS.find(function(d) { return (d.atelier||'').trim() === (e.atelier||'').trim(); })
+    ? (e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId === e.id; })) ||
+      REF_DESCRIPTIONS.find(function(d) { return (d.atelier||'').trim() === (e.atelier||'').trim(); })
     : null;
   var isValidated = (descEntry && !!descEntry.validatedByFac) ||
                     (entry && !!LOGISTICS[e.logisticId].validatedByFac);

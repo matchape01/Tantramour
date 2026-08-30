@@ -932,8 +932,15 @@ function buildPersonSelect(id, refArr, val, availMap) {
   return `<select id="${id}" onchange="fieldChange('${id}')">${opts}</select>`;
 }
 
-function findDesc(atelierName) {
+// Cherche une entrée dans REF_DESCRIPTIONS :
+//   1. D'abord par atelierId (robuste au renommage)
+//   2. Fallback par nom (compatibilité avec les entrées sans ID)
+function findDesc(atelierName, atelierId) {
   if (typeof REF_DESCRIPTIONS === 'undefined') return null;
+  if (atelierId) {
+    const byId = REF_DESCRIPTIONS.find(d => d.atelierId === atelierId);
+    if (byId) return byId;
+  }
   return REF_DESCRIPTIONS.find(d => (d.atelier||'').trim() === (atelierName||'').trim()) || null;
 }
 
@@ -1773,6 +1780,7 @@ async function saveUpdate() {
 
     return objects.map(function(obj) {
       return {
+        atelierId:      extractStr(obj,  'atelierId'),
         key:            extractStr(obj,  'key'),
         atelier:        extractStr(obj,  'atelier'),
         nomEn:          extractStr(obj,  'nomEn'),
@@ -1827,33 +1835,36 @@ async function saveUpdate() {
     // ── Étape 2 : si on a une version fraîche, synchroniser REF_DESCRIPTIONS en mémoire ──
     // On prend TOUTES les entrées fraîches, puis on écrase uniquement celle de l'atelier courant.
     if (freshDescriptions && Array.isArray(freshDescriptions)) {
-      // Fusionner : les entrées fraîches de GitHub remplacent la mémoire locale,
-      // sauf l'entrée de l'atelier en cours qui sera mise à jour juste après.
-      const atelierNameNorm = (newEntry.atelier || '').trim();
-      // Ajouter les entrées fraîches absentes de la mémoire locale (ajoutées par d'autres users)
+      // Fusionner par ID d'abord, puis par nom pour les entrées sans ID
+      const currentId = newEntry.id || '';
       freshDescriptions.forEach(function(fd) {
-        if ((fd.atelier || '').trim() === atelierNameNorm) return; // sera géré ci-dessous
-        const existing = REF_DESCRIPTIONS.find(function(d) { return (d.atelier||'').trim() === (fd.atelier||'').trim(); });
+        if (currentId && fd.atelierId === currentId) return; // sera géré ci-dessous
+        const existing = REF_DESCRIPTIONS.find(function(d) {
+          return (fd.atelierId && d.atelierId === fd.atelierId) ||
+                 (!fd.atelierId && (d.atelier||'').trim() === (fd.atelier||'').trim());
+        });
         if (!existing) {
-          REF_DESCRIPTIONS.push(fd); // entrée créée par un autre utilisateur → on l'intègre
+          REF_DESCRIPTIONS.push(fd);
         } else {
-          // Mettre à jour les champs de l'entrée existante avec la version GitHub
-          // (sauf si c'est l'atelier courant — géré séparément)
           Object.assign(existing, fd);
         }
       });
     }
 
-    // ── Étape 3 : appliquer les changements locaux sur l'entrée de l'atelier courant ──
+    // ── Étape 3 : appliquer les changements locaux — recherche par ID d'abord ──
     const atelierName = newEntry.atelier || '';
-    let d = findDesc(atelierName);
+    let d = findDesc(atelierName, newEntry.id);
     if (!d) {
       const key = atelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
-      d = { key, atelier: atelierName, nomEn:'', type: newEntry.type||'', piment: newEntry.piment||0,
+      d = { atelierId: newEntry.id||'', key, atelier: atelierName, nomEn:'',
+            type: newEntry.type||'', piment: newEntry.piment||0,
             fac1: newEntry.fac1||'', fac2: newEntry.fac2||'', descFr:'', descEn:'',
             consigne:'', consigneEn:'', validatedByFac:false, updatedAt:'' };
       REF_DESCRIPTIONS.push(d);
     }
+    // Toujours synchroniser l'atelierId et le nom courant
+    d.atelierId = newEntry.id || d.atelierId || '';
+    d.atelier   = atelierName;
     if (editedData._nomEn      !== undefined) d.nomEn      = editedData._nomEn;
     if (editedData._descFr     !== undefined) d.descFr     = editedData._descFr;
     if (editedData._descEn     !== undefined) d.descEn     = editedData._descEn;
@@ -1900,22 +1911,18 @@ async function saveUpdate() {
     }
 
     // ── Détection de renommage ────────────────────────────────────────────────
-    // Si le nom FR de l'atelier a changé, il faut migrer l'entrée REF_DESCRIPTIONS
-    // de l'ancien nom vers le nouveau AVANT de sauvegarder, sinon les descriptions
-    // se retrouvent orphelines sous l'ancien nom et sont invisibles.
+    // L'atelierId est le point de connexion stable entre data.js et ref_descriptions.js.
+    // En cas de renommage, on retrouve l'entrée par son ID → les descriptions sont préservées.
     const oldAtelierName = AGENDA[selectedIdx].atelier || '';
     const newAtelierName = newEntry.atelier || '';
     const isRename = oldAtelierName && newAtelierName && oldAtelierName !== newAtelierName;
     if (isRename) {
-      const existingDesc = REF_DESCRIPTIONS.find(function(d) {
-        return (d.atelier || '').trim() === oldAtelierName.trim();
-      });
+      const existingDesc = findDesc(oldAtelierName, newEntry.id);
       if (existingDesc) {
-        // Mettre à jour le nom dans l'entrée existante (les descriptions sont conservées)
-        existingDesc.atelier = newAtelierName;
-        const newKey = newAtelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
-        existingDesc.key = newKey;
-        console.log('[saveUpdate] Renommage détecté : migration REF_DESCRIPTIONS "' + oldAtelierName + '" → "' + newAtelierName + '"');
+        existingDesc.atelierId = newEntry.id || existingDesc.atelierId || '';
+        existingDesc.atelier   = newAtelierName;
+        existingDesc.key       = newAtelierName.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,40);
+        console.log('[saveUpdate] Renommage : "' + oldAtelierName + '" → "' + newAtelierName + '" (ID: ' + newEntry.id + ')');
       }
     }
 
@@ -1947,6 +1954,7 @@ async function saveUpdate() {
         await saveDescIfNeeded();
       }
       renderList();
+      renderEditor();
       const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       const baseMsg = propagated > 0
         ? `✅ Sauvegardé — ${propagated} atelier(s) angel mis à jour.`
@@ -2147,7 +2155,8 @@ function agendaToRaw(entries) {
 // ══════════════════════════════════════════════
 function genererRefDescJs() {
   const lines = (REF_DESCRIPTIONS||[]).map(d => {
-    return '  { key:"'           + escJs(d.key||'') +
+    return '  { atelierId:"'     + escJs(d.atelierId||'') +
+      '", key:"'                 + escJs(d.key||'') +
       '", atelier:"'             + escJs(d.atelier||'') +
       '", nomEn:"'               + escJs(d.nomEn||'') +
       '", type:"'                + escJs(d.type||'') +

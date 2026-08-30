@@ -796,7 +796,8 @@ function render() {
       var lang = (typeof I18n !== 'undefined') ? I18n.getLang() : 'fr';
       var atelierName = entry.atelier || '';
       if (lang === 'en' && typeof REF_DESCRIPTIONS !== 'undefined') {
-        var descEntry = REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim() === atelierName.trim(); });
+        var descEntry = (entry.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId === entry.id; })) ||
+                        REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim() === atelierName.trim(); });
         if (descEntry && descEntry.nomEn && descEntry.nomEn.trim()) atelierName = descEntry.nomEn.trim();
       }
 
@@ -1219,7 +1220,8 @@ function renderModalBody() {
   var logH    = logId && typeof LOGISTICS_HELPERS!=='undefined' ? LOGISTICS_HELPERS[logId] : null;
   var logS    = logId && typeof LOGISTICS_SPECIAL!=='undefined' ? LOGISTICS_SPECIAL[logId] : null;
   var desc    = (typeof REF_DESCRIPTIONS!=='undefined')
-    ? REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); })
+    ? (e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId === e.id; })) ||
+      REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); })
     : null;
 
   var dur   = calcDuree(e.heure);

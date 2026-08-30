@@ -735,8 +735,13 @@ function getAteliersPublics(jour) {
   });
 }
 
-function findDesc(atelier) {
+function findDesc(atelier, atelierId) {
   if (typeof REF_DESCRIPTIONS === 'undefined') return null;
+  // Recherche par atelierId d'abord (robuste au renommage), puis par nom en fallback
+  if (atelierId) {
+    var byId = REF_DESCRIPTIONS.find(function(d) { return d.atelierId === atelierId; });
+    if (byId) return byId;
+  }
   return REF_DESCRIPTIONS.find(function(d) {
     return d.atelier && d.atelier.trim() === (atelier||'').trim();
   }) || null;
@@ -831,7 +836,7 @@ function cardHtml(e, globalIdx, opts) {
   var css       = TYPE_CSS[e.type] || '';
   var facs      = [e.fac1, e.fac2].filter(Boolean);
   var pimentStr = e.piment > 0 ? '🌶️'.repeat(e.piment) : '';
-  var desc      = findDesc(e.atelier);
+  var desc      = findDesc(e.atelier, e.id);
   var lang      = I18n.getLang();
 
   // Ligne Lieu + FR/ENG
@@ -1119,7 +1124,7 @@ window.openDetail = function(idx) {
   var e   = (window._progRows || [])[idx];
   if (!e) return;
   _modalEntry = e;
-  _modalDesc  = findDesc(e.atelier);
+  _modalDesc  = findDesc(e.atelier, e.id);
   var css  = TYPE_CSS[e.type] || '';
   var meta = JOUR_META[e.jour] || {};
 

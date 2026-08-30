@@ -1039,7 +1039,8 @@ function renderModalBody() {
   var logH    = logId && typeof LOGISTICS_HELPERS!=='undefined' ? LOGISTICS_HELPERS[logId] : null;
   var logS    = logId && typeof LOGISTICS_SPECIAL!=='undefined' ? LOGISTICS_SPECIAL[logId] : null;
   var desc    = (typeof REF_DESCRIPTIONS!=='undefined')
-    ? REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); })
+    ? (e.id && REF_DESCRIPTIONS.find(function(d){ return d.atelierId === e.id; })) ||
+      REF_DESCRIPTIONS.find(function(d){ return d.atelier && d.atelier.trim()===(e.atelier||'').trim(); })
     : null;
 
   var dur   = calcDuree(e.heure);
