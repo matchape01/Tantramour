@@ -625,7 +625,7 @@ var LOGISTICS_HELPERS = {
     avant: "Ouvrir la salle et l'espace",
     pendant: "Déposer des coussins vers la fin de la méditation<br>Soutenir émotionnellement si nécessaire",
     apres: "Ranger les coussins et nettoyer la salle",
-    updatedAt: "2026-08-29 11:55"
+    updatedAt: "2026-08-30 04:33"
   },
 
   "LOG_Jour2_PLONGEZ_DANS_L_EXPERIENCE___DU_2": {
