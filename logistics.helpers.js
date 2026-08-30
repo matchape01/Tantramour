@@ -209,10 +209,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR3_LE_TOUCHER_COMME_PORTE_VERS_L_": {
-    avant: "Entrée par DUO (qui se composent devant l'entrée ou au préalable)<br><br>Préparation temple : <br>-autel au centre (tissus + statuette) <br>-20 matelas (+2 coussins par matelas) en étoile (on en ajoutera si plus de monde)  <br>-au centre : 30 petites coupelles + pots huile de coco  (chacun prend une coupelle et y met de l'huile à son arrivée) + plusieurs cuillères<br>Besoin d’un traducteur",
+    avant: "Entrée par DUO (qui se composent devant l'entrée ou au préalable)<br><br>Préparation temple :<br>-autel au centre (tissus + statuette)<br><br>Besoin d’un traducteur",
     pendant: "Etre là en contenant et si process",
     apres: "Rangement matelas et coussins par les participants.es",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-30 00:19"
   },
 
   "JOUR3_LOVE_TEMPLE_DES_EROTYPES__R": {
