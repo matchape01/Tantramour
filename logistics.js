@@ -895,11 +895,11 @@ var LOGISTICS = {
   },
 
   "LOG_Jour1_PETIT_DEJ_2": {
-    html: "VERA TEST",
-    text: "VERA TEST",
+    html: "VERA TESTZZZ",
+    text: "VERA TESTZZZ",
     validatedByFac: false,
     prepDuration: 0,
-    updatedAt: "2026-08-30 04:23"
+    updatedAt: "2026-08-30 09:49"
   },
 
   "LOG_Jour1_TEST_3": {
