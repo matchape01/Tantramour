@@ -539,7 +539,7 @@ var LOGISTICS = {
     text: "I am asking for a little more time this year than we have had before, because what I kept\nnoticing is that people needed more space after. More space to sit with what moved through them. More space to find each other before the evening came. So we end in enough daylight that you can walk, rest, be held, write, or simply breathe before anything else is asked of you. It would be my deep wish that the evening following this ceremony be held with softer music, something prayerful and tender, so that what opened in the afternoon has somewhere beautiful to land. We will need as many mattresses, cushions as possible, sage, palo santo, and candles and fire starters if possible for cleansing the space.",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-31 15:18"
+    updatedAt: "2026-08-31 16:04"
   },
 
   "JOUR4_SILENCE_CHAPITEAU___CALME_POUR": {
