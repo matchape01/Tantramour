@@ -230,10 +230,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
-    avant: "•\nFaire un cercle avec les coussins pour le début de la cérémonie.&nbsp;<br>•\nEnlever les coussins lorsque la partie dansée commencera",
-    pendant: "• purifier l'espace à la demande de l'animateur <br>• rentrer dans la pratique si une personne est seule&nbsp;",
+    avant: "We will need the space smudged pith palo santo, or sage. Good sound system. Large seated circle with cushions to begin the ceremony. Space holders to help move cushions to the side when we begin the dance ritual.",
+    pendant: "cleansing space, looking for people without partner and stepping in if they need a partner",
     apres: "",
-    updatedAt: "2026-08-31 14:59"
+    updatedAt: "2026-08-25 12:27"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
@@ -391,10 +391,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
-    avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Allumer bougies<br>• Faire brûler encens<br>• Installer peut-être qq déco<br>",
+    avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Allumer bougies<br>• Faire brûler enscens<br>• Installer peut-être qq déco<br>• Aide branchement sono si besoin (généralement, je gère ;-) )",
     pendant: "• Tenir l'espace avec moi<br>• Si besoin entrer dans la pratique pour compléter binomes ou petits groupes<br>• Au retour de la pause, démo avec cordes (idéalement 2 personnes, solo — ce n'est pas du Shibari, aucune connaissance requise mais expérience positive bienvenue)<br>• Être dispo si qq'1 lève la main pour besoin logistique ou émotionnel<br>• Peut-être d'autres petites missions de structure fine (j'ajuste encore les détails du déroulé)<br>• Gestion aération et température (clim et/ou aération)",
-    apres: "<br>",
-    updatedAt: "2026-08-31 14:47"
+    apres: "Rangement matériel<br>Aération, nettoyage sauge &amp; +<br>Remettre l'espace dispo pour la suite",
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
@@ -450,7 +450,7 @@ var LOGISTICS_HELPERS = {
     avant: "H-45’ installer bâche scotché et tissus muraux sur 1 ou 2 murs <br>H-15’ : vérifier systeme sono",
     pendant: "Pas besoin de traduction / pas besoin de helper pendant",
     apres: "1 helper pour rangement à la fin de l'atelier, oter la bache, ranger les tissus....",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-31 15:10"
   },
 
   "JOUR5_GROUNDING___INTEGRATIVE_MOVEME": {
