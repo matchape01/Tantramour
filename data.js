@@ -1,4 +1,4 @@
-// @saved:2026-08-31 12:52:30
+// @saved:2026-08-31 12:53:35
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -349,7 +349,7 @@ var AGENDA = [
   {id:"A_5006",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"PREPA & LOGISTICS",atelier:"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
-  {id:"A_1245",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"PREPA & LOGISTICS",atelier:"Temple du Mystère et de la Fantaisie (COPIE)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Maeva Mantione",helper2:"Delphine Dupré",helper3:"Yannick Bohrer",helper4:"Linda Stachetti",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_1245",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - Temple du Mystère et de la Fantaisie",lieu:"CHENREZIG",fac1:"Vera De Sousa",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Selma (Céline Laroche)",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
