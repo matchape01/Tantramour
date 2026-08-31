@@ -1,4 +1,4 @@
-// @saved:2026-08-31 15:02:02
+// @saved:2026-08-31 15:08:27
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -224,7 +224,7 @@ var AGENDA = [
   {id:"A_6369",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_8317",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT - Soirée surprise (SHIVA)",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Mukti (Cécile Yvorel)",helper3:"Véronique Santini Bottemer",helper4:"Philippe Hanrion",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1158",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"SOIREE SURPRISE pour enflammer le Chapiteau !",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Mukti (Cécile Yvorel)",helper3:"Véronique Santini Bottemer",helper4:"Philippe Hanrion",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR6_SOIREE_SURPRISE_POUR_ENFLAMMER",meetingRoles:""},
-  {id:"A_3756",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"20:45 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Erotic innocence (Echo)",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Yannick Bohrer",helper3:"Vera De Sousa",helper4:"Bhaskar (Alexandre Roque)",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_3756",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"20:45 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Erotic innocence (Echo)",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Yannick Bohrer",helper2:"Vera De Sousa",helper3:"Bhaskar (Alexandre Roque)",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1160",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Le temple de l'innocence érotique - Une cérémonie nocturne mystique",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"Guy El Hadad",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Vera De Sousa",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"JOUR6_THE_TEMPLE_OF_EROTIC_INNOCENCE",meetingRoles:""},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
