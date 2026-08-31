@@ -321,7 +321,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4_SACRED_MIRRORS__GRIEF_CEREMONY": {
     html: "• Full sound system required for electronic music <br>• mics and system set up for Misch to play live for the last hour. <br>• sturdy microphone for opening ceremony of this, prefereably with mic stand&nbsp;",
     text: "• Full sound system required for electronic music\n• mics and system set up for Misch to play live for the last hour.\n• sturdy microphone for opening ceremony of this, prefereably with mic stand",
-    updatedAt: "2026-08-31 15:18"
+    updatedAt: "2026-08-31 16:04"
   },
 
   "JOUR4_THE_ART_OF_KISSING_": {
