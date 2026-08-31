@@ -285,7 +285,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4_LOVE_TEMPLE_DEVOTIONNEL": {
     html: "<br>",
     text: "",
-    updatedAt: "2026-08-31 17:26"
+    updatedAt: "2026-08-31 17:36"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
