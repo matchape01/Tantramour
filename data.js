@@ -1,4 +1,4 @@
-// @saved:2026-08-31 08:42:39
+// @saved:2026-08-31 08:47:03
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -124,7 +124,7 @@ var AGENDA = [
   {id:"A_1072",jour:"Jour 3",date:"Lundi 31 aout",heure:"21:00 - 1:00",type:"LOVE TEMPLE",atelier:"Love Temple inspiré des ErotypesⓇ",lieu:"CHENREZIG",fac1:"Paul Raj Amar",fac2:"Audrey Barthélémy",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR3_LOVE_TEMPLE_DES_EROTYPES__R",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
-  {id:"A_1073",jour:"Jour 4",date:"Mardi 1 septembre",heure:"08:00 - 09:00",type:"MEDITATION / YOGA",atelier:"Yoga matinal",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Cédric Vesper",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour4_YOGA",meetingRoles:""},
+  {id:"A_1073",jour:"Jour 4",date:"Mardi 1 septembre",heure:"08:00 - 09:00",type:"MEDITATION / YOGA",atelier:"Yoga matinal",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Carine Janez",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour4_YOGA",meetingRoles:""},
   {id:"A_1074",jour:"Jour 4",date:"Mardi 1 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Kirtan méditation",lieu:"SHAKTI",fac1:"ShivaChris",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour4_MEDITATION",meetingRoles:""},
   {id:"A_5674",jour:"Jour 4",date:"Mardi 1 septembre",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1837",jour:"Jour 4",date:"Mardi 1 septembre",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_PREPARATION_RASSEMBLEMENT",meetingRoles:""},
