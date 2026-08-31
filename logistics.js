@@ -567,11 +567,11 @@ var LOGISTICS = {
   },
 
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
-    html: "2 helpers (ou 3 si gros groupe) • et j'aimerai bcp Amana by my side<br>1 BON traducteur·rice (sinon je préfère me traduire moi-même)",
-    text: "2 helpers (ou 3 si gros groupe) • et j'aimerai bcp Amana by my side\n1 BON traducteur·rice (sinon je préfère me traduire moi-même)",
+    html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Plein de cordes &gt; ok géré avec Amana&nbsp;",
+    text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes > ok géré avec Amana",
     validatedByFac: false,
     prepDuration: 20,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-31 14:32"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
