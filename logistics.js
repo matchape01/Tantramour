@@ -351,11 +351,11 @@ var LOGISTICS = {
   },
 
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
-    html: "It will be an amazing ceremony to create cohesion in the group, and will allow deeper vulnerability. It would be nice if this was put on during a time that less it happening and more people will gather here. Also a desire for spaciousness in sound so that there are no other loud workshops during this time so there is a felt sense of peace. Space requirements: Larger ceremonial dance space. Full sound system required. Privacy essential. Each room will need cushions for each person to sit on within circle. <br> cushions, palo santo/sauge",
-    text: "It will be an amazing ceremony to create cohesion in the group, and will allow deeper vulnerability. It would be nice if this was put on during a time that less it happening and more people will gather here. Also a desire for spaciousness in sound so that there are no other loud workshops during this time so there is a felt sense of peace. Space requirements: Larger ceremonial dance space. Full sound system required. Privacy essential. Each room will need cushions for each person to sit on within circle.\ncushions, palo santo/sauge",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-25 12:27"
+    updatedAt: "2026-08-31 14:55"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
