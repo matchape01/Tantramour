@@ -39,7 +39,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE": {
     html: "non je sais pas pour le moment",
     text: "non je sais pas pour le moment",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-31 09:55"
   },
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
