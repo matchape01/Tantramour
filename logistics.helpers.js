@@ -373,7 +373,7 @@ var LOGISTICS_HELPERS = {
     avant: "•\nTrauma informed 3-4 space holders&nbsp;<br>•\nrencontrer Echo avant le matin avant la prépa de l'aprem<br>&nbsp;",
     pendant: "• à l'entrée pour demander aux gens de n'apporter rien d'autre que leurs offrandes et de l'eau<br>• procéder à une purification légère à la sauge en entrant.&nbsp;<br>• un helper dédié à la purification de l'espace pendant la cérémonie<br>",
     apres: "-",
-    updatedAt: "2026-08-31 15:18"
+    updatedAt: "2026-08-31 16:04"
   },
 
   "JOUR4_THE_ART_OF_KISSING_": {
