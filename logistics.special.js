@@ -337,9 +337,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
-    html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
-    text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
-    updatedAt: "2026-08-26 18:36"
+    html: "<br>",
+    text: "",
+    updatedAt: "2026-08-31 14:32"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
