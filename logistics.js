@@ -91,7 +91,7 @@ var LOGISTICS = {
     text: "- matelas\n- coussins",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-26 18:36"
+    updatedAt: "2026-08-31 09:55"
   },
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
