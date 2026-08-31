@@ -201,7 +201,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-25 12:27"
+    updatedAt: "2026-08-31 14:55"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
