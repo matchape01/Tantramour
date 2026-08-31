@@ -351,11 +351,11 @@ var LOGISTICS = {
   },
 
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
-    html: "<br>",
-    text: "",
+    html: "It will be an amazing ceremony to create cohesion in the group, and will allow deeper vulnerability. It would be nice if this was put on during a time that less it happening and more people will gather here. Also a desire for spaciousness in sound so that there are no other loud workshops during this time so there is a felt sense of peace. Space requirements: Larger ceremonial dance space. Full sound system required. Privacy essential. Each room will need cushions for each person to sit on within circle. <br> cushions, palo santo/sauge",
+    text: "It will be an amazing ceremony to create cohesion in the group, and will allow deeper vulnerability. It would be nice if this was put on during a time that less it happening and more people will gather here. Also a desire for spaciousness in sound so that there are no other loud workshops during this time so there is a felt sense of peace. Space requirements: Larger ceremonial dance space. Full sound system required. Privacy essential. Each room will need cushions for each person to sit on within circle.\ncushions, palo santo/sauge",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-31 14:59"
+    updatedAt: "2026-08-25 12:27"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
@@ -567,11 +567,11 @@ var LOGISTICS = {
   },
 
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
-    html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Plein de cordes &gt; ok géré avec Amana&nbsp;",
-    text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes > ok géré avec Amana",
+    html: "2 helpers (ou 3 si gros groupe) • et j'aimerai bcp Amana by my side<br>1 BON traducteur·rice (sinon je préfère me traduire moi-même)",
+    text: "2 helpers (ou 3 si gros groupe) • et j'aimerai bcp Amana by my side\n1 BON traducteur·rice (sinon je préfère me traduire moi-même)",
     validatedByFac: false,
     prepDuration: 20,
-    updatedAt: "2026-08-31 14:47"
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
@@ -635,7 +635,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-31 15:10"
   },
 
   "JOUR5_GROUNDING___INTEGRATIVE_MOVEME": {
