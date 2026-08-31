@@ -780,6 +780,13 @@ var LOGISTICS_HELPERS = {
     pendant: "",
     apres: "",
     updatedAt: "2026-08-30 12:29"
+  },
+
+  "JOUR3_DJ_SET_AVEC_JUAN_FELIX": {
+    avant: "",
+    pendant: "",
+    apres: "",
+    updatedAt: "2026-08-31 20:29"
   }
 
 };
