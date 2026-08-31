@@ -230,10 +230,10 @@ var LOGISTICS_HELPERS = {
   },
 
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
-    avant: "We will need the space smudged pith palo santo, or sage. Good sound system. Large seated circle with cushions to begin the ceremony. Space holders to help move cushions to the side when we begin the dance ritual.",
-    pendant: "cleansing space, looking for people without partner and stepping in if they need a partner",
+    avant: "•\nFaire un cercle avec les coussins pour le début de la cérémonie.&nbsp;<br>•\nEnlever les coussins lorsque la partie dansée commencera",
+    pendant: "• purifier l'espace à la demande de l'animateur <br>• rentrer dans la pratique si une personne est seule&nbsp;",
     apres: "",
-    updatedAt: "2026-08-25 12:27"
+    updatedAt: "2026-08-31 14:55"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
