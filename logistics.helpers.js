@@ -233,7 +233,7 @@ var LOGISTICS_HELPERS = {
     avant: "•\nFaire un cercle avec les coussins pour le début de la cérémonie.&nbsp;<br>•\nEnlever les coussins lorsque la partie dansée commencera",
     pendant: "• purifier l'espace à la demande de l'animateur <br>• rentrer dans la pratique si une personne est seule&nbsp;",
     apres: "",
-    updatedAt: "2026-08-31 14:55"
+    updatedAt: "2026-08-31 14:59"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
