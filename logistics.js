@@ -571,7 +571,7 @@ var LOGISTICS = {
     text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes > ok géré avec Amana",
     validatedByFac: false,
     prepDuration: 20,
-    updatedAt: "2026-08-31 14:32"
+    updatedAt: "2026-08-31 14:47"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
