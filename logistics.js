@@ -475,7 +475,7 @@ var LOGISTICS = {
     text: "- 3 grandes bassines (suffisamment larges pour les deux pieds)\n- 3 Chaises associées\n- 6 petites serviettes\n- 3 ou 4 tables basses\n- 3 grands miroirs pleins pieds\n- Abondance d'encens, de bougies et de fleurs pour les offrandes\n- Une grande chaise type \"trône\"",
     validatedByFac: false,
     prepDuration: 60,
-    updatedAt: "2026-08-31 17:26"
+    updatedAt: "2026-08-31 17:36"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
