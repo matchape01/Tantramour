@@ -355,7 +355,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 45,
-    updatedAt: "2026-08-31 14:55"
+    updatedAt: "2026-08-31 14:59"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
