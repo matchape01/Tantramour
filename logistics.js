@@ -299,7 +299,7 @@ var LOGISTICS = {
     text: "matelas, coussins, micro, sono",
     validatedByFac: false,
     prepDuration: 15,
-    updatedAt: "2026-08-31 08:23"
+    updatedAt: "2026-08-31 08:25"
   },
 
   "JOUR3_INITIATION_A__LA_DANSE_FUSION": {
