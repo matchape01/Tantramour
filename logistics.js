@@ -471,11 +471,11 @@ var LOGISTICS = {
   },
 
   "JOUR4_LOVE_TEMPLE_DEVOTIONNEL": {
-    html: "Aménager un espace dévotionnel centré sur un autel pour Shiva Nataraj (ou autre garnde statue), avec des zones de<br>vénération et de confort.<br><br>Pour la vénération des pieds :<br>- 3 grandes bassines (suffisamment larges pour les deux pieds).<br>- Chaises associées.<br>- 6 petites serviettes (idéalement fournies par  le Hameau).<br><br>Pour l'autel central (Shiva Nataraj) :<br>Une grande statuette de Shiva Nataraj (ou autre forme de Shiva). <br>- 3 ou 4 tables basses (disponibles au hameau) pour former la base de l'autel.<br>- Des tissus pour couvrir les tables (apportés par Ishvari).<br>- Abondance d'encens, de bougies et de fleurs pour les offrandes (le but est que Nataraj soit entouré de ces éléments).<br> <br>Pour le confort et l'ambiance :<br>- Matelas et tapis de yoga (ceux déjà disponibles dans la salle devraient être suffisants).<br>- De nombreux coussins.Spots de lumière.Des bandeau pour couvrir les yeux. <br>- Mobilier et décor divers :Une grande chaise type \"trône\" (comme celle utilisée l'année précédente).<br>- 3 grands miroirs pleins pieds (à vérifier si le hameau en dispose dans les chambres ou castings et s'ils sont faciles à déplacer).",
-    text: "Aménager un espace dévotionnel centré sur un autel pour Shiva Nataraj (ou autre garnde statue), avec des zones de\nvénération et de confort.\n\nPour la vénération des pieds :\n- 3 grandes bassines (suffisamment larges pour les deux pieds).\n- Chaises associées.\n- 6 petites serviettes (idéalement fournies par  le Hameau).\n\nPour l'autel central (Shiva Nataraj) :\nUne grande statuette de Shiva Nataraj (ou autre forme de Shiva). \n- 3 ou 4 tables basses (disponibles au hameau) pour former la base de l'autel.\n- Des tissus pour couvrir les tables (apportés par Ishvari).\n- Abondance d'encens, de bougies et de fleurs pour les offrandes (le but est que Nataraj soit entouré de ces éléments).\n \nPour le confort et l'ambiance :\n- Matelas et tapis de yoga (ceux déjà disponibles dans la salle devraient être suffisants).\n- De nombreux coussins.Spots de lumière.Des bandeau pour couvrir les yeux. \n- Mobilier et décor divers :Une grande chaise type \"trône\" (comme celle utilisée l'année précédente).\n- 3 grands miroirs pleins pieds (à vérifier si le hameau en dispose dans les chambres ou castings et s'ils sont faciles à déplacer).",
+    html: "<br>",
+    text: "",
     validatedByFac: false,
     prepDuration: 60,
-    updatedAt: "2026-08-28 15:13"
+    updatedAt: "2026-08-31 17:24"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
