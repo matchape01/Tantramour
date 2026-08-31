@@ -44,7 +44,7 @@ var LOGISTICS_HELPERS = {
     avant: "non je sais pas encore",
     pendant: "Présence",
     apres: "Ranger la salle",
-    updatedAt: "2026-08-25 03:37"
+    updatedAt: "2026-08-31 09:55"
   },
 
   "JOUR2_DANSE_ECSTATIC_CONTACT__1_": {
