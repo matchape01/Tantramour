@@ -394,7 +394,7 @@ var LOGISTICS_HELPERS = {
     avant: "• Aérer la salle au maximum avant de commencer, libérer l'espace au maximum <br>• Allumer bougies<br>• Faire brûler encens<br>• Installer peut-être qq déco<br>",
     pendant: "• Tenir l'espace avec moi<br>• Si besoin entrer dans la pratique pour compléter binomes ou petits groupes<br>• Au retour de la pause, démo avec cordes (idéalement 2 personnes, solo — ce n'est pas du Shibari, aucune connaissance requise mais expérience positive bienvenue)<br>• Être dispo si qq'1 lève la main pour besoin logistique ou émotionnel<br>• Peut-être d'autres petites missions de structure fine (j'ajuste encore les détails du déroulé)<br>• Gestion aération et température (clim et/ou aération)",
     apres: "<br>",
-    updatedAt: "2026-08-31 14:32"
+    updatedAt: "2026-08-31 14:47"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
