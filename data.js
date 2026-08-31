@@ -1,4 +1,4 @@
-// @saved:2026-08-31 10:40:52
+// @saved:2026-08-31 11:54:40
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -61,7 +61,7 @@ var AGENDA = [
   {id:"A_1028",jour:"Jour 2",date:"Dimanche 30 aout",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"Roue de Terre: Consentir et Communiquer",lieu:"SHAKTI",fac1:"Jivan Muti (Clément Victor)",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Vera De Sousa",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:1,colibri:false,logisticId:"JOUR2_ROUE_DE_TERRE___CONSENTIR_ET_C",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
-  {id:"A_1029",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Cesser de Faire, Laisser Etre",lieu:"CHENREZIG",fac1:"Audrey Barthélémy",fac2:"",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"David Llorca",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:1,colibri:false,logisticId:"JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE",meetingRoles:""},
+  {id:"A_1029",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:15 - 12:45",type:"ATELIERS TANTRA (Matin)",atelier:"Cesser de Faire, Laisser Etre",lieu:"CHENREZIG",fac1:"Audrey Barthélémy",fac2:"",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:1,colibri:false,logisticId:"JOUR2_CESSER_DE_FAIRE__LAISSER_ETRE",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_8651",jour:"Jour 2",date:"Dimanche 30 aout",heure:"14:30 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
@@ -158,7 +158,7 @@ var AGENDA = [
   {id:"A_6041",jour:"Jour 4",date:"Mardi 1 septembre",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT Kelly Aura / Claude Brame (SHIVA)",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Bruno Deck",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1099",jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"CONCERT chants & mantra avec Kelly Aura & Claude Brame",lieu:"SHIVA",fac1:"Kelly Aura",fac2:"Claude Brame",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Bruno Deck",helper3:"Philippe Hanrion",helper4:"Echo Clem (Clément)",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR4_CONCERT_CHANTS___MANTRA_AVEC_K",meetingRoles:"",_equipements:{"EQ_COUSSIN":1,"EQ_CHANDELLE":6,"EQ_SUPCHAND":6}},
   {id:"A_6968",jour:"Jour 4",date:"Mardi 1 septembre",heure:"21:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Devotion",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"Yannick Bohrer",helper3:"Audrey Barthélémy",helper4:"Joe Jam",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR4_PREPA_TEMPLE__CHENREZIG____DEV",meetingRoles:""},
-  {id:"A_1101",jour:"Jour 4",date:"Mardi 1 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Love temple - Dévotion & Sacré",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"Yannick Bohrer",helper3:"Audrey Barthélémy",helper4:"Joe Jam",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR4_LOVE_TEMPLE_DEVOTIONNEL",meetingRoles:""},
+  {id:"A_1101",jour:"Jour 4",date:"Mardi 1 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Love temple - Dévotion & Sacré",lieu:"CHENREZIG",fac1:"Ishvari",fac2:"",fac3:"",fac4:"",traduction:"Amana",helper1:"Mahima (Emma Roussel)",helper2:"Yannick Bohrer",helper3:"Audrey Barthélémy",helper4:"Joe Jam",angel:"Linda Stachetti",note:"",piment:1,colibri:false,logisticId:"JOUR4_LOVE_TEMPLE_DEVOTIONNEL",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_1102",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga Nidra",lieu:"CHENREZIG",fac1:"Simone Bikene",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Damien Eissen",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour5_YOGA_NIDRA",meetingRoles:""},
