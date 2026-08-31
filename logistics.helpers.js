@@ -331,7 +331,7 @@ var LOGISTICS_HELPERS = {
     avant: "Aménager un espace dévotionnel centré sur un autel pour Shiva Nataraj (ou autre garnde statue), avec des zones de&nbsp;vénération et de confort.<br><br><u style=\"\">Pour la vénération des pieds :</u><br>- 3 grandes bassines (suffisamment larges pour les deux pieds).<br>- Chaises associées.<br>- 6 petites serviettes (idéalement fournies par le Hameau).<br><br><u>Pour l'autel central (Shiva Nataraj) :</u><br>Une grande statuette de Shiva Nataraj (ou autre forme de Shiva).<br>- 3 ou 4 tables basses (disponibles au hameau) pour former la base de l'autel.<br>- Des tissus pour couvrir les tables (apportés par Ishvari).<br>- Abondance d'encens, de bougies et de fleurs pour les offrandes (le but est que Nataraj soit entouré de ces éléments).<br><br><u>Pour le confort et l'ambiance :</u><br>- Matelas et tapis de yoga (ceux déjà disponibles dans la salle devraient être suffisants).<br>- De nombreux coussins.<br>- 6 Spots de lumière.<br>- Des bandeau pour couvrir les yeux.<br>- Mobilier et décor divers :Une grande chaise type \"trône\" (comme celle utilisée l'année précédente).<br>- 3 grands miroirs pleins pieds (à vérifier si le hameau en dispose dans les chambres ou castings et s'ils sont faciles à déplacer).<br><br><br>",
     pendant: "• au début, helper pour demo dans chaque station. <br>• ensuite 2 ou 3 personnes avec toujours 1 à l'entrée pour expliquer aux personnes qui arrivent si pas eu les explications. <br>• 1 ou 2 autre dans le temple en cas de questions et maintien du cadre.",
     apres: "<br>",
-    updatedAt: "2026-08-31 17:24"
+    updatedAt: "2026-08-31 17:26"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
