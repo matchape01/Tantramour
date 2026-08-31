@@ -198,7 +198,7 @@ var LOGISTICS_HELPERS = {
     avant: "Placer les matelas et les coussins dans la salle, avec un matelas bien visible au centre. <br>Sauger les participants à l'entrée<br>Aider les participants à trouver un.e partenaire si nécesssaire<br>Faire un test son (enceintes, micro, musique)",
     pendant: "tenir l'espace<br>me faire remarquer les besoins des participants et les éventuels débordements",
     apres: "Distribuer les cartes de Sandrine<br>Ranger la salle",
-    updatedAt: "2026-08-31 08:25"
+    updatedAt: "2026-08-31 08:26"
   },
 
   "JOUR3_INITIATION_A__LA_DANSE_FUSION": {
