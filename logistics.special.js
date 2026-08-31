@@ -201,7 +201,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR3_THE_SPACE_BETWEEN_US__3HRS_": {
     html: "",
     text: "",
-    updatedAt: "2026-08-31 14:59"
+    updatedAt: "2026-08-25 12:27"
   },
 
   "JOUR3_TRAVERSER___SOUFFLE__FROID_ET_": {
@@ -337,9 +337,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
-    html: "<br>",
-    text: "",
-    updatedAt: "2026-08-31 14:47"
+    html: "• Sono &amp; table de mix<br>• Micro main sans fil<br>• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
+    text: "• Sono & table de mix\n• Micro main sans fil\n• Plein de cordes. Plein ! Une par personne + staff (je formule une demande directe à Amana pour qu'il me prête les siennes 😻. Ma préférence va à des cordes de Shibari mais cela peut aussi être des cordes qui ne soient pas de véritables cordes de Shibari consacrées…)",
+    updatedAt: "2026-08-26 18:36"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
@@ -385,9 +385,9 @@ var LOGISTICS_SPECIAL = {
   },
 
   "JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO": {
-    html: "-1 bâche plastique de 4mx 6m pour protéger le sol<br>-1 rouleau de bande scotch de marquage tapissier pour scotcher la bâche au sol (minimum 30 m)<br>- 1 bassine d’eau <br>- 1 carafe d’eau<br>Confidentialité / formulaire droits image (Sabryna)<br>- De quoi fixer du tissus tendu au mur :<br>= Scotch type Gaffer, soit des crochets à fixer au mur avec du velcro --",
-    text: "-1 bâche plastique de 4mx 6m pour protéger le sol\n-1 rouleau de bande scotch de marquage tapissier pour scotcher la bâche au sol (minimum 30 m)\n- 1 bassine d’eau \n- 1 carafe d’eau\nConfidentialité / formulaire droits image (Sabryna)\n- De quoi fixer du tissus tendu au mur :\n= Scotch type Gaffer, soit des crochets à fixer au mur avec du velcro --",
-    updatedAt: "2026-08-26 18:36"
+    html: "-1 pied de micro <br>- 1 bâche plastique de 4mx 6m pour protéger le sol<br>-1 rouleau de bande scotch de marquage tapissier pour scotcher la bâche au sol (minimum 30 m)<br>- 1 bassine d’eau <br>- 1 carafe d’eau<br>Confidentialité / formulaire droits image (Sabryna)<br>- De quoi fixer du tissus tendu au mur :<br>= Scotch type Gaffer, soit des crochets à fixer au mur avec du velcro --",
+    text: "-1 pied de micro\n- 1 bâche plastique de 4mx 6m pour protéger le sol\n-1 rouleau de bande scotch de marquage tapissier pour scotcher la bâche au sol (minimum 30 m)\n- 1 bassine d’eau\n- 1 carafe d’eau\nConfidentialité / formulaire droits image (Sabryna)\n- De quoi fixer du tissus tendu au mur :\n= Scotch type Gaffer, soit des crochets à fixer au mur avec du velcro --",
+    updatedAt: "2026-08-31 15:10"
   },
 
   "JOUR5_GROUNDING___INTEGRATIVE_MOVEME": {
