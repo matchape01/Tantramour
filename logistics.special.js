@@ -339,7 +339,7 @@ var LOGISTICS_SPECIAL = {
   "JOUR4__DE___LA_LIBERTE__2HRS_": {
     html: "<br>",
     text: "",
-    updatedAt: "2026-08-31 14:32"
+    updatedAt: "2026-08-31 14:47"
   },
 
   "JOUR4____STAND__MAQUILLAGE___": {
