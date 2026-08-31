@@ -291,7 +291,7 @@ var LOGISTICS = {
     text: "",
     validatedByFac: false,
     prepDuration: 30,
-    updatedAt: "2026-07-31 10:10"
+    updatedAt: "2026-08-31 20:29"
   },
 
   "JOUR3_ENTRE_DANS_LA_CARESSE_COMME_DA": {
