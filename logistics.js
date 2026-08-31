@@ -471,11 +471,11 @@ var LOGISTICS = {
   },
 
   "JOUR4_LOVE_TEMPLE_DEVOTIONNEL": {
-    html: "<br>",
-    text: "",
+    html: "- 3 grandes bassines (suffisamment larges pour les deux pieds)<br>- 3 Chaises associées<br>- 6 petites serviettes<br>- 3 ou 4 tables basses<br>- 3 grands miroirs pleins pieds<br>- Abondance d'encens, de bougies&nbsp;et de fleurs pour les offrandes<br>- Une grande chaise type \"trône\"",
+    text: "- 3 grandes bassines (suffisamment larges pour les deux pieds)\n- 3 Chaises associées\n- 6 petites serviettes\n- 3 ou 4 tables basses\n- 3 grands miroirs pleins pieds\n- Abondance d'encens, de bougies et de fleurs pour les offrandes\n- Une grande chaise type \"trône\"",
     validatedByFac: false,
     prepDuration: 60,
-    updatedAt: "2026-08-31 17:24"
+    updatedAt: "2026-08-31 17:26"
   },
 
   "JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE": {
