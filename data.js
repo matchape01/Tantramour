@@ -1,4 +1,4 @@
-// @saved:2026-09-01 13:53:02
+// @saved:2026-09-01 15:49:03
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -147,7 +147,7 @@ var AGENDA = [
   {id:"A_1091",jour:"Jour 4",date:"Mardi 1 septembre",heure:"16.00 - 17.30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Cercle de l’Ouroboros: chant, regard & alchimie relationnelle",lieu:"TARA",fac1:"Damien Eissen",fac2:"",fac3:"",fac4:"",traduction:"Daniel Latapie",helper1:"Audrey Barthélémy",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR4_L_OUROBOROS_TANTRIQUE___CERCLE",meetingRoles:""},
   {id:"A_5614",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:30 - 19:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Après-midi (PM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_3463",jour:"Jour 4",date:"Mardi 1 septembre",heure:"17.30 - 18.15",type:"REPAS & PAUSE",atelier:"GOUTER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
-  {id:"A_1094",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Fusion: guider & se laisser guider",lieu:"CHENREZIG",fac1:"Stéphane Ahmed",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"David Llorca",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_FUSION___GUIDER___SE_LAI",meetingRoles:""},
+  {id:"A_1094",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Fusion: guider & se laisser guider",lieu:"TARA",fac1:"Stéphane Ahmed",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"David Llorca",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_FUSION___GUIDER___SE_LAI",meetingRoles:""},
   {id:"A_1095",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Danse Ecstatic Contact #2 ",lieu:"SHAKTI",fac1:"Cédric Vesper",fac2:"Suman (Emmanuelle Cueff)",fac3:"",fac4:"",traduction:"",helper1:"Alexandre Fourcault",helper2:"Sophie O'Heix",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_DANSE_ECSTATIC_CONTACT__2_",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
