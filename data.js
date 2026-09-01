@@ -1,4 +1,4 @@
-// @saved:2026-09-01 08:26:47
+// @saved:2026-09-01 08:27:48
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -187,7 +187,7 @@ var AGENDA = [
   {id:"A_1123",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIERS TANTRA (Apres-Midi)",atelier:"Et si tu tissais le fil de ta liberté ?",lieu:"CHENREZIG",fac1:"Laurence Heitzmann",fac2:"Laurent Lacoste",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"Scott McClure",helper2:"Audrey Barthélémy",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:2,colibri:false,logisticId:"JOUR5_ET_SI_TU_TISSAIS_LE_FIL_DE_TA_",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
-  {id:"A_1124",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Roue de l'Air: Poèmes Médecine",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Kalista",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN",meetingRoles:""},
+  {id:"A_1124",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Roue de l'Air: Poèmes Médecine",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_ROUE_DE_L_AIR___POEMES_MEDECIN",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_1125",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Live Méditatif Electro Accoustique & Voix",lieu:"SHAKTI",fac1:"Suman (Emmanuelle Cueff)",fac2:"Stéphane Ahmed",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Cédric Vesper",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_LIVE_ELECTRO_ACCOUSTIQUE___VOI",meetingRoles:""},
