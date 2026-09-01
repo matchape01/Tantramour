@@ -1,4 +1,4 @@
-// @saved:2026-09-01 13:46:20
+// @saved:2026-09-01 13:47:03
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -352,7 +352,7 @@ var AGENDA = [
   {id:"A_8972",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:30 - 15:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Massage aux bols chantants",lieu:"TARA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
-  {id:"A_2146",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid) (COPIE)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Delphine Dupré",helper3:"Yannick Bohrer",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_2146",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid) (COPIE)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"Linda Stachetti",helper2:"Selma (Céline Laroche)",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
