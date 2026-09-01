@@ -1,4 +1,4 @@
-// @saved:2026-09-01 12:23:19
+// @saved:2026-09-01 12:27:23
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -347,6 +347,9 @@ var AGENDA = [
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_9843",jour:"Jour 2",date:"Dimanche 30 aout",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA Ceremonie CACAO (SHIVA) (EXTRA)",lieu:"SHIVA",fac1:"Amana",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2_PREPA_CEREMONIE_CACAO__SHIVA__",meetingRoles:""},
   {id:"A_5006",jour:"Jour 2",date:"Dimanche 30 aout",heure:"21:00 - 23:00",type:"PREPA & LOGISTICS",atelier:"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)",lieu:"SHIVA",fac1:"Amana",fac2:"Ishvari",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"ShivaChris",helper3:"Philippe Hanrion",helper4:"Dorian Vallet",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"",meetingRoles:""},
+
+  // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
+  {id:"A_8972",jour:"Jour 4",date:"Mardi 1 septembre",heure:"14:30 - 15:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Massage aux bols chantants",lieu:"TARA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
