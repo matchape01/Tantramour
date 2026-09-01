@@ -1,4 +1,4 @@
-// @saved:2026-09-01 13:50:13
+// @saved:2026-09-01 13:52:57
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -191,7 +191,7 @@ var AGENDA = [
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_1125",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Live Méditatif Electro Accoustique & Voix",lieu:"SHAKTI",fac1:"Suman (Emmanuelle Cueff)",fac2:"Stéphane Ahmed",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Cédric Vesper",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_LIVE_ELECTRO_ACCOUSTIQUE___VOI",meetingRoles:""},
-  {id:"A_1126",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Corps de gloire (bodypainting)",lieu:"GANESH",fac1:"Paul Raj Amar",fac2:"Hélène Planquelle",fac3:"",fac4:"",traduction:"",helper1:"Damien Eissen",helper2:"Mahima (Emma Roussel)",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO",meetingRoles:""},
+  {id:"A_1126",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Corps de gloire (bodypainting)",lieu:"GANESH",fac1:"Paul Raj Amar",fac2:"Hélène Planquelle",fac3:"",fac4:"",traduction:"",helper1:"Mukti (Cécile Yvorel)",helper2:"Mahima (Emma Roussel)",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR5_GLORIOUS_BODIES___CORPS_DE_GLO",meetingRoles:""},
   {id:"A_0832",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_9261",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT (SHIVA) - Mitsch",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Alexandre Sattler",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1129",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"Concert: Mitsch Kohn (avec Kelly Aura & Mr. Sax)",lieu:"SHIVA",fac1:"Mitsch Kohn",fac2:"Kelly Aura",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Alexandre Sattler",helper4:"Echo Clem (Clément)",angel:"Daniel Latapie",note:"",piment:1,colibri:false,logisticId:"JOUR5_CONCERT__MITSCH_KOHN____ARTIST",meetingRoles:""},
