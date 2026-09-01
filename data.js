@@ -1,4 +1,4 @@
-// @saved:2026-09-01 16:56:33
+// @saved:2026-09-01 17:07:19
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -243,7 +243,7 @@ var AGENDA = [
   {id:"A_1172",jour:"Jour 3",date:"Lundi 31 aout",heure:"11:30 - 13:00",type:"ATELIERS TANTRA (Matin)",atelier:"L'Eros dansant",lieu:"TARA",fac1:"Guy El Hadad",fac2:"",fac3:"",fac4:"",traduction:"Mukti (Cécile Yvorel)",helper1:"Alexandre Fourcault",helper2:"Yannick Bohrer",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:0,colibri:false,logisticId:"JOUR3_DANCING_EROS",meetingRoles:""},
 
   // ─── Jour 4 — Mardi 1 septembre ─────────────────────────────────────
-  {id:"A_1173",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Ecstatic Dance en disco silencieuse",lieu:"EXTERIEUR",fac1:"Yannick Bohrer",fac2:"",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Frédéric Chalard",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_ECSTATIC_DANCE_EN_SILENT_DISCO",meetingRoles:""},
+  {id:"A_1173",jour:"Jour 4",date:"Mardi 1 septembre",heure:"18:00 - 19:30",type:"ATELIER ARTISTIQUE (Apres-Midi)",atelier:"Ecstatic Dance en disco silencieuse",lieu:"EXTERIEUR",fac1:"Yannick Bohrer",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:1,colibri:false,logisticId:"JOUR4_ECSTATIC_DANCE_EN_SILENT_DISCO",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_1174",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"12:00 - 13:30",type:"ATELIER ARTISTIQUE (Matin)",atelier:"L'art de devenir un·e amant·e d'exception par l'harmonie et la présence",lieu:"GANESH",fac1:"Samantha Marvels",fac2:"Scott McClure",fac3:"",fac4:"",traduction:"Daniel Latapie",helper1:"Claude Brame",helper2:"Carine Janez",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:2,colibri:false,logisticId:"JOUR5_L_ART_DE_DEVENIR_UN_AMANT_D_EX",meetingRoles:""},
