@@ -1,4 +1,4 @@
-// @saved:2026-09-01 13:36:31
+// @saved:2026-09-01 13:42:04
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -195,7 +195,7 @@ var AGENDA = [
   {id:"A_0832",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"19:00 - 20:30",type:"REPAS & PAUSE",atelier:"DINNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_9261",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 21:00",type:"PREPA & LOGISTICS",atelier:"PREPA CONCERT (SHIVA) - Mitsch",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Alexandre Sattler",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1129",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"21:00 - 23:00",type:"CEREMONIE & CONCERT",atelier:"Concert: Mitsch Kohn (avec Kelly Aura & Mr. Sax)",lieu:"SHIVA",fac1:"Mitsch Kohn",fac2:"Kelly Aura",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Alexandre Sattler",helper4:"Echo Clem (Clément)",angel:"Daniel Latapie",note:"",piment:1,colibri:false,logisticId:"JOUR5_CONCERT__MITSCH_KOHN____ARTIST",meetingRoles:""},
-  {id:"A_7974",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Delphine Dupré",helper3:"Selma (Céline Laroche)",helper4:"Yannick Bohrer",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_7974",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"Maeva Mantione",helper2:"Delphine Dupré",helper3:"Yannick Bohrer",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1131",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Temple du Mystère et de la Fantaisie",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"Selma (Céline Laroche)",helper1:"Vera De Sousa",helper2:"Damien Eissen",helper3:"Maeva Mantione",helper4:"Delphine Dupré",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR5_EMBRASSER_LE_MYSTERE",meetingRoles:""},
 
   // ─── Jour 6 — Jeudi 3 septembre ─────────────────────────────────────
