@@ -1,4 +1,4 @@
-// @saved:2026-09-02 09:38:55
+// @saved:2026-09-02 09:40:46
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -354,6 +354,9 @@ var AGENDA = [
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
   {id:"A_2146",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"20:00 - 22:00",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid) (COPIE)",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"Vera De Sousa",fac4:"",traduction:"",helper1:"Linda Stachetti",helper2:"Selma (Céline Laroche)",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_4564",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - Temple du Mystère et de la Fantaisie (COPIE)",lieu:"CHENREZIG",fac1:"Vera De Sousa",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Selma (Céline Laroche)",helper2:"",helper3:"",helper4:"",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"",meetingRoles:""},
+
+  // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
+  {id:"A_1373",jour:"Jour 1",date:"Samedi 29 aout",heure:"",type:"PREPA & LOGISTICS",atelier:"Balance Concert ",lieu:"",fac1:"Felix Ardevol",fac2:"",fac3:"Mitsch Kohn",fac4:"Stéphane Ahmed",traduction:"",helper1:"Echo Clem (Clément)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 ];
 
 /**
