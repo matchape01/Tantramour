@@ -1,4 +1,4 @@
-// @saved:2026-09-02 09:47:48
+// @saved:2026-09-02 09:59:44
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -175,7 +175,7 @@ var AGENDA = [
   {id:"A_1112",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"12:00 - 13:30",type:"ATELIER ARTISTIQUE (Matin)",atelier:"Danse de sublimation et Yi king ",lieu:"GANESH",fac1:"Boris Desvignes",fac2:"",fac3:"",fac4:"",traduction:"Delphine Dupré",helper1:"Stéphane Ahmed",helper2:"",helper3:"",helper4:"",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"JOUR6_DANSE_DE_SUBLIMATION_ET_YI_KIN",meetingRoles:""},
 
   // ─── Jour 5 — Mercredi 2 septembre ──────────────────────────────────
-  {id:"A_1113",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"12:00 - 13:30",type:"ATELIER ARTISTIQUE (Matin)",atelier:"Alchimie fluide (Danse des dauphins)",lieu:"PISCINE",fac1:"David Llorca",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"Damien Eissen",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:2,colibri:false,logisticId:"JOUR5_ALCHIMIE_FLUIDE__DANSE_DES_DAU",meetingRoles:""},
+  {id:"A_1113",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"13:00 - 13:45",type:"ATELIER ARTISTIQUE (Matin)",atelier:"Alchimie fluide (Danse des dauphins)",lieu:"PISCINE",fac1:"David Llorca",fac2:"",fac3:"",fac4:"",traduction:"Virginie Bertrand",helper1:"Damien Eissen",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:2,colibri:false,logisticId:"JOUR5_ALCHIMIE_FLUIDE__DANSE_DES_DAU",meetingRoles:""},
   {id:"A_0574",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"11:15 - 13:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Matin (AM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Véronique Santini Bottemer",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_0515",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"12:30 - 14:30",type:"REPAS & PAUSE",atelier:"DEJEUNER",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1117",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"15:00 - 16:00",type:"TANTRA CAFE",atelier:"Tantra Café - Tout ce que tu as toujours voulu savoir sur la sexualite tantrique",lieu:"SHIVA",fac1:"Sandrine Bettinelli",fac2:"",fac3:"",fac4:"",traduction:"Linda Stachetti",helper1:"Sevda Duroy",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"JOUR5_TANTRA_CAFE___TOUT_CE_QUE_VOUS",meetingRoles:""},
