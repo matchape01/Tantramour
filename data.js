@@ -1,4 +1,4 @@
-// @saved:2026-09-02 09:59:44
+// @saved:2026-09-03 02:18:02
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -199,7 +199,7 @@ var AGENDA = [
   {id:"A_1131",jour:"Jour 5",date:"Mercredi 2 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Temple du Mystère et de la Fantaisie",lieu:"CHENREZIG",fac1:"Jivan Muti (Clément Victor)",fac2:"Atman Clochette (Matthieu)",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Maeva Mantione",helper2:"Delphine Dupré",helper3:"Yannick Bohrer",helper4:"Damien Eissen",angel:"Daniel Latapie",note:"",piment:2,colibri:false,logisticId:"JOUR5_EMBRASSER_LE_MYSTERE",meetingRoles:""},
 
   // ─── Jour 6 — Jeudi 3 septembre ─────────────────────────────────────
-  {id:"A_1132",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"AcroYoga ",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Bhaskar (Alexandre Roque)",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour6_ACROYOGA_",meetingRoles:""},
+  {id:"A_1132",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"AcroYoga ",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour6_ACROYOGA_",meetingRoles:""},
   {id:"A_1133",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Méditation & Mouvements Somatiques",lieu:"SHAKTI",fac1:"Linda Stachetti",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Véronique Santini Bottemer",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour6_MINDFULNESS___MOUVEMENTS_SOMAT",meetingRoles:""},
   {id:"A_0175",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_8951",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"9:00 - 9:30",type:"PREPA & LOGISTICS",atelier:"PREPARATION Rassemblement",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Damien Eissen",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR6_PREPARATION_RASSEMBLEMENT",meetingRoles:""},
