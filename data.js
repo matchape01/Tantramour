@@ -1,4 +1,4 @@
-// @saved:2026-09-03 09:55:57
+// @saved:2026-09-03 10:00:47
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -228,7 +228,7 @@ var AGENDA = [
   {id:"A_1160",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"23:30 - 01:00",type:"LOVE TEMPLE",atelier:"Le temple de l'innocence érotique - Une cérémonie nocturne mystique",lieu:"CHENREZIG",fac1:"Our Echo",fac2:"Guy El Hadad",fac3:"",fac4:"",traduction:"Carine Janez",helper1:"Vera De Sousa",helper2:"",helper3:"",helper4:"",angel:"Boris Desvignes",note:"",piment:0,colibri:false,logisticId:"JOUR6_THE_TEMPLE_OF_EROTIC_INNOCENCE",meetingRoles:""},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
-  {id:"A_1161",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"7:30 - 9:00",type:"MEDITATION / YOGA",atelier:"Yoga doux & Auto-massage",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour7_YOGA___AUTOMASSAGES",meetingRoles:""},
+  {id:"A_1161",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"08:00 - 09:00",type:"MEDITATION / YOGA",atelier:"Yoga doux & Auto-massage",lieu:"CHENREZIG",fac1:"Sevda Duroy",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Mahima (Emma Roussel)",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:1,colibri:false,logisticId:"LOG_Jour7_YOGA___AUTOMASSAGES",meetingRoles:""},
   {id:"A_5601",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"7:30 - 10:00",type:"REPAS & PAUSE",atelier:"PETIT DEJ",lieu:"",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
   {id:"A_1219",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"10:00 - 11:00",type:"PREPA & LOGISTICS",atelier:"PREPARATION CEREMONIE DE CLOTURE",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Frédéric Chalard",helper2:"Philippe Hanrion",helper3:"Carine Janez",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR7_PREPARATION_CEREMONIE_DE_CLOTU",meetingRoles:""},
   {id:"A_1166",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"11:00 - 13:30",type:"CEREMONIE & CONCERT",atelier:"CEREMONIE DE CLOTURE",lieu:"SHIVA",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"Sandrine Bettinelli",helper1:"Véronique Santini Bottemer",helper2:"Yannick Bohrer",helper3:"Alexandre Fourcault",helper4:"Simone Bikene",angel:"Mahima (Emma Roussel)",note:"",piment:1,colibri:false,logisticId:"JOUR7_CEREMONIE_DE_CLOTURE",meetingRoles:""},
