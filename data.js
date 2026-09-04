@@ -1,4 +1,4 @@
-// @saved:2026-09-04 08:27:38
+// @saved:2026-09-04 08:28:29
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -264,7 +264,7 @@ var AGENDA = [
   {id:"A_8912",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"21:00 - 01:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Soir (Soirée)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Virginie Bertrand",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
-  {id:"A_9170",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"11:00 - 13:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Matin (AM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Mahima (Emma Roussel)",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_9170",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"10:30 - 13:30",type:"SHIFT ANGEL",atelier:"Angel - Shift Matin (AM)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"Mahima (Emma Roussel)",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 1 — Samedi 29 aout ────────────────────────────────────────
   {id:"A_4311",jour:"Jour 1",date:"Samedi 29 aout",heure:"21:00 - 23:00",type:"SHIFT ANGEL",atelier:"Angel - Shift Soir (Soirée)",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
