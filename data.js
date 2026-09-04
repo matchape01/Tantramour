@@ -1,4 +1,4 @@
-// @saved:2026-09-04 08:28:29
+// @saved:2026-09-04 08:29:29
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -272,7 +272,7 @@ var AGENDA = [
   {id:"A_7637",jour:"Jour 1",date:"Samedi 29 aout",heure:"18:00 - 19:30",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - OPENING CEREMONY",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Damien Eissen",helper2:"Mahima (Emma Roussel)",helper3:"Maeva Mantione",helper4:"Cédric Vesper",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR1_EXTRA_SUPPORT___OPENING_CEREMO",meetingRoles:""},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
-  {id:"A_5047",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"11:00 - 13:30",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - CEREMONIE DE CLOTURE",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Boris Desvignes",helper2:"Carine Janez",helper3:"Philippe Hanrion",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_5047",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"10:30 - 13:30",type:"PREPA & LOGISTICS",atelier:"EXTRA SUPPORT - CEREMONIE DE CLOTURE",lieu:"SHIVA",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Boris Desvignes",helper2:"Carine Janez",helper3:"Philippe Hanrion",helper4:"Damien Eissen",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 2 — Dimanche 30 aout ──────────────────────────────────────
   {id:"A_0368",jour:"Jour 2",date:"Dimanche 30 aout",heure:"09:30 - 09:45",type:"PREPA & LOGISTICS",atelier:"\"CALL\" pour Rassemblement",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"David Llorca",helper2:"Boris Desvignes",helper3:"Alexandre Fourcault",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR2__CALL__POUR_RASSEMBLEMENT",meetingRoles:""},
