@@ -1,4 +1,4 @@
-// @saved:2026-09-04 08:26:27
+// @saved:2026-09-04 08:27:38
 /**
  * TANTRAMOUR 2026 — Référentiel de données commun
  * ================================================
@@ -290,7 +290,7 @@ var AGENDA = [
   {id:"A_2440",jour:"Jour 6",date:"Jeudi 3 septembre",heure:"09:30 - 09:45",type:"PREPA & LOGISTICS",atelier:"\"CALL\" pour Rassemblement",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Carine Janez",helper2:"Boris Desvignes",helper3:"Audrey Barthélémy",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"JOUR6__CALL__POUR_RASSEMBLEMENT",meetingRoles:""},
 
   // ─── Jour 7 — Vendredi 4 septembre ──────────────────────────────────
-  {id:"A_2885",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"10:45 - 11:00",type:"PREPA & LOGISTICS",atelier:"\"CALL\" pour CEREMONIE DE CLOTURE",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Daniel Latapie",helper2:"Maeva Mantione",helper3:"Véronique Santini Bottemer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
+  {id:"A_2885",jour:"Jour 7",date:"Vendredi 4 septembre",heure:"10:15 - 10:30",type:"PREPA & LOGISTICS",atelier:"\"CALL\" pour CEREMONIE DE CLOTURE",lieu:"EXTERIEUR",fac1:"",fac2:"",fac3:"",fac4:"",traduction:"",helper1:"Daniel Latapie",helper2:"Maeva Mantione",helper3:"Véronique Santini Bottemer",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:""},
 
   // ─── Jour 3 — Lundi 31 aout ─────────────────────────────────────────
   {id:"A_6096",jour:"Jour 3",date:"Lundi 31 aout",heure:"9:00 - 9:30",type:"REUNION",atelier:"REUNION D'EQUIPE (Animateurs et Artistes)",lieu:"TARA",fac1:"Sabryna",fac2:"ShivaChris",fac3:"",fac4:"",traduction:"",helper1:"",helper2:"",helper3:"",helper4:"",angel:"",note:"",piment:0,colibri:false,logisticId:"",meetingRoles:"animateur"},
