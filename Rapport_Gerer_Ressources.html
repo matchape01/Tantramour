@@ -635,27 +635,30 @@ async function saveResource() {
     data[editingIdx].lien    = form.lien;
   }
 
-  // Propager le renommage dans AGENDA et DESCRIPTIONS si nécessaire
+  // Si le nom a changé, propager dans AGENDA_DATA et DESCRIPTIONS_DATA
+  // (les champs fac1, helper1… stockent les noms ; les champs Id sont stables)
   if (nameChanged) {
     propagateRename(oldName, newName);
   }
 
   try {
-    var saves = [sauvegarder('ref_ressources.js', genererRefRessources())];
-    if (nameChanged) {
-      saves.push(sauvegarder('data.js', buildDataJs()));
-      saves.push(sauvegarder('ref_descriptions.js', buildRefDescJs()));
+    // Toujours sauvegarder ref_ressources.js
+    await sauvegarder('ref_ressources.js', genererRefRessources());
+
+    // Si le nom a changé, sauvegarder aussi data.js (noms mis à jour)
+    if (nameChanged && AGENDA_DATA.length > 0) {
+      await sauvegarder('data.js', buildDataJs());
     }
-    await Promise.all(saves);
+
     var msg = isNew ? '✅ Ressource ajoutée !'
-            : nameChanged ? '✅ Ressource renommée et propagée dans data.js & ref_descriptions.js !'
+            : nameChanged ? '✅ Ressource renommée — propagation dans data.js effectuée !'
             : '✅ Ressource mise à jour !';
     showToast(msg);
     closeEditor();
     renderTable();
   } catch(err) {
     if (isNew) { data.pop(); editingIdx = null; }
-    if (nameChanged) { propagateRename(newName, oldName); } // rollback propagation
+    else if (!isNew) { data[editingIdx].value = oldName; propagateRename(newName, oldName); } // rollback complet
     showToast('❌ Sauvegarde impossible : ' + err.message, true);
     console.error('[Rapport12] saveResource:', err);
   } finally {
@@ -691,9 +694,29 @@ async function confirmDelete() {
   if (editingIdx === idx) { editingIdx = null; document.getElementById('editorPanel').style.display = 'none'; }
   else if (editingIdx > idx) editingIdx--;
 
+  // Vider tous les champs de data.js qui référencent l'ID supprimé
+  var removedId = removed.id;
+  var RESOURCE_FIELDS = ['fac1','fac2','fac3','fac4','traduction','helper1','helper2','helper3','helper4','angel'];
+  var agendaTouched = false;
+  AGENDA_DATA.forEach(function(e) {
+    RESOURCE_FIELDS.forEach(function(f) {
+      if (e[f] === removedId) { e[f] = ''; agendaTouched = true; }
+    });
+  });
+  // Vider fac1/fac2 dans ref_descriptions.js
+  var descTouched = false;
+  DESCRIPTIONS_DATA.forEach(function(d) {
+    if (d.fac1 === removedId) { d.fac1 = ''; descTouched = true; }
+    if (d.fac2 === removedId) { d.fac2 = ''; descTouched = true; }
+  });
+
   try {
-    await sauvegarder('ref_ressources.js', genererRefRessources());
-    showToast('🗑️ "' + removed.value + '" supprimé.');
+    var saves = [sauvegarder('ref_ressources.js', genererRefRessources())];
+    if (agendaTouched) saves.push(sauvegarder('data.js', buildDataJs()));
+    if (descTouched)   saves.push(sauvegarder('ref_descriptions.js', buildRefDescJs()));
+    await Promise.all(saves);
+    var extraMsg = (agendaTouched || descTouched) ? ' (données nettoyées dans data.js / ref_descriptions.js)' : '';
+    showToast('🗑️ "' + removed.value + '" supprimé.' + extraMsg);
     renderTable();
   } catch(err) {
     // Rollback
@@ -705,21 +728,33 @@ async function confirmDelete() {
 window.confirmDelete = confirmDelete;
 
 // ══════════════════════════════════════════════════════════
-// PROPAGATION DU RENOMMAGE
+// PROPAGATION DU RENOMMAGE (désactivée — IDs stables)
 // ══════════════════════════════════════════════════════════
+// Depuis la migration vers les IDs, data.js stocke des IDs stables (R_XXX).
+// Un renommage ne change que le .value dans ref_ressources.js → pas de
+// propagation nécessaire dans data.js ou ref_descriptions.js.
 function propagateRename(oldName, newName) {
-  // Mettre à jour AGENDA_DATA (tous les champs texte qui peuvent contenir un nom)
-  var fields = ['fac1','fac2','fac3','fac4','traduction','helper1','helper2','helper3','helper4','angel'];
+  // Propager le renommage dans AGENDA_DATA :
+  // Les champs nom (fac1, helper1…) sont mis à jour avec le nouveau nom.
+  // Les champs ID (fac1Id, helper1Id…) sont stables — pas besoin de les toucher.
+  var NOM_FIELDS = ['fac1','fac2','fac3','fac4','traduction','helper1','helper2','helper3','helper4','angel'];
+  var count = 0;
   AGENDA_DATA.forEach(function(e) {
-    fields.forEach(function(f) {
-      if (e[f] === oldName) e[f] = newName;
+    NOM_FIELDS.forEach(function(f) {
+      if (e[f] === oldName) {
+        e[f] = newName;
+        count++;
+      }
     });
   });
-  // Mettre à jour DESCRIPTIONS_DATA
-  DESCRIPTIONS_DATA.forEach(function(d) {
-    if (d.fac1 === oldName) d.fac1 = newName;
-    if (d.fac2 === oldName) d.fac2 = newName;
-  });
+  // Propager aussi dans DESCRIPTIONS_DATA (fac1/fac2)
+  if (typeof DESCRIPTIONS_DATA !== 'undefined') {
+    DESCRIPTIONS_DATA.forEach(function(d) {
+      if (d.fac1 === oldName) { d.fac1 = newName; count++; }
+      if (d.fac2 === oldName) { d.fac2 = newName; count++; }
+    });
+  }
+  console.log('[propagateRename] ' + count + ' occurrences mises à jour : "' + oldName + '" → "' + newName + '"');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -736,15 +771,25 @@ function buildDataJs() {
     s += ',atelier:"'                         + escJs(e.atelier||'') + '"';
     s += ',lieu:"'                            + escJs(e.lieu||'')    + '"';
     s += ',fac1:"'                            + escJs(e.fac1||'')    + '"';
+    if (e.fac1Id)       s += ',fac1Id:"'      + escJs(e.fac1Id)      + '"';
     s += ',fac2:"'                            + escJs(e.fac2||'')    + '"';
+    if (e.fac2Id)       s += ',fac2Id:"'      + escJs(e.fac2Id)      + '"';
     s += ',fac3:"'                            + escJs(e.fac3||'')    + '"';
+    if (e.fac3Id)       s += ',fac3Id:"'      + escJs(e.fac3Id)      + '"';
     s += ',fac4:"'                            + escJs(e.fac4||'')    + '"';
+    if (e.fac4Id)       s += ',fac4Id:"'      + escJs(e.fac4Id)      + '"';
     s += ',traduction:"'                      + escJs(e.traduction||'') + '"';
+    if (e.tradId)       s += ',tradId:"'      + escJs(e.tradId)      + '"';
     s += ',helper1:"'                         + escJs(e.helper1||'') + '"';
+    if (e.helper1Id)    s += ',helper1Id:"'   + escJs(e.helper1Id)   + '"';
     s += ',helper2:"'                         + escJs(e.helper2||'') + '"';
+    if (e.helper2Id)    s += ',helper2Id:"'   + escJs(e.helper2Id)   + '"';
     s += ',helper3:"'                         + escJs(e.helper3||'') + '"';
+    if (e.helper3Id)    s += ',helper3Id:"'   + escJs(e.helper3Id)   + '"';
     s += ',helper4:"'                         + escJs(e.helper4||'') + '"';
+    if (e.helper4Id)    s += ',helper4Id:"'   + escJs(e.helper4Id)   + '"';
     s += ',angel:"'                           + escJs(e.angel||'')   + '"';
+    if (e.angelId)      s += ',angelId:"'     + escJs(e.angelId)     + '"';
     s += ',note:"'                            + escJs(e.note||'')    + '"';
     s += ',piment:'                           + (e.piment||0);
     s += ',colibri:'                          + (e.colibri ? 'true' : 'false');
