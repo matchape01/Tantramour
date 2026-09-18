@@ -455,6 +455,7 @@ function buildIndex() {
     if (e.helper4)    add(e.helper4, e, 'helper');
     if (e.angel)      add(e.angel, e, 'angel');
     // REUNION : diffuser selon meetingRoles
+    // data.js stocke des noms (pas des IDs), donc on indexe par res.value (nom affiché)
     if (e.type === 'REUNION' && e.meetingRoles) {
       var meetRoles = e.meetingRoles.split(',').map(function(r){ return r.trim(); }).filter(Boolean);
       if (meetRoles.length && typeof REF_RESSOURCES !== 'undefined') {
@@ -462,6 +463,7 @@ function buildIndex() {
           if (!res.value) return;
           var hasRole = meetRoles.some(function(r){ return res.roles && res.roles.indexOf(r) !== -1; });
           if (!hasRole) return;
+          // Les champs de data.js contiennent des noms → comparer avec res.value
           var alreadyIn = [e.fac1,e.fac2,e.fac3,e.fac4,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4,e.angel].indexOf(res.value) !== -1;
           if (!alreadyIn) add(res.value, e, 'reunion');
         });
@@ -474,13 +476,13 @@ function buildIndex() {
 var FULL_INDEX = buildIndex();
 
 // ── Vérifier si une personne est Colibri ou Mi-Colibri ───────────────────────
-function hasRole(nom, role) {
-  if (!nom || typeof REF_RESSOURCES === 'undefined') return false;
-  var res = REF_RESSOURCES.find(function(r) { return r.value === nom; });
+function hasRole(id, role) {
+  if (!id || typeof REF_RESSOURCES === 'undefined') return false;
+  var res = REF_RESSOURCES.find(function(r) { return r.id === id; });
   return !!(res && res.roles && res.roles.indexOf(role) !== -1);
 }
-function isColibri(nom)   { return hasRole(nom, 'colibri'); }
-function isMiColibri(nom) { return hasRole(nom, 'Mi-Colibri'); }
+function isColibri(id)   { return hasRole(id, 'colibri'); }
+function isMiColibri(id) { return hasRole(id, 'Mi-Colibri'); }
 
 // ── Vérifier si une réunion est "Animateur seul" ou contient "helper" ─────────
 function isReunionAnimateur(entry) {
@@ -495,11 +497,11 @@ function isReunionHelper(entry) {
 }
 
 // ── Peupler le select NOM ─────────────────────────────────────────────────────
-var allNoms = Object.keys(FULL_INDEX).sort(function(a,b){ return a.localeCompare(b,'fr'); });
+var allNoms = Object.keys(FULL_INDEX).sort(function(a,b){ return resolveName(a).localeCompare(resolveName(b),'fr'); });
 var selNom = document.getElementById('fNom');
 allNoms.forEach(function(n) {
   var o = document.createElement('option');
-  o.value = n; o.text = n;
+  o.value = n; o.text = resolveName(n); // valeur = ID, texte = nom affiché
   selNom.appendChild(o);
 });
 
@@ -1002,7 +1004,7 @@ window.exportJpeg = function() {
   ].join(';');
   var tBanner = (typeof I18n !== 'undefined') ? I18n.t('mas_export_banner') : 'Tantramour 2026 — Mon Agenda Simplifié';
   banner.innerHTML = '<div style="font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px;">'+esc(tBanner)+'</div>'
-    + '<div style="font-size:22px;font-weight:800;letter-spacing:.3px;">' + esc(activeNom) + '</div>';
+    + '<div style="font-size:22px;font-weight:800;letter-spacing:.3px;">' + esc(resolveName(activeNom)) + '</div>';
 
   // 3. Créer le conteneur de capture (hors écran)
   var container = document.createElement('div');
@@ -1127,15 +1129,16 @@ function noteLabel(val, lang) {
 function pimentHtml(n) {
   return n > 0 ? '<span class="piment">'+'🌶️'.repeat(n)+'</span>' : '';
 }
-function isBilingue(nom) {
-  if (!nom || typeof REF_RESSOURCES==='undefined') return false;
-  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+function isBilingue(id) {
+  if (!id || typeof REF_RESSOURCES==='undefined') return false;
+  var r = REF_RESSOURCES.find(function(x){ return x.id===id; });
   return r && r.langues && r.langues.indexOf('FR')!==-1 && r.langues.indexOf('EN')!==-1;
 }
-function angelWithPhone(nom) {
-  if (!nom) return '—';
+function angelWithPhone(id) {
+  if (!id) return '—';
+  var nom = resolveName(id);
   if (typeof REF_RESSOURCES === 'undefined') return esc(nom);
-  var r = REF_RESSOURCES.find(function(x){ return x.value===nom; });
+  var r = REF_RESSOURCES.find(function(x){ return x.id===id; });
   if (!r || !r.tel) return esc(nom);
   return esc(nom) + ' <span style="color:var(--muted)">(' + esc(r.tel) + ')</span>';
 }
@@ -1242,8 +1245,8 @@ function renderModalBody() {
   var debut = heureMin(e.heure);
   var arrivee = (debut!==null) ? fmtHeure(debut-prep) : '';
 
-  var facs    = [e.fac1,e.fac2,e.fac3,e.fac4].filter(Boolean);
-  var helpers = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean);
+  var facs    = [e.fac1,e.fac2,e.fac3,e.fac4].filter(Boolean).map(function(id){return resolveName(id);});
+  var helpers = [e.helper1,e.helper2,e.helper3,e.helper4].filter(Boolean).map(function(id){return resolveName(id);});
   var hasBilingue = isBilingue(e.fac1) || isBilingue(e.fac2) || isBilingue(e.fac3) || isBilingue(e.fac4);
   var langBadge = (e.traduction || hasBilingue)
     ? '<span class="badge badge-lang badge-en">FR / EN</span>'
@@ -1264,7 +1267,7 @@ function renderModalBody() {
   rows1.push(['📍 '+(lang==='en'?'Venue':'Lieu'), e.lieu ? lieuLabel(e.lieu) : '—']);
   rows1.push(['🎓 '+(lang==='en'?'Teacher(s)':'Animateur(s)'), facs.length ? facs.map(esc).join(' &amp; ') : '—']);
   rows1.push(['🙌 '+(lang==='en'?'Helper(s)':'Helper(s)'), helpers.length ? helpers.map(esc).join(', ') : '—']);
-  rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), e.traduction ? esc(e.traduction) : '—']);
+  rows1.push(['🌐 '+(lang==='en'?'Translator':'Traducteur'), e.traduction ? esc(resolveName(e.traduction)) : '—']);
   rows1.push(['👼 Angel', angelWithPhone(e.angel)]);
   rows1.push(['🏷 Note', noteVal ? esc(noteVal) : '—']);
 
