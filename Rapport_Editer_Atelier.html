@@ -1856,8 +1856,8 @@ async function saveUpdate() {
     AGENDA.push(newEntry);
     const newIdx = AGENDA.length - 1;
     try {
-      const content = genererDataJs();
-      await sauvegarder(content);
+      // Fusion collaborative : n'écrase que cet atelier dans la version fraîche GitHub
+      await mergeAndSaveDataJs([newEntry]);
       await saveDescIfNeeded();
       selectedIdx = newIdx;
       editedData  = Object.assign({}, newEntry);
@@ -1919,9 +1919,19 @@ async function saveUpdate() {
     }
 
     try {
-      const content  = genererDataJs();
-      const tsMarker = genererDataJs._lastTs ? ('// @saved:' + genererDataJs._lastTs) : '';
-      await sauvegarder(content);
+      // Fusion collaborative :
+      // - newEntry = l'atelier modifié par cet utilisateur
+      // - Si SHIFT ANGEL propagé, les ateliers angel modifiés en cascade sont aussi inclus
+      const cascadeEntries = [newEntry];
+      if (propagated > 0) {
+        // Inclure tous les ateliers du même jour dont l'angel a été propagé
+        AGENDA.forEach(function(entry) {
+          if (entry !== newEntry && entry.jour === newEntry.jour && TYPES_ANGEL_PILOTES.has(entry.type)) {
+            cascadeEntries.push(entry);
+          }
+        });
+      }
+      await mergeAndSaveDataJs(cascadeEntries);
       // Si renommage : forcer la sauvegarde de ref_descriptions.js même sans changement de contenu
       if (isRename && !editedData._descFr && !editedData._descEn && !editedData._nomEn && !editedData._consigneFr && !editedData._consigneEn) {
         await saveFile('ref_descriptions.js', genererRefDescJs());
@@ -1965,8 +1975,8 @@ async function deleteAtelier() {
   const deletedEntry = AGENDA.splice(selectedIdx, 1)[0];
 
   try {
-    const content = genererDataJs();
-    await sauvegarder(content);
+    // Fusion collaborative : signaler la suppression par ID dans la version fraîche GitHub
+    await mergeAndSaveDataJs([], [deletedEntry.id]);
     // Fermer le panel et réinitialiser
     selectedIdx = null;
     editedData  = null;
@@ -2123,6 +2133,192 @@ function agendaToRaw(entries) {
     e.fac3 || '', e.fac4 || '', e.meetingRoles || ''
   ]);
 }`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// FUSION COLLABORATIVE data.js — SAUVEGARDE MULTI-UTILISATEURS
+// ══════════════════════════════════════════════════════════════════════════════
+//
+// Stratégie "merge-before-write" :
+//   1. Récupérer data.js FRAIS depuis l'API GitHub (jamais depuis le cache local)
+//   2. Parser le contenu pour reconstruire la liste des ateliers tels qu'ils sont
+//      sur GitHub EN CE MOMENT (= inclut les modifications d'autres utilisateurs)
+//   3. Appliquer UNIQUEMENT les changements locaux (par ID) sur cette base fraîche
+//   4. Écrire la version fusionnée → les modifications des autres sont préservées
+//
+// Résultat : deux utilisateurs éditant des ateliers différents ne se gênent plus.
+//
+// @param {Array}   changedEntries  — tableau d'objets {entry} à upsert (par id)
+// @param {Array}   [deletedIds]    — tableau d'IDs à supprimer
+// @returns {Promise<void>}
+
+async function mergeAndSaveDataJs(changedEntries, deletedIds) {
+  deletedIds = deletedIds || [];
+
+  // ── Étape 1 : récupérer la version fraîche de data.js depuis l'API GitHub ──
+  // En local on ne fait pas la fusion (le serveur Python écrit directement).
+  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) {
+    // En local, les conflits multi-utilisateurs ne se posent pas (un seul serveur).
+    // On régénère depuis AGENDA local et on sauvegarde directement.
+    return saveFile('data.js', genererDataJs());
+  }
+
+  var freshAgenda = null;
+  try {
+    const token = localStorage.getItem('tm_gh_token');
+    const apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO +
+                   '/contents/data.js?ref=' + GITHUB_BRANCH + '&_t=' + Date.now();
+    const headers = { 'Accept': 'application/vnd.github+json', 'If-None-Match': '' };
+    if (token) headers['Authorization'] = 'token ' + token;
+    const res = await fetch(apiUrl, { headers: headers, cache: 'no-store' });
+    if (res.ok) {
+      const data    = await res.json();
+      const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+      // Enregistrer le SHA frais pour que saveFile() ne lève pas de faux conflit
+      if (data.sha && typeof githubRegisterLoadedSha === 'function') {
+        githubRegisterLoadedSha('data.js', data.sha);
+      }
+      freshAgenda = parseDataJs(content);
+    }
+  } catch(_) { /* réseau indispo → on tombe sur le fallback ci-dessous */ }
+
+  if (!freshAgenda || !Array.isArray(freshAgenda)) {
+    // Pas pu récupérer la version fraîche → on sauvegarde depuis AGENDA local
+    // (comportement dégradé identique à avant)
+    console.warn('[mergeAndSave] Fallback : sauvegarde depuis AGENDA local (impossible de récupérer data.js frais)');
+    return saveFile('data.js', genererDataJs());
+  }
+
+  // ── Étape 2 : fusionner les changements locaux sur la base fraîche ────────
+  // Index par ID pour O(1)
+  const freshById = {};
+  freshAgenda.forEach(function(e, i) { if (e.id) freshById[e.id] = i; });
+
+  // Upsert : pour chaque entrée modifiée localement, remplacer dans la base fraîche
+  changedEntries.forEach(function(entry) {
+    if (!entry.id) return;
+    if (freshById[entry.id] !== undefined) {
+      freshAgenda[freshById[entry.id]] = entry; // mise à jour
+    } else {
+      freshAgenda.push(entry); // nouvel atelier
+    }
+  });
+
+  // Supprimer les IDs marqués pour suppression
+  if (deletedIds.length) {
+    const delSet = new Set(deletedIds);
+    freshAgenda = freshAgenda.filter(function(e) { return !delSet.has(e.id); });
+  }
+
+  // ── Étape 3 : regénérer data.js depuis la base fusionnée ─────────────────
+  // On remplace temporairement AGENDA pour réutiliser genererDataJs() tel quel,
+  // puis on restaure le tableau local.
+  const savedAgenda = AGENDA.slice();
+  AGENDA.length = 0;
+  freshAgenda.forEach(function(e) { AGENDA.push(e); });
+  const mergedContent = genererDataJs();
+  AGENDA.length = 0;
+  savedAgenda.forEach(function(e) { AGENDA.push(e); });
+
+  // ── Étape 4 : sauvegarder la version fusionnée ────────────────────────────
+  // skipConflictCheck = true : on vient de récupérer le SHA frais à l'étape 1,
+  // inutile de refaire un GET — évite un double appel API et un faux conflit.
+  await saveFile('data.js', mergedContent, { skipConflictCheck: true });
+  console.log('[mergeAndSave] ✅ data.js fusionné (' + freshAgenda.length + ' ateliers)');
+}
+
+// ── Parseur de data.js — reconstruit AGENDA[] sans eval() ───────────────────
+// Extrait chaque objet littéral { id:"...", jour:"...", ... } du tableau AGENDA.
+// Stratégie : découper le contenu entre [ et ] du tableau, puis extraire objet par objet
+// en comptant les accolades (gère les accolades imbriquées de _equipements/_corecSelected).
+function parseDataJs(src) {
+  // Extraire le contenu entre les crochets de var AGENDA = [ ... ]
+  const arrMatch = src.match(/var\s+AGENDA\s*=\s*\[([\s\S]*?)\];\s*\n?\s*function/);
+  if (!arrMatch) return null;
+  const arrSrc = arrMatch[1];
+
+  // Découper en objets { ... } en comptant les accolades
+  const objects = [];
+  let depth = 0, start = -1;
+  for (let i = 0; i < arrSrc.length; i++) {
+    if (arrSrc[i] === '{') { if (depth === 0) start = i; depth++; }
+    else if (arrSrc[i] === '}') {
+      depth--;
+      if (depth === 0 && start !== -1) { objects.push(arrSrc.slice(start, i + 1)); start = -1; }
+    }
+  }
+
+  // Extraire les champs de chaque objet
+  function str(obj, key) {
+    const m = obj.match(new RegExp(key + '\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"'));
+    if (!m) return '';
+    return m[1].replace(/\\n/g,'\n').replace(/\\"/g,'"').replace(/\\\\/g,'\\');
+  }
+  function num(obj, key) {
+    const m = obj.match(new RegExp(key + '\\s*:\\s*(-?\\d+(?:\\.\\d+)?)'));
+    return m ? parseFloat(m[1]) : 0;
+  }
+  function bool(obj, key) {
+    const m = obj.match(new RegExp(key + '\\s*:\\s*(true|false)'));
+    return m ? (m[1] === 'true') : false;
+  }
+  function json(obj, key) {
+    // Extraire un sous-objet JSON { ... } après la clé
+    const re = new RegExp(key + '\\s*:\\s*(\\{)');
+    const km = obj.match(re);
+    if (!km) return undefined;
+    const kStart = obj.indexOf(km[0]) + km[0].length - 1;
+    let d = 0, j = kStart;
+    for (; j < obj.length; j++) {
+      if (obj[j] === '{') d++;
+      else if (obj[j] === '}') { d--; if (d === 0) break; }
+    }
+    try { return JSON.parse(obj.slice(kStart, j + 1)); } catch(_) { return undefined; }
+  }
+
+  return objects.map(function(obj) {
+    const entry = {
+      id:           str(obj, 'id'),
+      jour:         str(obj, 'jour'),
+      date:         str(obj, 'date'),
+      heure:        str(obj, 'heure'),
+      type:         str(obj, 'type'),
+      atelier:      str(obj, 'atelier'),
+      lieu:         str(obj, 'lieu'),
+      fac1:         str(obj, 'fac1'),
+      fac2:         str(obj, 'fac2'),
+      fac3:         str(obj, 'fac3'),
+      fac4:         str(obj, 'fac4'),
+      traduction:   str(obj, 'traduction'),
+      helper1:      str(obj, 'helper1'),
+      helper2:      str(obj, 'helper2'),
+      helper3:      str(obj, 'helper3'),
+      helper4:      str(obj, 'helper4'),
+      angel:        str(obj, 'angel'),
+      note:         str(obj, 'note'),
+      piment:       num(obj, 'piment'),
+      colibri:      bool(obj, 'colibri'),
+      logisticId:   str(obj, 'logisticId'),
+      meetingRoles: str(obj, 'meetingRoles'),
+    };
+    // Champs optionnels structurés
+    const minRes     = obj.match(/_minRes\s*:\s*(\d+)/);
+    const minHelpers = obj.match(/_minHelpers\s*:\s*(\d+)/);
+    const minTrad    = obj.match(/_minTrad\s*:\s*(\d+)/);
+    const tradCounts = obj.match(/_tradCounts\s*:\s*(\d+)/);
+    if (minRes)     entry._minRes     = parseInt(minRes[1], 10);
+    if (minHelpers) entry._minHelpers = parseInt(minHelpers[1], 10);
+    if (minTrad)    entry._minTrad    = parseInt(minTrad[1], 10);
+    if (tradCounts) entry._tradCounts = parseInt(tradCounts[1], 10);
+    const equip = json(obj, '_equipements');
+    if (equip) entry._equipements = equip;
+    const consDisabled = json(obj, '_consignesDisabled');
+    if (consDisabled) entry._consignesDisabled = consDisabled;
+    const corec = json(obj, '_corecSelected');
+    if (corec) entry._corecSelected = corec;
+    return entry;
+  }).filter(function(e) { return e.id; }); // ignorer les entrées sans ID
 }
 
 // ══════════════════════════════════════════════
