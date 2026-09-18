@@ -781,11 +781,13 @@ async function confirmerValidation() {
 }
 
 // ════════════════════════════════════════════════
-// SAUVEGARDE VIA SERVEUR LOCAL
+// SAUVEGARDE (local + GitHub)
 // ════════════════════════════════════════════════
+// saveFile() est définie dans github-api.js (point d'entrée unique, détection
+// automatique local/GitHub Pages + détection de conflit multi-utilisateurs).
 async function sauverFichier(filename, content) {
   try {
-    await githubSaveFile(filename, content);
+    await saveFile(filename, content);
     return true;
   } catch(e) {
     afficherToast(`❌ Sauvegarde impossible : ${e.message}`, true);
@@ -1084,8 +1086,8 @@ function genNewsJs() {
 async function sauvegarderNews() {
   const content = genNewsJs();
   try {
-    await githubSaveFile('ref_news.js', content);
-    afficherToast('✅ ref_news.js sauvegardé sur GitHub.');
+    await saveFile('ref_news.js', content);
+    afficherToast('✅ ref_news.js sauvegardé.');
   } catch(e) {
     afficherToast('❌ Sauvegarde impossible : ' + e.message, true);
   }

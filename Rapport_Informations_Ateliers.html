@@ -1326,22 +1326,10 @@ function setImportChoice(itemIdx, changeIdx, choice) {
 }
 window.setImportChoice = setImportChoice;
 
+// saveTextFile() délègue à saveFile() de github-api.js (point d'entrée unique,
+// détection automatique local/GitHub Pages + détection de conflit multi-utilisateurs).
 async function saveTextFile(filename, content) {
-  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
-  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: filename, content: content })
-    });
-    if (!res.ok) {
-      var err = await res.json().catch(function() { return {}; });
-      throw new Error(err.error || ('Erreur ' + res.status));
-    }
-    return;
-  }
-  await githubSaveFile(filename, content);
+  return saveFile(filename, content);
 }
 function ensureDescEntry(entry) {
   if (typeof REF_DESCRIPTIONS === 'undefined') window.REF_DESCRIPTIONS = [];

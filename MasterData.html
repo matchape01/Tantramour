@@ -1814,18 +1814,10 @@ function genDataJs() {
 // ════════════════════════════════════════════════════════════
 // SAUVEGARDE
 // ════════════════════════════════════════════════════════════
+// saveToServer() délègue à saveFile() de github-api.js (point d'entrée unique,
+// détection automatique local/GitHub Pages + détection de conflit multi-utilisateurs).
 async function saveToServer(filename, content) {
-  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat).');
-  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: filename, content: content })
-    });
-    if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e.error || 'Erreur ' + res.status); }
-    return;
-  }
-  await githubSaveFile(filename, content);
+  return saveFile(filename, content);
 }
 
 async function save(key, withData) {
@@ -4411,17 +4403,7 @@ function genTransFile() {
 async function saveTrans() {
   try {
     var content = genTransFile();
-    if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat).');
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-      var res = await fetch('http://localhost:3000/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filename: 'ref_translations.js', content: content })
-      });
-      if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e.error || 'Erreur ' + res.status); }
-    } else {
-      await githubSaveFile('ref_translations.js', content);
-    }
+    await saveFile('ref_translations.js', content);
     TRANS_DIRTY = false;
     var bar = document.getElementById('bar-translations');
     if (bar) bar.classList.remove('on');

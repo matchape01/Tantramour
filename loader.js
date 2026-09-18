@@ -2,9 +2,11 @@
  * TANTRAMOUR 2026 — Loader de données dynamique
  * ================================================
  * Stratégie de chargement (par ordre de priorité) :
- *   1. Si un token GitHub est disponible (localStorage 'tm_gh_token') :
- *      → Charger depuis l'API GitHub (api.github.com) — TOUJOURS FRAIS, pas de CDN.
- *   2. Sinon : charger depuis le CDN GitHub Pages avec timestamp anti-cache navigateur.
+ *   1. Toujours via l'API GitHub (api.github.com) — TOUJOURS FRAIS, même sans token.
+ *      Le token augmente le quota (60/h anonyme → 5000/h authentifié).
+ *   2. Fallback CDN GitHub Pages uniquement si l'API est inaccessible (réseau coupé,
+ *      quota dépassé). Dans ce cas, un avertissement orange est affiché car les données
+ *      CDN peuvent être périmées jusqu'à 5 minutes après une sauvegarde.
  *
  * Compatible CSP strict (pas d'eval, pas de blob).
  */
@@ -78,6 +80,51 @@ function _injectScript(code, onDone) {
   }
 }
 
+// ── Bannière d'avertissement CDN ──────────────────────────────────────────────
+// Affichée dès qu'au moins un fichier de données a été chargé depuis le CDN
+// GitHub Pages au lieu de l'API GitHub (données potentiellement périmées jusqu'à 5 min).
+var _cdnWarningFiles = [];
+function _showCdnWarning(filename) {
+  if (_cdnWarningFiles.indexOf(filename) === -1) _cdnWarningFiles.push(filename);
+  var existing = document.getElementById('tm-cdn-warning');
+  if (existing) {
+    // Mettre à jour la liste des fichiers affectés
+    var span = existing.querySelector('#tm-cdn-files');
+    if (span) span.textContent = _cdnWarningFiles.join(', ');
+    return;
+  }
+  var banner = document.createElement('div');
+  banner.id = 'tm-cdn-warning';
+  banner.style.cssText = [
+    'position:fixed','bottom:48px','right:16px','z-index:9997',
+    'background:#fffbeb','border:2px solid #fcd34d','border-radius:8px',
+    'padding:10px 14px 10px 12px','max-width:380px',
+    'font-family:-apple-system,"Segoe UI",system-ui,sans-serif',
+    'font-size:12px','line-height:1.6','color:#92400e',
+    'box-shadow:0 2px 8px rgba(0,0,0,.12)','pointer-events:auto'
+  ].join(';');
+  banner.innerHTML =
+    '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+      '<span style="font-size:16px;line-height:1;">⚠️</span>' +
+      '<div>' +
+        '<strong>Données CDN — potentiellement périmées</strong><br>' +
+        'L\'API GitHub était inaccessible. Ces fichiers sont chargés depuis le CDN ' +
+        'GitHub Pages qui peut rester à jour avec un délai allant jusqu\'à 5 minutes : ' +
+        '<span id="tm-cdn-files" style="font-family:monospace;font-weight:700;">' +
+          _cdnWarningFiles.join(', ') +
+        '</span><br>' +
+        '<span style="font-size:11px;color:#b45309;">Rechargez la page dans quelques minutes pour obtenir les données fraîches.</span>' +
+      '</div>' +
+      '<button onclick="this.parentNode.parentNode.remove()" style="cursor:pointer;background:transparent;border:none;font-size:16px;color:#92400e;line-height:1;padding:0 0 0 6px;flex-shrink:0;">✕</button>' +
+    '</div>';
+  function injectCdnBanner() { document.body.appendChild(banner); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectCdnBanner);
+  } else {
+    injectCdnBanner();
+  }
+}
+
 // ── Charger un fichier depuis l'API GitHub (toujours frais) ──────────────────
 function _loadFromGitHubAPI(filename, token, onSuccess, onFallback) {
   var apiUrl = 'https://api.github.com/repos/' + _LDR_GH_OWNER + '/' + _LDR_GH_REPO +
@@ -92,11 +139,15 @@ function _loadFromGitHubAPI(filename, token, onSuccess, onFallback) {
   })
   .then(function(data) {
     var content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    // Enregistrer le SHA pour la détection de conflit multi-utilisateurs (github-api.js)
+    if (data.sha && typeof githubRegisterLoadedSha === 'function') {
+      githubRegisterLoadedSha(filename, data.sha);
+    }
     _injectScript(content, onSuccess);
   })
   .catch(function(err) {
     console.warn('[loader] API GitHub échouée pour ' + filename + ' (' + err.message + ') → fallback CDN');
-    onFallback();
+    onFallback(filename);
   });
 }
 
@@ -118,7 +169,7 @@ function _loadFromCDN(filename, onDone) {
 // pas de CDN, pas de délai). L'API GitHub est publique en lecture pour un repo public
 // — pas besoin de token. Le token est utilisé uniquement s'il existe pour augmenter
 // la limite de requêtes (60/h anonyme → 5000/h authentifié).
-// Fallback CDN si l'API est inaccessible (réseau, quota dépassé).
+// Fallback CDN si l'API est inaccessible (réseau, quota dépassé) — avec avertissement.
 function loadData(files, callback) {
   var token = (typeof localStorage !== 'undefined') ? localStorage.getItem('tm_gh_token') : null;
   var index = 0;
@@ -131,9 +182,11 @@ function loadData(files, callback) {
 
     if (isRefreshable) {
       // ── Via API GitHub (frais instantané, même sans token) ──
-      _loadFromGitHubAPI(file, token, loadNext, function() {
+      _loadFromGitHubAPI(file, token, loadNext, function(failedFile) {
         // Fallback CDN si l'API échoue (réseau, quota)
-        _loadFromCDN(file, loadNext);
+        // ⚠️ Avertissement visible : les données CDN peuvent être périmées jusqu'à 5 min.
+        _showCdnWarning(failedFile);
+        _loadFromCDN(failedFile, loadNext);
       });
     } else {
       // ── Via CDN (fichiers statiques non modifiables) ──

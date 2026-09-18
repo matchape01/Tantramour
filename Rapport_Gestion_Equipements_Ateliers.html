@@ -1095,19 +1095,8 @@ function genererDataJs() {
 // ════════════════════════════════════════════════════
 // SAUVEGARDE UNIVERSELLE (local + GitHub)
 // ════════════════════════════════════════════════════
-async function saveFile(filename, content) {
-  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
-  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: filename, content: content })
-    });
-    if (!res.ok) { var e = await res.json().catch(function(){return{};}); throw new Error(e && e.error ? e.error : 'Erreur ' + res.status); }
-    return;
-  }
-  await githubSaveFile(filename, content);
-}
+// saveFile() est définie dans github-api.js (point d'entrée unique, détection
+// automatique local/GitHub Pages + détection de conflit multi-utilisateurs).
 
 // ════════════════════════════════════════════════════
 // MODE NUIT

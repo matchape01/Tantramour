@@ -268,33 +268,13 @@ function generateJsContent() {
 async function saveConfiguration() {
   var content  = generateJsContent();
   var fileName = 'ref_display_reports.js';
-
+  // saveFile() de github-api.js gère automatiquement local vs GitHub Pages
+  // et la détection de conflit multi-utilisateurs.
   try {
-    if (location.protocol === 'file:') {
-      throw new Error('Ouvrez via http://localhost:3000 (start.bat) ou GitHub Pages.');
-    }
-
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-      // ── Serveur local ──────────────────────────────────────────
-      var res = await fetch('http://localhost:3000/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filename: fileName, content: content })
-      });
-      if (!res.ok) {
-        var e = await res.json().catch(function(){ return {}; });
-        throw new Error(e.error || 'Erreur ' + res.status);
-      }
-      showToast('✅ Configuration sauvegardée (serveur local) !');
-    } else {
-      // ── GitHub Pages → API GitHub ──────────────────────────────
-      await githubSaveFile(fileName, content);
-      showToast('✅ Configuration sauvegardée sur GitHub !');
-    }
-
+    await saveFile(fileName, content);
+    showToast('✅ Configuration sauvegardée !');
     isDirty = false;
     document.getElementById('saveBar').classList.remove('on');
-
   } catch(err) {
     showToast('❌ ' + err.message);
   }

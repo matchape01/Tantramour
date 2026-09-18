@@ -1544,41 +1544,11 @@ window.resetEdit = resetEdit;
 // Stratégie : localhost → serveur Python (/save)
 //             ailleurs  → GitHub API
 // ══════════════════════════════════════════════
+// sauvegarder() et saveFile() délèguent à saveFile() de github-api.js
+// (point d'entrée unique, détection automatique local/GitHub Pages +
+// détection de conflit multi-utilisateurs).
 async function sauvegarder(content) {
-  // Ouvert en file:// → ni serveur local ni GitHub accessible
-  if (location.protocol === 'file:') {
-    throw new Error('Ouvrez le rapport via http://localhost:3000 (lancez start.bat) pour pouvoir sauvegarder.');
-  }
-  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    const res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: 'data.js', content })
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `Serveur local : erreur ${res.status}`);
-    }
-    return;
-  }
-  // GitHub Pages ou autre hébergement distant
-  await githubSaveFile('data.js', content);
-}
-
-// Fonction générique de sauvegarde d'un fichier quelconque
-async function saveFile(filename, content) {
-  if (location.protocol === 'file:') throw new Error('Ouvrez via http://localhost:3000 (start.bat) pour sauvegarder.');
-  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    const res = await fetch('http://localhost:3000/save', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename, content })
-    });
-    if (!res.ok) { const e = await res.json().catch(()=>{}); throw new Error(e && e.error ? e.error : 'Erreur ' + res.status); }
-    return;
-  }
-  await githubSaveFile(filename, content);
+  return saveFile('data.js', content);
 }
 
 // ══════════════════════════════════════════════
@@ -2700,45 +2670,15 @@ function genererLogisticsSpecialJs() {
     entries + (entries ? '\n\n' : '') + '};\n';
 }
 
-// ── SAUVEGARDE logistics.js ────────────────────────────────────────────────
+// ── SAUVEGARDE logistics.js / logistics.special.js ────────────────────────────
+// saveFile() de github-api.js gère automatiquement local vs GitHub Pages
+// et la détection de conflit multi-utilisateurs.
 async function logSauvegarder() {
-  if (location.protocol === 'file:') {
-    throw new Error('Ouvrez via http://localhost:3000 (lancez start.bat) pour sauvegarder.');
-  }
-  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: 'logistics.js', content: genererLogisticsJs() })
-    });
-    if (!res.ok) {
-      var err = await res.json().catch(function(){return{};});
-      throw new Error(err.error || 'Erreur ' + res.status);
-    }
-    return;
-  }
-  await githubSaveFile('logistics.js', genererLogisticsJs());
+  return saveFile('logistics.js', genererLogisticsJs());
 }
 
 async function logSpecialSauvegarder() {
-  if (location.protocol === 'file:') {
-    throw new Error('Ouvrez via http://localhost:3000 (lancez start.bat) pour sauvegarder.');
-  }
-  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocal) {
-    var res = await fetch('http://localhost:3000/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: 'logistics.special.js', content: genererLogisticsSpecialJs() })
-    });
-    if (!res.ok) {
-      var err = await res.json().catch(function(){return{};});
-      throw new Error(err.error || 'Erreur ' + res.status);
-    }
-    return;
-  }
-  await githubSaveFile('logistics.special.js', genererLogisticsSpecialJs());
+  return saveFile('logistics.special.js', genererLogisticsSpecialJs());
 }
 
 // ══════════════════════════════════════════════════════
