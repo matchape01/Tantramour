@@ -455,17 +455,41 @@ function buildIndex() {
     if (e.helper4)    add(e.helper4, e, 'helper');
     if (e.angel)      add(e.angel, e, 'angel');
     // REUNION : diffuser selon meetingRoles
-    // data.js stocke des noms (pas des IDs), donc on indexe par res.value (nom affiché)
+    // On utilise les IDs stables (fac1Id, helper1Id…) pour trouver qui a le bon rôle,
+    // puis on indexe par le NOM lu dans data.js (fac1, helper1…) — jamais depuis
+    // REF_RESSOURCES.value qui peut être en cache avec l'ancienne valeur.
     if (e.type === 'REUNION' && e.meetingRoles) {
       var meetRoles = e.meetingRoles.split(',').map(function(r){ return r.trim(); }).filter(Boolean);
       if (meetRoles.length && typeof REF_RESSOURCES !== 'undefined') {
         REF_RESSOURCES.forEach(function(res) {
-          if (!res.value) return;
+          if (!res.id || !res.value) return;
           var hasRole = meetRoles.some(function(r){ return res.roles && res.roles.indexOf(r) !== -1; });
           if (!hasRole) return;
-          // Les champs de data.js contiennent des noms → comparer avec res.value
-          var alreadyIn = [e.fac1,e.fac2,e.fac3,e.fac4,e.traduction,e.helper1,e.helper2,e.helper3,e.helper4,e.angel].indexOf(res.value) !== -1;
-          if (!alreadyIn) add(res.value, e, 'reunion');
+          // Chercher le NOM actuel de cette personne dans data.js via son ID (fac1Id, helper1Id…)
+          // Ceci garantit qu'on utilise toujours le nom frais de data.js, pas celui de REF_RESSOURCES
+          var nomDansAgenda = null;
+          var ID_FIELDS = [
+            {nom:'fac1',id:'fac1Id'},{nom:'fac2',id:'fac2Id'},{nom:'fac3',id:'fac3Id'},{nom:'fac4',id:'fac4Id'},
+            {nom:'traduction',id:'tradId'},{nom:'helper1',id:'helper1Id'},{nom:'helper2',id:'helper2Id'},
+            {nom:'helper3',id:'helper3Id'},{nom:'helper4',id:'helper4Id'},{nom:'angel',id:'angelId'}
+          ];
+          // D'abord vérifier si cette personne est déjà dans cet atelier (via ID)
+          var alreadyIn = ID_FIELDS.some(function(f){ return e[f.id] === res.id && e[f.nom]; });
+          if (alreadyIn) return;
+          // Trouver le nom actuel dans AGENDA via l'ID (premier atelier non-REUNION qui la mentionne)
+          for (var ai = 0; ai < AGENDA.length; ai++) {
+            var a = AGENDA[ai];
+            for (var fi = 0; fi < ID_FIELDS.length; fi++) {
+              if (a[ID_FIELDS[fi].id] === res.id && a[ID_FIELDS[fi].nom]) {
+                nomDansAgenda = a[ID_FIELDS[fi].nom];
+                break;
+              }
+            }
+            if (nomDansAgenda) break;
+          }
+          // Fallback : utiliser res.value si la personne n'est dans aucun atelier
+          if (!nomDansAgenda) nomDansAgenda = res.value;
+          add(nomDansAgenda, e, 'reunion');
         });
       }
     }
@@ -473,13 +497,7 @@ function buildIndex() {
   return idx;
 }
 
-// ── Diagnostic chargement ────────────────────────────────────────────────────
-console.log('[MAS] AGENDA:', typeof AGENDA !== 'undefined' ? AGENDA.length + ' entrées' : 'UNDEFINED');
-console.log('[MAS] REF_RESSOURCES:', typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES.length + ' entrées' : 'UNDEFINED');
-
 var FULL_INDEX = buildIndex();
-
-console.log('[MAS] FULL_INDEX:', Object.keys(FULL_INDEX).length + ' noms');
 
 // ── Vérifier si une personne est Colibri ou Mi-Colibri ───────────────────────
 function hasRole(id, role) {
