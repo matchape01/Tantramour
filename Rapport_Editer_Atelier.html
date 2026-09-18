@@ -371,6 +371,215 @@ loadData(['data.js', 'ref_descriptions.js', 'logistics.js', 'logistics.special.j
 let selectedIdx = null;   // index dans AGENDA
 let editedData  = null;   // copie de travail de l'entrée en cours
 
+// ══════════════════════════════════════════════════════════════════════════════
+// SYSTÈME DE VERROUS COLLABORATIFS (locks.json)
+// ══════════════════════════════════════════════════════════════════════════════
+//
+// Quand un utilisateur ouvre un atelier en édition :
+//   1. On vérifie si un verrou actif existe sur cet ID dans locks.json (GET API GitHub)
+//   2. Si oui et non expiré → READ ONLY + bandeau "X est en train d'éditer"
+//   3. Si non → on acquiert le verrou (PUT locks.json avec notre entrée, TTL 5 min)
+//   4. Heartbeat toutes les 2 min pour renouveler le TTL tant que l'atelier est ouvert
+//   5. Libération : sauvegarde, annulation, sélection d'un autre atelier, fermeture de page
+//
+// locks.json : { "<atelierID>": { user, since, expires } }
+// Le fichier est dans le repo GitHub et partagé entre tous les utilisateurs.
+
+const LOCK_TTL_MS        = 5 * 60 * 1000;   // verrou expire après 5 min d'inactivité
+const LOCK_HEARTBEAT_MS  = 2 * 60 * 1000;   // renouvellement toutes les 2 min
+const LOCKS_FILE         = 'locks.json';
+
+let _lockHeldId     = null;   // ID de l'atelier dont on détient le verrou
+let _lockHeartbeat  = null;   // timer du heartbeat
+let _locksSha       = null;   // SHA de locks.json en cache (pour les PUT)
+let _isReadOnly     = false;  // true si l'atelier courant est verrouillé par quelqu'un d'autre
+
+// ── Nom d'utilisateur — demandé une fois, stocké dans localStorage ────────────
+function _getLockUserName() {
+  let name = localStorage.getItem('tm_user_name') || '';
+  if (!name) {
+    name = prompt('Votre prénom (utilisé pour indiquer aux autres que vous éditez un atelier) :') || 'Anonyme';
+    localStorage.setItem('tm_user_name', name.trim() || 'Anonyme');
+  }
+  return localStorage.getItem('tm_user_name') || 'Anonyme';
+}
+
+// ── Récupérer locks.json frais depuis l'API GitHub ───────────────────────────
+async function _fetchLocks() {
+  try {
+    const token  = localStorage.getItem('tm_gh_token');
+    const apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO +
+                   '/contents/' + LOCKS_FILE + '?ref=' + GITHUB_BRANCH + '&_t=' + Date.now();
+    const headers = { 'Accept': 'application/vnd.github+json', 'If-None-Match': '' };
+    if (token) headers['Authorization'] = 'token ' + token;
+    const res = await fetch(apiUrl, { headers: headers, cache: 'no-store' });
+    if (!res.ok) return { locks: {}, sha: null };
+    const data    = await res.json();
+    _locksSha     = data.sha || null;
+    const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    return { locks: JSON.parse(content), sha: _locksSha };
+  } catch(_) {
+    return { locks: {}, sha: _locksSha };
+  }
+}
+
+// ── Écrire locks.json sur GitHub ─────────────────────────────────────────────
+async function _writeLocks(locksObj) {
+  try {
+    const token = localStorage.getItem('tm_gh_token');
+    if (!token) return;   // sans token on ne peut pas écrire — pas critique
+    const content = JSON.stringify(locksObj, null, 2);
+    const encoded = btoa(unescape(encodeURIComponent(content)));
+    const apiUrl  = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO +
+                    '/contents/' + LOCKS_FILE;
+    const body = {
+      message: '[Tantramour locks] ' + (_lockHeldId || '?'),
+      content: encoded,
+      branch:  GITHUB_BRANCH,
+    };
+    if (_locksSha) body.sha = _locksSha;
+    const res = await fetch(apiUrl, {
+      method:  'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body:    JSON.stringify(body)
+    });
+    if (res.ok) {
+      const d = await res.json();
+      _locksSha = (d.content && d.content.sha) || _locksSha;
+    } else if (res.status === 409 || res.status === 422) {
+      // SHA périmé → refetch et réessayer une fois
+      const fresh = await _fetchLocks();
+      _locksSha = fresh.sha;
+      await _writeLocks(locksObj);
+    }
+  } catch(_) { /* écriture de verrou non critique */ }
+}
+
+// ── Vérifier si un atelier est verrouillé par quelqu'un d'autre ──────────────
+// Retourne { locked: bool, locker: string } — locker = prénom de l'occupant
+async function checkLock(atelierID) {
+  if (!atelierID) return { locked: false, locker: '' };
+  // En local : pas de verrou (conflit impossible sur un seul poste)
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return { locked: false, locker: '' };
+  const me = _getLockUserName();
+  const { locks } = await _fetchLocks();
+  const entry = locks[atelierID];
+  if (!entry) return { locked: false, locker: '' };
+  // Expiration : ignorer les verrous périmés
+  if (entry.expires && Date.now() > new Date(entry.expires).getTime()) return { locked: false, locker: '' };
+  // C'est notre propre verrou (même prénom) → pas de blocage
+  if (entry.user === me) return { locked: false, locker: '' };
+  return { locked: true, locker: entry.user || 'quelqu\'un' };
+}
+
+// ── Acquérir le verrou sur un atelier ────────────────────────────────────────
+async function acquireLock(atelierID) {
+  if (!atelierID) return;
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+  const me = _getLockUserName();
+  const { locks } = await _fetchLocks();
+  const now     = new Date();
+  const expires = new Date(now.getTime() + LOCK_TTL_MS);
+  locks[atelierID] = { user: me, since: now.toISOString(), expires: expires.toISOString() };
+  // Libérer l'éventuel ancien verrou tenu sur un autre atelier
+  if (_lockHeldId && _lockHeldId !== atelierID) delete locks[_lockHeldId];
+  _lockHeldId = atelierID;
+  await _writeLocks(locks);
+  // Démarrer le heartbeat
+  _stopHeartbeat();
+  _lockHeartbeat = setInterval(function() { _renewLock(atelierID); }, LOCK_HEARTBEAT_MS);
+}
+
+// ── Renouveler le verrou (heartbeat) ─────────────────────────────────────────
+async function _renewLock(atelierID) {
+  if (!atelierID || _lockHeldId !== atelierID) return;
+  const me = _getLockUserName();
+  const { locks } = await _fetchLocks();
+  if (!locks[atelierID] || locks[atelierID].user !== me) return; // verrou perdu
+  const expires = new Date(Date.now() + LOCK_TTL_MS);
+  locks[atelierID].expires = expires.toISOString();
+  await _writeLocks(locks);
+}
+
+// ── Libérer le verrou ─────────────────────────────────────────────────────────
+async function releaseLock(atelierID) {
+  if (!atelierID) return;
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+  _stopHeartbeat();
+  _lockHeldId = null;
+  try {
+    const me = _getLockUserName();
+    const { locks } = await _fetchLocks();
+    if (locks[atelierID] && locks[atelierID].user === me) {
+      delete locks[atelierID];
+      await _writeLocks(locks);
+    }
+  } catch(_) {}
+}
+
+function _stopHeartbeat() {
+  if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
+}
+
+// ── Libération automatique à la fermeture de l'onglet ────────────────────────
+window.addEventListener('beforeunload', function() {
+  // Libération synchrone best-effort (sendBeacon n'est pas utilisable ici
+  // car on écrit sur l'API GitHub — on tente juste de stopper le heartbeat)
+  _stopHeartbeat();
+  // Tentative de libération fire-and-forget (pas attendue — le TTL de 5 min prendra le relais)
+  if (_lockHeldId) releaseLock(_lockHeldId);
+});
+
+// ── Bandeau READ ONLY ─────────────────────────────────────────────────────────
+function _showReadOnlyBanner(lockerName, atelierName) {
+  var old = document.getElementById('tm-readonly-banner');
+  if (old) old.remove();
+  var banner = document.createElement('div');
+  banner.id = 'tm-readonly-banner';
+  banner.style.cssText = [
+    'position:sticky','top:0','z-index:9990',
+    'background:#fef2f2','border-bottom:3px solid #fca5a5',
+    'padding:10px 20px','display:flex','align-items:center',
+    'gap:10px','flex-wrap:wrap',
+    'font-family:-apple-system,"Segoe UI",system-ui,sans-serif',
+    'font-size:13px','color:#7f1d1d','font-weight:600'
+  ].join(';');
+  banner.innerHTML =
+    '<span style="font-size:18px;">🔒</span>' +
+    '<span><strong>' + (lockerName || 'quelqu\'un') + '</strong> est en train d\'éditer ' +
+    '"<em>' + (atelierName || 'cet atelier') + '</em>" — ' +
+    '<span style="background:#fca5a5;color:#7f1d1d;border-radius:4px;padding:1px 7px;font-size:12px;letter-spacing:.5px;">LECTURE SEULE</span>' +
+    '</span>' +
+    '<span style="color:#b45309;font-weight:400;font-size:12px;">Les modifications sont désactivées. Réessayez dans quelques minutes.</span>' +
+    '<button onclick="document.getElementById(\'tm-readonly-banner\').remove()" ' +
+      'style="margin-left:auto;cursor:pointer;background:transparent;border:none;font-size:18px;color:#7f1d1d;line-height:1;">✕</button>';
+  var panel = document.getElementById('editorPanel');
+  if (panel) panel.insertBefore(banner, panel.firstChild);
+  else document.body.prepend(banner);
+}
+
+function _hideReadOnlyBanner() {
+  var b = document.getElementById('tm-readonly-banner');
+  if (b) b.remove();
+}
+
+// ── Désactiver tous les inputs/selects/boutons du formulaire ─────────────────
+function _applyReadOnlyToEditor(isRO) {
+  _isReadOnly = isRO;
+  var panel = document.getElementById('editorPanel');
+  if (!panel) return;
+  // Inputs, selects, textareas, boutons de sauvegarde
+  panel.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.disabled = isRO;
+  });
+  // Boutons d'action (Sauvegarder, Supprimer, Dupliquer, etc.) — sauf Annuler/Fermer
+  panel.querySelectorAll('button').forEach(function(btn) {
+    var txt = (btn.textContent || '').toLowerCase();
+    var isCancel = txt.includes('annuler') || txt.includes('fermer') || txt.includes('cancel') || btn.id === 'btnReset';
+    if (!isCancel) btn.disabled = isRO;
+  });
+}
+
 // ══════════════════════════════════════════════
 // CONSIGNES TYPE — helpers
 // ══════════════════════════════════════════════
@@ -658,6 +867,14 @@ function renderList() {
 // SÉLECTION D'UN ATELIER → affiche le formulaire
 // ══════════════════════════════════════════════
 function selectAtelier(idx) {
+  // Libérer le verrou de l'atelier précédent si on en change
+  const prevLockId = _lockHeldId;
+  if (prevLockId && AGENDA[idx] && prevLockId !== AGENDA[idx].id) {
+    releaseLock(prevLockId);
+  }
+  _hideReadOnlyBanner();
+  _isReadOnly = false;
+
   selectedIdx = idx;
   editedData  = Object.assign({}, AGENDA[idx]); // copie superficielle
   if (AGENDA[idx]._equipements) editedData._equipements = Object.assign({}, AGENDA[idx]._equipements);
@@ -676,6 +893,25 @@ function selectAtelier(idx) {
   const panel = document.getElementById('editorPanel');
   panel.style.display = '';
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Vérification du verrou en arrière-plan (async, non bloquant)
+  const atelierID = AGENDA[idx] && AGENDA[idx].id;
+  if (atelierID) {
+    checkLock(atelierID).then(function(result) {
+      if (result.locked) {
+        // Un autre utilisateur détient le verrou → READ ONLY
+        _isReadOnly = true;
+        _showReadOnlyBanner(result.locker, AGENDA[idx] && AGENDA[idx].atelier);
+        _applyReadOnlyToEditor(true);
+      } else {
+        // Libre → acquérir le verrou
+        acquireLock(atelierID);
+      }
+    }).catch(function() {
+      // Erreur réseau → on laisse passer sans bloquer
+      acquireLock(atelierID);
+    });
+  }
 }
 window.renderList    = renderList;
 window.selectAtelier = selectAtelier;
@@ -1525,12 +1761,18 @@ window.toggleColibri = toggleColibri;
 
 function resetEdit() {
   if (selectedIdx === -1) {
-    // Annuler la création → fermer le panel
+    // Annuler la création → fermer le panel + libérer le verrou
+    if (_lockHeldId) releaseLock(_lockHeldId);
+    _hideReadOnlyBanner();
     selectedIdx = null;
     editedData  = null;
     document.getElementById('editorPanel').style.display = 'none';
     document.getElementById('editorPanel').classList.remove('is-new');
   } else {
+    // Annuler les modifs → libérer le verrou et repasser en mode normal
+    if (_lockHeldId) releaseLock(_lockHeldId);
+    _hideReadOnlyBanner();
+    _isReadOnly = false;
     editedData = Object.assign({}, AGENDA[selectedIdx]);
     if (AGENDA[selectedIdx]._equipements) editedData._equipements = Object.assign({}, AGENDA[selectedIdx]._equipements);
     renderEditor();
@@ -1644,6 +1886,11 @@ window.saveLogistique = saveLogistique;
 
 async function saveUpdate() {
   if (selectedIdx === null) return;
+  // Garde-fou : bloquer la sauvegarde si l'atelier est en lecture seule
+  if (_isReadOnly) {
+    showToast('🔒 Cet atelier est en lecture seule — un autre utilisateur est en train de l\'éditer.', true);
+    return;
+  }
   const isNew = (selectedIdx === -1);
 
   const btn = document.getElementById('btnUpdate');
@@ -1859,6 +2106,9 @@ async function saveUpdate() {
       // Fusion collaborative : n'écrase que cet atelier dans la version fraîche GitHub
       await mergeAndSaveDataJs([newEntry]);
       await saveDescIfNeeded();
+      // Libérer le verrou après sauvegarde réussie
+      releaseLock(newEntry.id);
+      _hideReadOnlyBanner();
       selectedIdx = newIdx;
       editedData  = Object.assign({}, newEntry);
       renderList();
@@ -1938,6 +2188,9 @@ async function saveUpdate() {
       } else {
         await saveDescIfNeeded();
       }
+      // Libérer le verrou après sauvegarde réussie
+      releaseLock(newEntry.id);
+      _hideReadOnlyBanner();
       renderList();
       renderEditor();
       const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
@@ -1977,6 +2230,9 @@ async function deleteAtelier() {
   try {
     // Fusion collaborative : signaler la suppression par ID dans la version fraîche GitHub
     await mergeAndSaveDataJs([], [deletedEntry.id]);
+    // Libérer le verrou (atelier supprimé)
+    releaseLock(deletedEntry.id);
+    _hideReadOnlyBanner();
     // Fermer le panel et réinitialiser
     selectedIdx = null;
     editedData  = null;
