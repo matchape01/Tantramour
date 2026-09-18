@@ -11,6 +11,24 @@
  * Compatible CSP strict (pas d'eval, pas de blob).
  */
 
+// ── resolveName / resolveResourceId — définies EN PREMIER sur window ─────────
+// Ces fonctions doivent exister IMMÉDIATEMENT dès que loader.js s'exécute,
+// car les callbacks de loadData y accèdent avant que tout rechargement asynchrone
+// (bustStaticScripts) soit terminé. Définir sur window garantit la disponibilité
+// globale indépendamment de l'ordre de chargement des scripts.
+window.resolveName = function(val) {
+  if (!val) return '';
+  if (typeof REF_RESSOURCES === 'undefined') return val;
+  var r = REF_RESSOURCES.find(function(x) { return x.id === val; });
+  return r ? r.value : val; // fallback : val tel quel (nom brut si pas un ID connu)
+};
+window.resolveResourceId = function(name) {
+  if (!name) return '';
+  if (typeof REF_RESSOURCES === 'undefined') return name;
+  var r = REF_RESSOURCES.find(function(x) { return x.value === name; });
+  return r ? r.id : name;
+};
+
 // Ces variables sont déclarées localement dans loader.js pour éviter tout conflit
 // avec les déclarations const de github-api.js (chargé sur certaines pages).
 var _LDR_GH_OWNER  = 'matchape01';
@@ -232,3 +250,9 @@ function loadData(files, callback) {
     injectBadge();
   }
 })();
+
+// ── Alias fonctions pour les scripts qui appellent resolveName() directement ──
+// Les définitions principales sont en haut du fichier (sur window).
+// Ces alias permettent l'appel sans préfixe window dans tous les rapports.
+function resolveName(val)        { return window.resolveName(val); }
+function resolveResourceId(name) { return window.resolveResourceId(name); }
