@@ -473,7 +473,13 @@ function buildIndex() {
   return idx;
 }
 
+// ── Diagnostic chargement ────────────────────────────────────────────────────
+console.log('[MAS] AGENDA:', typeof AGENDA !== 'undefined' ? AGENDA.length + ' entrées' : 'UNDEFINED');
+console.log('[MAS] REF_RESSOURCES:', typeof REF_RESSOURCES !== 'undefined' ? REF_RESSOURCES.length + ' entrées' : 'UNDEFINED');
+
 var FULL_INDEX = buildIndex();
+
+console.log('[MAS] FULL_INDEX:', Object.keys(FULL_INDEX).length + ' noms');
 
 // ── Vérifier si une personne est Colibri ou Mi-Colibri ───────────────────────
 function hasRole(id, role) {
