@@ -1927,12 +1927,10 @@ async function saveLogistique() {
   };
 
   try {
-    await Promise.all([
-      saveFile('logistics.js',         genererLogisticsJs()),
-      saveFile('logistics.special.js', genererLogisticsSpecialJs()),
-      saveFile('logistics.helpers.js', genererLogisticsHelpersJs()),
-      saveFile('data.js',              genererDataJs()),
-    ]);
+    await saveFile('logistics.js',         genererLogisticsJs());
+    await saveFile('logistics.special.js', genererLogisticsSpecialJs());
+    await saveFile('logistics.helpers.js', genererLogisticsHelpersJs());
+    await saveFile('data.js',              genererDataJs());
     showToast('✅ Informations logistiques sauvegardées !');
     if (btn) { btn.disabled = false; btn.textContent = '💾 Sauvegarder les infos logistiques'; }
   } catch(err) {
