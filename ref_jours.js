@@ -9,11 +9,11 @@
  *   dateDdMmYyyy : date au format DD/MM/YYYY
  */
 var REF_JOURS = [
-  { id: "J1", value: "Jour 1", label: "Jour 1 — Samedi 29 août",       date: "Samedi 29 aout",       dateDdMmYyyy: "29/08/2026" },
-  { id: "J2", value: "Jour 2", label: "Jour 2 — Dimanche 30 août",     date: "Dimanche 30 aout",     dateDdMmYyyy: "30/08/2026" },
-  { id: "J3", value: "Jour 3", label: "Jour 3 — Lundi 31 août",        date: "Lundi 31 aout",        dateDdMmYyyy: "31/08/2026" },
-  { id: "J4", value: "Jour 4", label: "Jour 4 — Mardi 1 septembre",    date: "Mardi 1 septembre",    dateDdMmYyyy: "01/09/2026" },
-  { id: "J5", value: "Jour 5", label: "Jour 5 — Mercredi 2 septembre", date: "Mercredi 2 septembre", dateDdMmYyyy: "02/09/2026" },
-  { id: "J6", value: "Jour 6", label: "Jour 6 — Jeudi 3 septembre",    date: "Jeudi 3 septembre",    dateDdMmYyyy: "03/09/2026" },
-  { id: "J7", value: "Jour 7", label: "Jour 7 — Vendredi 4 septembre", date: "Vendredi 4 septembre", dateDdMmYyyy: "04/09/2026" },
+  { id: "J1", value: "Jour 1", label: "Jour 1 — Vendredi 27 août",     date: "Vendredi 27 aout",     dateDdMmYyyy: "27/08/2027" },
+  { id: "J2", value: "Jour 2", label: "Jour 2 — Samedi 28 août",       date: "Samedi 28 aout",       dateDdMmYyyy: "28/08/2027" },
+  { id: "J3", value: "Jour 3", label: "Jour 3 — Dimanche 29 août",     date: "Dimanche 29 aout",     dateDdMmYyyy: "29/08/2027" },
+  { id: "J4", value: "Jour 4", label: "Jour 4 — Lundi 30 août",        date: "Lundi 30 aout",        dateDdMmYyyy: "30/08/2027" },
+  { id: "J5", value: "Jour 5", label: "Jour 5 — Mardi 31 août",        date: "Mardi 31 aout",        dateDdMmYyyy: "31/08/2027" },
+  { id: "J6", value: "Jour 6", label: "Jour 6 — Mercredi 1 septembre",  date: "Mercredi 1 septembre", dateDdMmYyyy: "01/09/2027" },
+  { id: "J7", value: "Jour 7", label: "Jour 7 — Jeudi 2 septembre",     date: "Jeudi 2 septembre",    dateDdMmYyyy: "02/09/2027" },
 ];
