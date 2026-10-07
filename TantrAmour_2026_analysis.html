@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TantrAmour 2026 — Analyse des Ateliers</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --purple-deep: #2d1b69;
@@ -312,6 +313,138 @@
     padding: 0.25rem 0.7rem;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── MINI TABLES SOUS CHARTS ── */
+  .chart-table-wrap {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border-top: 1px solid var(--gray-200);
+    padding-top: 0.8rem;
+  }
+  .chart-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .chart-table thead tr {
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-dark));
+  }
+  .chart-table thead th {
+    color: #fff;
+    padding: 0.45rem 0.7rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .chart-table thead th:not(:first-child) { text-align: right; }
+  .chart-table tbody tr { border-bottom: 1px solid var(--gray-200); }
+  .chart-table tbody tr:hover { background: var(--purple-faint); }
+  .chart-table tbody tr.total-row {
+    background: var(--gray-200);
+    font-weight: 800;
+    border-top: 2px solid var(--purple-pale);
+  }
+  .chart-table tbody tr.total-row td { color: var(--purple-deep); }
+  .chart-table td {
+    padding: 0.4rem 0.7rem;
+    color: var(--gray-900);
+    vertical-align: middle;
+  }
+  .chart-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .ct-dot {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 2px;
+    margin-right: 5px;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .ct-pct {
+    display: inline-block;
+    font-weight: 700;
+    color: var(--purple-mid);
+  }
+  /* Stacked table */
+  .stacked-table-wrap {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border-top: 1px solid var(--gray-200);
+    padding-top: 0.8rem;
+  }
+  .stacked-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+  .stacked-table thead tr { background: linear-gradient(135deg, var(--purple-deep), var(--purple-dark)); }
+  .stacked-table thead th {
+    color: #fff; padding: 0.45rem 0.6rem;
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .stacked-table thead th:not(:first-child) { text-align: right; }
+  .stacked-table tbody tr { border-bottom: 1px solid var(--gray-200); }
+  .stacked-table tbody tr:hover { background: var(--purple-faint); }
+  .stacked-table tbody tr.st-total {
+    background: var(--gray-200); font-weight: 800;
+    border-top: 2px solid var(--purple-pale);
+  }
+  .stacked-table tbody tr.st-total td { color: var(--purple-deep); }
+  .stacked-table td { padding: 0.38rem 0.6rem; color: var(--gray-900); vertical-align: middle; }
+  .stacked-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .st-zero { color: #d1d5db !important; }
+
+  /* ── DONUT HTML LEGEND ── */
+  .chart-card:has(.donut-legend) .chart-container {
+    flex: 0 0 55%;
+  }
+  .chart-card:has(.donut-legend) {
+    display: flex;
+    flex-direction: column;
+  }
+  .donut-legend-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .donut-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow-y: auto;
+    max-height: 300px;
+    padding: 0.2rem 0;
+  }
+  .donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.3;
+  }
+  .donut-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .donut-legend-name {
+    font-size: 0.82rem;
+    color: #374151;
+    flex: 1;
+  }
+  .donut-legend-pct {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--purple-deep);
     white-space: nowrap;
   }
 
@@ -644,11 +777,15 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-title">🍩 Distribution des types <span class="badge">% ateliers</span></div>
-      <div class="chart-container" style="height:320px"><canvas id="chartDoughnut"></canvas></div>
+      <div class="donut-legend-wrap">
+        <div class="chart-container" style="height:300px;flex:0 0 50%"><canvas id="chartDoughnut"></canvas></div>
+        <div class="donut-legend" id="donutLegendContainer"></div>
+      </div>
     </div>
     <div class="chart-card">
       <div class="chart-title">📊 Nombre d'ateliers par type <span class="badge">quantité</span></div>
       <div class="chart-container" style="height:320px"><canvas id="chartBarType"></canvas></div>
+      <div class="chart-table-wrap" id="tableBarType"></div>
     </div>
   </div>
 
@@ -658,10 +795,12 @@
     <div class="chart-card">
       <div class="chart-title">⏱️ Heures par type d'atelier <span class="badge">total heures</span></div>
       <div class="chart-container" style="height:320px"><canvas id="chartHoursType"></canvas></div>
+      <div class="chart-table-wrap" id="tableHoursType"></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">📅 Ateliers & heures par jour <span class="badge">par jour</span></div>
       <div class="chart-container" style="height:320px"><canvas id="chartByDay"></canvas></div>
+      <div class="chart-table-wrap" id="tableByDay"></div>
     </div>
   </div>
 
@@ -671,6 +810,7 @@
     <div class="chart-card wide">
       <div class="chart-title">📈 Heures par type et par jour <span class="badge">stacked</span></div>
       <div class="chart-container" style="height:360px"><canvas id="chartStacked"></canvas></div>
+      <div class="stacked-table-wrap" id="tableStacked"></div>
     </div>
   </div>
 
@@ -1041,21 +1181,46 @@ function updateCharts(data) {
   const counts = types.map(t => byType[t].length);
   const colors = types.map(t => getEffectiveColor(t));
 
-  // Chart 1 — Doughnut
+  const totalFiltered = data.length;
+  const totalH = data.reduce((s,a) => s + a.dureeH, 0);
+
+  // Chart 1 — Doughnut avec légende HTML externe (permet bold sur le %)
   destroyChart("chartDoughnut");
+
+  // Légende HTML custom dans le div dédié
+  const legendDiv = document.getElementById("donutLegendContainer");
+  legendDiv.innerHTML = types.map((t, i) => {
+    const pct = ((counts[i] / totalFiltered) * 100).toFixed(0);
+    return `<div class="donut-legend-item">
+      <span class="donut-legend-dot" style="background:${colors[i]}"></span>
+      <span class="donut-legend-name">${t}</span>
+      <span class="donut-legend-pct">(${pct}%)</span>
+    </div>`;
+  }).join("");
+
   charts["chartDoughnut"] = new Chart(document.getElementById("chartDoughnut"), {
     type: "doughnut",
     data: { labels: types, datasets: [{ data: counts, backgroundColor: colors, borderWidth: 2, borderColor: "#fff" }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { position: "right", labels: { font: { size: 10 }, boxWidth: 14, padding: 10 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} ateliers (${((ctx.raw/data.length)*100).toFixed(1)}%)` } }
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} ateliers (${((ctx.raw/totalFiltered)*100).toFixed(1)}%)` } },
+        datalabels: {
+          color: "#fff",
+          font: { size: 11, weight: "bold" },
+          formatter: (val) => {
+            const pct = ((val / totalFiltered) * 100).toFixed(0);
+            return pct >= 5 ? `${val}\n${pct}%` : "";
+          },
+          textAlign: "center"
+        }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 
-  // Chart 2 — Bar count by type
+  // Chart 2 — Bar count by type avec valeurs
   destroyChart("chartBarType");
   charts["chartBarType"] = new Chart(document.getElementById("chartBarType"), {
     type: "bar",
@@ -1065,19 +1230,30 @@ function updateCharts(data) {
     },
     options: {
       indexAxis: "y", responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      layout: { padding: { right: 40 } },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          anchor: "end", align: "end",
+          color: "#374151",
+          font: { size: 11, weight: "700" },
+          formatter: (val) => `${val} (${((val/totalFiltered)*100).toFixed(0)}%)`
+        }
+      },
       scales: {
         x: { grid: { color: "rgba(0,0,0,0.05)" } },
         y: { ticks: { font: { size: 10 } } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 
-  // Chart 3 — Bar hours by type
+  // Chart 3 — Bar hours by type avec valeurs
   destroyChart("chartHoursType");
   const typesByH = [...types].sort((a,b) =>
     byType[b].reduce((s,x)=>s+x.dureeH,0) - byType[a].reduce((s,x)=>s+x.dureeH,0));
   const hByType = typesByH.map(t => parseFloat(byType[t].reduce((s,a)=>s+a.dureeH,0).toFixed(2)));
+  const totalHFiltered = hByType.reduce((s,v)=>s+v,0);
   charts["chartHoursType"] = new Chart(document.getElementById("chartHoursType"), {
     type: "bar",
     data: {
@@ -1086,15 +1262,25 @@ function updateCharts(data) {
     },
     options: {
       indexAxis: "y", responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      layout: { padding: { right: 60 } },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          anchor: "end", align: "end",
+          color: "#374151",
+          font: { size: 11, weight: "700" },
+          formatter: (val) => `${val}h (${((val/totalHFiltered)*100).toFixed(0)}%)`
+        }
+      },
       scales: {
         x: { grid: { color: "rgba(0,0,0,0.05)" } },
         y: { ticks: { font: { size: 10 } } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 
-  // Chart 4 — Mixed by day
+  // Chart 4 — Mixed by day avec valeurs sur les barres et la ligne
   const joursPresents = ALL_JOURS.filter(j => data.some(a => a.jour === j));
   const countByDay = joursPresents.map(j => data.filter(a => a.jour === j).length);
   const hoursByDay = joursPresents.map(j => parseFloat(data.filter(a => a.jour === j).reduce((s,a)=>s+a.dureeH,0).toFixed(2)));
@@ -1104,30 +1290,49 @@ function updateCharts(data) {
     data: {
       labels: joursPresents,
       datasets: [
-        { type:"bar", label: "Nb ateliers", data: countByDay, backgroundColor: "rgba(124,58,237,0.7)", borderRadius: 6, yAxisID: "y" },
-        { type:"line", label: "Heures", data: hoursByDay, borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,0.1)", borderWidth: 2.5, tension: 0.4, pointRadius: 5, pointBackgroundColor: "#f59e0b", fill: true, yAxisID: "y2" }
+        {
+          type: "bar", label: "Nb ateliers", data: countByDay,
+          backgroundColor: "rgba(124,58,237,0.7)", borderRadius: 6, yAxisID: "y",
+          datalabels: {
+            anchor: "end", align: "top",
+            color: "#4a2c8a", font: { size: 11, weight: "700" },
+            formatter: v => v
+          }
+        },
+        {
+          type: "line", label: "Heures", data: hoursByDay,
+          borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,0.1)",
+          borderWidth: 2.5, tension: 0.4, pointRadius: 5, pointBackgroundColor: "#f59e0b",
+          fill: true, yAxisID: "y2",
+          datalabels: {
+            anchor: "end", align: "top",
+            color: "#92400e", font: { size: 11, weight: "700" },
+            formatter: v => `${v}h`
+          }
+        }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 20 } },
       plugins: { legend: { labels: { font: { size: 11 } } } },
       scales: {
         y: { title: { display: true, text: "Nb ateliers" }, grid: { color: "rgba(0,0,0,0.05)" } },
         y2: { position: "right", title: { display: true, text: "Heures" }, grid: { display: false } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 
-  // Chart 5 — Stacked bar hours per effectiveType per day
+  // Chart 5 — Stacked bar avec total par colonne
   const orgaGroupActive = [...activeGroups.values()].some(g => g.id === "orga");
   const orgaTypes = new Set(["PREPA & LOGISTICS","SHIFT ANGEL","REUNION"]);
   const contentTypes = types.filter(t => {
-    // Exclude raw orga types if not grouped, grouped orga name if grouped
     if (orgaGroupActive) return t !== "ORGANISATION (tout)";
     return !orgaTypes.has(t);
   });
   const joursAll = ALL_JOURS.filter(j => data.some(a => a.jour === j));
-  const stackedDatasets = contentTypes.map(t => ({
+  const stackedDatasets = contentTypes.map((t, i) => ({
     label: t,
     data: joursAll.map(j => {
       const items = dataWithEffective.filter(a => a.effectiveType === t && a.jour === j);
@@ -1135,24 +1340,196 @@ function updateCharts(data) {
     }),
     backgroundColor: getEffectiveColor(t),
     borderRadius: 3,
-    borderSkipped: false
+    borderSkipped: false,
+    // Datalabels: affiche la valeur uniquement si assez grande, sur le dernier dataset affiche le total
+    datalabels: {
+      display: (ctx) => ctx.dataset.data[ctx.dataIndex] >= 1,
+      color: "#fff",
+      font: { size: 9, weight: "700" },
+      formatter: v => v > 0 ? `${v}h` : ""
+    }
   }));
+
+  // Dataset fantôme pour afficher le total en haut de chaque barre
+  const totalByJour = joursAll.map(j =>
+    parseFloat(contentTypes.reduce((s,t) => {
+      const items = dataWithEffective.filter(a => a.effectiveType === t && a.jour === j);
+      return s + items.reduce((ss,a)=>ss+a.dureeH,0);
+    }, 0).toFixed(1))
+  );
+  const totalDataset = {
+    label: "_total",
+    data: totalByJour,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    datalabels: {
+      anchor: "end", align: "top",
+      color: "#374151", font: { size: 11, weight: "900" },
+      formatter: v => `${v}h`
+    }
+  };
+
   destroyChart("chartStacked");
   charts["chartStacked"] = new Chart(document.getElementById("chartStacked"), {
     type: "bar",
-    data: { labels: joursAll, datasets: stackedDatasets },
+    data: { labels: joursAll, datasets: [...stackedDatasets, totalDataset] },
     options: {
       responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 24 } },
       plugins: {
-        legend: { labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}h` } }
+        legend: {
+          labels: {
+            font: { size: 10 }, boxWidth: 12, padding: 8,
+            filter: item => item.text !== "_total"
+          }
+        },
+        tooltip: {
+          filter: item => item.dataset.label !== "_total",
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}h` }
+        }
       },
       scales: {
         x: { stacked: true },
         y: { stacked: true, title: { display: true, text: "Heures" }, grid: { color: "rgba(0,0,0,0.05)" } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
+
+  // Tableaux de données sous chaque chart
+  buildChartTables(
+    data, dataWithEffective,
+    types, counts, byType, hByType, typesByH,
+    joursPresents, countByDay, hoursByDay,
+    contentTypes, joursAll,
+    totalFiltered, totalHFiltered
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHART DATA TABLES
+// ═══════════════════════════════════════════════════════════════
+function buildChartTables(data, dataWithEffective, types, counts, byType, hByType, typesByH,
+                          joursPresents, countByDay, hoursByDay, contentTypes, joursAll,
+                          totalFiltered, totalHFiltered) {
+
+  // ── Helpers ────────────────────────────────────────────────
+  const fh = v => Number.isInteger(v) ? `${v}h` : `${v}h`;
+  const fp = (v, t) => `<span class="ct-pct">${((v/t)*100).toFixed(0)}%</span>`;
+  const dot = color => `<span class="ct-dot" style="background:${color}"></span>`;
+
+  // ── Table 1 : Nb ateliers par type (sous chartBarType) ──────
+  document.getElementById("tableBarType").innerHTML = `
+    <table class="chart-table">
+      <thead><tr>
+        <th>Type d'atelier</th>
+        <th>Nb ateliers</th>
+        <th>%</th>
+      </tr></thead>
+      <tbody>
+        ${types.map((t,i) => `<tr>
+          <td>${dot(getEffectiveColor(t))}${t}</td>
+          <td>${counts[i]}</td>
+          <td>${fp(counts[i], totalFiltered)}</td>
+        </tr>`).join("")}
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>${totalFiltered}</td>
+          <td><span class="ct-pct">100%</span></td>
+        </tr>
+      </tbody>
+    </table>`;
+
+  // ── Table 2 : Heures par type (sous chartHoursType) ─────────
+  document.getElementById("tableHoursType").innerHTML = `
+    <table class="chart-table">
+      <thead><tr>
+        <th>Type d'atelier</th>
+        <th>Heures totales</th>
+        <th>%</th>
+      </tr></thead>
+      <tbody>
+        ${typesByH.map((t,i) => `<tr>
+          <td>${dot(getEffectiveColor(t))}${t}</td>
+          <td>${fh(hByType[i])}</td>
+          <td>${fp(hByType[i], totalHFiltered)}</td>
+        </tr>`).join("")}
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>${fh(totalHFiltered)}</td>
+          <td><span class="ct-pct">100%</span></td>
+        </tr>
+      </tbody>
+    </table>`;
+
+  // ── Table 3 : Nb ateliers & heures par jour (sous chartByDay)
+  document.getElementById("tableByDay").innerHTML = `
+    <table class="chart-table">
+      <thead><tr>
+        <th>Jour</th>
+        <th>Nb ateliers</th>
+        <th>% ateliers</th>
+        <th>Heures</th>
+        <th>% heures</th>
+      </tr></thead>
+      <tbody>
+        ${joursPresents.map((j,i) => `<tr>
+          <td><strong>${j}</strong></td>
+          <td>${countByDay[i]}</td>
+          <td>${fp(countByDay[i], totalFiltered)}</td>
+          <td>${fh(hoursByDay[i])}</td>
+          <td>${fp(hoursByDay[i], hoursByDay.reduce((s,v)=>s+v,0))}</td>
+        </tr>`).join("")}
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>${totalFiltered}</td>
+          <td><span class="ct-pct">100%</span></td>
+          <td>${fh(parseFloat(hoursByDay.reduce((s,v)=>s+v,0).toFixed(1)))}</td>
+          <td><span class="ct-pct">100%</span></td>
+        </tr>
+      </tbody>
+    </table>`;
+
+  // ── Table 4 : Stacked — types × jours (sous chartStacked) ───
+  // Lignes = types de contenu, colonnes = jours + total type
+  // Ligne TOTAL = total par jour
+  const cellH = (t, j) => {
+    const items = dataWithEffective.filter(a => a.effectiveType === t && a.jour === j);
+    return parseFloat(items.reduce((s,a)=>s+a.dureeH,0).toFixed(1));
+  };
+  const totalPerType = contentTypes.map(t =>
+    parseFloat(joursAll.reduce((s,j)=>s+cellH(t,j),0).toFixed(1)));
+  const totalPerJour = joursAll.map(j =>
+    parseFloat(contentTypes.reduce((s,t)=>s+cellH(t,j),0).toFixed(1)));
+  const grandTotal = parseFloat(totalPerType.reduce((s,v)=>s+v,0).toFixed(1));
+  const totalH_all = grandTotal || 1; // avoid div/0
+
+  document.getElementById("tableStacked").innerHTML = `
+    <table class="stacked-table">
+      <thead><tr>
+        <th>Type d'atelier</th>
+        ${joursAll.map(j=>`<th>${j}</th>`).join("")}
+        <th>Total</th>
+        <th>%</th>
+      </tr></thead>
+      <tbody>
+        ${contentTypes.map((t,ti) => `<tr>
+          <td>${dot(getEffectiveColor(t))}${t}</td>
+          ${joursAll.map(j => {
+            const v = cellH(t,j);
+            return `<td class="${v===0?"st-zero":""}">${v===0?"—":`${v}h`}</td>`;
+          }).join("")}
+          <td><strong>${fh(totalPerType[ti])}</strong></td>
+          <td>${fp(totalPerType[ti], totalH_all)}</td>
+        </tr>`).join("")}
+        <tr class="st-total">
+          <td>TOTAL / jour</td>
+          ${totalPerJour.map(v=>`<td>${fh(v)}</td>`).join("")}
+          <td>${fh(grandTotal)}</td>
+          <td><span class="ct-pct">100%</span></td>
+        </tr>
+      </tbody>
+    </table>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
