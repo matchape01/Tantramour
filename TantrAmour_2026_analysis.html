@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TantrAmour 2026 — Analyse des Ateliers</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --purple-deep: #2d1b69;
+    --purple-dark: #4a2c8a;
+    --purple-mid: #7c3aed;
+    --purple-light: #a855f7;
+    --purple-pale: #e9d5ff;
+    --purple-faint: #f5f0ff;
+    --gold: #f59e0b;
+    --gold-light: #fde68a;
+    --rose: #ec4899;
+    --teal: #06b6d4;
+    --white: #ffffff;
+    --gray-100: #f8f7ff;
+    --gray-200: #ede9fe;
+    --gray-600: #6b7280;
+    --gray-900: #1a0a2e;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(45,27,105,0.13);
+    --shadow-lg: 0 8px 40px rgba(45,27,105,0.22);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 40%, #4a1d5c 100%);
+    min-height: 100vh;
+    color: var(--gray-900);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, rgba(45,27,105,0.95) 0%, rgba(124,58,237,0.9) 100%);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(168,85,247,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 12px rgba(168,85,247,0.5);
+  }
+  .header h1 span { color: var(--gold); }
+  .header p {
+    color: var(--purple-pale);
+    font-size: 0.95rem;
+    margin-top: 0.4rem;
+    opacity: 0.85;
+  }
+  .header-stats {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .stat-pill span { color: var(--gold); }
+
+  /* ── MAIN CONTAINER ── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .filter-bar label {
+    font-weight: 700;
+    color: var(--purple-deep);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .filter-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .day-btn {
+    background: var(--gray-200);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--purple-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .day-btn:hover { background: var(--purple-pale); border-color: var(--purple-mid); }
+  .day-btn.active {
+    background: linear-gradient(135deg, var(--purple-mid), var(--purple-light));
+    color: var(--white);
+    border-color: var(--purple-mid);
+    box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+  }
+
+  /* ── TYPE FILTER BAR ── */
+  .type-filter-bar {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .type-filter-bar label {
+    font-weight: 700;
+    color: var(--purple-deep);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .type-filter-right {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  /* dropdown trigger */
+  .type-dropdown-wrapper { position: relative; }
+  .type-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gray-200);
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--purple-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .type-dropdown-btn:hover,
+  .type-dropdown-btn.open {
+    border-color: var(--purple-mid);
+    background: var(--purple-faint);
+  }
+  .type-dropdown-btn .arrow {
+    font-size: 0.65rem;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .type-dropdown-btn.open .arrow { transform: rotate(180deg); }
+  .type-dropdown-btn .count-badge {
+    background: var(--purple-mid);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.05rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 1.4rem;
+    text-align: center;
+  }
+
+  /* dropdown panel */
+  .type-dropdown-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 200;
+    background: var(--white);
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(45,27,105,0.18);
+    min-width: 280px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 0.6rem 0;
+  }
+  .type-dropdown-panel.open { display: block; }
+
+  .type-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem 0.6rem;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 0.3rem;
+  }
+  .type-panel-header span { font-size: 0.78rem; color: var(--gray-600); font-weight: 600; }
+  .type-panel-actions { display: flex; gap: 0.5rem; }
+  .type-panel-actions button {
+    background: none;
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--purple-mid);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .type-panel-actions button:hover { background: var(--purple-faint); }
+
+  .type-option {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: background 0.12s;
+    user-select: none;
+  }
+  .type-option:hover { background: var(--purple-faint); }
+  .type-option input[type="checkbox"] { display: none; }
+  .type-option .checkmark {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid #d1d5db;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-size: 0.65rem;
+    color: #fff;
+  }
+  .type-option.checked .checkmark {
+    border-color: transparent;
+    content: "✓";
+  }
+  .type-option .color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .type-option .type-label {
+    font-size: 0.83rem;
+    color: var(--gray-900);
+    font-weight: 500;
+    flex: 1;
+  }
+  .type-option .type-count {
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    font-weight: 600;
+    background: var(--gray-200);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+  }
+
+  /* active type chips (compact) */
+  .active-type-chips {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+  }
+  .type-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.55rem 0.25rem 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .type-chip:hover { opacity: 0.8; }
+  .type-chip .chip-x { font-size: 0.65rem; opacity: 0.85; margin-left: 1px; }
+  .type-chip-all {
+    background: var(--gray-200);
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── PANEL SECTION TITLE ── */
+  .type-panel-section-title {
+    padding: 0.55rem 1rem 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    margin-top: 0.2rem;
+  }
+
+  /* ── GROUP ROW ── */
+  .group-option {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.12s;
+    user-select: none;
+  }
+  .group-option:hover { background: var(--purple-faint); }
+  .group-toggle {
+    width: 34px;
+    height: 18px;
+    border-radius: 999px;
+    background: #d1d5db;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .group-toggle::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .group-toggle.on { background: var(--purple-mid); }
+  .group-toggle.on::after { transform: translateX(16px); }
+  .group-label-wrap { flex: 1; }
+  .group-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gray-900);
+  }
+  .group-members {
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    margin-top: 1px;
+  }
+  .group-count-badge {
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    background: var(--gray-200);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+    font-weight: 600;
+  }
+
+  /* ── GROUPED TYPE CHIP ── */
+  .type-chip.grouped {
+    border: 2px dashed rgba(255,255,255,0.5);
+  }
+
+  /* ── MEMBER TYPE (indented, dimmed when in group) ── */
+  .type-option.in-group {
+    opacity: 0.4;
+    pointer-events: none;
+    padding-left: 2.2rem;
+  }
+  .type-option.in-group::before {
+    content: "↳";
+    color: var(--purple-light);
+    font-size: 0.8rem;
+    margin-right: 0.3rem;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 1.2em;
+    background: linear-gradient(to bottom, var(--gold), var(--purple-light));
+    border-radius: 2px;
+  }
+
+  /* ── CARDS GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .kpi-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.2rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border-top: 4px solid var(--purple-mid);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .kpi-card .kpi-value {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .kpi-card .kpi-label {
+    font-size: 0.78rem;
+    color: var(--gray-600);
+    font-weight: 600;
+    margin-top: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── CHART CARDS ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .chart-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .chart-card:hover { box-shadow: var(--shadow-lg); }
+  .chart-card.wide { grid-column: 1 / -1; }
+  .chart-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .chart-title .badge {
+    background: var(--purple-faint);
+    color: var(--purple-mid);
+    border-radius: 6px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .chart-container { position: relative; }
+
+  /* ── TABLE ── */
+  .table-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .table-wrapper { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+  thead tr { background: linear-gradient(135deg, var(--purple-deep), var(--purple-dark)); }
+  thead th {
+    color: var(--white);
+    padding: 0.7rem 0.8rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--gray-200); transition: background 0.15s; }
+  tbody tr:hover { background: var(--purple-faint); }
+  tbody td { padding: 0.6rem 0.8rem; color: var(--gray-900); vertical-align: middle; }
+  .type-badge {
+    display: inline-block;
+    background: var(--purple-faint);
+    color: var(--purple-dark);
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .piment { color: var(--rose); font-weight: 700; }
+  .jour-badge {
+    display: inline-block;
+    background: var(--gold-light);
+    color: #92400e;
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  /* ── TABLE SEARCH ── */
+  .table-controls {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem 0.9rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--purple-mid); }
+  .table-count {
+    font-size: 0.82rem;
+    color: var(--gray-600);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .container { padding: 1rem 1rem 3rem; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .header { padding: 1.5rem 1rem 1rem; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.75rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>🌸 TantrAmour <span>2026</span> — Analyse des Ateliers</h1>
+    <p>29 août – 5 septembre 2026 · Tableau de bord opérationnel</p>
+    <div class="header-stats">
+      <div class="stat-pill">🎯 <span id="totalAteliers">180</span> ateliers</div>
+      <div class="stat-pill">📅 <span>7</span> jours</div>
+      <div class="stat-pill">🏷️ <span>16</span> types</div>
+      <div class="stat-pill">⏱️ <span id="totalHeures">354</span> h programmées</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- FILTER BAR — JOUR -->
+  <div class="filter-bar">
+    <label>📅 Filtrer par jour :</label>
+    <div class="filter-btns" id="dayFilters"></div>
+  </div>
+
+  <!-- FILTER BAR — TYPE -->
+  <div class="type-filter-bar">
+    <label>🏷️ Filtrer par type :</label>
+    <div class="type-filter-right">
+      <div class="type-dropdown-wrapper" id="typeDropdownWrapper">
+        <div class="type-dropdown-btn" id="typeDropdownBtn" onclick="toggleTypeDropdown()">
+          <span id="typeDropdownLabel">Tous les types</span>
+          <span class="count-badge" id="typeDropdownBadge" style="display:none"></span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="type-dropdown-panel" id="typeDropdownPanel">
+          <div class="type-panel-header">
+            <span id="typeSelCount">16 types affichés</span>
+            <div class="type-panel-actions">
+              <button onclick="selectAllTypes()">Tout réafficher</button>
+            </div>
+          </div>
+          <!-- Groupes prédéfinis -->
+          <div class="type-panel-section-title">⚡ Regrouper</div>
+          <div id="typeGroupsList"></div>
+          <!-- Types individuels -->
+          <div class="type-panel-section-title">Types individuels</div>
+          <div id="typeOptionsList"></div>
+        </div>
+      </div>
+      <div class="active-type-chips" id="activeTypeChips"></div>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <p class="section-title">Vue d'ensemble</p>
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- CHARTS ROW 1 -->
+  <p class="section-title">Répartition par type d'atelier</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">🍩 Distribution des types <span class="badge">% ateliers</span></div>
+      <div class="chart-container" style="height:320px"><canvas id="chartDoughnut"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📊 Nombre d'ateliers par type <span class="badge">quantité</span></div>
+      <div class="chart-container" style="height:320px"><canvas id="chartBarType"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <p class="section-title">Heures programmées</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">⏱️ Heures par type d'atelier <span class="badge">total heures</span></div>
+      <div class="chart-container" style="height:320px"><canvas id="chartHoursType"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📅 Ateliers & heures par jour <span class="badge">par jour</span></div>
+      <div class="chart-container" style="height:320px"><canvas id="chartByDay"></canvas></div>
+    </div>
+  </div>
+
+  <!-- STACKED CHART -->
+  <p class="section-title">Composition journalière</p>
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-title">📈 Heures par type et par jour <span class="badge">stacked</span></div>
+      <div class="chart-container" style="height:360px"><canvas id="chartStacked"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <p class="section-title">Liste complète des ateliers</p>
+  <div class="table-card">
+    <div class="table-controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="🔍 Rechercher un atelier, animateur, lieu…">
+      <span class="table-count" id="tableCount"></span>
+    </div>
+    <div class="table-wrapper">
+      <table id="atelierTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Atelier</th>
+            <th>Type</th>
+            <th>Animateur(s)</th>
+            <th>Jour</th>
+            <th>Horaires</th>
+            <th>Durée</th>
+            <th>Lieu</th>
+            <th>🌶</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Données issues de TAF2026_ATELIERS DETAILS_2026.xlsx · Généré avec IBM Bob</p>
+  <p style="margin-top:0.3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top:0.5rem;">Made with IBM Bob</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+const RAW_DATA = [
+  {"id":"A_1032","nom":"Danse Ecstatic Contact #1","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},
+  {"id":"A_1033","nom":"Mouvement & Connexion avec les 5 Eléments","animateur1":"Dorian Vallet","animateur2":"Sevda Duroy","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1034","nom":"Ecstatic Dance niveau 1","animateur1":"Yannick Bohrer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
+  {"id":"A_1035","nom":"Musique Sacrée","animateur1":"Jérémie Dreyfuss","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"1","dureeH":1.5},
+  {"id":"A_1036","nom":"Danse Contact Improvisation","animateur1":"Marine Lévêque","animateur2":"Alexis Duroc","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
+  {"id":"A_1037","nom":"Acro Yoga Duo","animateur1":"Camille Renard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"20:15","lieu":"KALI","piment":"1","dureeH":2.25},
+  {"id":"A_1038","nom":"Tantra Danse Sacrée","animateur1":"Helena Marzano","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"DURGA","piment":"2","dureeH":1.5},
+  {"id":"A_1039","nom":"Corps Sacré & Présence","animateur1":"Luca Ferrari","animateur2":"Sofia Morandi","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"GANESH","piment":"2","dureeH":1.5},
+  {"id":"A_1040","nom":"Éveil des sens","animateur1":"Anaïs Dupont","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"LAKSHMI","piment":"3","dureeH":1.5},
+  {"id":"A_1041","nom":"Massages en conscience","animateur1":"Pierre Lefebvre","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:30","lieu":"SARASVATI","piment":"2","dureeH":1.5},
+  {"id":"A_1042","nom":"Yin Yang Tantra","animateur1":"Olivier Blanc","animateur2":"Marie Nguyen","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:30","lieu":"HANUMAN","piment":"3","dureeH":1.5},
+  {"id":"A_1043","nom":"Yoga du Matin","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
+  {"id":"A_1044","nom":"Méditation Guidée","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
+  {"id":"A_1045","nom":"Cérémonie d'ouverture","animateur1":"Collectif TantrAmour","animateur2":"","type":"CEREMONIE & CONCERT","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_1046","nom":"Atelier Tantra Matin #1","animateur1":"Nathaniel Boyer","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
+  {"id":"A_1047","nom":"Tantra Yoga Duo","animateur1":"Fabienne Renaud","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"2","dureeH":2},
+  {"id":"A_1048","nom":"Énergie Tantrique Fondamentaux","animateur1":"Raoul Dubois","animateur2":"Léonie Petit","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"1","dureeH":2},
+  {"id":"A_1049","nom":"Tantra Masculin-Féminin","animateur1":"Patrick Simon","animateur2":"Valérie Lambert","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:30","lieu":"KALI","piment":"3","dureeH":2.5},
+  {"id":"A_1050","nom":"Atelier Artistique Matin Surprise","animateur1":"Collectif","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:30","heureFin":"11:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1051","nom":"Réunion équipe cœur","animateur1":"Orga TAF","animateur2":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1052","nom":"Réunion Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1053","nom":"Rassemblement du soir","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
+  {"id":"A_1054","nom":"Support Emotionnel - Permanence","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
+  {"id":"A_1055","nom":"Love Temple Ouverture","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
+  {"id":"A_1056","nom":"Shift Angel J2 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1057","nom":"Shift Angel J2 - Après-midi","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"12:00","heureFin":"17:30","lieu":"All","piment":"","dureeH":5.5},
+  {"id":"A_1058","nom":"Shift Angel J2 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"23:00","lieu":"All","piment":"","dureeH":5},
+  {"id":"A_1059","nom":"Prépa technique J2","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"06:00","heureFin":"07:00","lieu":"Technique","piment":"","dureeH":1},
+  {"id":"A_1060","nom":"Accueil participants","animateur1":"Equipe Accueil","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:00","heureFin":"09:00","lieu":"Entrée","piment":"","dureeH":2},
+  {"id":"A_1061","nom":"Repas du midi organisation","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:30","heureFin":"11:00","lieu":"Cuisine","piment":"","dureeH":0.5},
+  {"id":"A_1062","nom":"Prépa salles ateliers PM","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"15:30","heureFin":"16:30","lieu":"Salles","piment":"","dureeH":1},
+  {"id":"A_1063","nom":"Nettoyage fin de soirée J2","animateur1":"Equipe Nettoyage","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"23:30","heureFin":"00:15","lieu":"Site","piment":"","dureeH":0.75},
+  {"id":"A_1064","nom":"Tantra Approfondi #1","animateur1":"Maître Henri","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"3","dureeH":2},
+  {"id":"A_1065","nom":"Connexion Profonde","animateur1":"Julien Moreau","animateur2":"Nadia Karim","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"2","dureeH":2},
+  {"id":"A_1066","nom":"Tantric Flow","animateur1":"Amelie Girard","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"11:30","lieu":"DURGA","piment":"2","dureeH":1.5},
+  {"id":"A_1067","nom":"Kundalini Awakening","animateur1":"Siva Prasad","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"KALI","piment":"3","dureeH":2},
+  {"id":"A_1068","nom":"Shakti Rising","animateur1":"Marianne Lebrun","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"LAKSHMI","piment":"2","dureeH":2},
+  {"id":"A_1069","nom":"Danse des Sens J3 PM","animateur1":"Ricardo Flores","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"3","dureeH":2},
+  {"id":"A_1070","nom":"Tantra Corps-Âme","animateur1":"Véronique Tissot","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"SARASVATI","piment":"2","dureeH":2},
+  {"id":"A_1071","nom":"Linga & Yoni","animateur1":"Duo Tantra","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"4","dureeH":1.5},
+  {"id":"A_1072","nom":"Respirations Sacrées","animateur1":"Nicolas Ferry","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"HANUMAN","piment":"2","dureeH":2},
+  {"id":"A_1073","nom":"Danse Ecstatic Contact #2","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},
+  {"id":"A_1074","nom":"Art du Contact","animateur1":"Solange Meyer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
+  {"id":"A_1075","nom":"Voix & Son Sacré","animateur1":"Chantal Picard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1076","nom":"Butoh Initiation","animateur1":"Kenzo Yamada","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"20:00","heureFin":"21:30","lieu":"SHAKTI","piment":"2","dureeH":1.5},
+  {"id":"A_1077","nom":"Yoga du Matin J3","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
+  {"id":"A_1078","nom":"Méditation Pleine Conscience","animateur1":"Arnaud Leroy","animateur2":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
+  {"id":"A_1079","nom":"Cérémonie Cacao","animateur1":"Shaman Pablo","animateur2":"","type":"CEREMONIE & CONCERT","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_1080","nom":"DJ Set J3 Nuit","animateur1":"DJ Cosmic","animateur2":"","type":"DJ Set","date":"31/08/2026","jour":"Jour 3","heureDebut":"23:30","heureFin":"01:30","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_1081","nom":"Love Temple J3","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:00","heureFin":"18:00","lieu":"Love Temple","piment":"4","dureeH":4},
+  {"id":"A_1082","nom":"Pool Party J3","animateur1":"Equipe Anims","animateur2":"","type":"POOL PARTY","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:00","heureFin":"15:00","lieu":"Piscine","piment":"1","dureeH":1},
+  {"id":"A_1083","nom":"Rassemblement J3","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
+  {"id":"A_1084","nom":"Support Emotionnel J3","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
+  {"id":"A_1085","nom":"Réunion équipe cœur J3","animateur1":"Orga TAF","animateur2":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1086","nom":"Réunion Helpers J3","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1087","nom":"Shift Angel J3 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1088","nom":"Shift Angel J3 - Après-midi","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"12:00","heureFin":"17:30","lieu":"All","piment":"","dureeH":5.5},
+  {"id":"A_1089","nom":"Shift Angel J3 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"23:30","lieu":"All","piment":"","dureeH":5.5},
+  {"id":"A_1090","nom":"Prépa J3 Matin","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1091","nom":"Logistique J3 Salles","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:00","heureFin":"10:00","lieu":"Salles","piment":"","dureeH":2},
+  {"id":"A_1092","nom":"Mise en place PM J3","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"17:00","lieu":"Salles","piment":"","dureeH":1},
+  {"id":"A_1093","nom":"Cuisine & repas J3","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
+  {"id":"A_1094","nom":"Sécurité nuit J3","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"23:00","heureFin":"25:15","lieu":"Site","piment":"","dureeH":2.25},
+  {"id":"A_1095","nom":"Nettoyage J3","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:30","heureFin":"09:30","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1096","nom":"Atelier Sonique Matin J3","animateur1":"Yann Fontaine","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:00","heureFin":"12:15","lieu":"SHAKTI","piment":"1","dureeH":1.25},
+  {"id":"A_1097","nom":"Tantra Matin J4 #1","animateur1":"Helena Marzano","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
+  {"id":"A_1098","nom":"Tantra Féminin Sacré J4","animateur1":"Kali Devi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"3","dureeH":2},
+  {"id":"A_1099","nom":"Éros Conscient J4","animateur1":"Marc Tissier","animateur2":"Elsa Benoit","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:30","lieu":"VISHNU","piment":"3","dureeH":2.5},
+  {"id":"A_1100","nom":"Massage Tantrique Découverte","animateur1":"Anne-Sophie Levi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"KALI","piment":"2","dureeH":2},
+  {"id":"A_1101","nom":"Kundalini Yoga J4","animateur1":"Siva Prasad","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:15","lieu":"LAKSHMI","piment":"2","dureeH":2.25},
+  {"id":"A_1102","nom":"Tantra PM #1 J4","animateur1":"Sophie Andréa","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"3","dureeH":1.5},
+  {"id":"A_1103","nom":"Tantra PM #2 J4","animateur1":"Bertrand Klein","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"DURGA","piment":"2","dureeH":2},
+  {"id":"A_1104","nom":"Tantra PM #3 J4","animateur1":"Romain Lacroix","animateur2":"Sylvie Vidal","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"BRAHMA","piment":"3","dureeH":2},
+  {"id":"A_1105","nom":"Tantra PM #4 J4","animateur1":"Cecile Fontaine","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"2","dureeH":2},
+  {"id":"A_1106","nom":"Danse Ecstatic J4 #1","animateur1":"Yannick Bohrer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
+  {"id":"A_1107","nom":"Théâtre Corporel","animateur1":"Fabrice Dupas","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
+  {"id":"A_1108","nom":"Improvisation Danse","animateur1":"Laura Charpentier","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1109","nom":"Yoga Nidrâ","animateur1":"Mathieu Renaud","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:15","lieu":"KALI","piment":"1","dureeH":1.25},
+  {"id":"A_1110","nom":"Danse Méditative J4","animateur1":"Clara Voss","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"1","dureeH":1},
+  {"id":"A_1111","nom":"Body Percussion","animateur1":"Alex Dormir","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:30","heureFin":"18:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},
+  {"id":"A_1112","nom":"Yoga Matin J4","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
+  {"id":"A_1113","nom":"Méditation J4","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
+  {"id":"A_1114","nom":"Concert Sacré J4","animateur1":"Ensemble Sacré","animateur2":"","type":"CEREMONIE & CONCERT","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_1115","nom":"Love Temple J4","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
+  {"id":"A_1116","nom":"Rassemblement J4","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
+  {"id":"A_1117","nom":"Support Emotionnel J4","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
+  {"id":"A_1118","nom":"Réunion J4 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1119","nom":"Réunion J4 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1120","nom":"Shift Angel J4 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1121","nom":"Shift Angel J4 - AM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"12:00","heureFin":"17:00","lieu":"All","piment":"","dureeH":5},
+  {"id":"A_1122","nom":"Shift Angel J4 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"23:45","lieu":"All","piment":"","dureeH":5.75},
+  {"id":"A_1123","nom":"Logistique J4","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1124","nom":"Prépa salles J4","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
+  {"id":"A_1125","nom":"Cuisine J4","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:00","heureFin":"12:15","lieu":"Cuisine","piment":"","dureeH":1.25},
+  {"id":"A_1126","nom":"Sécurité J4","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"23:00","heureFin":"24:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1127","nom":"Nettoyage J4","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:30","heureFin":"09:00","lieu":"Site","piment":"","dureeH":0.5},
+  {"id":"A_1128","nom":"Tantra Matin J5 #1","animateur1":"Luca Ferrari","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
+  {"id":"A_1129","nom":"Tantra Matin J5 #2","animateur1":"Marie-Claire Brun","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"2","dureeH":2},
+  {"id":"A_1130","nom":"Tantra Avancé J5","animateur1":"Guru Ananda","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"11:30","lieu":"VISHNU","piment":"4","dureeH":1.5},
+  {"id":"A_1131","nom":"Breathwork Tantrique","animateur1":"David Cohen","animateur2":"Naomi Thibault","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:30","lieu":"KALI","piment":"2","dureeH":2.5},
+  {"id":"A_1132","nom":"Tantra PM J5","animateur1":"Véronique Tissot","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"3","dureeH":1.5},
+  {"id":"A_1133","nom":"Danse Ecstatic J5","animateur1":"Cédric Vesper","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
+  {"id":"A_1134","nom":"Flamenco Sacré","animateur1":"Carmen Alves","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
+  {"id":"A_1135","nom":"Danse Tribale","animateur1":"Fatima Sow","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1136","nom":"Atelier Artistique Matin J5 #1","animateur1":"Pauline Hertz","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"11:00","lieu":"KALI","piment":"1","dureeH":1.5},
+  {"id":"A_1137","nom":"Atelier Artistique Matin J5 #2","animateur1":"Simon Veber","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"10:15","lieu":"BRAHMA","piment":"1","dureeH":0.75},
+  {"id":"A_1138","nom":"Yoga Matin J5","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
+  {"id":"A_1139","nom":"Méditation J5","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
+  {"id":"A_1140","nom":"Cérémonie Feu J5","animateur1":"Shaman Pablo","animateur2":"","type":"CEREMONIE & CONCERT","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:30","heureFin":"23:30","lieu":"Espace Feu","piment":"1","dureeH":2},
+  {"id":"A_1141","nom":"Pool Party J5","animateur1":"Equipe Anims","animateur2":"","type":"POOL PARTY","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:00","heureFin":"16:30","lieu":"Piscine","piment":"1","dureeH":1.5},
+  {"id":"A_1142","nom":"Love Temple J5","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"02/09/2026","jour":"Jour 5","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
+  {"id":"A_1143","nom":"Tantra Café","animateur1":"Collectif","animateur2":"","type":"TANTRA CAFE","date":"02/09/2026","jour":"Jour 5","heureDebut":"16:00","heureFin":"17:00","lieu":"Café Tantra","piment":"2","dureeH":1},
+  {"id":"A_1144","nom":"Rassemblement J5","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
+  {"id":"A_1145","nom":"Support Emotionnel J5","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
+  {"id":"A_1146","nom":"Réunion J5 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1147","nom":"Réunion J5 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1148","nom":"Shift Angel J5 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1149","nom":"Shift Angel J5 - PM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"12:00","heureFin":"17:45","lieu":"All","piment":"","dureeH":5.75},
+  {"id":"A_1150","nom":"Shift Angel J5 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"23:15","lieu":"All","piment":"","dureeH":5.25},
+  {"id":"A_1151","nom":"Logistique J5 Matin","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1152","nom":"Prépa Salles J5","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
+  {"id":"A_1153","nom":"Cuisine J5","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
+  {"id":"A_1154","nom":"Logistique Spéciale J5","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"13:00","heureFin":"15:00","lieu":"Site","piment":"","dureeH":2},
+  {"id":"A_1155","nom":"Sécurité J5","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"23:00","heureFin":"24:45","lieu":"Site","piment":"","dureeH":1.75},
+  {"id":"A_1156","nom":"Nettoyage J5","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:30","heureFin":"09:30","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1157","nom":"Intégration Participants J5","animateur1":"Coachs","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"21:00","lieu":"Espace Repos","piment":"","dureeH":1},
+  {"id":"A_1158","nom":"Opération spéciale PM J5","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:30","heureFin":"16:30","lieu":"Bureau","piment":"","dureeH":1},
+  {"id":"A_1159","nom":"Réunion bilan mi-festival","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:00","heureFin":"07:30","lieu":"Bureau","piment":"","dureeH":0.5},
+  {"id":"A_1160","nom":"Tantra Matin J6 #1","animateur1":"Nathaniel Boyer","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
+  {"id":"A_1161","nom":"Tantra Féminin J6","animateur1":"Kali Devi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"11:45","lieu":"DURGA","piment":"3","dureeH":1.75},
+  {"id":"A_1162","nom":"Tantra Couple J6","animateur1":"Bertrand Klein","animateur2":"Sylvie Vidal","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"3","dureeH":2},
+  {"id":"A_1163","nom":"Tantra PM J6 #1","animateur1":"Romain Lacroix","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"2","dureeH":1.5},
+  {"id":"A_1164","nom":"Tantra PM J6 #2","animateur1":"Fabienne Renaud","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"3","dureeH":2},
+  {"id":"A_1165","nom":"Tantra PM J6 #3","animateur1":"David Cohen","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SARASVATI","piment":"2","dureeH":1.5},
+  {"id":"A_1166","nom":"Tantra PM J6 #4","animateur1":"Marc Tissier","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"HANUMAN","piment":"3","dureeH":1.5},
+  {"id":"A_1167","nom":"Danse Ecstatic J6","animateur1":"Cédric Vesper","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
+  {"id":"A_1168","nom":"Cirque & Corps J6","animateur1":"Lucie Gauthier","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
+  {"id":"A_1169","nom":"Improvisation Libre J6","animateur1":"Jean-Paul Mori","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"21:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
+  {"id":"A_1170","nom":"Peinture Corporelle J6","animateur1":"Aurélia Simon","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"Atelier Art","piment":"1","dureeH":1.5},
+  {"id":"A_1171","nom":"Chant Sacré","animateur1":"Chantal Picard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"1","dureeH":1},
+  {"id":"A_1172","nom":"Atelier Artistique Matin J6","animateur1":"Yann Fontaine","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:30","heureFin":"11:00","lieu":"BRAHMA","piment":"1","dureeH":1.5},
+  {"id":"A_1173","nom":"Yoga Matin J6","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
+  {"id":"A_1174","nom":"Méditation Profonde J6","animateur1":"Arnaud Leroy","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
+  {"id":"A_1175","nom":"Méditation du Soir J6","animateur1":"Guru Ananda","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:30","heureFin":"21:30","lieu":"SHIVA","piment":"1","dureeH":1},
+  {"id":"A_1176","nom":"Grande Cérémonie J6","animateur1":"Maître Henri","animateur2":"Collectif","type":"CEREMONIE & CONCERT","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_1177","nom":"Conférence : Tantra & Modernité","animateur1":"Dr. Philippe Rousseau","animateur2":"","type":"CONFERENCE","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:45","lieu":"Salle Conf","piment":"1","dureeH":1.75},
+  {"id":"A_1178","nom":"Love Temple J6","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
+  {"id":"A_1179","nom":"Rassemblement J6","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
+  {"id":"A_1180","nom":"Support Emotionnel J6","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
+  {"id":"A_1181","nom":"Réunion J6 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1182","nom":"Réunion J6 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
+  {"id":"A_1183","nom":"Shift Angel J6 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1184","nom":"Shift Angel J6 - PM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"12:00","heureFin":"17:45","lieu":"All","piment":"","dureeH":5.75},
+  {"id":"A_1185","nom":"Shift Angel J6 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"22:45","lieu":"All","piment":"","dureeH":4.75},
+  {"id":"A_1186","nom":"Logistique J6","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1187","nom":"Prépa salles J6","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
+  {"id":"A_1188","nom":"Cuisine J6","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
+  {"id":"A_1189","nom":"Sécurité J6","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"23:00","heureFin":"24:00","lieu":"Site","piment":"","dureeH":1},
+  {"id":"A_1190","nom":"Nettoyage J6","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:30","heureFin":"09:00","lieu":"Site","piment":"","dureeH":0.5},
+  {"id":"A_0001","nom":"Arrivée & Installation Équipe","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"08:00","heureFin":"14:00","lieu":"Site","piment":"","dureeH":6},
+  {"id":"A_0002","nom":"Installation Technique","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"10:00","heureFin":"18:00","lieu":"Scènes","piment":"","dureeH":8},
+  {"id":"A_0003","nom":"Décoration & Espaces","animateur1":"Equipe Déco","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"09:00","heureFin":"20:00","lieu":"Site","piment":"","dureeH":11},
+  {"id":"A_0004","nom":"Réception Livraisons","animateur1":"Logistique","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"08:00","heureFin":"18:00","lieu":"Entrée","piment":"","dureeH":10},
+  {"id":"A_0005","nom":"Cuisines Setup","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"10:00","heureFin":"18:30","lieu":"Cuisine","piment":"","dureeH":8.5},
+  {"id":"A_0006","nom":"Formation Helpers J1 Matin","animateur1":"RH","animateur2":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"09:00","heureFin":"11:00","lieu":"Salle Réunion","piment":"","dureeH":2},
+  {"id":"A_0007","nom":"Réunion Coordinateurs J1","animateur1":"Direction","animateur2":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"11:00","heureFin":"12:00","lieu":"Bureau","piment":"","dureeH":1},
+  {"id":"A_0008","nom":"Shift Angel J1 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"07:00","heureFin":"13:00","lieu":"All","piment":"","dureeH":6},
+  {"id":"A_0009","nom":"Shift Angel J1 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"18:00","heureFin":"23:30","lieu":"All","piment":"","dureeH":5.5},
+  {"id":"A_0010","nom":"DJ Set Ouverture J1","animateur1":"DJ Cosmic","animateur2":"","type":"DJ Set","date":"29/08/2026","jour":"Jour 1","heureDebut":"21:00","heureFin":"23:00","lieu":"Grande Scène","piment":"1","dureeH":2},
+  {"id":"A_0011","nom":"Cérémonie Bienvenue J1","animateur1":"Collectif","animateur2":"","type":"CEREMONIE & CONCERT","date":"29/08/2026","jour":"Jour 1","heureDebut":"19:30","heureFin":"21:00","lieu":"Grande Scène","piment":"1","dureeH":1.5},
+  {"id":"A_1200","nom":"Cérémonie de clôture","animateur1":"Maître Henri","animateur2":"Collectif","type":"CEREMONIE & CONCERT","date":"04/09/2026","jour":"Jour 7","heureDebut":"18:00","heureFin":"21:00","lieu":"Grande Scène","piment":"1","dureeH":3},
+  {"id":"A_1201","nom":"Yoga Final","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"04/09/2026","jour":"Jour 7","heureDebut":"08:00","heureFin":"09:00","lieu":"SHIVA","piment":"1","dureeH":1},
+  {"id":"A_1202","nom":"Réunion bilan J7","animateur1":"Direction","animateur2":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"10:00","lieu":"Bureau","piment":"","dureeH":1},
+  {"id":"A_1203","nom":"Réunion Coordinateurs Fin","animateur1":"Direction","animateur2":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"11:30","lieu":"Bureau","piment":"","dureeH":1.5},
+  {"id":"A_1204","nom":"Shift Angel J7 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"04/09/2026","jour":"Jour 7","heureDebut":"07:00","heureFin":"10:00","lieu":"All","piment":"","dureeH":3},
+  {"id":"A_1205","nom":"Démontage Technique","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"18:00","lieu":"Scènes","piment":"","dureeH":8},
+  {"id":"A_1206","nom":"Nettoyage Final","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"14:00","lieu":"Site","piment":"","dureeH":4},
+  {"id":"A_1207","nom":"Logistique Départ","animateur1":"Logistique","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"08:00","heureFin":"18:00","lieu":"Site","piment":"","dureeH":10},
+  {"id":"A_1208","nom":"Bilan Cuisine","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"11:15","lieu":"Cuisine","piment":"","dureeH":2.25}
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE & PALETTE
+// ═══════════════════════════════════════════════════════════════
+const ALL_JOURS = ["Jour 1","Jour 2","Jour 3","Jour 4","Jour 5","Jour 6","Jour 7"];
+
+const TYPE_COLORS = {
+  "ATELIER ARTISTIQUE (Apres-Midi)": "#7c3aed",
+  "ATELIER ARTISTIQUE (Matin)":      "#a855f7",
+  "ATELIERS TANTRA (Apres-Midi)":    "#ec4899",
+  "ATELIERS TANTRA (Matin)":         "#f43f5e",
+  "CEREMONIE & CONCERT":             "#f59e0b",
+  "CONFERENCE":                      "#06b6d4",
+  "DJ Set":                          "#3b82f6",
+  "LOVE TEMPLE":                     "#e879f9",
+  "MEDITATION / YOGA":               "#10b981",
+  "POOL PARTY":                      "#0ea5e9",
+  "PREPA & LOGISTICS":               "#94a3b8",
+  "RASSEMBLEMENT":                   "#fbbf24",
+  "REUNION":                         "#64748b",
+  "SHIFT ANGEL":                     "#f97316",
+  "SUPPORT EMOTIONNEL":              "#14b8a6",
+  "TANTRA CAFE":                     "#d946ef"
+};
+
+let activeFilter = "Tous";
+let searchTerm = "";
+let charts = {};
+
+// ═══════════════════════════════════════════════════════════════
+// GROUPES DE TYPES
+// ═══════════════════════════════════════════════════════════════
+// activeGroups : Map< groupId → groupDef >  (groupes actuellement activés)
+let activeGroups = new Map();
+
+const TYPE_GROUPS = [
+  {
+    id: "tantra",
+    name: "TANTRA (tous)",
+    color: "#db2777",
+    members: ["ATELIERS TANTRA (Matin)", "ATELIERS TANTRA (Apres-Midi)"]
+  },
+  {
+    id: "artistique",
+    name: "ATELIER ARTISTIQUE (tous)",
+    color: "#7c3aed",
+    members: ["ATELIER ARTISTIQUE (Matin)", "ATELIER ARTISTIQUE (Apres-Midi)"]
+  },
+  {
+    id: "orga",
+    name: "ORGANISATION (tout)",
+    color: "#64748b",
+    members: ["PREPA & LOGISTICS", "SHIFT ANGEL", "REUNION"]
+  }
+];
+
+// Renvoie l'ensemble des types individuels absorbés par un groupe actif
+function absorbedTypes() {
+  const s = new Set();
+  activeGroups.forEach(g => g.members.forEach(m => s.add(m)));
+  return s;
+}
+
+// Pour un atelier donné, renvoie le label effectif (nom du groupe si absorbé, sinon type original)
+function getEffectiveType(type) {
+  for (const [, g] of activeGroups) {
+    if (g.members.includes(type)) return g.name;
+  }
+  return type;
+}
+
+// Couleur effective (groupe ou type individuel)
+function getEffectiveColor(effectiveType) {
+  const grp = [...TYPE_GROUPS].find(g => g.name === effectiveType);
+  if (grp) return grp.color;
+  return TYPE_COLORS[effectiveType] || "#9333ea";
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function getFiltered() {
+  return RAW_DATA.filter(a => {
+    const matchDay = activeFilter === "Tous" || a.jour === activeFilter;
+    const matchType = !excludedTypes.has(a.type);
+    const q = searchTerm.toLowerCase();
+    const matchSearch = !q || a.nom.toLowerCase().includes(q) || a.type.toLowerCase().includes(q)
+      || a.animateur1.toLowerCase().includes(q) || a.animateur2.toLowerCase().includes(q)
+      || a.lieu.toLowerCase().includes(q) || a.jour.toLowerCase().includes(q);
+    return matchDay && matchType && matchSearch;
+  });
+}
+
+function groupBy(arr, key) {
+  return arr.reduce((acc, item) => {
+    const k = item[key] || "—";
+    if (!acc[k]) acc[k] = [];
+    acc[k].push(item);
+    return acc;
+  }, {});
+}
+
+function pimentStr(p) {
+  if (!p) return "";
+  const n = parseInt(p);
+  return "🌶".repeat(Math.min(n, 4));
+}
+
+function formatH(h) { return h % 1 === 0 ? h + "h" : h + "h"; }
+
+// ═══════════════════════════════════════════════════════════════
+// KPI
+// ═══════════════════════════════════════════════════════════════
+function updateKPI(data) {
+  const totalH = data.reduce((s, a) => s + a.dureeH, 0);
+  const byType = groupBy(data, "type");
+  const byJour = groupBy(data, "jour");
+  const avgH = data.length ? (totalH / data.length).toFixed(1) : 0;
+
+  const grid = document.getElementById("kpiGrid");
+  grid.innerHTML = `
+    <div class="kpi-card"><div class="kpi-value">${data.length}</div><div class="kpi-label">Ateliers</div></div>
+    <div class="kpi-card"><div class="kpi-value">${totalH.toFixed(1)}</div><div class="kpi-label">Heures totales</div></div>
+    <div class="kpi-card"><div class="kpi-value">${Object.keys(byType).length}</div><div class="kpi-label">Types actifs</div></div>
+    <div class="kpi-card"><div class="kpi-value">${Object.keys(byJour).length}</div><div class="kpi-label">Jours</div></div>
+    <div class="kpi-card"><div class="kpi-value">${avgH}</div><div class="kpi-label">Durée moyenne (h)</div></div>
+  `;
+  document.getElementById("totalAteliers").textContent = RAW_DATA.length;
+  document.getElementById("totalHeures").textContent = RAW_DATA.reduce((s,a)=>s+a.dureeH,0).toFixed(0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════════════════════
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function updateCharts(data) {
+  // Build effective type for each atelier (may be a group name)
+  const dataWithEffective = data.map(a => ({ ...a, effectiveType: getEffectiveType(a.type) }));
+
+  // Group by effectiveType
+  const byType = groupBy(dataWithEffective, "effectiveType");
+  const types = Object.keys(byType).sort((a,b) => byType[b].length - byType[a].length);
+  const counts = types.map(t => byType[t].length);
+  const colors = types.map(t => getEffectiveColor(t));
+
+  // Chart 1 — Doughnut
+  destroyChart("chartDoughnut");
+  charts["chartDoughnut"] = new Chart(document.getElementById("chartDoughnut"), {
+    type: "doughnut",
+    data: { labels: types, datasets: [{ data: counts, backgroundColor: colors, borderWidth: 2, borderColor: "#fff" }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "right", labels: { font: { size: 10 }, boxWidth: 14, padding: 10 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} ateliers (${((ctx.raw/data.length)*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+
+  // Chart 2 — Bar count by type
+  destroyChart("chartBarType");
+  charts["chartBarType"] = new Chart(document.getElementById("chartBarType"), {
+    type: "bar",
+    data: {
+      labels: types.map(t => t.length > 26 ? t.substring(0,26)+"…" : t),
+      datasets: [{ label: "Nb ateliers", data: counts, backgroundColor: colors, borderRadius: 6 }]
+    },
+    options: {
+      indexAxis: "y", responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: "rgba(0,0,0,0.05)" } },
+        y: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  // Chart 3 — Bar hours by type
+  destroyChart("chartHoursType");
+  const typesByH = [...types].sort((a,b) =>
+    byType[b].reduce((s,x)=>s+x.dureeH,0) - byType[a].reduce((s,x)=>s+x.dureeH,0));
+  const hByType = typesByH.map(t => parseFloat(byType[t].reduce((s,a)=>s+a.dureeH,0).toFixed(2)));
+  charts["chartHoursType"] = new Chart(document.getElementById("chartHoursType"), {
+    type: "bar",
+    data: {
+      labels: typesByH.map(t => t.length > 26 ? t.substring(0,26)+"…" : t),
+      datasets: [{ label: "Heures", data: hByType, backgroundColor: typesByH.map(t => getEffectiveColor(t)), borderRadius: 6 }]
+    },
+    options: {
+      indexAxis: "y", responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: "rgba(0,0,0,0.05)" } },
+        y: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  // Chart 4 — Mixed by day
+  const joursPresents = ALL_JOURS.filter(j => data.some(a => a.jour === j));
+  const countByDay = joursPresents.map(j => data.filter(a => a.jour === j).length);
+  const hoursByDay = joursPresents.map(j => parseFloat(data.filter(a => a.jour === j).reduce((s,a)=>s+a.dureeH,0).toFixed(2)));
+  destroyChart("chartByDay");
+  charts["chartByDay"] = new Chart(document.getElementById("chartByDay"), {
+    type: "bar",
+    data: {
+      labels: joursPresents,
+      datasets: [
+        { type:"bar", label: "Nb ateliers", data: countByDay, backgroundColor: "rgba(124,58,237,0.7)", borderRadius: 6, yAxisID: "y" },
+        { type:"line", label: "Heures", data: hoursByDay, borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,0.1)", borderWidth: 2.5, tension: 0.4, pointRadius: 5, pointBackgroundColor: "#f59e0b", fill: true, yAxisID: "y2" }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 11 } } } },
+      scales: {
+        y: { title: { display: true, text: "Nb ateliers" }, grid: { color: "rgba(0,0,0,0.05)" } },
+        y2: { position: "right", title: { display: true, text: "Heures" }, grid: { display: false } }
+      }
+    }
+  });
+
+  // Chart 5 — Stacked bar hours per effectiveType per day
+  const orgaGroupActive = [...activeGroups.values()].some(g => g.id === "orga");
+  const orgaTypes = new Set(["PREPA & LOGISTICS","SHIFT ANGEL","REUNION"]);
+  const contentTypes = types.filter(t => {
+    // Exclude raw orga types if not grouped, grouped orga name if grouped
+    if (orgaGroupActive) return t !== "ORGANISATION (tout)";
+    return !orgaTypes.has(t);
+  });
+  const joursAll = ALL_JOURS.filter(j => data.some(a => a.jour === j));
+  const stackedDatasets = contentTypes.map(t => ({
+    label: t,
+    data: joursAll.map(j => {
+      const items = dataWithEffective.filter(a => a.effectiveType === t && a.jour === j);
+      return parseFloat(items.reduce((s,a)=>s+a.dureeH,0).toFixed(2));
+    }),
+    backgroundColor: getEffectiveColor(t),
+    borderRadius: 3,
+    borderSkipped: false
+  }));
+  destroyChart("chartStacked");
+  charts["chartStacked"] = new Chart(document.getElementById("chartStacked"), {
+    type: "bar",
+    data: { labels: joursAll, datasets: stackedDatasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}h` } }
+      },
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, title: { display: true, text: "Heures" }, grid: { color: "rgba(0,0,0,0.05)" } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TABLE
+// ═══════════════════════════════════════════════════════════════
+function updateTable(data) {
+  const tbody = document.getElementById("tableBody");
+  document.getElementById("tableCount").textContent = `${data.length} résultat${data.length>1?"s":""}`;
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:2rem;color:#9ca3af;">Aucun atelier trouvé</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(a => {
+    const eff = getEffectiveType(a.type);
+    const isGrouped = eff !== a.type;
+    const effColor = getEffectiveColor(eff);
+    return `
+    <tr>
+      <td style="font-family:monospace;font-size:0.75rem;color:#9ca3af">${a.id}</td>
+      <td style="font-weight:600;max-width:200px">${a.nom}</td>
+      <td>
+        ${isGrouped
+          ? `<span class="type-badge" style="background:${effColor}20;color:${effColor};border:1.5px solid ${effColor}40" title="Regroupé : ${a.type}">${eff} <span style="font-size:0.65rem;opacity:0.7">(${a.type})</span></span>`
+          : `<span class="type-badge">${a.type}</span>`
+        }
+      </td>
+      <td style="color:#4b5563;font-size:0.8rem">${[a.animateur1,a.animateur2].filter(Boolean).join(", ")}</td>
+      <td><span class="jour-badge">${a.jour}</span></td>
+      <td style="white-space:nowrap;font-size:0.8rem">${a.heureDebut}–${a.heureFin}</td>
+      <td style="text-align:center;font-weight:700;color:#7c3aed">${a.dureeH}h</td>
+      <td style="font-size:0.8rem;color:#6b7280">${a.lieu}</td>
+      <td class="piment">${pimentStr(a.piment)}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════
+function render() {
+  const data = getFiltered();
+  updateKPI(data);
+  updateCharts(data);
+  updateTable(data);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// TYPE FILTER LOGIC
+// ═══════════════════════════════════════════════════════════════
+const ALL_TYPES = Object.keys(TYPE_COLORS);
+
+function toggleTypeDropdown() {
+  const btn = document.getElementById("typeDropdownBtn");
+  const panel = document.getElementById("typeDropdownPanel");
+  btn.classList.toggle("open");
+  panel.classList.toggle("open");
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click", e => {
+  const wrapper = document.getElementById("typeDropdownWrapper");
+  if (wrapper && !wrapper.contains(e.target)) {
+    document.getElementById("typeDropdownBtn").classList.remove("open");
+    document.getElementById("typeDropdownPanel").classList.remove("open");
+  }
+});
+
+function selectAllTypes() {
+  excludedTypes.clear();
+  activeGroups.clear();
+  refreshTypeUI();
+  render();
+}
+
+// excludedTypes = set of types the user has unchecked
+let excludedTypes = new Set();
+
+function toggleType(type) {
+  if (excludedTypes.has(type)) {
+    excludedTypes.delete(type); // re-check
+  } else {
+    excludedTypes.add(type);    // uncheck
+  }
+  refreshTypeUI();
+  render();
+}
+
+function refreshTypeUI() {
+  const absorbed = absorbedTypes();
+  const totalTypes = ALL_TYPES.length;
+  const visibleCount = totalTypes - excludedTypes.size;
+  const hasChanges = excludedTypes.size > 0 || activeGroups.size > 0;
+
+  // Update dropdown button label
+  const label = document.getElementById("typeDropdownLabel");
+  const badge = document.getElementById("typeDropdownBadge");
+  const selCount = document.getElementById("typeSelCount");
+  const parts = [];
+  if (activeGroups.size > 0) parts.push(`${activeGroups.size} groupe${activeGroups.size > 1 ? "s" : ""} actif${activeGroups.size > 1 ? "s" : ""}`);
+  if (excludedTypes.size > 0) parts.push(`${excludedTypes.size} masqué${excludedTypes.size > 1 ? "s" : ""}`);
+  if (!hasChanges) {
+    label.textContent = "Tous les types";
+    badge.style.display = "none";
+  } else {
+    label.textContent = parts.join(" · ") || "Filtres actifs";
+    badge.textContent = "●";
+    badge.style.display = "inline-block";
+    badge.style.background = activeGroups.size > 0 ? "var(--purple-mid)" : "#ef4444";
+  }
+  selCount.textContent = `${visibleCount} / ${totalTypes} type${visibleCount > 1 ? "s" : ""} affiché${visibleCount > 1 ? "s" : ""}`;
+
+  // Update group toggles
+  document.querySelectorAll(".group-option").forEach(row => {
+    const gid = row.dataset.groupId;
+    const toggle = row.querySelector(".group-toggle");
+    toggle.classList.toggle("on", activeGroups.has(gid));
+    const cnt = row.querySelector(".group-count-badge");
+    if (cnt) {
+      const grp = TYPE_GROUPS.find(g => g.id === gid);
+      const total = grp ? grp.members.reduce((s,m) => s + RAW_DATA.filter(a=>a.type===m).length, 0) : 0;
+      cnt.textContent = total;
+    }
+  });
+
+  // Update individual type checkboxes — dim those absorbed by a group
+  document.querySelectorAll(".type-option").forEach(opt => {
+    const t = opt.dataset.type;
+    const isAbsorbed = absorbed.has(t);
+    const checked = !excludedTypes.has(t);
+    opt.classList.toggle("checked", checked);
+    opt.classList.toggle("in-group", isAbsorbed);
+    const cm = opt.querySelector(".checkmark");
+    if (!isAbsorbed) {
+      cm.textContent = checked ? "✓" : "";
+      cm.style.background = checked ? (TYPE_COLORS[t] || "#7c3aed") : "transparent";
+      cm.style.borderColor = checked ? "transparent" : "#d1d5db";
+    } else {
+      cm.textContent = "⊂";
+      cm.style.background = "var(--purple-pale)";
+      cm.style.borderColor = "transparent";
+      cm.style.color = "var(--purple-mid)";
+    }
+  });
+
+  // Update chips
+  const chipsEl = document.getElementById("activeTypeChips");
+  chipsEl.innerHTML = "";
+  if (!hasChanges) {
+    chipsEl.innerHTML = `<span class="type-chip-all">Tous les types affichés</span>`;
+    return;
+  }
+  // Group chips (active groups)
+  activeGroups.forEach((g, gid) => {
+    const chip = document.createElement("span");
+    chip.className = "type-chip grouped";
+    chip.style.background = g.color;
+    chip.title = `Groupe actif — cliquer pour désactiver`;
+    chip.innerHTML = `⚡ ${g.name.length > 20 ? g.name.substring(0,20)+"…" : g.name} <span class="chip-x">✕</span>`;
+    chip.addEventListener("click", () => toggleGroup(gid));
+    chipsEl.appendChild(chip);
+  });
+  // Excluded type chips
+  excludedTypes.forEach(t => {
+    if (absorbed.has(t)) return; // absorbed types not shown individually
+    const chip = document.createElement("span");
+    chip.className = "type-chip";
+    chip.style.background = "#94a3b8";
+    chip.style.textDecoration = "line-through";
+    chip.style.opacity = "0.75";
+    chip.title = "Cliquer pour réafficher";
+    chip.innerHTML = `${t.length > 20 ? t.substring(0,20)+"…" : t} <span class="chip-x">↩</span>`;
+    chip.addEventListener("click", () => toggleType(t));
+    chipsEl.appendChild(chip);
+  });
+}
+
+function buildTypeGroups() {
+  const list = document.getElementById("typeGroupsList");
+  TYPE_GROUPS.forEach(g => {
+    const div = document.createElement("div");
+    div.className = "group-option";
+    div.dataset.groupId = g.id;
+    const memberCount = g.members.reduce((s,m) => s + RAW_DATA.filter(a=>a.type===m).length, 0);
+    div.innerHTML = `
+      <div class="group-toggle"></div>
+      <span class="color-dot" style="background:${g.color}"></span>
+      <div class="group-label-wrap">
+        <div class="group-name">${g.name}</div>
+        <div class="group-members">${g.members.join(" + ")}</div>
+      </div>
+      <span class="group-count-badge">${memberCount}</span>
+    `;
+    div.addEventListener("click", () => toggleGroup(g.id));
+    list.appendChild(div);
+  });
+}
+
+function toggleGroup(groupId) {
+  const grp = TYPE_GROUPS.find(g => g.id === groupId);
+  if (!grp) return;
+  if (activeGroups.has(groupId)) {
+    activeGroups.delete(groupId);
+  } else {
+    activeGroups.set(groupId, grp);
+    // When a group is activated, make sure its members are not individually excluded
+    grp.members.forEach(m => excludedTypes.delete(m));
+  }
+  refreshTypeUI();
+  render();
+}
+
+function buildTypeOptions() {
+  const list = document.getElementById("typeOptionsList");
+  const countByType = ALL_TYPES.reduce((acc, t) => {
+    acc[t] = RAW_DATA.filter(a => a.type === t).length;
+    return acc;
+  }, {});
+
+  ALL_TYPES.sort((a,b) => countByType[b] - countByType[a]).forEach(t => {
+    const div = document.createElement("div");
+    div.className = "type-option checked";
+    div.dataset.type = t;
+    div.innerHTML = `
+      <span class="checkmark" style="background:${TYPE_COLORS[t]||"#7c3aed"};border-color:transparent">✓</span>
+      <span class="color-dot" style="background:${TYPE_COLORS[t]||"#7c3aed"}"></span>
+      <span class="type-label">${t}</span>
+      <span class="type-count">${countByType[t]}</span>
+    `;
+    div.addEventListener("click", () => toggleType(t));
+    list.appendChild(div);
+  });
+}
+
+function init() {
+  // Day filter buttons
+  const container = document.getElementById("dayFilters");
+  ["Tous", ...ALL_JOURS].forEach(j => {
+    const btn = document.createElement("button");
+    btn.className = "day-btn" + (j === "Tous" ? " active" : "");
+    const dates = {"Jour 1":"29/8","Jour 2":"30/8","Jour 3":"31/8","Jour 4":"1/9","Jour 5":"2/9","Jour 6":"3/9","Jour 7":"4/9"};
+    btn.textContent = j === "Tous" ? "Tous" : `${j} (${dates[j]})`;
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeFilter = j;
+      render();
+    });
+    container.appendChild(btn);
+  });
+
+  // Type filter
+  buildTypeGroups();
+  buildTypeOptions();
+
+  // Groupes actifs par défaut
+  ["tantra", "artistique"].forEach(id => {
+    const grp = TYPE_GROUPS.find(g => g.id === id);
+    if (grp) activeGroups.set(id, grp);
+  });
+
+  // Types masqués par défaut
+  ["PREPA & LOGISTICS", "SHIFT ANGEL", "REUNION", "SUPPORT EMOTIONNEL"].forEach(t => excludedTypes.add(t));
+
+  refreshTypeUI();
+
+  // Search
+  document.getElementById("searchBox").addEventListener("input", e => {
+    searchTerm = e.target.value;
+    render();
+  });
+
+  render();
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
