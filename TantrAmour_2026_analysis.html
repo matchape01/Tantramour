@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -400,6 +400,181 @@
   .stacked-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
   .st-zero { color: #d1d5db !important; }
 
+  /* ── EXCLUDE ATELIERS DROPDOWN ── */
+  .exclude-wrapper { position: relative; }
+  .exclude-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gray-200);
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--purple-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .exclude-btn:hover,
+  .exclude-btn.open {
+    border-color: #ef4444;
+    background: #fff5f5;
+  }
+  .exclude-btn.has-exclusions {
+    border-color: #ef4444;
+    background: #fff1f2;
+    color: #dc2626;
+  }
+  .exclude-btn .arrow {
+    font-size: 0.65rem;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .exclude-btn.open .arrow { transform: rotate(180deg); }
+  .exclude-badge {
+    background: #ef4444;
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.05rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 1.4rem;
+    text-align: center;
+  }
+  .exclude-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 300;
+    background: var(--white);
+    border: 1.5px solid #fecaca;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(220,38,38,0.12);
+    min-width: 320px;
+    max-height: 440px;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .exclude-panel.open { display: flex; }
+  .exclude-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #fee2e2;
+    background: #fff5f5;
+    flex-shrink: 0;
+  }
+  .exclude-panel-header span { font-size: 0.78rem; color: #dc2626; font-weight: 700; }
+  .exclude-panel-actions button {
+    background: none;
+    border: 1.5px solid #fca5a5;
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #dc2626;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .exclude-panel-actions button:hover { background: #fee2e2; }
+  .exclude-search-wrap {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid #fee2e2;
+    flex-shrink: 0;
+  }
+  .exclude-search {
+    width: 100%;
+    border: 1.5px solid #fca5a5;
+    border-radius: 8px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+    color: var(--gray-900);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .exclude-search:focus { border-color: #ef4444; }
+  .exclude-list {
+    overflow-y: auto;
+    flex: 1;
+  }
+  .exclude-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.42rem 1rem;
+    cursor: pointer;
+    transition: background 0.12s;
+    user-select: none;
+    border-bottom: 1px solid #fef2f2;
+  }
+  .exclude-item:hover { background: #fff5f5; }
+  .exclude-item.excluded { background: #fff1f2; }
+  .exclude-checkmark {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid #fca5a5;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: #fff;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .exclude-item.excluded .exclude-checkmark {
+    background: #ef4444;
+    border-color: transparent;
+  }
+  .exclude-item-name {
+    font-size: 0.82rem;
+    color: var(--gray-900);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .exclude-item-meta {
+    font-size: 0.7rem;
+    color: var(--gray-600);
+    white-space: nowrap;
+  }
+  /* chips for excluded ateliers */
+  .exclude-chips {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    margin-top: 0.3rem;
+  }
+  .exclude-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    border-radius: 999px;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.62rem;
+    font-weight: 600;
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .exclude-chip:hover { opacity: 0.75; }
+  .exclude-chip .chip-x { font-size: 0.58rem; opacity: 0.8; margin-left: 1px; }
+
   /* ── DONUT HTML LEGEND ── */
   .chart-card:has(.donut-legend) .chart-container {
     flex: 0 0 55%;
@@ -656,9 +831,10 @@
     color: var(--purple-dark);
     border-radius: 6px;
     padding: 0.2rem 0.5rem;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    white-space: nowrap;
+    line-height: 1.35;
+    word-break: break-word;
   }
   .piment { color: var(--rose); font-weight: 700; }
   .jour-badge {
@@ -671,18 +847,18 @@
     font-weight: 700;
   }
 
-  /* ── TABLE SEARCH ── */
+  /* ── TABLE SEARCH & FILTERS ── */
   .table-controls {
     display: flex;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
+    gap: 0.7rem;
+    margin-bottom: 0.8rem;
     flex-wrap: wrap;
     align-items: center;
   }
   .search-box {
     flex: 1;
-    min-width: 200px;
-    padding: 0.5rem 0.9rem;
+    min-width: 180px;
+    padding: 0.45rem 0.9rem;
     border: 2px solid var(--gray-200);
     border-radius: 999px;
     font-size: 0.85rem;
@@ -695,6 +871,149 @@
     color: var(--gray-600);
     white-space: nowrap;
     font-weight: 600;
+  }
+
+  /* Active filter chips under table controls */
+  .table-active-filters {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 0.6rem;
+    min-height: 1.6rem;
+  }
+  .taf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .taf-chip:hover { opacity: 0.75; }
+  .taf-chip-clear {
+    background: none;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 999px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--gray-600);
+    cursor: pointer;
+  }
+  .taf-chip-clear:hover { background: var(--gray-200); }
+
+  /* Inline multi-select dropdowns */
+  .tfilter-wrap { position: relative; display: inline-block; }
+  .tfilter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--gray-200);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 0.38rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--purple-dark);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .tfilter-btn:hover, .tfilter-btn.open {
+    border-color: var(--purple-mid);
+    background: var(--purple-faint);
+  }
+  .tfilter-btn .tf-arrow { font-size: 0.6rem; transition: transform 0.2s; }
+  .tfilter-btn.open .tf-arrow { transform: rotate(180deg); }
+  .tfilter-btn .tf-badge {
+    background: var(--purple-mid);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.05rem 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+  .tfilter-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: 300;
+    background: #fff;
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(45,27,105,0.16);
+    min-width: 220px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0.4rem 0;
+  }
+  .tfilter-panel.open { display: block; }
+  .tfilter-ph {
+    padding: 0.4rem 0.8rem 0.3rem;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 0.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .tfilter-ph input {
+    flex: 1;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.78rem;
+    outline: none;
+  }
+  .tfilter-ph input:focus { border-color: var(--purple-mid); }
+  .tfilter-ph button {
+    background: none;
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 6px;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--purple-mid);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tfilter-ph button:hover { background: var(--purple-faint); }
+  .tfilter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.38rem 0.85rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+    font-size: 0.8rem;
+  }
+  .tfilter-option:hover { background: var(--purple-faint); }
+  .tfilter-option .tfo-check {
+    width: 15px; height: 15px;
+    border-radius: 4px;
+    border: 2px solid #d1d5db;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; color: #fff;
+    transition: all 0.12s;
+  }
+  .tfilter-option.on .tfo-check {
+    background: var(--purple-mid);
+    border-color: var(--purple-mid);
+  }
+  .tfilter-option .tfo-label { flex: 1; color: var(--gray-900); }
+  .tfilter-option .tfo-count {
+    font-size: 0.7rem; color: var(--gray-600);
+    background: var(--gray-200); border-radius: 999px;
+    padding: 0.05rem 0.35rem; font-weight: 600;
   }
 
   /* ── RESPONSIVE ── */
@@ -733,10 +1052,32 @@
 
 <div class="container">
 
-  <!-- FILTER BAR — JOUR -->
+  <!-- FILTER BAR — JOUR + EXCLUDE -->
   <div class="filter-bar">
     <label>📅 Filtrer par jour :</label>
     <div class="filter-btns" id="dayFilters"></div>
+    <!-- Exclude ateliers -->
+    <div class="exclude-wrapper" id="excludeWrapper">
+      <div class="exclude-btn" id="excludeBtn" onclick="toggleExcludeDropdown()">
+        <span>🚫 Exclure des ateliers</span>
+        <span class="exclude-badge" id="excludeBadge" style="display:none">0</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="exclude-panel" id="excludePanel">
+        <div class="exclude-panel-header">
+          <span id="excludeCount">Aucun atelier exclu</span>
+          <div class="exclude-panel-actions">
+            <button onclick="clearExclusions(event)">Tout réintégrer</button>
+          </div>
+        </div>
+        <div class="exclude-search-wrap">
+          <input class="exclude-search" id="excludeSearch" type="text" placeholder="🔍 Rechercher un atelier…" oninput="filterExcludeList(event)" onclick="event.stopPropagation()" />
+        </div>
+        <div class="exclude-list" id="excludeList"></div>
+      </div>
+    </div>
+    <!-- Chips exclusions -->
+    <div class="exclude-chips" id="excludeChips"></div>
   </div>
 
   <!-- FILTER BAR — TYPE -->
@@ -819,17 +1160,81 @@
   <div class="table-card">
     <div class="table-controls">
       <input type="text" class="search-box" id="searchBox" placeholder="🔍 Rechercher un atelier, animateur, lieu…">
+      <!-- Multi-select dropdowns -->
+      <div class="tfilter-wrap" id="tfWrapType">
+        <div class="tfilter-btn" id="tfBtnType">
+          Type <span class="tf-badge" id="tfBadgeType" style="display:none"></span> <span class="tf-arrow">▼</span>
+        </div>
+        <div class="tfilter-panel" id="tfPanelType">
+          <div class="tfilter-ph">
+            <input type="text" id="tfSearchType" placeholder="Chercher…">
+            <button onclick="tfSelectAll('type')">Tout</button>
+            <button onclick="tfClearAll('type')">Aucun</button>
+          </div>
+          <div id="tfListType"></div>
+        </div>
+      </div>
+      <div class="tfilter-wrap" id="tfWrapJour">
+        <div class="tfilter-btn" id="tfBtnJour">
+          Jour <span class="tf-badge" id="tfBadgeJour" style="display:none"></span> <span class="tf-arrow">▼</span>
+        </div>
+        <div class="tfilter-panel" id="tfPanelJour">
+          <div class="tfilter-ph">
+            <button onclick="tfSelectAll('jour')" style="flex:1">Tout</button>
+            <button onclick="tfClearAll('jour')" style="flex:1">Aucun</button>
+          </div>
+          <div id="tfListJour"></div>
+        </div>
+      </div>
+      <div class="tfilter-wrap" id="tfWrapLieu">
+        <div class="tfilter-btn" id="tfBtnLieu">
+          Lieu <span class="tf-badge" id="tfBadgeLieu" style="display:none"></span> <span class="tf-arrow">▼</span>
+        </div>
+        <div class="tfilter-panel" id="tfPanelLieu">
+          <div class="tfilter-ph">
+            <input type="text" id="tfSearchLieu" placeholder="Chercher…">
+            <button onclick="tfSelectAll('lieu')">Tout</button>
+            <button onclick="tfClearAll('lieu')">Aucun</button>
+          </div>
+          <div id="tfListLieu"></div>
+        </div>
+      </div>
+      <div class="tfilter-wrap" id="tfWrapAnim">
+        <div class="tfilter-btn" id="tfBtnAnim">
+          Animateur <span class="tf-badge" id="tfBadgeAnim" style="display:none"></span> <span class="tf-arrow">▼</span>
+        </div>
+        <div class="tfilter-panel" id="tfPanelAnim">
+          <div class="tfilter-ph">
+            <input type="text" id="tfSearchAnim" placeholder="Chercher…">
+            <button onclick="tfSelectAll('anim')">Tout</button>
+            <button onclick="tfClearAll('anim')">Aucun</button>
+          </div>
+          <div id="tfListAnim"></div>
+        </div>
+      </div>
       <span class="table-count" id="tableCount"></span>
     </div>
+    <div class="table-active-filters" id="tableActiveFilters"></div>
     <div class="table-wrapper">
       <table id="atelierTable">
+        <colgroup>
+          <col style="width:5rem">       <!-- ID -->
+          <col>                          <!-- Atelier — prend tout l'espace restant -->
+          <col style="width:9rem">       <!-- Type -->
+          <col style="width:14rem">      <!-- Animateur(s) -->
+          <col style="width:3.2rem">     <!-- Jour -->
+          <col style="width:6rem">       <!-- Horaires -->
+          <col style="width:3.5rem">     <!-- Durée -->
+          <col style="width:6rem">       <!-- Lieu -->
+          <col style="width:2.5rem">     <!-- 🌶 -->
+        </colgroup>
         <thead>
           <tr>
             <th>ID</th>
             <th>Atelier</th>
             <th>Type</th>
             <th>Animateur(s)</th>
-            <th>Jour</th>
+            <th>J.</th>
             <th>Horaires</th>
             <th>Durée</th>
             <th>Lieu</th>
@@ -852,187 +1257,7 @@
 // ═══════════════════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════════════════
-const RAW_DATA = [
-  {"id":"A_1032","nom":"Danse Ecstatic Contact #1","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},
-  {"id":"A_1033","nom":"Mouvement & Connexion avec les 5 Eléments","animateur1":"Dorian Vallet","animateur2":"Sevda Duroy","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1034","nom":"Ecstatic Dance niveau 1","animateur1":"Yannick Bohrer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
-  {"id":"A_1035","nom":"Musique Sacrée","animateur1":"Jérémie Dreyfuss","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"1","dureeH":1.5},
-  {"id":"A_1036","nom":"Danse Contact Improvisation","animateur1":"Marine Lévêque","animateur2":"Alexis Duroc","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
-  {"id":"A_1037","nom":"Acro Yoga Duo","animateur1":"Camille Renard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"20:15","lieu":"KALI","piment":"1","dureeH":2.25},
-  {"id":"A_1038","nom":"Tantra Danse Sacrée","animateur1":"Helena Marzano","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"DURGA","piment":"2","dureeH":1.5},
-  {"id":"A_1039","nom":"Corps Sacré & Présence","animateur1":"Luca Ferrari","animateur2":"Sofia Morandi","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"GANESH","piment":"2","dureeH":1.5},
-  {"id":"A_1040","nom":"Éveil des sens","animateur1":"Anaïs Dupont","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"LAKSHMI","piment":"3","dureeH":1.5},
-  {"id":"A_1041","nom":"Massages en conscience","animateur1":"Pierre Lefebvre","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:30","lieu":"SARASVATI","piment":"2","dureeH":1.5},
-  {"id":"A_1042","nom":"Yin Yang Tantra","animateur1":"Olivier Blanc","animateur2":"Marie Nguyen","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:30","lieu":"HANUMAN","piment":"3","dureeH":1.5},
-  {"id":"A_1043","nom":"Yoga du Matin","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
-  {"id":"A_1044","nom":"Méditation Guidée","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
-  {"id":"A_1045","nom":"Cérémonie d'ouverture","animateur1":"Collectif TantrAmour","animateur2":"","type":"CEREMONIE & CONCERT","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_1046","nom":"Atelier Tantra Matin #1","animateur1":"Nathaniel Boyer","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
-  {"id":"A_1047","nom":"Tantra Yoga Duo","animateur1":"Fabienne Renaud","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"2","dureeH":2},
-  {"id":"A_1048","nom":"Énergie Tantrique Fondamentaux","animateur1":"Raoul Dubois","animateur2":"Léonie Petit","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"1","dureeH":2},
-  {"id":"A_1049","nom":"Tantra Masculin-Féminin","animateur1":"Patrick Simon","animateur2":"Valérie Lambert","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"12:30","lieu":"KALI","piment":"3","dureeH":2.5},
-  {"id":"A_1050","nom":"Atelier Artistique Matin Surprise","animateur1":"Collectif","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:30","heureFin":"11:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1051","nom":"Réunion équipe cœur","animateur1":"Orga TAF","animateur2":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1052","nom":"Réunion Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1053","nom":"Rassemblement du soir","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
-  {"id":"A_1054","nom":"Support Emotionnel - Permanence","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
-  {"id":"A_1055","nom":"Love Temple Ouverture","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
-  {"id":"A_1056","nom":"Shift Angel J2 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1057","nom":"Shift Angel J2 - Après-midi","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"12:00","heureFin":"17:30","lieu":"All","piment":"","dureeH":5.5},
-  {"id":"A_1058","nom":"Shift Angel J2 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"23:00","lieu":"All","piment":"","dureeH":5},
-  {"id":"A_1059","nom":"Prépa technique J2","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"06:00","heureFin":"07:00","lieu":"Technique","piment":"","dureeH":1},
-  {"id":"A_1060","nom":"Accueil participants","animateur1":"Equipe Accueil","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:00","heureFin":"09:00","lieu":"Entrée","piment":"","dureeH":2},
-  {"id":"A_1061","nom":"Repas du midi organisation","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"10:30","heureFin":"11:00","lieu":"Cuisine","piment":"","dureeH":0.5},
-  {"id":"A_1062","nom":"Prépa salles ateliers PM","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"15:30","heureFin":"16:30","lieu":"Salles","piment":"","dureeH":1},
-  {"id":"A_1063","nom":"Nettoyage fin de soirée J2","animateur1":"Equipe Nettoyage","animateur2":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"23:30","heureFin":"00:15","lieu":"Site","piment":"","dureeH":0.75},
-  {"id":"A_1064","nom":"Tantra Approfondi #1","animateur1":"Maître Henri","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"3","dureeH":2},
-  {"id":"A_1065","nom":"Connexion Profonde","animateur1":"Julien Moreau","animateur2":"Nadia Karim","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"2","dureeH":2},
-  {"id":"A_1066","nom":"Tantric Flow","animateur1":"Amelie Girard","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"11:30","lieu":"DURGA","piment":"2","dureeH":1.5},
-  {"id":"A_1067","nom":"Kundalini Awakening","animateur1":"Siva Prasad","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"KALI","piment":"3","dureeH":2},
-  {"id":"A_1068","nom":"Shakti Rising","animateur1":"Marianne Lebrun","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"12:00","lieu":"LAKSHMI","piment":"2","dureeH":2},
-  {"id":"A_1069","nom":"Danse des Sens J3 PM","animateur1":"Ricardo Flores","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"3","dureeH":2},
-  {"id":"A_1070","nom":"Tantra Corps-Âme","animateur1":"Véronique Tissot","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"SARASVATI","piment":"2","dureeH":2},
-  {"id":"A_1071","nom":"Linga & Yoni","animateur1":"Duo Tantra","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"4","dureeH":1.5},
-  {"id":"A_1072","nom":"Respirations Sacrées","animateur1":"Nicolas Ferry","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"HANUMAN","piment":"2","dureeH":2},
-  {"id":"A_1073","nom":"Danse Ecstatic Contact #2","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},
-  {"id":"A_1074","nom":"Art du Contact","animateur1":"Solange Meyer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
-  {"id":"A_1075","nom":"Voix & Son Sacré","animateur1":"Chantal Picard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1076","nom":"Butoh Initiation","animateur1":"Kenzo Yamada","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"20:00","heureFin":"21:30","lieu":"SHAKTI","piment":"2","dureeH":1.5},
-  {"id":"A_1077","nom":"Yoga du Matin J3","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
-  {"id":"A_1078","nom":"Méditation Pleine Conscience","animateur1":"Arnaud Leroy","animateur2":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
-  {"id":"A_1079","nom":"Cérémonie Cacao","animateur1":"Shaman Pablo","animateur2":"","type":"CEREMONIE & CONCERT","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_1080","nom":"DJ Set J3 Nuit","animateur1":"DJ Cosmic","animateur2":"","type":"DJ Set","date":"31/08/2026","jour":"Jour 3","heureDebut":"23:30","heureFin":"01:30","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_1081","nom":"Love Temple J3","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:00","heureFin":"18:00","lieu":"Love Temple","piment":"4","dureeH":4},
-  {"id":"A_1082","nom":"Pool Party J3","animateur1":"Equipe Anims","animateur2":"","type":"POOL PARTY","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:00","heureFin":"15:00","lieu":"Piscine","piment":"1","dureeH":1},
-  {"id":"A_1083","nom":"Rassemblement J3","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
-  {"id":"A_1084","nom":"Support Emotionnel J3","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
-  {"id":"A_1085","nom":"Réunion équipe cœur J3","animateur1":"Orga TAF","animateur2":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1086","nom":"Réunion Helpers J3","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1087","nom":"Shift Angel J3 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1088","nom":"Shift Angel J3 - Après-midi","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"12:00","heureFin":"17:30","lieu":"All","piment":"","dureeH":5.5},
-  {"id":"A_1089","nom":"Shift Angel J3 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"23:30","lieu":"All","piment":"","dureeH":5.5},
-  {"id":"A_1090","nom":"Prépa J3 Matin","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1091","nom":"Logistique J3 Salles","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:00","heureFin":"10:00","lieu":"Salles","piment":"","dureeH":2},
-  {"id":"A_1092","nom":"Mise en place PM J3","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"17:00","lieu":"Salles","piment":"","dureeH":1},
-  {"id":"A_1093","nom":"Cuisine & repas J3","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
-  {"id":"A_1094","nom":"Sécurité nuit J3","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"23:00","heureFin":"25:15","lieu":"Site","piment":"","dureeH":2.25},
-  {"id":"A_1095","nom":"Nettoyage J3","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:30","heureFin":"09:30","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1096","nom":"Atelier Sonique Matin J3","animateur1":"Yann Fontaine","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:00","heureFin":"12:15","lieu":"SHAKTI","piment":"1","dureeH":1.25},
-  {"id":"A_1097","nom":"Tantra Matin J4 #1","animateur1":"Helena Marzano","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
-  {"id":"A_1098","nom":"Tantra Féminin Sacré J4","animateur1":"Kali Devi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"3","dureeH":2},
-  {"id":"A_1099","nom":"Éros Conscient J4","animateur1":"Marc Tissier","animateur2":"Elsa Benoit","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:30","lieu":"VISHNU","piment":"3","dureeH":2.5},
-  {"id":"A_1100","nom":"Massage Tantrique Découverte","animateur1":"Anne-Sophie Levi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:00","lieu":"KALI","piment":"2","dureeH":2},
-  {"id":"A_1101","nom":"Kundalini Yoga J4","animateur1":"Siva Prasad","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"12:15","lieu":"LAKSHMI","piment":"2","dureeH":2.25},
-  {"id":"A_1102","nom":"Tantra PM #1 J4","animateur1":"Sophie Andréa","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"3","dureeH":1.5},
-  {"id":"A_1103","nom":"Tantra PM #2 J4","animateur1":"Bertrand Klein","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"DURGA","piment":"2","dureeH":2},
-  {"id":"A_1104","nom":"Tantra PM #3 J4","animateur1":"Romain Lacroix","animateur2":"Sylvie Vidal","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"BRAHMA","piment":"3","dureeH":2},
-  {"id":"A_1105","nom":"Tantra PM #4 J4","animateur1":"Cecile Fontaine","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"2","dureeH":2},
-  {"id":"A_1106","nom":"Danse Ecstatic J4 #1","animateur1":"Yannick Bohrer","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
-  {"id":"A_1107","nom":"Théâtre Corporel","animateur1":"Fabrice Dupas","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
-  {"id":"A_1108","nom":"Improvisation Danse","animateur1":"Laura Charpentier","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1109","nom":"Yoga Nidrâ","animateur1":"Mathieu Renaud","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:15","lieu":"KALI","piment":"1","dureeH":1.25},
-  {"id":"A_1110","nom":"Danse Méditative J4","animateur1":"Clara Voss","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"1","dureeH":1},
-  {"id":"A_1111","nom":"Body Percussion","animateur1":"Alex Dormir","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:30","heureFin":"18:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},
-  {"id":"A_1112","nom":"Yoga Matin J4","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
-  {"id":"A_1113","nom":"Méditation J4","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
-  {"id":"A_1114","nom":"Concert Sacré J4","animateur1":"Ensemble Sacré","animateur2":"","type":"CEREMONIE & CONCERT","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_1115","nom":"Love Temple J4","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
-  {"id":"A_1116","nom":"Rassemblement J4","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
-  {"id":"A_1117","nom":"Support Emotionnel J4","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
-  {"id":"A_1118","nom":"Réunion J4 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1119","nom":"Réunion J4 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1120","nom":"Shift Angel J4 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1121","nom":"Shift Angel J4 - AM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"12:00","heureFin":"17:00","lieu":"All","piment":"","dureeH":5},
-  {"id":"A_1122","nom":"Shift Angel J4 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"23:45","lieu":"All","piment":"","dureeH":5.75},
-  {"id":"A_1123","nom":"Logistique J4","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1124","nom":"Prépa salles J4","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
-  {"id":"A_1125","nom":"Cuisine J4","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:00","heureFin":"12:15","lieu":"Cuisine","piment":"","dureeH":1.25},
-  {"id":"A_1126","nom":"Sécurité J4","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"23:00","heureFin":"24:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1127","nom":"Nettoyage J4","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:30","heureFin":"09:00","lieu":"Site","piment":"","dureeH":0.5},
-  {"id":"A_1128","nom":"Tantra Matin J5 #1","animateur1":"Luca Ferrari","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
-  {"id":"A_1129","nom":"Tantra Matin J5 #2","animateur1":"Marie-Claire Brun","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:00","lieu":"DURGA","piment":"2","dureeH":2},
-  {"id":"A_1130","nom":"Tantra Avancé J5","animateur1":"Guru Ananda","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"11:30","lieu":"VISHNU","piment":"4","dureeH":1.5},
-  {"id":"A_1131","nom":"Breathwork Tantrique","animateur1":"David Cohen","animateur2":"Naomi Thibault","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"12:30","lieu":"KALI","piment":"2","dureeH":2.5},
-  {"id":"A_1132","nom":"Tantra PM J5","animateur1":"Véronique Tissot","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"3","dureeH":1.5},
-  {"id":"A_1133","nom":"Danse Ecstatic J5","animateur1":"Cédric Vesper","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
-  {"id":"A_1134","nom":"Flamenco Sacré","animateur1":"Carmen Alves","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
-  {"id":"A_1135","nom":"Danse Tribale","animateur1":"Fatima Sow","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1136","nom":"Atelier Artistique Matin J5 #1","animateur1":"Pauline Hertz","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"11:00","lieu":"KALI","piment":"1","dureeH":1.5},
-  {"id":"A_1137","nom":"Atelier Artistique Matin J5 #2","animateur1":"Simon Veber","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"10:15","lieu":"BRAHMA","piment":"1","dureeH":0.75},
-  {"id":"A_1138","nom":"Yoga Matin J5","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
-  {"id":"A_1139","nom":"Méditation J5","animateur1":"Thomas Durand","animateur2":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
-  {"id":"A_1140","nom":"Cérémonie Feu J5","animateur1":"Shaman Pablo","animateur2":"","type":"CEREMONIE & CONCERT","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:30","heureFin":"23:30","lieu":"Espace Feu","piment":"1","dureeH":2},
-  {"id":"A_1141","nom":"Pool Party J5","animateur1":"Equipe Anims","animateur2":"","type":"POOL PARTY","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:00","heureFin":"16:30","lieu":"Piscine","piment":"1","dureeH":1.5},
-  {"id":"A_1142","nom":"Love Temple J5","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"02/09/2026","jour":"Jour 5","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
-  {"id":"A_1143","nom":"Tantra Café","animateur1":"Collectif","animateur2":"","type":"TANTRA CAFE","date":"02/09/2026","jour":"Jour 5","heureDebut":"16:00","heureFin":"17:00","lieu":"Café Tantra","piment":"2","dureeH":1},
-  {"id":"A_1144","nom":"Rassemblement J5","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
-  {"id":"A_1145","nom":"Support Emotionnel J5","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
-  {"id":"A_1146","nom":"Réunion J5 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1147","nom":"Réunion J5 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1148","nom":"Shift Angel J5 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1149","nom":"Shift Angel J5 - PM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"12:00","heureFin":"17:45","lieu":"All","piment":"","dureeH":5.75},
-  {"id":"A_1150","nom":"Shift Angel J5 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"23:15","lieu":"All","piment":"","dureeH":5.25},
-  {"id":"A_1151","nom":"Logistique J5 Matin","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1152","nom":"Prépa Salles J5","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
-  {"id":"A_1153","nom":"Cuisine J5","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
-  {"id":"A_1154","nom":"Logistique Spéciale J5","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"13:00","heureFin":"15:00","lieu":"Site","piment":"","dureeH":2},
-  {"id":"A_1155","nom":"Sécurité J5","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"23:00","heureFin":"24:45","lieu":"Site","piment":"","dureeH":1.75},
-  {"id":"A_1156","nom":"Nettoyage J5","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:30","heureFin":"09:30","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1157","nom":"Intégration Participants J5","animateur1":"Coachs","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"21:00","lieu":"Espace Repos","piment":"","dureeH":1},
-  {"id":"A_1158","nom":"Opération spéciale PM J5","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:30","heureFin":"16:30","lieu":"Bureau","piment":"","dureeH":1},
-  {"id":"A_1159","nom":"Réunion bilan mi-festival","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:00","heureFin":"07:30","lieu":"Bureau","piment":"","dureeH":0.5},
-  {"id":"A_1160","nom":"Tantra Matin J6 #1","animateur1":"Nathaniel Boyer","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"12:00","lieu":"SHIVA","piment":"2","dureeH":2},
-  {"id":"A_1161","nom":"Tantra Féminin J6","animateur1":"Kali Devi","animateur2":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"11:45","lieu":"DURGA","piment":"3","dureeH":1.75},
-  {"id":"A_1162","nom":"Tantra Couple J6","animateur1":"Bertrand Klein","animateur2":"Sylvie Vidal","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"12:00","lieu":"VISHNU","piment":"3","dureeH":2},
-  {"id":"A_1163","nom":"Tantra PM J6 #1","animateur1":"Romain Lacroix","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"BRAHMA","piment":"2","dureeH":1.5},
-  {"id":"A_1164","nom":"Tantra PM J6 #2","animateur1":"Fabienne Renaud","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"20:00","lieu":"GANESH","piment":"3","dureeH":2},
-  {"id":"A_1165","nom":"Tantra PM J6 #3","animateur1":"David Cohen","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SARASVATI","piment":"2","dureeH":1.5},
-  {"id":"A_1166","nom":"Tantra PM J6 #4","animateur1":"Marc Tissier","animateur2":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"HANUMAN","piment":"3","dureeH":1.5},
-  {"id":"A_1167","nom":"Danse Ecstatic J6","animateur1":"Cédric Vesper","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"VISHNU","piment":"1","dureeH":1.5},
-  {"id":"A_1168","nom":"Cirque & Corps J6","animateur1":"Lucie Gauthier","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},
-  {"id":"A_1169","nom":"Improvisation Libre J6","animateur1":"Jean-Paul Mori","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"21:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},
-  {"id":"A_1170","nom":"Peinture Corporelle J6","animateur1":"Aurélia Simon","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"Atelier Art","piment":"1","dureeH":1.5},
-  {"id":"A_1171","nom":"Chant Sacré","animateur1":"Chantal Picard","animateur2":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"1","dureeH":1},
-  {"id":"A_1172","nom":"Atelier Artistique Matin J6","animateur1":"Yann Fontaine","animateur2":"","type":"ATELIER ARTISTIQUE (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:30","heureFin":"11:00","lieu":"BRAHMA","piment":"1","dureeH":1.5},
-  {"id":"A_1173","nom":"Yoga Matin J6","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:00","heureFin":"09:15","lieu":"SHIVA","piment":"1","dureeH":1.25},
-  {"id":"A_1174","nom":"Méditation Profonde J6","animateur1":"Arnaud Leroy","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:30","heureFin":"10:45","lieu":"BRAHMA","piment":"1","dureeH":1.25},
-  {"id":"A_1175","nom":"Méditation du Soir J6","animateur1":"Guru Ananda","animateur2":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:30","heureFin":"21:30","lieu":"SHIVA","piment":"1","dureeH":1},
-  {"id":"A_1176","nom":"Grande Cérémonie J6","animateur1":"Maître Henri","animateur2":"Collectif","type":"CEREMONIE & CONCERT","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:30","heureFin":"23:30","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_1177","nom":"Conférence : Tantra & Modernité","animateur1":"Dr. Philippe Rousseau","animateur2":"","type":"CONFERENCE","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:45","lieu":"Salle Conf","piment":"1","dureeH":1.75},
-  {"id":"A_1178","nom":"Love Temple J6","animateur1":"Équipe LT","animateur2":"","type":"LOVE TEMPLE","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"Love Temple","piment":"4","dureeH":1.5},
-  {"id":"A_1179","nom":"Rassemblement J6","animateur1":"MC Festivités","animateur2":"","type":"RASSEMBLEMENT","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:00","heureFin":"21:15","lieu":"Place Centrale","piment":"","dureeH":0.25},
-  {"id":"A_1180","nom":"Support Emotionnel J6","animateur1":"Equipe Psy","animateur2":"","type":"SUPPORT EMOTIONNEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"10:00","heureFin":"11:30","lieu":"Espace Calme","piment":"","dureeH":1.5},
-  {"id":"A_1181","nom":"Réunion J6 Matin","animateur1":"Orga","animateur2":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1182","nom":"Réunion J6 Helpers","animateur1":"Coordination","animateur2":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"08:00","lieu":"Salle Réunion","piment":"","dureeH":0.5},
-  {"id":"A_1183","nom":"Shift Angel J6 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:00","heureFin":"11:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1184","nom":"Shift Angel J6 - PM","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"12:00","heureFin":"17:45","lieu":"All","piment":"","dureeH":5.75},
-  {"id":"A_1185","nom":"Shift Angel J6 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"22:45","lieu":"All","piment":"","dureeH":4.75},
-  {"id":"A_1186","nom":"Logistique J6","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"06:00","heureFin":"07:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1187","nom":"Prépa salles J6","animateur1":"Helpers","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:00","heureFin":"09:30","lieu":"Salles","piment":"","dureeH":1.5},
-  {"id":"A_1188","nom":"Cuisine J6","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:00","heureFin":"12:30","lieu":"Cuisine","piment":"","dureeH":1.5},
-  {"id":"A_1189","nom":"Sécurité J6","animateur1":"Sécurité","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"23:00","heureFin":"24:00","lieu":"Site","piment":"","dureeH":1},
-  {"id":"A_1190","nom":"Nettoyage J6","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"08:30","heureFin":"09:00","lieu":"Site","piment":"","dureeH":0.5},
-  {"id":"A_0001","nom":"Arrivée & Installation Équipe","animateur1":"Direction","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"08:00","heureFin":"14:00","lieu":"Site","piment":"","dureeH":6},
-  {"id":"A_0002","nom":"Installation Technique","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"10:00","heureFin":"18:00","lieu":"Scènes","piment":"","dureeH":8},
-  {"id":"A_0003","nom":"Décoration & Espaces","animateur1":"Equipe Déco","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"09:00","heureFin":"20:00","lieu":"Site","piment":"","dureeH":11},
-  {"id":"A_0004","nom":"Réception Livraisons","animateur1":"Logistique","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"08:00","heureFin":"18:00","lieu":"Entrée","piment":"","dureeH":10},
-  {"id":"A_0005","nom":"Cuisines Setup","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"10:00","heureFin":"18:30","lieu":"Cuisine","piment":"","dureeH":8.5},
-  {"id":"A_0006","nom":"Formation Helpers J1 Matin","animateur1":"RH","animateur2":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"09:00","heureFin":"11:00","lieu":"Salle Réunion","piment":"","dureeH":2},
-  {"id":"A_0007","nom":"Réunion Coordinateurs J1","animateur1":"Direction","animateur2":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"11:00","heureFin":"12:00","lieu":"Bureau","piment":"","dureeH":1},
-  {"id":"A_0008","nom":"Shift Angel J1 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"07:00","heureFin":"13:00","lieu":"All","piment":"","dureeH":6},
-  {"id":"A_0009","nom":"Shift Angel J1 - Soir","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"18:00","heureFin":"23:30","lieu":"All","piment":"","dureeH":5.5},
-  {"id":"A_0010","nom":"DJ Set Ouverture J1","animateur1":"DJ Cosmic","animateur2":"","type":"DJ Set","date":"29/08/2026","jour":"Jour 1","heureDebut":"21:00","heureFin":"23:00","lieu":"Grande Scène","piment":"1","dureeH":2},
-  {"id":"A_0011","nom":"Cérémonie Bienvenue J1","animateur1":"Collectif","animateur2":"","type":"CEREMONIE & CONCERT","date":"29/08/2026","jour":"Jour 1","heureDebut":"19:30","heureFin":"21:00","lieu":"Grande Scène","piment":"1","dureeH":1.5},
-  {"id":"A_1200","nom":"Cérémonie de clôture","animateur1":"Maître Henri","animateur2":"Collectif","type":"CEREMONIE & CONCERT","date":"04/09/2026","jour":"Jour 7","heureDebut":"18:00","heureFin":"21:00","lieu":"Grande Scène","piment":"1","dureeH":3},
-  {"id":"A_1201","nom":"Yoga Final","animateur1":"Isabelle Martin","animateur2":"","type":"MEDITATION / YOGA","date":"04/09/2026","jour":"Jour 7","heureDebut":"08:00","heureFin":"09:00","lieu":"SHIVA","piment":"1","dureeH":1},
-  {"id":"A_1202","nom":"Réunion bilan J7","animateur1":"Direction","animateur2":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"10:00","lieu":"Bureau","piment":"","dureeH":1},
-  {"id":"A_1203","nom":"Réunion Coordinateurs Fin","animateur1":"Direction","animateur2":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"11:30","lieu":"Bureau","piment":"","dureeH":1.5},
-  {"id":"A_1204","nom":"Shift Angel J7 - Matin","animateur1":"Chef Shift","animateur2":"","type":"SHIFT ANGEL","date":"04/09/2026","jour":"Jour 7","heureDebut":"07:00","heureFin":"10:00","lieu":"All","piment":"","dureeH":3},
-  {"id":"A_1205","nom":"Démontage Technique","animateur1":"Equipe Technique","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"18:00","lieu":"Scènes","piment":"","dureeH":8},
-  {"id":"A_1206","nom":"Nettoyage Final","animateur1":"Equipe","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:00","heureFin":"14:00","lieu":"Site","piment":"","dureeH":4},
-  {"id":"A_1207","nom":"Logistique Départ","animateur1":"Logistique","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"08:00","heureFin":"18:00","lieu":"Site","piment":"","dureeH":10},
-  {"id":"A_1208","nom":"Bilan Cuisine","animateur1":"Cuisine","animateur2":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"11:15","lieu":"Cuisine","piment":"","dureeH":2.25}
-];
+const RAW_DATA = [{"id":"A_1032","nom":"Danse Ecstatic Contact #1","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},{"id":"A_1033","nom":"Mouvement & Connexion avec les 5 Eléments","animateur1":"Dorian Vallet","animateur2":"Sevda Duroy","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1034","nom":"Ecstatic Dance niveau 1","animateur1":"Yannick Bohrer","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1035","nom":"Massage intuitif : L'Union Sacrée d'Hathor et Horus","animateur1":"Philippe Hanrion","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1061","nom":"La Saveur du Désir","animateur1":"Daniel Latapie","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"18:00","heureFin":"19:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1064","nom":"Alchimie du cœur (Danse médecine)","animateur1":"David Llorca","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1065","nom":"Danse Orgasmique - Danser la jouissance d'Etre vivant","animateur1":"Virginie Bertrand","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1066","nom":"Initiation à la danse Fusion","animateur1":"Stéphane Ahmed","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"19:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1067","nom":"Traverser: souffle, froid et confiance (Méthode Wim Hof - bain froid) - 2h","animateur1":"Damien Eissen","animateur2":"Dorian Vallet","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"18:00","heureFin":"20:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_1094","nom":"Danse Fusion: guider & se laisser guider","animateur1":"Stéphane Ahmed","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1095","nom":"Danse Ecstatic Contact #2","animateur1":"Cédric Vesper","animateur2":"Suman (Emmanuelle Cueff)","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1096","nom":"Animal Embodiment","animateur1":"Dorian Vallet","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1124","nom":"Roue de l'Air: Poèmes Médecine","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1125","nom":"Live Méditatif Electro Accoustique & Voix","animateur1":"Suman (Emmanuelle Cueff)","animateur2":"Stéphane Ahmed","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1126","nom":"Corps de gloire (bodypainting)","animateur1":"Paul Raj Amar","animateur2":"Hélène Planquelle","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1152","nom":"Atelier artistique « Libérez votre voix et votre mouvement »","animateur1":"Mitsch Kohn","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},{"id":"A_1153","nom":"L'Art d'Etre en Mouvement","animateur1":"Linda Stachetti","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:15","heureFin":"19:30","lieu":"CHENREZIG","piment":"1","dureeH":1.25},{"id":"A_1154","nom":"Pranam : Danse Dévotionnelle","animateur1":"Ishvari","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1155","nom":"Bain Mantrique - Soin Sonore Collectif","animateur1":"Suman (Emmanuelle Cueff)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"18:00","heureFin":"19:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1173","nom":"Ecstatic Dance en disco silencieuse","animateur1":"Yannick Bohrer","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"18:00","heureFin":"19:30","lieu":"EXTERIEUR","piment":"1","dureeH":1.5},{"id":"A_4406","nom":"🦄 Stand  Maquillage 🦄","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"20:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.75},{"id":"A_9968","nom":"🦄 Stand  Maquillage 🦄","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"20:00","heureFin":"20:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.75},{"id":"A_9618","nom":"🦄 Stand  Maquillage 🦄","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"20:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.75},{"id":"A_4533","nom":"🦄 Stand  Maquillage 🦄","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"20:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.75},{"id":"A_2250","nom":"🦄 Stand  Maquillage 🦄","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"20:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.75},{"id":"A_8972","nom":"Massage aux bols chantants","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"14:30","heureFin":"15:30","lieu":"TARA","piment":"0","dureeH":1},{"id":"A_1021","nom":"Atelier d'Arts Sacrés & d'Hypnose","animateur1":"Samantha Marvels","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"12:00","heureFin":"13:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1112","nom":"Danse de sublimation et Yi king","animateur1":"Boris Desvignes","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"12:00","heureFin":"13:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1113","nom":"Alchimie fluide (Danse des dauphins)","animateur1":"David Llorca","animateur2":"","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"13:00","heureFin":"13:45","lieu":"PISCINE","piment":"2","dureeH":0.75},{"id":"A_1174","nom":"L'art de devenir un·e amant·e d'exception par l'harmonie et la présence","animateur1":"Samantha Marvels","animateur2":"Scott McClure","animateur3":"","animateur4":"","type":"ATELIER ARTISTIQUE (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"12:00","heureFin":"13:30","lieu":"GANESH","piment":"2","dureeH":1.5},{"id":"A_1019","nom":"Yabyum - Laisser faire l'amour","animateur1":"Selma (Céline Laroche)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"TARA","piment":"2","dureeH":1.5},{"id":"A_1026","nom":"La Danse de la Polarité","animateur1":"Mahadevi (Tina Defoy)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"SHIVA","piment":"0","dureeH":1.5},{"id":"A_1027","nom":"Vibration à l'unisson: Tête – Cœur – Sex","animateur1":"Sophie O'Heix","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1048","nom":"Ode à KALI","animateur1":"Suman (Emmanuelle Cueff)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"17:30","lieu":"TARA","piment":"2","dureeH":1.5},{"id":"A_1050","nom":"Plongez dans l'expérience « du Plaisir » (pour femmes ou personnes identifiées comme femmes)","animateur1":"Audrey Barthélémy","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1058","nom":"Voyage avec la Rose (femmes)","animateur1":"Mahima (Emma Roussel)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"17:30","lieu":"GANESH","piment":"0","dureeH":1.5},{"id":"A_1059","nom":"L'espace entre nous: un rituel entre le masculin et le féminin (3h)","animateur1":"Our Echo","animateur2":"Guy El Hadad","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"19:00","lieu":"CHENREZIG","piment":"0","dureeH":3},{"id":"A_1060","nom":"Yoni & Lingam Puja","animateur1":"Ishvari","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"31/08/2026","jour":"Jour 3","heureDebut":"16:00","heureFin":"17:30","lieu":"SHAKTI","piment":"2","dureeH":1.5},{"id":"A_1088","nom":"L'art du baiser inspiré des ErotypesⓇ","animateur1":"Paul Raj Amar","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"17:30","lieu":"CHENREZIG","piment":"2","dureeH":1.5},{"id":"A_1089","nom":"Miroirs sacrés: Cérémonie de deuil – Célébration de la vie","animateur1":"Our Echo","animateur2":"Mitsch Kohn","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"19:00","lieu":"SHIVA","piment":"0","dureeH":3},{"id":"A_1090","nom":"Roue de l'Eau: Roue du Consentement & Free Flow Massage","animateur1":"Jivan Muti (Clément Victor)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"17:30","lieu":"SHAKTI","piment":"2","dureeH":1.5},{"id":"A_1091","nom":"Cercle de l’Ouroboros: chant, regard & alchimie relationnelle","animateur1":"Damien Eissen","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"01/09/2026","jour":"Jour 4","heureDebut":"16:00","heureFin":"17:30","lieu":"TARA","piment":"2","dureeH":1.5},{"id":"A_1123","nom":"Et si tu tissais le fil de ta liberté ?","animateur1":"Laurence Heitzmann","animateur2":"Laurent Lacoste","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:30","lieu":"CHENREZIG","piment":"2","dureeH":1.5},{"id":"A_1146","nom":"Alchimie relationnelle (le Contact rencontre le Tantra)","animateur1":"David Llorca","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"SHIVA","piment":"1","dureeH":1.5},{"id":"A_1147","nom":"Voyage au pays de mon sexe","animateur1":"Laurence Heitzmann","animateur2":"Laurent Lacoste","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"18:00","lieu":"CHENREZIG","piment":"3","dureeH":2},{"id":"A_1148","nom":"Shibari Mystique - L'Art de la Transgression","animateur1":"Amana","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"SHAKTI","piment":"3","dureeH":1.5},{"id":"A_1149","nom":"Un bain de guérison Corps et Ame","animateur1":"Sophie O'Heix","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"03/09/2026","jour":"Jour 6","heureDebut":"16:00","heureFin":"17:30","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1171","nom":"Un parcours somatique à la découverte de la masculinité. Entre hommes, par des hommes.","animateur1":"Guy El Hadad","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Apres-Midi)","date":"30/08/2026","jour":"Jour 2","heureDebut":"16:00","heureFin":"17:30","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1017","nom":"Connectons-nous","animateur1":"Scott McClure","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"11:15","heureFin":"12:45","lieu":"SHIVA","piment":"1","dureeH":1.5},{"id":"A_1018","nom":"Alice (1/3) - Ouverture - Découvre le massage méditatif","animateur1":"Joe Jam","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"11:15","heureFin":"13:15","lieu":"CHENREZIG","piment":"1","dureeH":2},{"id":"A_1020","nom":"Shakti puja : Le mystère des Mahavidya","animateur1":"Ishvari","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"11:30","heureFin":"13:00","lieu":"TARA","piment":"1","dureeH":1.5},{"id":"A_1028","nom":"Roue de Terre: Consentir et Communiquer","animateur1":"Jivan Muti (Clément Victor)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"30/08/2026","jour":"Jour 2","heureDebut":"11:30","heureFin":"13:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1029","nom":"Cesser de Faire, Laisser Etre","animateur1":"Audrey Barthélémy","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:15","heureFin":"12:45","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1047","nom":"Entre dans la Caresse comme dans la Vie Eternelle","animateur1":"Sandrine Bettinelli","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:15","heureFin":"12:45","lieu":"SHIVA","piment":"2","dureeH":1.5},{"id":"A_1049","nom":"La Merkaba tantrique","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:30","heureFin":"13:00","lieu":"SHAKTI","piment":"2","dureeH":1.5},{"id":"A_1051","nom":"Danse des portes multidimensionnelles de l'Etre","animateur1":"Mahadevi (Tina Defoy)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"12:00","heureFin":"13:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1079","nom":"Se libérer de la honte sexuelle et des conditionnements","animateur1":"Samantha Marvels","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:15","heureFin":"12:45","lieu":"SHIVA","piment":"2","dureeH":1.5},{"id":"A_1080","nom":"Alice - Dissolution (2/3) massage méditatif tantrique","animateur1":"Bruno Deck","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:15","heureFin":"13:15","lieu":"CHENREZIG","piment":"2","dureeH":2},{"id":"A_1081","nom":"Le toucher comme porte vers l'extase","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:30","heureFin":"13:00","lieu":"SHAKTI","piment":"2","dureeH":1.5},{"id":"A_1082","nom":"Ode à la liberté (2h15)","animateur1":"Selma (Céline Laroche)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:30","heureFin":"13:45","lieu":"TARA","piment":"2","dureeH":2.25},{"id":"A_1083","nom":"Baladi Tao-Tantrique","animateur1":"Mahadevi (Tina Defoy)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"01/09/2026","jour":"Jour 4","heureDebut":"12:00","heureFin":"13:30","lieu":"GANESH","piment":"1","dureeH":1.5},{"id":"A_1108","nom":"Roue du Feu: Libération émotionnelle et Kali","animateur1":"Jivan Muti (Clément Victor)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:15","heureFin":"12:45","lieu":"SHIVA","piment":"3","dureeH":1.5},{"id":"A_1109","nom":"Ode à SHIVA","animateur1":"Suman (Emmanuelle Cueff)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:15","heureFin":"12:45","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1110","nom":"Shibari Mystique - L'art du Lâcher-Prise","animateur1":"Amana","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:30","heureFin":"13:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1111","nom":"Au commencement était le corps","animateur1":"Sandrine Bettinelli","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:30","heureFin":"13:00","lieu":"TARA","piment":"3","dureeH":1.5},{"id":"A_1138","nom":"Alice : Incarnation (3/3) massage méditatif tantrique","animateur1":"Simone Bikene","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:15","heureFin":"13:15","lieu":"CHENREZIG","piment":"2","dureeH":2},{"id":"A_1139","nom":"Un leadership aimant","animateur1":"Scott McClure","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:30","heureFin":"13:00","lieu":"SHAKTI","piment":"3","dureeH":1.5},{"id":"A_1140","nom":"La Grande Spirale du CŒUR","animateur1":"Suman (Emmanuelle Cueff)","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:30","heureFin":"12:45","lieu":"TARA","piment":"1","dureeH":1.25},{"id":"A_1172","nom":"L'Eros dansant","animateur1":"Guy El Hadad","animateur2":"","animateur3":"","animateur4":"","type":"ATELIERS TANTRA (Matin)","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:30","heureFin":"13:00","lieu":"TARA","piment":"0","dureeH":1.5},{"id":"A_1007","nom":"CEREMONIE D'OUVERTURE","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"29/08/2026","jour":"Jour 1","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"1","dureeH":1.5},{"id":"A_1038","nom":"CÉRÉMONIE CACAO - Cœur dansant","animateur1":"Amana","animateur2":"Ishvari","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_1099","nom":"CONCERT chants & mantra avec Kelly Aura & Claude Brame","animateur1":"Kelly Aura","animateur2":"Claude Brame","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_1129","nom":"Concert: Mitsch Kohn (avec Kelly Aura & Mr. Sax)","animateur1":"Mitsch Kohn","animateur2":"Kelly Aura","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_1158","nom":"SOIREE SURPRISE pour enflammer le Chapiteau !","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_1166","nom":"CEREMONIE DE CLOTURE","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"CEREMONIE & CONCERT","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:30","heureFin":"13:30","lieu":"SHIVA","piment":"1","dureeH":3},{"id":"A_1141","nom":"Conférence + Q/R : Pour un tantra d'aujourd'hui","animateur1":"Laurent Lacoste","animateur2":"","animateur3":"","animateur4":"","type":"CONFERENCE","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:15","heureFin":"13:00","lieu":"SHIVA","piment":"1","dureeH":1.75},{"id":"A_1010","nom":"SOIRÉE ECSTATIC DANCE","animateur1":"Pascal de Lacaze","animateur2":"","animateur3":"","animateur4":"","type":"DJ Set","date":"29/08/2026","jour":"Jour 1","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_9705","nom":"DJ Set avec Juan Felix","animateur1":"Felix Ardevol","animateur2":"","animateur3":"","animateur4":"","type":"DJ Set","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"23:00","lieu":"SHAKTI","piment":"0","dureeH":2},{"id":"A_1040","nom":"Performance de Shibari Mystique & Jam Interactive","animateur1":"Amana","animateur2":"Ishvari","animateur3":"","animateur4":"","type":"LOVE TEMPLE","date":"30/08/2026","jour":"Jour 2","heureDebut":"23:30","heureFin":"01:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1072","nom":"Love Temple inspiré des ErotypesⓇ","animateur1":"Paul Raj Amar","animateur2":"Audrey Barthélémy","animateur3":"","animateur4":"","type":"LOVE TEMPLE","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"01:00","lieu":"CHENREZIG","piment":"2","dureeH":4},{"id":"A_1101","nom":"Love temple - Dévotion & Sacré","animateur1":"Ishvari","animateur2":"","animateur3":"","animateur4":"","type":"LOVE TEMPLE","date":"01/09/2026","jour":"Jour 4","heureDebut":"23:30","heureFin":"01:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1131","nom":"Temple du Mystère et de la Fantaisie","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"LOVE TEMPLE","date":"02/09/2026","jour":"Jour 5","heureDebut":"23:30","heureFin":"01:00","lieu":"CHENREZIG","piment":"2","dureeH":1.5},{"id":"A_1160","nom":"Le temple de l'innocence érotique - Une cérémonie nocturne mystique","animateur1":"Our Echo","animateur2":"Guy El Hadad","animateur3":"","animateur4":"","type":"LOVE TEMPLE","date":"03/09/2026","jour":"Jour 6","heureDebut":"23:30","heureFin":"01:00","lieu":"CHENREZIG","piment":"0","dureeH":1.5},{"id":"A_1011","nom":"Yoga2","animateur1":"Paul Raj Amar","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"08:00","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1},{"id":"A_1012","nom":"Meditation des 4 directions","animateur1":"Dorian Vallet","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"30/08/2026","jour":"Jour 2","heureDebut":"07:30","heureFin":"09:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1041","nom":"Yoga matinal","animateur1":"Sevda Duroy","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"08:00","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1},{"id":"A_1042","nom":"Laughing Drums - Méditation active","animateur1":"Selma (Céline Laroche)","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"31/08/2026","jour":"Jour 3","heureDebut":"07:30","heureFin":"09:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1073","nom":"Yoga matinal","animateur1":"Sevda Duroy","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"08:00","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1},{"id":"A_1074","nom":"Kirtan méditation","animateur1":"ShivaChris","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"01/09/2026","jour":"Jour 4","heureDebut":"07:30","heureFin":"09:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1102","nom":"Yoga Nidra","animateur1":"Simone Bikene","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"07:30","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1103","nom":"Ancrage / mouvement intégratif (dans la continuité de l'atelier «Miroirs sacrés» de la veille: intégration)","animateur1":"Our Echo","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"02/09/2026","jour":"Jour 5","heureDebut":"08:00","heureFin":"09:00","lieu":"SHAKTI","piment":"1","dureeH":1},{"id":"A_1132","nom":"AcroYoga","animateur1":"Sevda Duroy","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1.5},{"id":"A_1133","nom":"Méditation & Mouvements Somatiques","animateur1":"Linda Stachetti","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"03/09/2026","jour":"Jour 6","heureDebut":"07:30","heureFin":"09:00","lieu":"SHAKTI","piment":"1","dureeH":1.5},{"id":"A_1161","nom":"Yoga doux & Auto-massage","animateur1":"Sevda Duroy","animateur2":"","animateur3":"","animateur4":"","type":"MEDITATION / YOGA","date":"04/09/2026","jour":"Jour 7","heureDebut":"08:00","heureFin":"09:00","lieu":"CHENREZIG","piment":"1","dureeH":1},{"id":"A_7253","nom":"POOL PARTY - DJ Surprise","animateur1":"DJ Surprise","animateur2":"","animateur3":"","animateur4":"","type":"POOL PARTY","date":"31/08/2026","jour":"Jour 3","heureDebut":"15:00","heureFin":"16:00","lieu":"PISCINE","piment":"0","dureeH":1},{"id":"A_8280","nom":"POOL PARTY - DJ Juan Felix","animateur1":"Felix Ardevol","animateur2":"","animateur3":"","animateur4":"","type":"POOL PARTY","date":"02/09/2026","jour":"Jour 5","heureDebut":"16:00","heureFin":"17:30","lieu":"PISCINE","piment":"0","dureeH":1.5},{"id":"A_3687","nom":"DECO temples, Acceuil, exterieur","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"09:00","heureFin":"14:00","lieu":"","piment":"0","dureeH":5},{"id":"A_5090","nom":"Tests son & sono a  SHIVA","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"11:00","heureFin":"16:00","lieu":"SHIVA","piment":"0","dureeH":5},{"id":"A_5040","nom":"PREPA OPENING CEREMONY","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"17:00","heureFin":"18:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_3409","nom":"PREPA CONCERT (SHIVA) - DJ Set (Ecstatic dance)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_4901","nom":"PREPARATION Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:00","heureFin":"09:30","lieu":"SHIVA","piment":"0","dureeH":0.5},{"id":"A_4893","nom":"PREPA Ceremonie CACAO (SHIVA)","animateur1":"Amana","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_0030","nom":"PREPA TEMPLE (CHENREZIG) - Shibari Performance","animateur1":"Amana","animateur2":"Ishvari","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"19:30","heureFin":"20:00","lieu":"CHENREZIG","piment":"0","dureeH":0.5},{"id":"A_2872","nom":"PREPARATION Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:00","heureFin":"09:30","lieu":"SHIVA","piment":"0","dureeH":0.5},{"id":"A_9899","nom":"Prepa - POOL PARTY","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:30","heureFin":"15:00","lieu":"PISCINE","piment":"0","dureeH":0.5},{"id":"A_5319","nom":"PREPA CONCERT  - DJ Set","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"19:30","heureFin":"20:30","lieu":"SHAKTI","piment":"0","dureeH":1},{"id":"A_9196","nom":"PREPA TEMPLE (CHENREZIG) - Erotypes","animateur1":"Paul Raj Amar","animateur2":"Audrey Barthélémy","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"19:30","heureFin":"21:00","lieu":"CHENREZIG","piment":"0","dureeH":1.5},{"id":"A_1837","nom":"PREPARATION Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:00","heureFin":"09:30","lieu":"SHIVA","piment":"0","dureeH":0.5},{"id":"A_6041","nom":"PREPA CONCERT Kelly Aura / Claude Brame (SHIVA)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_6968","nom":"PREPA TEMPLE (CHENREZIG) - Devotion","animateur1":"Ishvari","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"20:00","heureFin":"21:00","lieu":"CHENREZIG","piment":"0","dureeH":1},{"id":"A_9262","nom":"PREPARATION Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:00","heureFin":"09:30","lieu":"SHIVA","piment":"0","dureeH":0.5},{"id":"A_8101","nom":"Prepa - POOL PARTY","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:00","heureFin":"16:00","lieu":"PISCINE","piment":"0","dureeH":1},{"id":"A_9261","nom":"PREPA CONCERT (SHIVA) - Mitsch","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_7974","nom":"PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid)","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"Vera De Sousa","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"22:00","lieu":"CHENREZIG","piment":"0","dureeH":2},{"id":"A_8951","nom":"PREPARATION Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:00","heureFin":"09:30","lieu":"SHIVA","piment":"0","dureeH":0.5},{"id":"A_8317","nom":"PREPA CONCERT - Soirée surprise (SHIVA)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_3756","nom":"PREPA TEMPLE (CHENREZIG) - Erotic innocence (Echo)","animateur1":"Our Echo","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"20:45","heureFin":"22:00","lieu":"CHENREZIG","piment":"0","dureeH":1.25},{"id":"A_1219","nom":"PREPARATION CEREMONIE DE CLOTURE","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"10:30","lieu":"SHIVA","piment":"0","dureeH":1.5},{"id":"A_4469","nom":"RANGEMENT","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"15:00","heureFin":"19:00","lieu":"","piment":"0","dureeH":4},{"id":"A_7637","nom":"EXTRA SUPPORT - OPENING CEREMONY","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"29/08/2026","jour":"Jour 1","heureDebut":"18:00","heureFin":"19:30","lieu":"SHIVA","piment":"0","dureeH":1.5},{"id":"A_5047","nom":"EXTRA SUPPORT - CEREMONIE DE CLOTURE","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:30","heureFin":"13:30","lieu":"SHIVA","piment":"0","dureeH":3},{"id":"A_0368","nom":"\"CALL\" pour Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:30","heureFin":"09:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_0747","nom":"\"CALL\" pour Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:30","heureFin":"09:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_8035","nom":"\"CALL\" pour Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:30","heureFin":"09:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_5332","nom":"\"CALL\" pour Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:30","heureFin":"09:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_2440","nom":"\"CALL\" pour Rassemblement","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:30","heureFin":"09:45","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_2885","nom":"\"CALL\" pour CEREMONIE DE CLOTURE","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:15","heureFin":"10:30","lieu":"EXTERIEUR","piment":"0","dureeH":0.25},{"id":"A_6376","nom":"EXTRA STAFF (1) - Love Temple des Erotypes","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"01:00","lieu":"CHENREZIG","piment":"2","dureeH":4},{"id":"A_2834","nom":"EXTRA STAFF (2) - Love Temple des Erotypes","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"01:00","lieu":"CHENREZIG","piment":"2","dureeH":4},{"id":"A_3416","nom":"BALANCE CONCERT Kelly Aura / Claude Brame (SHIVA)","animateur1":"Kelly Aura","animateur2":"Claude Brame","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"01/09/2026","jour":"Jour 4","heureDebut":"14:00","heureFin":"15:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_5171","nom":"BALANCE - CONCERT (SHIVA) - Mitsch","animateur1":"Mitsch Kohn","animateur2":"Kelly Aura","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"18:00","heureFin":"19:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_1964","nom":"BALANCE - PREPA CONCERT - Soirée surprise (SHIVA)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"03/09/2026","jour":"Jour 6","heureDebut":"14:00","heureFin":"15:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_9843","nom":"PREPA Ceremonie CACAO (SHIVA) (EXTRA)","animateur1":"Amana","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"20:00","heureFin":"21:00","lieu":"SHIVA","piment":"0","dureeH":1},{"id":"A_5006","nom":"CÉRÉMONIE CACAO - Cœur dansant (EXTRA STAFF)","animateur1":"Amana","animateur2":"Ishvari","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:00","heureFin":"23:00","lieu":"SHIVA","piment":"1","dureeH":2},{"id":"A_2146","nom":"EXTRA SUPPORT - PREPA TEMPLE (CHENREZIG) - Le mystere (Jivan & Le Splendid) (COPIE)","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"Vera De Sousa","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"20:00","heureFin":"22:00","lieu":"CHENREZIG","piment":"0","dureeH":2},{"id":"A_4564","nom":"EXTRA SUPPORT - Temple du Mystère et de la Fantaisie (COPIE)","animateur1":"Vera De Sousa","animateur2":"","animateur3":"","animateur4":"","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"23:30","heureFin":"01:00","lieu":"CHENREZIG","piment":"2","dureeH":1.5},{"id":"A_1373","nom":"Balance Concert","animateur1":"Felix Ardevol","animateur2":"","animateur3":"Mitsch Kohn","animateur4":"Stéphane Ahmed","type":"PREPA & LOGISTICS","date":"02/09/2026","jour":"Jour 5","heureDebut":"14:00","heureFin":"15:30","lieu":"","piment":"0","dureeH":1.5},{"id":"A_6434","nom":"Rassemblement du matin","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"RASSEMBLEMENT","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:45","heureFin":"11:00","lieu":"SHIVA","piment":"1","dureeH":1.25},{"id":"A_5867","nom":"Rassemblement du matin","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"RASSEMBLEMENT","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:45","heureFin":"11:00","lieu":"SHIVA","piment":"0","dureeH":1.25},{"id":"A_5555","nom":"Rassemblement du matin","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"RASSEMBLEMENT","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:45","heureFin":"11:00","lieu":"SHIVA","piment":"0","dureeH":1.25},{"id":"A_2635","nom":"Rassemblement du matin","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"RASSEMBLEMENT","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:45","heureFin":"11:00","lieu":"SHIVA","piment":"0","dureeH":1.25},{"id":"A_7088","nom":"Rassemblement du matin","animateur1":"Jivan Muti (Clément Victor)","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"","animateur4":"","type":"RASSEMBLEMENT","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:45","heureFin":"11:00","lieu":"SHIVA","piment":"0","dureeH":1.25},{"id":"A_5594","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"14:30","heureFin":"15:30","lieu":"CHENREZIG","piment":"0","dureeH":1},{"id":"A_7468","nom":"REUNION D'EQUIPE - DREAM TEAM (Tous)","animateur1":"ShivaChris","animateur2":"Sabryna","animateur3":"","animateur4":"","type":"REUNION","date":"29/08/2026","jour":"Jour 1","heureDebut":"16:00","heureFin":"17:00","lieu":"CHENREZIG","piment":"0","dureeH":1},{"id":"A_2154","nom":"REUNION D'EQUIPE (Animateurs et Artistes)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_3180","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Dorian Vallet","animateur2":"Atman Clochette (Matthieu) Bis","animateur3":"Vera De Sousa","animateur4":"","type":"REUNION","date":"30/08/2026","jour":"Jour 2","heureDebut":"09:00","heureFin":"09:30","lieu":"HANUMAN","piment":"0","dureeH":0.5},{"id":"A_9347","nom":"REUNION D'EQUIPE - FINAL DEBRIEF","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"16:00","heureFin":"17:00","lieu":"TARA","piment":"0","dureeH":1},{"id":"A_6096","nom":"REUNION D'EQUIPE (Animateurs et Artistes)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_1603","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Dorian Vallet","animateur2":"","animateur3":"Vera De Sousa","animateur4":"","type":"REUNION","date":"31/08/2026","jour":"Jour 3","heureDebut":"09:00","heureFin":"09:30","lieu":"HANUMAN","piment":"0","dureeH":0.5},{"id":"A_7330","nom":"REUNION D'EQUIPE (Animateurs et Artistes)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_7461","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Dorian Vallet","animateur2":"","animateur3":"Vera De Sousa","animateur4":"","type":"REUNION","date":"01/09/2026","jour":"Jour 4","heureDebut":"09:00","heureFin":"09:30","lieu":"HANUMAN","piment":"0","dureeH":0.5},{"id":"A_4832","nom":"REUNION D'EQUIPE (Animateurs et Artistes)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_4604","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Dorian Vallet","animateur2":"","animateur3":"Vera De Sousa","animateur4":"","type":"REUNION","date":"02/09/2026","jour":"Jour 5","heureDebut":"09:00","heureFin":"09:30","lieu":"HANUMAN","piment":"0","dureeH":0.5},{"id":"A_0852","nom":"REUNION D'EQUIPE (Animateurs et Artistes)","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_3139","nom":"REUNION D'EQUIPE (ALL) - Pre Cérémonie de Cloture","animateur1":"Sabryna","animateur2":"ShivaChris","animateur3":"","animateur4":"","type":"REUNION","date":"04/09/2026","jour":"Jour 7","heureDebut":"09:00","heureFin":"09:30","lieu":"TARA","piment":"0","dureeH":0.5},{"id":"A_9557","nom":"REUNION D'EQUIPE (Helpers)","animateur1":"Dorian Vallet","animateur2":"","animateur3":"Vera De Sousa","animateur4":"","type":"REUNION","date":"03/09/2026","jour":"Jour 6","heureDebut":"09:00","heureFin":"09:30","lieu":"HANUMAN","piment":"0","dureeH":0.5},{"id":"A_5595","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"11:15","heureFin":"13:30","lieu":"EXTERIEUR","piment":"0","dureeH":2.25},{"id":"A_8651","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"14:30","heureFin":"19:30","lieu":"EXTERIEUR","piment":"0","dureeH":5},{"id":"A_3847","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"11:15","heureFin":"13:30","lieu":"EXTERIEUR","piment":"1","dureeH":2.25},{"id":"A_7456","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:30","heureFin":"20:00","lieu":"EXTERIEUR","piment":"0","dureeH":5.5},{"id":"A_7630","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"11:15","heureFin":"13:45","lieu":"EXTERIEUR","piment":"0","dureeH":2.5},{"id":"A_5614","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"14:30","heureFin":"19:30","lieu":"EXTERIEUR","piment":"0","dureeH":5},{"id":"A_0574","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"11:15","heureFin":"13:30","lieu":"EXTERIEUR","piment":"0","dureeH":2.25},{"id":"A_2658","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"14:00","heureFin":"19:30","lieu":"EXTERIEUR","piment":"0","dureeH":5.5},{"id":"A_7149","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"11:15","heureFin":"13:30","lieu":"EXTERIEUR","piment":"0","dureeH":2.25},{"id":"A_7797","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"14:30","heureFin":"19:30","lieu":"EXTERIEUR","piment":"0","dureeH":5},{"id":"A_7296","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"21:00","heureFin":"01:00","lieu":"EXTERIEUR","piment":"0","dureeH":4},{"id":"A_9717","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"21:00","heureFin":"01:00","lieu":"EXTERIEUR","piment":"0","dureeH":4},{"id":"A_4577","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"21:00","heureFin":"01:00","lieu":"EXTERIEUR","piment":"0","dureeH":4},{"id":"A_6061","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"21:00","heureFin":"01:00","lieu":"EXTERIEUR","piment":"0","dureeH":4},{"id":"A_8912","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"21:00","heureFin":"01:00","lieu":"EXTERIEUR","piment":"0","dureeH":4},{"id":"A_9170","nom":"Angel - Shift Matin (AM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"04/09/2026","jour":"Jour 7","heureDebut":"10:30","heureFin":"13:30","lieu":"EXTERIEUR","piment":"0","dureeH":3},{"id":"A_4311","nom":"Angel - Shift Soir (Soirée)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"21:00","heureFin":"23:00","lieu":"EXTERIEUR","piment":"0","dureeH":2},{"id":"A_9189","nom":"Angel - Shift Après-midi (PM)","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SHIFT ANGEL","date":"29/08/2026","jour":"Jour 1","heureDebut":"18:00","heureFin":"19:30","lieu":"EXTERIEUR","piment":"0","dureeH":1.5},{"id":"A_5865","nom":"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SUPPORT EMOTIONNEL","date":"30/08/2026","jour":"Jour 2","heureDebut":"14:30","heureFin":"16:00","lieu":"BUDDHA","piment":"0","dureeH":1.5},{"id":"A_6057","nom":"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SUPPORT EMOTIONNEL","date":"31/08/2026","jour":"Jour 3","heureDebut":"14:30","heureFin":"16:00","lieu":"BUDDHA","piment":"0","dureeH":1.5},{"id":"A_3535","nom":"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SUPPORT EMOTIONNEL","date":"01/09/2026","jour":"Jour 4","heureDebut":"14:30","heureFin":"16:00","lieu":"BUDDHA","piment":"0","dureeH":1.5},{"id":"A_7320","nom":"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SUPPORT EMOTIONNEL","date":"02/09/2026","jour":"Jour 5","heureDebut":"14:30","heureFin":"16:00","lieu":"BUDDHA","piment":"0","dureeH":1.5},{"id":"A_0518","nom":"💛 LES ANGELS — SOUTIEN ÉMOTIONNEL","animateur1":"","animateur2":"","animateur3":"","animateur4":"","type":"SUPPORT EMOTIONNEL","date":"03/09/2026","jour":"Jour 6","heureDebut":"14:30","heureFin":"16:00","lieu":"BUDDHA","piment":"0","dureeH":1.5},{"id":"A_1117","nom":"Tantra Café - Tout ce que tu as toujours voulu savoir sur la sexualite tantrique","animateur1":"Sandrine Bettinelli","animateur2":"","animateur3":"","animateur4":"","type":"TANTRA CAFE","date":"02/09/2026","jour":"Jour 5","heureDebut":"15:00","heureFin":"16:00","lieu":"SHIVA","piment":"1","dureeH":1}];
 
 // ═══════════════════════════════════════════════════════════════
 // STATE & PALETTE
@@ -1118,11 +1343,13 @@ function getFiltered() {
   return RAW_DATA.filter(a => {
     const matchDay = activeFilter === "Tous" || a.jour === activeFilter;
     const matchType = !excludedTypes.has(a.type);
+    const matchExclude = !excludedAteliers.has(a.id);
     const q = searchTerm.toLowerCase();
     const matchSearch = !q || a.nom.toLowerCase().includes(q) || a.type.toLowerCase().includes(q)
       || a.animateur1.toLowerCase().includes(q) || a.animateur2.toLowerCase().includes(q)
+      || (a.animateur3||"").toLowerCase().includes(q) || (a.animateur4||"").toLowerCase().includes(q)
       || a.lieu.toLowerCase().includes(q) || a.jour.toLowerCase().includes(q);
-    return matchDay && matchType && matchSearch;
+    return matchDay && matchType && matchExclude && matchSearch;
   });
 }
 
@@ -1542,7 +1769,10 @@ function updateTable(data) {
     tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:2rem;color:#9ca3af;">Aucun atelier trouvé</td></tr>`;
     return;
   }
-  tbody.innerHTML = data.map(a => {
+  const sorted = [...data].sort((a, b) =>
+    a.jour.localeCompare(b.jour) || a.heureDebut.localeCompare(b.heureDebut)
+  );
+  tbody.innerHTML = sorted.map(a => {
     const eff = getEffectiveType(a.type);
     const isGrouped = eff !== a.type;
     const effColor = getEffectiveColor(eff);
@@ -1556,8 +1786,8 @@ function updateTable(data) {
           : `<span class="type-badge">${a.type}</span>`
         }
       </td>
-      <td style="color:#4b5563;font-size:0.8rem">${[a.animateur1,a.animateur2].filter(Boolean).join(", ")}</td>
-      <td><span class="jour-badge">${a.jour}</span></td>
+      <td style="color:#4b5563;font-size:0.8rem">${[a.animateur1,a.animateur2,a.animateur3,a.animateur4].filter(Boolean).join(", ")}</td>
+      <td><span class="jour-badge">${a.jour.replace("Jour ","")}</span></td>
       <td style="white-space:nowrap;font-size:0.8rem">${a.heureDebut}–${a.heureFin}</td>
       <td style="text-align:center;font-weight:700;color:#7c3aed">${a.dureeH}h</td>
       <td style="font-size:0.8rem;color:#6b7280">${a.lieu}</td>
@@ -1567,13 +1797,201 @@ function updateTable(data) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// TABLE COLUMN FILTERS (multi-select)
+// ═══════════════════════════════════════════════════════════════
+
+// tf state: each key holds a Set of SELECTED values (empty = all shown)
+const tfState = { type: new Set(), jour: new Set(), lieu: new Set(), anim: new Set() };
+
+const TF_CONFIG = {
+  type:  { label: "Type",       btnId: "tfBtnType",  badgeId: "tfBadgeType",  listId: "tfListType",  panelId: "tfPanelType",  searchId: "tfSearchType",  color: "#7c3aed" },
+  jour:  { label: "Jour",       btnId: "tfBtnJour",  badgeId: "tfBadgeJour",  listId: "tfListJour",  panelId: "tfPanelJour",  searchId: null,            color: "#f59e0b" },
+  lieu:  { label: "Lieu",       btnId: "tfBtnLieu",  badgeId: "tfBadgeLieu",  listId: "tfListLieu",  panelId: "tfPanelLieu",  searchId: "tfSearchLieu",  color: "#06b6d4" },
+  anim:  { label: "Animateur",  btnId: "tfBtnAnim",  badgeId: "tfBadgeAnim",  listId: "tfListAnim",  panelId: "tfPanelAnim",  searchId: "tfSearchAnim",  color: "#ec4899" }
+};
+
+// Extract unique values for each dimension from RAW_DATA
+function tfGetValues(dim) {
+  if (dim === "type") return [...new Set(RAW_DATA.map(a => a.type))].sort();
+  if (dim === "jour") return ALL_JOURS;
+  if (dim === "lieu") return [...new Set(RAW_DATA.map(a => a.lieu).filter(Boolean))].sort();
+  if (dim === "anim") {
+    const s = new Set();
+    RAW_DATA.forEach(a => { [a.animateur1,a.animateur2,a.animateur3,a.animateur4].filter(Boolean).forEach(v => s.add(v)); });
+    return [...s].sort();
+  }
+  return [];
+}
+
+function tfGetValue(a, dim) {
+  if (dim === "type") return a.type;
+  if (dim === "jour") return a.jour;
+  if (dim === "lieu") return a.lieu;
+  if (dim === "anim") return [a.animateur1, a.animateur2, a.animateur3, a.animateur4].filter(Boolean);
+}
+
+function tfMatchRow(a) {
+  for (const dim of ["type","jour","lieu","anim"]) {
+    const sel = tfState[dim];
+    if (sel.size === 0) continue; // no filter = show all
+    const val = tfGetValue(a, dim);
+    if (Array.isArray(val)) {
+      if (!val.some(v => sel.has(v))) return false;
+    } else {
+      if (!sel.has(val)) return false;
+    }
+  }
+  return true;
+}
+
+function tfToggle(dim, val) {
+  if (tfState[dim].has(val)) tfState[dim].delete(val);
+  else tfState[dim].add(val);
+  tfRefreshUI(dim);
+  updateTableOnly();
+}
+
+function tfSelectAll(dim) {
+  tfState[dim].clear();
+  tfRefreshUI(dim);
+  updateTableOnly();
+}
+
+function tfClearAll(dim) {
+  tfState[dim].clear(); // same as select-all: show all rows
+  tfRefreshUI(dim);
+  updateTableOnly();
+}
+
+function tfRefreshUI(dim) {
+  const cfg = TF_CONFIG[dim];
+  const sel = tfState[dim];
+  const badge = document.getElementById(cfg.badgeId);
+  const btn   = document.getElementById(cfg.btnId);
+
+  if (sel.size === 0) {
+    badge.style.display = "none";
+    btn.style.borderColor = "transparent";
+  } else {
+    badge.textContent = sel.size;
+    badge.style.display = "inline-block";
+    btn.style.borderColor = "var(--purple-mid)";
+    btn.style.background = "var(--purple-faint)";
+  }
+
+  // update checkboxes
+  document.querySelectorAll(`#${cfg.listId} .tfilter-option`).forEach(opt => {
+    const v = opt.dataset.val;
+    const on = sel.size === 0 || sel.has(v); // none selected = all ON visually
+    opt.classList.toggle("on", sel.has(v));   // checked only if explicitly in set
+    opt.querySelector(".tfo-check").textContent = sel.has(v) ? "✓" : "";
+  });
+
+  // chips
+  renderActiveChips();
+}
+
+function renderActiveChips() {
+  const container = document.getElementById("tableActiveFilters");
+  const chips = [];
+  for (const [dim, sel] of Object.entries(tfState)) {
+    if (sel.size === 0) continue;
+    const cfg = TF_CONFIG[dim];
+    sel.forEach(val => {
+      chips.push({ dim, val, color: cfg.color });
+    });
+  }
+  if (!chips.length) { container.innerHTML = ""; return; }
+  container.innerHTML = chips.map(c =>
+    `<span class="taf-chip" style="background:${c.color}" data-dim="${c.dim}" data-val="${c.val.replace(/"/g,"&quot;")}" title="Retirer ce filtre">
+      ${c.val.length > 28 ? c.val.substring(0,28)+"…" : c.val} ✕
+    </span>`
+  ).join("") + `<button class="taf-chip-clear" onclick="tfClearAllFilters()">✕ Tout effacer</button>`;
+
+  container.querySelectorAll(".taf-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      tfToggle(chip.dataset.dim, chip.dataset.val);
+    });
+  });
+}
+
+function tfClearAllFilters() {
+  for (const dim of Object.keys(tfState)) { tfState[dim].clear(); tfRefreshUI(dim); }
+  updateTableOnly();
+}
+
+function buildTfList(dim) {
+  const cfg = TF_CONFIG[dim];
+  const list = document.getElementById(cfg.listId);
+  const allVals = tfGetValues(dim);
+
+  function render(filter) {
+    const vals = filter ? allVals.filter(v => v.toLowerCase().includes(filter.toLowerCase())) : allVals;
+    list.innerHTML = vals.map(v => {
+      const cnt = dim === "anim"
+        ? RAW_DATA.filter(a => [a.animateur1,a.animateur2,a.animateur3,a.animateur4].includes(v)).length
+        : RAW_DATA.filter(a => tfGetValue(a, dim) === v).length;
+      return `<div class="tfilter-option${tfState[dim].has(v) ? " on":""}" data-val="${v.replace(/"/g,"&quot;")}">
+        <span class="tfo-check">${tfState[dim].has(v)?"✓":""}</span>
+        <span class="tfo-label">${v}</span>
+        <span class="tfo-count">${cnt}</span>
+      </div>`;
+    }).join("");
+    list.querySelectorAll(".tfilter-option").forEach(opt => {
+      opt.addEventListener("click", () => tfToggle(dim, opt.dataset.val));
+    });
+  }
+
+  render("");
+
+  if (cfg.searchId) {
+    document.getElementById(cfg.searchId).addEventListener("input", e => render(e.target.value));
+  }
+}
+
+function buildTfDropdown(dim) {
+  const cfg = TF_CONFIG[dim];
+  const btn   = document.getElementById(cfg.btnId);
+  const panel = document.getElementById(cfg.panelId);
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    // close others
+    Object.values(TF_CONFIG).forEach(c => {
+      if (c.btnId !== cfg.btnId) {
+        document.getElementById(c.btnId).classList.remove("open");
+        document.getElementById(c.panelId).classList.remove("open");
+      }
+    });
+    btn.classList.toggle("open");
+    panel.classList.toggle("open");
+  });
+}
+
+// Close all tf panels on outside click
+document.addEventListener("click", e => {
+  Object.values(TF_CONFIG).forEach(cfg => {
+    const wrap = document.getElementById(cfg.btnId)?.closest(".tfilter-wrap");
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById(cfg.btnId).classList.remove("open");
+      document.getElementById(cfg.panelId).classList.remove("open");
+    }
+  });
+});
+
+// updateTableOnly: re-render table without re-rendering charts (fast)
+function updateTableOnly() {
+  const data = getFiltered().filter(tfMatchRow);
+  updateTable(data);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════════════════
 function render() {
   const data = getFiltered();
   updateKPI(data);
   updateCharts(data);
-  updateTable(data);
+  updateTable(data.filter(tfMatchRow));
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1591,12 +2009,16 @@ function toggleTypeDropdown() {
   panel.classList.toggle("open");
 }
 
-// Close dropdown when clicking outside
+// Close dropdowns when clicking outside
 document.addEventListener("click", e => {
-  const wrapper = document.getElementById("typeDropdownWrapper");
-  if (wrapper && !wrapper.contains(e.target)) {
+  const typeWrapper = document.getElementById("typeDropdownWrapper");
+  if (typeWrapper && !typeWrapper.contains(e.target)) {
     document.getElementById("typeDropdownBtn").classList.remove("open");
     document.getElementById("typeDropdownPanel").classList.remove("open");
+  }
+  const excludeWrapper = document.getElementById("excludeWrapper");
+  if (excludeWrapper && !excludeWrapper.contains(e.target)) {
+    closeExcludeDropdown();
   }
 });
 
@@ -1609,6 +2031,137 @@ function selectAllTypes() {
 
 // excludedTypes = set of types the user has unchecked
 let excludedTypes = new Set();
+
+// ═══════════════════════════════════════════════════════════════
+// EXCLUDE ATELIERS
+// ═══════════════════════════════════════════════════════════════
+// excludedAteliers = Set of atelier IDs the user wants to hide from all calculations
+let excludedAteliers = new Set();
+// filtered view of items in the exclude dropdown (for search)
+let _excludeSearchTerm = "";
+
+function toggleExcludeDropdown() {
+  const btn = document.getElementById("excludeBtn");
+  const panel = document.getElementById("excludePanel");
+  const isOpen = panel.classList.contains("open");
+  if (isOpen) {
+    closeExcludeDropdown();
+  } else {
+    btn.classList.add("open");
+    panel.classList.add("open");
+    document.getElementById("excludeSearch").focus();
+    renderExcludeList();
+  }
+}
+
+function closeExcludeDropdown() {
+  document.getElementById("excludeBtn").classList.remove("open");
+  document.getElementById("excludePanel").classList.remove("open");
+}
+
+function filterExcludeList(e) {
+  if (e) e.stopPropagation();
+  _excludeSearchTerm = document.getElementById("excludeSearch").value;
+  renderExcludeList();
+}
+
+function renderExcludeList() {
+  const q = _excludeSearchTerm.toLowerCase();
+  const list = document.getElementById("excludeList");
+  list.innerHTML = "";
+  // Build sorted list: excluded first, then alphabetical
+  const items = [...RAW_DATA]
+    .sort((a, b) => {
+      const aEx = excludedAteliers.has(a.id);
+      const bEx = excludedAteliers.has(b.id);
+      if (aEx !== bEx) return aEx ? -1 : 1;
+      return a.nom.localeCompare(b.nom, "fr");
+    });
+
+  items.forEach(a => {
+    if (q && !a.nom.toLowerCase().includes(q) && !a.type.toLowerCase().includes(q) && !a.jour.toLowerCase().includes(q)) return;
+    const isExcluded = excludedAteliers.has(a.id);
+    const div = document.createElement("div");
+    div.className = "exclude-item" + (isExcluded ? " excluded" : "");
+    div.dataset.id = a.id;
+    div.innerHTML = `
+      <div class="exclude-checkmark">${isExcluded ? "✕" : ""}</div>
+      <div class="exclude-item-name" title="${a.nom}">${a.nom}</div>
+      <div class="exclude-item-meta">${a.type} · ${a.jour}</div>
+    `;
+    div.addEventListener("click", e => {
+      e.stopPropagation();
+      toggleExcludeAtelier(a.id);
+    });
+    list.appendChild(div);
+  });
+
+  if (!list.children.length) {
+    list.innerHTML = `<div style="padding:1rem;text-align:center;color:var(--gray-600);font-size:0.82rem;">Aucun atelier trouvé</div>`;
+  }
+}
+
+function toggleExcludeAtelier(id) {
+  if (excludedAteliers.has(id)) {
+    excludedAteliers.delete(id);
+  } else {
+    excludedAteliers.add(id);
+  }
+  // Update the item in place without rebuilding the whole list
+  const item = document.querySelector(`.exclude-item[data-id="${id}"]`);
+  if (item) {
+    const isExcluded = excludedAteliers.has(id);
+    item.classList.toggle("excluded", isExcluded);
+    item.querySelector(".exclude-checkmark").textContent = isExcluded ? "✕" : "";
+  }
+  refreshExcludeUI();
+  render();
+}
+
+function clearExclusions(e) {
+  if (e) e.stopPropagation();
+  excludedAteliers.clear();
+  _excludeSearchTerm = "";
+  document.getElementById("excludeSearch").value = "";
+  renderExcludeList();
+  refreshExcludeUI();
+  render();
+}
+
+function refreshExcludeUI() {
+  const n = excludedAteliers.size;
+  const btn = document.getElementById("excludeBtn");
+  const badge = document.getElementById("excludeBadge");
+  const countEl = document.getElementById("excludeCount");
+  const chipsEl = document.getElementById("excludeChips");
+
+  // Button state
+  if (n > 0) {
+    btn.classList.add("has-exclusions");
+    badge.style.display = "inline-block";
+    badge.textContent = n;
+    countEl.textContent = `${n} atelier${n > 1 ? "s" : ""} exclu${n > 1 ? "s" : ""}`;
+  } else {
+    btn.classList.remove("has-exclusions");
+    badge.style.display = "none";
+    countEl.textContent = "Aucun atelier exclu";
+  }
+
+  // Chips
+  chipsEl.innerHTML = "";
+  if (n === 0) return;
+  excludedAteliers.forEach(id => {
+    const atelier = RAW_DATA.find(a => a.id === id);
+    if (!atelier) return;
+    const chip = document.createElement("span");
+    chip.className = "exclude-chip";
+    const label = atelier.nom.length > 22 ? atelier.nom.substring(0, 22) + "…" : atelier.nom;
+    chip.innerHTML = `🚫 ${label} <span class="chip-x">✕</span>`;
+    chip.title = `${atelier.nom} — cliquer pour réintégrer`;
+    chip.addEventListener("click", () => toggleExcludeAtelier(id));
+    chipsEl.appendChild(chip);
+  });
+}
 
 function toggleType(type) {
   if (excludedTypes.has(type)) {
@@ -1796,7 +2349,18 @@ function init() {
   // Types masqués par défaut
   ["PREPA & LOGISTICS", "SHIFT ANGEL", "REUNION", "SUPPORT EMOTIONNEL"].forEach(t => excludedTypes.add(t));
 
+  // Ateliers exclus par défaut ("Call" rassemblement + Stand Maquillage)
+  ["A_0368","A_0747","A_8035","A_5332","A_2440","A_2885",
+   "A_4406","A_9968","A_9618","A_4533","A_2250"].forEach(id => excludedAteliers.add(id));
+  refreshExcludeUI();
+
   refreshTypeUI();
+
+  // Table column filters
+  for (const dim of ["type","jour","lieu","anim"]) {
+    buildTfList(dim);
+    buildTfDropdown(dim);
+  }
 
   // Search
   document.getElementById("searchBox").addEventListener("input", e => {
